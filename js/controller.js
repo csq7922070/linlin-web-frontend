@@ -190,6 +190,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
         }
     ]).controller('addressCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
         function($scope, $http, $stateParams, $rootScope) {
+
             if ($stateParams.id) {
                 //用户
                 $rootScope.ownName = $stateParams.user;
@@ -511,8 +512,8 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             }
         }
     ])
-    .controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
+    .controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state','$location',
+        function($scope, $http, $stateParams, $rootScope, $state,$location) {
 
             $scope.slides7 = [{
                 id: 10,
@@ -527,6 +528,20 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 label: "slide #12",
                 img: "http://lorempixel.com/450/300/people/2"
             }];
+            //判断请求1月5日
+            console.log($location);
+            $scope.getInto=function(){
+                console.log($location);
+                $http({
+                    method: "GET",
+                    url: basePath + '/repair/list' + $location.url(),
+                    params: {
+                        //offset: '0'
+                    }
+                }).success(function(data) {
+                    $state.go("account");
+                });
+            }
 
             $scope.carouselIndex7 = 0;
 
@@ -534,6 +549,9 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             $state.go("home.shop-info", {
                 site: 1
             });
+
+
+
         }
     ])
     .controller('shopInfoCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',

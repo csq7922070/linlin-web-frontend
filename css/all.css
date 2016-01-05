@@ -718,3 +718,11 @@ ul[rn-carousel] {
     /*display: inline-block;*/
     text-align: center;
 }
+.rn-carousel-indicator{
+    margin-top: -20px;
+    position: relative;
+    top: -2px;
+}
+/*.div.rn-carousel-indicator span{*/
+    /*color: blue!important;*/
+/*}*/
