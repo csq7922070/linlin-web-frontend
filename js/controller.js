@@ -557,10 +557,12 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                             type: $stateParams.site - 1
                         }
                     }).success(function(data) {
-                        // $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
                         $scope.currentPage = goPage;
                         $scope.busy = false;
                         $scope.shops.push.apply($scope.shops,data.items);
+                    }).error(function(data){
+                        console.log("server error!");
                     });
                 }
             }
