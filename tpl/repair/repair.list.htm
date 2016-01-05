@@ -1,4 +1,4 @@
-<div class="container-fluid nav">
+﻿<div class="container-fluid nav">
     <div class="rows">
         <div class="col-xs-6">
             <a ui-sref="repair" class="under_line">报修记录</a>
@@ -26,7 +26,8 @@
                 </div>
             </a>
             <div class='state_btn'><a ui-sref="repair-detail({id:repair.id})" class="check">查看</a>
-                <a class='complete' ng-show="repair.repairState == 1" ng-click="repair.confirm()">确认完成</a></div>
+                             <!--确认完成,状态为3时-->
+                <a class='complete' ng-show="repair.repairState == 3" ng-click="repair.confirm()">确认完成</a></div>
         </li>
     </ul>
 </div>

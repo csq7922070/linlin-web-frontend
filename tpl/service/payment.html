@@ -1,10 +1,10 @@
-<div class="weui_cells weui_cells_access address_down">
+﻿<div class="weui_cells weui_cells_access address_down">
     <a class="weui_cell" href="javascript:;">
         <div class="weui_cell_bd weui_cell_primary">
             <p>缴费户号</p>
         </div>
         <div class="address_section">
-            {{floor}}-{{unit}}-{{room}}
+            <span>{{floor}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>
         </div>
     </a>
 </div>
@@ -26,7 +26,8 @@
             <p>账期</p>
         </div>
         <div class="should_info">
-            {{watmonth}}月
+            <span ng-if="watmonth">{{watmonth}}</span>月
+
         </div>
     </a>
     <a class="weui_cell" href="javascript:;">
@@ -34,7 +35,7 @@
             <p>应付金额</p>
         </div>
         <div class="no_img">
-            ￥{{waterFr}}元
+            ￥<span ng-if="waterFr">{{waterFr}}</span>元
         </div>
     </a>
 </div>
@@ -55,7 +56,7 @@
             <p>账期</p>
         </div>
         <div class="should_info">
-            {{elmonth}}月
+            <span ng-if="elmonth">{{elmonth}}</span>月
         </div>
     </a>
     <a class="weui_cell sel_img" href="javascript:;">
@@ -63,7 +64,7 @@
             <p>应付金额</p>
         </div>
         <div class="no_img">
-            ￥{{eleFr|number:2}}元
+            ￥<span ng-if="eleFr">{{eleFr|number:2}}</span>元
         </div>
     </a>
 </div>
@@ -73,7 +74,7 @@
             <p>支付金额</p>
         </div>
         <div class="address_section">
-            ￥{{waterFr+eleFr|number:2}}元
+            ￥<span ng-if="waterFr+eleFr">{{waterFr+eleFr|number:2}}</span>元
         </div>
     </a>
 </div>

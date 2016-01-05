@@ -1,0 +1,94 @@
+<div class="weui_cells weui_cells_access address_down account_page owner_top">
+    <!--加上ng -repeat-->
+    <a class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>廊坊</p>
+        </div>
+        <div class="address_section">
+            <span>{{floor}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>
+        </div>
+    </a>
+    <a class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p></p>
+        </div>
+        <div class="people_name">
+            {{ownerName}}
+        </div>
+    </a>
+    <a class="weui_cell ofen_address">
+        <div class="weui_cell_hd" ng-click="flag=!flag">
+            <img src="images/flag_01.png" alt="icon" ng-if="flag" style="width:30px;">
+            <img src="images/flag_02.png" alt="icon" ng-if="!flag" style="width:30px;">
+
+        </div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>设为我的常用地址</p>
+        </div>
+        <div class="owner_name_del">删除</div>
+    </a>
+</div>
+<div class="weui_cells weui_cells_access address_down account_page owner_top">
+    <!--加上ng -repeat-->
+    <a class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>廊坊</p>
+        </div>
+        <div class="address_section">
+            <span>{{floor}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>
+        </div>
+    </a>
+    <a class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p></p>
+        </div>
+        <div class="people_name">
+            {{ownerName}}
+        </div>
+    </a>
+    <a class="weui_cell ofen_address">
+
+        <div class="weui_cell_hd" ng-click="flag=!flag">
+            <img src="images/flag_01.png" alt="icon" ng-if="flag" style="width:30px;">
+            <img src="images/flag_02.png" alt="icon" ng-if="!flag" style="width:30px;">
+        </div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>设为我的常用地址</p>
+        </div>
+        <div class="owner_name_del">删除</div>
+    </a>
+</div>
+
+<div class="weui_cells weui_cells_access address_down account_page owner_top">
+    <!--加上ng -repeat-->
+    <a class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>廊坊</p>
+        </div>
+        <div class="address_section">
+            <span>{{floor}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>
+        </div>
+    </a>
+    <a class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p></p>
+        </div>
+        <div class="people_name">
+            {{ownerName}}
+        </div>
+    </a>
+    <a class="weui_cell ofen_address">
+        <div class="weui_cell_hd" ng-click="flag=!flag">
+            <img src="images/flag_01.png" alt="icon" ng-if="flag" style="width:30px;">
+            <img src="images/flag_02.png" alt="icon" ng-if="!flag" style="width:30px;">
+        </div>
+
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>设为我的常用地址</p>
+        </div>
+        <div class="owner_name_del" ng-click="del_owner()">删除</div>
+    </a>
+</div>
+<div class="add_address"  ui-sref="address({location:1})">新增地址
+
+</div>

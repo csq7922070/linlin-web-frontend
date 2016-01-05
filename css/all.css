@@ -9,11 +9,11 @@ body {
     /*width: 320px;*/
     height: auto;
     background-color: #eeeeee;
-    font-family: "ËÎÌå", serif;
+    font-family: "ï¿½ï¿½ï¿½ï¿½", serif;
 }
 
 input {
-    font-family: "ËÎÌå", serif;
+    font-family: "ï¿½ï¿½ï¿½ï¿½", serif;
 }
 
 a {
@@ -21,7 +21,7 @@ a {
 }
 
 
-/*Í·²¿µ¼º½*/
+/*Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 
 .nav {
     height: 50px;
@@ -67,7 +67,7 @@ a {
 }
 
 
-/*bootstrapÄ£Ì¬²ã*/
+/*bootstrapÄ£Ì¬ï¿½ï¿½*/
 
 
 /*.modal-dialog{
@@ -93,7 +93,7 @@ a {
 }*/
 
 
-/*¹«¸æ*/
+/*ï¿½ï¿½ï¿½ï¿½*/
 
 .list {
     background: white;
@@ -105,7 +105,7 @@ a {
 }
 
 
-/*Ä£Ì¬²ã*/
+/*Ä£Ì¬ï¿½ï¿½*/
 
 .prompt_mask,
 .prompt_mask_err {
@@ -129,7 +129,7 @@ a {
 }
 
 
-/*Ìá½»³É¹¦*/
+/*ï¿½á½»ï¿½É¹ï¿½*/
 
 .prompt_icon {
     width: 50%;
@@ -142,11 +142,11 @@ a {
     margin-top: 5px;
     background-image: url("../images/icon_05.png");
     background-size: cover;
-    text-indent: -9999;
+    text-indent: -9999px;
 }
 
 
-/*Ìá½»Ê§°Ü*/
+/*ï¿½á½»Ê§ï¿½ï¿½*/
 
 .prompt_icon_err {
     width: 60px;
@@ -155,11 +155,11 @@ a {
     margin-top: 5px;
     background-image: url("../images/icon_06.png");
     background-size: cover;
-    text-indent: -9999;
+    text-indent: -9999px;
 }
 
 
-/*ÎÄ×Ö*/
+/*ï¿½ï¿½ï¿½ï¿½*/
 
 .prompt_font {
     font-size: 16px;
@@ -169,7 +169,7 @@ a {
 }
 
 
-/*°´Å¥*/
+/*ï¿½ï¿½Å¥*/
 
 .prompt_btn {
     padding: 5px 40px;
@@ -213,8 +213,6 @@ a {
 body {
     padding-top: 15px;
 }
-
-div:list-child {}
 
 .complaint_title {
     position: relative;
@@ -382,7 +380,7 @@ div:list-child {}
 }
 
 .repair_btn {
-    font-family: "ºÚÌå-¼ò", serif;
+    font-family: "ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½", serif;
     display: block;
     margin: 20px auto;
     border: none;
@@ -445,7 +443,7 @@ div:list-child {}
 }
 
 
-/*°´Å¥*/
+/*ï¿½ï¿½Å¥*/
 
 .state_btn {
     margin: 0px auto 15px;
@@ -477,7 +475,7 @@ div:list-child {}
     font-size: 12px;
     padding: 2px 10px;
     border-radius: 5px;
-    font-family: "ºÚÌå-¼ò", serif;
+    font-family: "ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½", serif;
     background-color: #ffffff;
     box-shadow: none;
 }
@@ -597,7 +595,7 @@ textarea {
 }*/
 
 
-/*´íÎóÌáÊ¾*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾*/
 
 .phone_hidden {
     color: #e95912;
@@ -680,11 +678,11 @@ textarea {
     background-color: #ffffff;
     font-size: 16px;
     color: #333333;
-    font-family: "ºÚÌå-¼ò", serif;
+    font-family: "ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½", serif;
 }
 
 .RD_s {
-    display: inline-block;
+    /*display: inline-block;*/
     width: 63px;
     text-align: right;
     font-size: 14px;
@@ -703,8 +701,8 @@ textarea {
 }
 
 ul[rn-carousel] {
-    width: 400px;
-    height: 200px;
+    width: 100%;
+    height: 150px;
     margin: 0 auto;
 }
 
@@ -716,7 +714,7 @@ ul[rn-carousel] {
 }
 
 .carousel-demo {
-    margin-top: 20px;
-    display: inline-block;
+    /*margin-top: 20px;*/
+    /*display: inline-block;*/
     text-align: center;
 }

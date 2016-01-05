@@ -193,7 +193,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             if ($stateParams.id) {
                 //用户
                 $rootScope.ownName = $stateParams.user;
-                console.log($rootScope.ownName);
+               // console.log($rootScope.ownName);
                 $rootScope.room = $stateParams.id;
             }
         }
@@ -264,6 +264,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 $scope.room = $rootScope.room;
                 $scope.ownerName = $rootScope.ownName;
 
+               $scope.freeShow=false;
                 var list = data.amountList;
 
                 var ret = {};
@@ -450,19 +451,20 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                     $rootScope.wmonth = wmonth;
                     $rootScope.emonth = emonth;
                 }
-                var i = 0;
-                $scope.flg_src = "images/flag_01.png";
-                $scope.toggle = function() {
-                    i++;
-                    if (i % 2 == 0) {
-                        $scope.flg_src = "images/flag_01.png";
+               // var i = 0;
+               // $scope.flg_src = "images/flag_01.png";
+               // $scope.toggle = function() {
+               //     i++;
+                //    if (i % 2 == 0) {
+                //        $scope.flg_src = "images/flag_01.png";
 
-                    } else {
-                        $scope.flg_src = "images/flag_02.png";
-                    }
-                }
+                 //   } else {
+                  //      $scope.flg_src = "images/flag_02.png";
+                  //  }
+                //}
 
-            });
+            }
+);
 
         }
     ]).controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
@@ -478,6 +480,16 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             $scope.watmonth = $scope.watmonth_f.join(",");
             $scope.elmonth_f = $rootScope.emonth.sort();
             $scope.elmonth = $scope.elmonth_f.join(",");
+
+        //按数字大小排序有bug，1月，11月，7月
+        //$scope.watmonth_f = $rootScope.wmonth;
+        //$scope.watmonth = $scope.watmonth_f.sort();
+        //$scope.watmonth.join(',');
+        //$scope.elmonth_f = $rootScope.emonth;
+        ////console.log($scope.elmonth_f);
+        //$scope.elmonth = $scope.elmonth_f.sort();
+        //$scope.elmonth.join(',');
+
 
             $scope.floor = $rootScope.floor;
             $scope.unit = $rootScope.unit;
@@ -555,6 +567,22 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
 
             $scope.load(1,8);
         }
+    ]).controller('ownerCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+        function ($scope, $http, $stateParams, $rootScope, $state) {
+            //var i = 0;
+            //$scope.flg_src = "images/flag_01.png";
+            //$scope.toggle = function () {
+            //    i++;
+            //    if (i % 2 == 0) {
+            //        $scope.flg_src = "images/flag_01.png";
+            //
+            //    }
+            //    else {
+            //        $scope.flg_src = "images/flag_02.png";
+            //    }
+            //}
+            $scope.flag=true;
+        }
     ])
     //自定义过滤器 截取字符串长度
 skhControllers.filter('cut', function() {
@@ -573,6 +601,6 @@ skhControllers.filter('cut', function() {
             }
         }
 
-        return value + (tail || ' ...');
+        return value + (tail || '...');
     };
 })
