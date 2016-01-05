@@ -150,14 +150,13 @@ p {
 }
 
 /*---------------------------------------home页面--------------------------------------------------*/
-.viwepager {
-    margin-top: -15px;
-    width: 100%;
-    height: 150px;
-    background-color: #00b3ee;
-    /*padding: 0px;*/
+.village{
+    background-color: #4996ee;
+    color: #ffffff;
+    /*font-size: 14px;*/
+    padding: 8px 12px;
+    margin-top: -16px;
 }
-
 .home_nav {
     height: 130px;
     margin-top: 8px;

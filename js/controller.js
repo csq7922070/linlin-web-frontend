@@ -529,19 +529,19 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 img: "http://lorempixel.com/450/300/people/2"
             }];
             //判断请求1月5日
-            console.log($location);
-            $scope.getInto=function(){
-                console.log($location);
-                $http({
-                    method: "GET",
-                    url: basePath + '/repair/list' + $location.url(),
-                    params: {
-                        //offset: '0'
-                    }
-                }).success(function(data) {
-                    $state.go("account");
-                });
-            }
+            //console.log($location);
+            //$scope.getInto=function(){
+            //    console.log($location);
+            //    $http({
+            //        method: "GET",
+            //        url: basePath + '/repair/list' + $location.url(),
+            //        params: {
+            //            //offset: '0'
+            //        }
+            //    }).success(function(data) {
+            //        $state.go("account");
+            //    });
+            //}
 
             $scope.carouselIndex7 = 0;
 
@@ -602,6 +602,22 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             //    }
             //}
             $scope.flag=true;
+        }
+    ]).controller('accountRecordCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+        function ($scope, $http, $stateParams, $rootScope, $state) {
+            //var i = 0;
+            //$scope.flg_src = "images/flag_01.png";
+            //$scope.toggle = function () {
+            //    i++;
+            //    if (i % 2 == 0) {
+            //        $scope.flg_src = "images/flag_01.png";
+            //
+            //    }
+            //    else {
+            //        $scope.flg_src = "images/flag_02.png";
+            //    }
+            //}
+            //$scope.flag=true;
         }
     ])
     //自定义过滤器 截取字符串长度
