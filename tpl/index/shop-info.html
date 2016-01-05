@@ -1,0 +1,21 @@
+<div when-scrolled="load({{currentPage+1}},{{pageSize}})">
+    <div class="row home_list" ng-repeat="shop in shops" ng-if="site!=3">
+        <a href="{{shop.business_url}}">
+            <div class="col-xs-4"><img ng-src="{{shop.s_photo_url}}" alt="暂无图片" style="padding-left: 2px;border-radius: 5px"></div>
+            <div class="col-xs-8 clear_padd">
+                <div class="shop_name">{{shop.name}}</div>
+                <div class="star"><img src="images/star_{{shop.avgRating}}.png" style="height: 14px"></div>
+                <div class="shop_info"><span class="shop_site">{{shop.address| cut:true:10:' ...'}}</span><span class="shop_service">&nbsp;{{shop.categories}}</span></div>
+                <div class="cell_phone" ng-if="shop.telephone!=''">电话：{{shop.telephone}}</div>
+                <div class="purchase" ng-if="shop.has_deal!=0">
+                    <small><span class="font_icon">团</span><span style="padding-left: 8px">{{shop.description| cut:true:12:'...'}}</span>
+                </small>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="online_visit" ng-if="site==3">
+    <img src="images/develop.png" style="width: 100%">
+    <div class="online_err" style="margin:-60px auto">程序员哥哥，正在努力的开发中!</div>
+</div>

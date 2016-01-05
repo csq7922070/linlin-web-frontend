@@ -1,0 +1,11 @@
+<div class="weui_cells_title title_style">#</div>
+<div class="weui_cells weui_cells_access address_down">
+    <a class="weui_cell" ng-repeat="nroom in nrooms" ui-sref="address-with-roomId({id:nroom.room,user:nroom.ownerName})">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>{{nroom.room}}</p>
+            <!--<p>{{nroom.ownerName}}</p>-->
+        </div>
+        <div class="weui_cell_ft">
+        </div>
+    </a>
+</div>

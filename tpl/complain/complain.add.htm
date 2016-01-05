@@ -1,0 +1,24 @@
+<div class="complaint_publish">
+    <form ng-submit="submitForm()" method="post" name="complainForm" novalidate>
+        <input type="text" name="title" ng-model="title" placeholder="标题" required>
+        <textarea name="content" name="content" ng-model="content" required cols="30" rows="10" placeholder="请详细描述出现的问题"></textarea>
+        <input type="text" name="mobile" maxlength="11" placeholder="您的手机号码">
+        <button class="submit_but" type="submit" ng-disabled="complainForm.$invalid">提交</button>
+    </form>
+</div>
+<div class="prompt_mask" ng-show="suc_show">
+    <div class="prompt_dialog">
+        <div class="prompt_icon"></div>
+        <div class="prompt_font">
+            <p style="font-size: 12px; margin-top:5px;">提交成功</p>
+        </div>
+        <input type="button" class="prompt_btn" value="确定" onclick="mask_close()">
+    </div>
+</div>
+<div class="prompt_mask_err" ng-show="err_show">
+    <div class="prompt_dialog">
+        <div class="prompt_icon_err"></div>
+        <div class="prompt_font" name="prompt_info"></div>
+        <input type="button" class="prompt_btn" value="确定" onclick="mask_err_close()">
+    </div>
+</div>
