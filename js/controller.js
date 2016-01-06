@@ -532,22 +532,22 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             }];
             //判断请求1月5日
             //console.log($location);
-            $scope.getInto=function(){
-                //console.log($location);
-                $http({
-                    method: "GET",
-                    url: basePath + '/archives/getAddress',
-                    params: {
-                        //offset: '0'
-                    }
-                }).success(function(data) {
-                    if(data.type==0){
-                        $state.go("owner-address");
-                    }else{
-                        $state.go("account");
-                    }
-                });
-            }
+            //$scope.getInto=function(){
+            //    //console.log($location);
+            //    $http({
+            //        method: "GET",
+            //        url: basePath + '/archives/getAddress',
+            //        params: {
+            //            //offset: '0'
+            //        }
+            //    }).success(function(data) {
+            //        if(data.type==0){
+            //            $state.go("owner-address");
+            //        }else{
+            //            $state.go("account");
+            //        }
+            //    });
+            //}
 
             $scope.carouselIndex7 = 0;
 
