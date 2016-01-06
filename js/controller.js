@@ -193,22 +193,34 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
 
             if ($stateParams.id) {
                 //用户
-                $rootScope.ownName = $stateParams.user;
-               console.log($rootScope.ownName);
+                $rootScope.ownerName = $stateParams.user;
                 $rootScope.room = $stateParams.id;
             }
         }
     ]).controller('addressFloorCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
         function($scope, $http, $stateParams, $rootScope) {
+
+            $rootScope.floor=null;
+            $rootScope.unit=null;
+            $rootScope.room=null;
+
             $http({
                 method: "GET",
                 url: basePath + "/archives/getFloor.do"
             }).success(function(data) {
-                $scope.nfloors = data;
+                $scope.floors = data;
             });
         }
     ]).controller('addressUnitCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
         function($scope, $http, $stateParams, $rootScope, $state) {
+            if($rootScope.previousState == "address" ||($scope.type == 3 && $rootScope.previousState == "address-room")){
+                $state.go("address-floor");
+                return;
+            }
+
+            $rootScope.unit=null;
+            $rootScope.room=null;
+
             $http({
                 method: "GET",
                 url: basePath + "/archives/getUnit.do",
@@ -216,23 +228,27 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                     floor: $stateParams.id
                 }
             }).success(function(data) {
-                $scope.nunits = data.items;
+                $scope.units = data.items;
                 $rootScope.floor = $stateParams.id;
                 $rootScope.type = data.type;
                 if (data.type == 0) {
-                    $rootScope.ownName = data.ownerName;
-                    //console.log(data.ownerName);
+                    $rootScope.ownerName = data.ownerName;
                     $state.go("address");
                 }
 
-                if (data.type == 3) {
-                    $scope.nrooms = data.items;
+                else if (data.type == 3) {
+                    $scope.rooms = data.items;
                     $state.go("address-room");
                 }
             });
         }
     ]).controller('addressRoomCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
         function($scope, $http, $stateParams, $rootScope, $state) {
+            $rootScope.room=null;
+            if($rootScope.previousState == "address"){
+                $state.go("address-unit");
+                return;
+            }
             if ($scope.type == 3) {
                 $rootScope.room = $stateParams.id;
             }
@@ -247,7 +263,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             }).success(function(data) {
                 console.log(data.ownerName);
                 $rootScope.unit = $stateParams.id;
-                $scope.nrooms = data.items;
+                $scope.rooms = data.items;
 
             });
         }

@@ -1,15 +1,15 @@
-var basePath = "http://127.56.162.201/skh";
+var basePath = "http://localhost:8080/skh";
 //var basePath = "http://123.56.162.201/skh";
 //var basePath="http://192.168.0.127:8080/skh";
 
-var myApp = angular.module('myApp', ['ui.router','angular-carousel', 'skhControllers']);
+var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'skhControllers']);
 
 myApp.config(function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/home");
 
     $stateProvider
-         .state('notice', {
+        .state('notice', {
             url: "/notice/list",
             templateUrl: "tpl/notice/notice.list.htm",
             controller: 'noticeListCtrl'
@@ -51,8 +51,7 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
         })
         .state('address', {
             url: "/address",
-            templateUrl: "tpl/service/address.html",
-            controller: "addressCtrl"
+            templateUrl: "tpl/service/address.html"
         })
         .state('address-with-roomId', {
             url: "/address/:id,:user",
@@ -79,30 +78,30 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: "tpl/service/account.html",
             controller: "accountCtrl"
         })
-        .state('payment',{
-            url:"/payment",
+        .state('payment', {
+            url: "/payment",
             templateUrl: "tpl/service/payment.html",
             controller: "paymentCtrl"
         })
-        .state('home',{
-            url:"/home",
+        .state('home', {
+            url: "/home",
             templateUrl: "tpl/index/home.html",
             controller: "homeCtrl"
         })
-        .state('home.shop-info',{
-            url:"/shop-info/:site",
+        .state('home.shop-info', {
+            url: "/shop-info/:site",
             templateUrl: "tpl/index/shop-info.html",
             controller: "shopInfoCtrl"
         })
-        .state('owner-address',{
-            url:"/owner-address",
+        .state('owner-address', {
+            url: "/owner-address",
             templateUrl: "tpl/service/owner-address.html",
             controller: "ownerCtrl"
         })
-        .state('account-record',{
-            url:"/account-record",
-            templateUrl:"tpl/service/account-record.html",
-            controller:"accountRecordCtrl"
+        .state('account-record', {
+            url: "/account-record",
+            templateUrl: "tpl/service/account-record.html",
+            controller: "accountRecordCtrl"
         })
 
     ;
@@ -150,4 +149,11 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
 
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
-});
+}).run(['$rootScope', function($rootScope) {
+    $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
+        $rootScope.previousState = from.name;
+        $rootScope.currentState = to.name;
+        console.log('Previous state:' + $rootScope.previousState)
+        console.log('Current state:' + $rootScope.currentState)
+    });
+}]);
