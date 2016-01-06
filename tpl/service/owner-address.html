@@ -1,11 +1,12 @@
-<div class="weui_cells weui_cells_access address_down account_page owner_top">
+<div class="weui_cells weui_cells_access address_down account_page owner_top" ng-repeat="owner in owners" >
     <!--加上ng -repeat-->
-    <a class="weui_cell">
+    <a class="weui_cell" ui-sref="account">
         <div class="weui_cell_bd weui_cell_primary">
-            <p>廊坊</p>
+            <p>业主信息</p>
         </div>
         <div class="address_section">
-            <span>{{floor}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>
+            <!--<span>{{floor}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>-->
+            {{owner.address}}
         </div>
     </a>
     <a class="weui_cell">
@@ -13,7 +14,7 @@
             <p></p>
         </div>
         <div class="people_name">
-            {{ownerName}}
+            {{owner.Name}}
         </div>
     </a>
     <a class="weui_cell ofen_address">
@@ -25,17 +26,17 @@
         <div class="weui_cell_bd weui_cell_primary">
             <p>设为我的常用地址</p>
         </div>
-        <div class="owner_name_del">删除</div>
+        <div class="owner_name_del" ng-click="deleteAddress()">删除</div>
     </a>
 </div>
-<div class="weui_cells weui_cells_access address_down account_page owner_top">
+<div class="weui_cells weui_cells_access address_down account_page owner_top" >
     <!--加上ng -repeat-->
-    <a class="weui_cell">
+    <a class="weui_cell" ui-sref="account">
         <div class="weui_cell_bd weui_cell_primary">
-            <p>廊坊</p>
+            <p>业主信息</p>
         </div>
         <div class="address_section">
-            <span>{{floor}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>
+            <span>{{floor}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>帝景园2-1-1
         </div>
     </a>
     <a class="weui_cell">
@@ -43,7 +44,8 @@
             <p></p>
         </div>
         <div class="people_name">
-            {{ownerName}}
+            <!--{{ownerName}}-->
+            刘景
         </div>
     </a>
     <a class="weui_cell ofen_address">
@@ -58,15 +60,15 @@
         <div class="owner_name_del">删除</div>
     </a>
 </div>
-
 <div class="weui_cells weui_cells_access address_down account_page owner_top">
     <!--加上ng -repeat-->
     <a class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
-            <p>廊坊</p>
+            <p>业主信息</p>
         </div>
         <div class="address_section">
-            <span>{{floor}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>
+            <!--<span>{{floor}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>-->帝景园2-1-1
+            <!--刘*宇-->
         </div>
     </a>
     <a class="weui_cell">
@@ -74,7 +76,7 @@
             <p></p>
         </div>
         <div class="people_name">
-            {{ownerName}}
+            {{ownerName}}刘*宇
         </div>
     </a>
     <a class="weui_cell ofen_address">
@@ -89,6 +91,7 @@
         <div class="owner_name_del" ng-click="del_owner()">删除</div>
     </a>
 </div>
-<div class="add_address"  ui-sref="address({location:1})">新增地址
+<div class="owner_bottom"></div>
+<div class="add_address" ui-sref="address({location:1})">+新增地址
 
 </div>

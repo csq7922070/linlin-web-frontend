@@ -77,6 +77,10 @@ p {
     margin-top: -5px;
 }
 
+.border_line:before {
+    border-top: 1px solid #D9D9D9;
+}
+
 .height_down {
     padding-top: 10px;
     height: 10px;
@@ -94,7 +98,7 @@ p {
 
 .my_btn {
     background-color: #f39f33;
-    padding: 10px 20px !important;
+    padding: 6px 20px !important;
 }
 
 .hidden_footer {
@@ -149,14 +153,26 @@ p {
     margin-top: -10px;
 }
 
+.we_btn {
+    background-color: #f39f33;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.friends_paid{
+    margin-top: 10px;
+    font-size: 12px;
+   color: #dd4545;
+}
 /*---------------------------------------home页面--------------------------------------------------*/
-.village{
+.village {
     background-color: #4996ee;
     color: #ffffff;
     /*font-size: 14px;*/
     padding: 8px 12px;
     margin-top: -16px;
 }
+
 .home_nav {
     height: 130px;
     margin-top: 8px;
@@ -288,4 +304,15 @@ p {
     text-align: center;
     margin-top: 30px;
     padding: 8px 0px;
+    position: fixed;
+    width: 100%;
+    bottom: 0px;
+    left: 0px;
+}
+
+.body_normal {
+    margin-top: 0px;
+}
+.owner_bottom{
+    height: 44px;
 }

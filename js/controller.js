@@ -194,7 +194,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             if ($stateParams.id) {
                 //用户
                 $rootScope.ownName = $stateParams.user;
-               // console.log($rootScope.ownName);
+               console.log($rootScope.ownName);
                 $rootScope.room = $stateParams.id;
             }
         }
@@ -221,6 +221,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 $rootScope.type = data.type;
                 if (data.type == 0) {
                     $rootScope.ownName = data.ownerName;
+                    //console.log(data.ownerName);
                     $state.go("address");
                 }
 
@@ -244,6 +245,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                     unit: $stateParams.id
                 }
             }).success(function(data) {
+                console.log(data.ownerName);
                 $rootScope.unit = $stateParams.id;
                 $scope.nrooms = data.items;
 
@@ -530,18 +532,22 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             }];
             //判断请求1月5日
             //console.log($location);
-            //$scope.getInto=function(){
-            //    console.log($location);
-            //    $http({
-            //        method: "GET",
-            //        url: basePath + '/repair/list' + $location.url(),
-            //        params: {
-            //            //offset: '0'
-            //        }
-            //    }).success(function(data) {
-            //        $state.go("account");
-            //    });
-            //}
+            $scope.getInto=function(){
+                //console.log($location);
+                $http({
+                    method: "GET",
+                    url: basePath + '/archives/getAddress',
+                    params: {
+                        //offset: '0'
+                    }
+                }).success(function(data) {
+                    if(data.type==0){
+                        $state.go("owner-address");
+                    }else{
+                        $state.go("account");
+                    }
+                });
+            }
 
             $scope.carouselIndex7 = 0;
 
@@ -580,7 +586,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                         $scope.busy = false;
                         $scope.shops.push.apply($scope.shops,data.items);
                     }).error(function(data){
-                        console.log("server error!");
+                        //console.log("server error!");
                     });
                 }
             }

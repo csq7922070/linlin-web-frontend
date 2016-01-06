@@ -1,4 +1,4 @@
-var basePath = "http://192.168.0.128:8080/skh";
+var basePath = "http://192.168.0.201:8080/skh";
 
 var myApp = angular.module('myApp', ['ui.router','angular-carousel', 'skhControllers']);
 
@@ -92,9 +92,9 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: "tpl/index/shop-info.html",
             controller: "shopInfoCtrl"
         })
-        .state('owner-name',{
-            url:"/owner-name",
-            templateUrl: "tpl/service/owner-name.html",
+        .state('owner-address',{
+            url:"/owner-address",
+            templateUrl: "tpl/service/owner-address.html",
             controller: "ownerCtrl"
         })
         .state('account-record',{
