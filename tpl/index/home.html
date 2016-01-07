@@ -1,6 +1,6 @@
 <div class="village">阿尔卡迪亚小区</div>
 <div class="carousel-demo">
-    <ul rn-carousel rn-carousel-index="carouselIndex7"  rn-carousel-auto-slide ="5" class="carousel5">
+    <ul rn-carousel rn-carousel-index="carouselIndex7" rn-carousel-auto-slide="5" class="carousel5">
         <li ng-repeat="slide in slides7 track by slide.id">
             <div ng-style="{'background-image': 'url(' + slide.img + ')'}" class="bgimage">
                 <!--#{{ slide.id }}-->
@@ -11,8 +11,8 @@
 </div>
 <div class="home_nav">
     <!--<a ui-sref="owner-address">-->
-    <a ui-sref="address">
-    <!--<a ng-click="getInto()">-->
+    <!--<a ui-sref="address">-->
+    <a ng-click="getInto()">
         <!--这里判断xxx-->
         <!--<a ng-if="xxxx" ui-sref="owner-name">-->
         <img src="images/water_free.png">
@@ -36,8 +36,8 @@
     </a>
 </div>
 <div class="tab_nav row">
-    <div class="col-xs-4"  ui-sref="home.shop-info({site:1})"><span ng-class="{'nav_active':site==1}">爱车养护</span></div>
-    <div class="col-xs-4"  ui-sref="home.shop-info({site:2})"><span ng-class="{'nav_active':site==2}">家政服务</span></div>
-    <div class="col-xs-4"  ui-sref="home.shop-info({site:3})"><span ng-class="{'nav_active':site==3}">在线问诊</span></div>
+    <div class="col-xs-4" ui-sref="home.shop-info({site:1})"><span ng-class="{'nav_active':site==1}">爱车养护</span></div>
+    <div class="col-xs-4" ui-sref="home.shop-info({site:2})"><span ng-class="{'nav_active':site==2}">家政服务</span></div>
+    <div class="col-xs-4" ui-sref="home.shop-info({site:3})"><span ng-class="{'nav_active':site==3}">在线问诊</span></div>
 </div>
 <div ui-view></div>

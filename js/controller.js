@@ -1,274 +1,295 @@
 ﻿var skhControllers = angular.module('skhControllers', ['ui.router']);
 
 skhControllers.controller('noticeListCtrl', ['$scope', '$http',
-        function($scope, $http) {
-            $http({
-                method: "GET",
-                url: basePath + '/notice/list.do',
-                params: {
-                    offset: '0'
-                }
-            }).success(function(data) {
-                $scope.notices = data.items;
-            });
+    function ($scope, $http) {
+        $http({
+            method: "GET",
+            url: basePath + '/notice/list.do',
+            params: {
+                offset: '0'
+            }
+        }).success(function (data) {
+            $scope.notices = data.items;
+        });
+    }
+]).controller("noticeDetailCtrl", ['$scope', '$http', '$stateParams',
+    function ($scope, $http, $stateParams) {
+        $http({
+            method: "GET",
+            url: basePath + "/notice/get.do",
+            params: {
+                id: $stateParams.id
+            }
+        }).success(function (data) {
+            $scope.notice = data;
+        })
+    }
+]).controller('repairListCtrl', ['$scope', '$http', '$timeout',
+    function ($scope, $http, $timeout) {
+        $scope.currentPage = 0;
+        $scope.pageSize = 10;
+        $scope.suc_show = false;
+        $scope.err_show = false;
+        $scope.repairs = [];
+
+        $scope.load = function (goPage, limit) {
+            if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || goPage < 1 || $scope.busy) {
+                return;
+            } else {
+                $scope.busy = true;
+                $http({
+                    method: "GET",
+                    url: basePath + "/repair/list.do",
+                    params: {
+                        offset: $scope.pageSize * (goPage - 1),
+                        limit: $scope.pageSize
+                    }
+                }).success(function (data) {
+                    $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                    $scope.currentPage = goPage;
+                    $scope.busy = false;
+                    data.items.forEach(function (r) {
+                        $scope.repairs.push(r);
+                        r.confirm = function () {
+                            $http({
+                                method: "POST",
+                                url: basePath + "/repair/confirm.do",
+                                data: {
+                                    id: r.id
+                                }
+                            }).success(function (data) {
+                                $scope.suc_show = true;
+                                $timeout(function () {
+                                    $scope.suc_show = false;
+                                }, 3000)
+                            }).error(function (data) {
+                                $scope.err_show = true;
+                                $timeout(function () {
+                                    $scope.err_show = false;
+                                }, 3000)
+                            })
+                        }
+                    })
+                });
+            }
         }
-    ]).controller("noticeDetailCtrl", ['$scope', '$http', '$stateParams',
-        function($scope, $http, $stateParams) {
+
+        $scope.load(1, $scope.pageSize);
+    }
+]).controller('repairDetailCtrl', ['$scope', '$http', '$stateParams', '$timeout',
+    function ($scope, $http, $stateParams, $timeout) {
+        $scope.suc_show = false;
+        $scope.err_show = false;
+
+        $http({
+            method: "GET",
+            url: basePath + "/repair/get.do",
+            params: {
+                'id': $stateParams.id
+            }
+        }).success(function (data) {
+            $scope.repair = data;
+            $scope.repair.confirm = function () {
+                $http({
+                    method: "POST",
+                    url: basePath + "/repair/confirm.do",
+                    data: {
+                        id: $scope.repair.id
+                    }
+                }).success(function (data) {
+                    $scope.suc_show = true;
+                    $timeout(function () {
+                        $scope.suc_show = false;
+                    }, 3000)
+                }).error(function (data) {
+                    $scope.err_show = true;
+                    $timeout(function () {
+                        $scope.err_show = false;
+                    }, 3000)
+                })
+            }
+        });
+    }
+]).controller('repairAddCtrl', ['$scope', '$http', '$timeout',
+    function ($scope, $http, $timeout) {
+        $scope.submitForm = function () {
             $http({
-                method: "GET",
-                url: basePath + "/notice/get.do",
-                params: {
-                    id: $stateParams.id
+                method: "POST",
+                url: basePath + "/repair/add.do",
+                data: {
+                    'device': $scope.device,
+                    'remark': $scope.remark,
+                    'mobile': $scope.mobile,
+                    'unit': $scope.unit,
+                    'roomNo': $scope.roomNo,
+                    'floor': $scope.floor
                 }
-            }).success(function(data) {
-                $scope.notice = data;
+            }).success(function (data) {
+                $scope.suc_show = true;
+                $timeout(function () {
+                    $scope.suc_show = false;
+                }, 3000)
+            }).error(function (data) {
+                $scope.err_show = true;
+                $timeout(function () {
+                    $scope.err_show = false;
+                }, 3000)
             })
         }
-    ]).controller('repairListCtrl', ['$scope', '$http', '$timeout',
-        function($scope, $http, $timeout) {
-            $scope.currentPage = 0;
-            $scope.pageSize = 10;
-            $scope.suc_show = false;
-            $scope.err_show = false;
-            $scope.repairs = [];
-
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || goPage < 1 || $scope.busy) {
-                    return;
-                } else {
-                    $scope.busy = true;
-                    $http({
-                        method: "GET",
-                        url: basePath + "/repair/list.do",
-                        params: {
-                            offset: $scope.pageSize * (goPage - 1),
-                            limit: $scope.pageSize
-                        }
-                    }).success(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        data.items.forEach(function(r) {
-                            $scope.repairs.push(r);
-                            r.confirm = function() {
-                                $http({
-                                    method: "POST",
-                                    url: basePath + "/repair/confirm.do",
-                                    data: {
-                                        id: r.id
-                                    }
-                                }).success(function(data) {
-                                    $scope.suc_show = true;
-                                    $timeout(function() {
-                                        $scope.suc_show = false;
-                                    }, 3000)
-                                }).error(function(data) {
-                                    $scope.err_show = true;
-                                    $timeout(function() {
-                                        $scope.err_show = false;
-                                    }, 3000)
-                                })
-                            }
-                        })
-                    });
+    }
+]).controller('complainListCtrl', ['$scope', '$http',
+    function ($scope, $http) {
+        $http({
+            method: "GET",
+            url: basePath + "/complain/list.do",
+            params: {
+                offset: '0',
+                limit: 1000
+            }
+        }).success(function (data) {
+            $scope.complains = data.items;
+        });
+    }
+]).controller('complainDetailCtrl', ['$scope', '$http', '$stateParams',
+    function ($scope, $http, $stateParams) {
+        $http({
+            method: "GET",
+            url: basePath + "/complain/get.do",
+            params: {
+                id: $stateParams.id
+            }
+        }).success(function (data) {
+            $scope.complain = data;
+        });
+    }
+]).controller('complainAddCtrl', ['$scope', '$http', '$timeout',
+    function ($scope, $http, $timeout) {
+        $scope.suc_show = false;
+        $scope.err_show = false;
+        $scope.submitForm = function () {
+            $http({
+                method: "POST",
+                url: basePath + "/complain/add.do",
+                data: {
+                    title: $scope.title,
+                    mobile: $scope.mobile,
+                    content: $scope.content
                 }
+            }).success(function (data) {
+                $scope.suc_show = true;
+                $timeout(function () {
+                    $scope.suc_show = false;
+                }, 3000)
+            }).error(function (data) {
+                $scope.err_show = true;
+                $timeout(function () {
+                    $scope.err_show = false;
+                }, 3000)
+            })
+        }
+    }
+]).controller('addressCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
+    function ($scope, $http, $stateParams, $rootScope) {
+
+        if ($stateParams.id) {
+            //用户
+            $rootScope.ownName = $stateParams.user;
+            //console.log($rootScope.ownName);
+            $rootScope.room = $stateParams.id;
+        }
+    }
+]).controller('addressFloorCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
+    function ($scope, $http, $stateParams, $rootScope) {
+
+        $rootScope.floor = null;
+        $rootScope.unit = null;
+        $rootScope.room = null;
+
+        $http({
+            method: "GET",
+            url: basePath + "/archives/getFloor.do"
+        }).success(function (data) {
+            $scope.nfloors = data;
+        });
+    }
+]).controller('addressUnitCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+    function ($scope, $http, $stateParams, $rootScope, $state) {
+
+        if ($rootScope.previousState == "address" || ($scope.type == 3 && $rootScope.previousState == "address-room")) {
+            $state.go("address-floor");
+            return;
+        }
+
+        $rootScope.unit = null;
+        $rootScope.room = null;
+
+        $http({
+            method: "GET",
+            url: basePath + "/archives/getUnit.do",
+            params: {
+                floor: $stateParams.id
+            }
+        }).success(function (data) {
+            $scope.nunits = data.items;
+            $rootScope.floor = $stateParams.id;
+            $rootScope.type = data.type;
+            if (data.type == 0) {
+                $rootScope.ownName = data.ownerName;
+                $state.go("address");
             }
 
-            $scope.load(1, $scope.pageSize);
-        }
-    ]).controller('repairDetailCtrl', ['$scope', '$http', '$stateParams', '$timeout',
-        function($scope, $http, $stateParams, $timeout) {
-            $scope.suc_show = false;
-            $scope.err_show = false;
-
-            $http({
-                method: "GET",
-                url: basePath + "/repair/get.do",
-                params: {
-                    'id': $stateParams.id
-                }
-            }).success(function(data) {
-                $scope.repair = data;
-                $scope.repair.confirm = function() {
-                    $http({
-                        method: "POST",
-                        url: basePath + "/repair/confirm.do",
-                        data: {
-                            id: $scope.repair.id
-                        }
-                    }).success(function(data) {
-                        $scope.suc_show = true;
-                        $timeout(function() {
-                            $scope.suc_show = false;
-                        }, 3000)
-                    }).error(function(data) {
-                        $scope.err_show = true;
-                        $timeout(function() {
-                            $scope.err_show = false;
-                        }, 3000)
-                    })
-                }
-            });
-        }
-    ]).controller('repairAddCtrl', ['$scope', '$http', '$timeout',
-        function($scope, $http, $timeout) {
-            $scope.submitForm = function() {
-                $http({
-                    method: "POST",
-                    url: basePath + "/repair/add.do",
-                    data: {
-                        'device': $scope.device,
-                        'remark': $scope.remark,
-                        'mobile': $scope.mobile,
-                        'unit': $scope.unit,
-                        'roomNo': $scope.roomNo,
-                        'floor': $scope.floor
-                    }
-                }).success(function(data) {
-                    $scope.suc_show = true;
-                    $timeout(function() {
-                        $scope.suc_show = false;
-                    }, 3000)
-                }).error(function(data) {
-                    $scope.err_show = true;
-                    $timeout(function() {
-                        $scope.err_show = false;
-                    }, 3000)
-                })
-            }
-        }
-    ]).controller('complainListCtrl', ['$scope', '$http',
-        function($scope, $http) {
-            $http({
-                method: "GET",
-                url: basePath + "/complain/list.do",
-                params: {
-                    offset: '0',
-                    limit: 1000
-                }
-            }).success(function(data) {
-                $scope.complains = data.items;
-            });
-        }
-    ]).controller('complainDetailCtrl', ['$scope', '$http', '$stateParams',
-        function($scope, $http, $stateParams) {
-            $http({
-                method: "GET",
-                url: basePath + "/complain/get.do",
-                params: {
-                    id: $stateParams.id
-                }
-            }).success(function(data) {
-                $scope.complain = data;
-            });
-        }
-    ]).controller('complainAddCtrl', ['$scope', '$http', '$timeout',
-        function($scope, $http, $timeout) {
-            $scope.suc_show = false;
-            $scope.err_show = false;
-            $scope.submitForm = function() {
-                $http({
-                    method: "POST",
-                    url: basePath + "/complain/add.do",
-                    data: {
-                        title: $scope.title,
-                        mobile: $scope.mobile,
-                        content: $scope.content
-                    }
-                }).success(function(data) {
-                    $scope.suc_show = true;
-                    $timeout(function() {
-                        $scope.suc_show = false;
-                    }, 3000)
-                }).error(function(data) {
-                    $scope.err_show = true;
-                    $timeout(function() {
-                        $scope.err_show = false;
-                    }, 3000)
-                })
-            }
-        }
-    ]).controller('addressCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
-        function($scope, $http, $stateParams, $rootScope) {
-
-            if ($stateParams.id) {
-                //用户
-                $rootScope.ownName = $stateParams.user;
-               console.log($rootScope.ownName);
-                $rootScope.room = $stateParams.id;
-            }
-        }
-    ]).controller('addressFloorCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
-        function($scope, $http, $stateParams, $rootScope) {
-            $http({
-                method: "GET",
-                url: basePath + "/archives/getFloor.do"
-            }).success(function(data) {
-                $scope.nfloors = data;
-            });
-        }
-    ]).controller('addressUnitCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
-            $http({
-                method: "GET",
-                url: basePath + "/archives/getUnit.do",
-                params: {
-                    floor: $stateParams.id
-                }
-            }).success(function(data) {
-                $scope.nunits = data.items;
-                $rootScope.floor = $stateParams.id;
-                $rootScope.type = data.type;
-                if (data.type == 0) {
-                    $rootScope.ownName = data.ownerName;
-                    //console.log(data.ownerName);
-                    $state.go("address");
-                }
-
-                if (data.type == 3) {
-                    $scope.nrooms = data.items;
-                    $state.go("address-room");
-                }
-            });
-        }
-    ]).controller('addressRoomCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
-            if ($scope.type == 3) {
-                $rootScope.room = $stateParams.id;
-            }
-
-            $http({
-                method: "GET",
-                url: basePath + "/archives/getRoom.do",
-                params: {
-                    floor: $rootScope.floor,
-                    unit: $stateParams.id
-                }
-            }).success(function(data) {
-                console.log(data.ownerName);
-                $rootScope.unit = $stateParams.id;
+            if (data.type == 3) {
                 $scope.nrooms = data.items;
-
-            });
+                $state.go("address-room");
+            }
+        });
+    }
+]).controller('addressRoomCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+    function ($scope, $http, $stateParams, $rootScope, $state) {
+        $rootScope.room = null;
+        if ($rootScope.previousState == "address") {
+            $state.go("address-unit");
+            return;
         }
-    ]).controller('accountCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
-            $http({
-                method: "GET",
-                url: basePath + "/payment/getAmount.do",
-                params: {
-                    floor: $rootScope.floor,
-                    unit: $rootScope.unit,
-                    room: $rootScope.room
-                }
-            }).success(function(data) {
+        if ($scope.type == 3) {
+            $rootScope.room = $stateParams.id;
+        }
+
+        $http({
+            method: "GET",
+            url: basePath + "/archives/getRoom.do",
+            params: {
+                floor: $rootScope.floor,
+                unit: $stateParams.id
+            }
+        }).success(function (data) {
+            console.log(data.ownerName);
+            $rootScope.unit = $stateParams.id;
+            $scope.nrooms = data.items;
+
+        });
+    }
+]).controller('accountCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+    function ($scope, $http, $stateParams, $rootScope, $state) {
+        $http({
+            method: "GET",
+            url: basePath + "/payment/getAmount.do"
+            //params: {
+            //    floor: $rootScope.floor,
+            //    unit: $rootScope.unit,
+            //    room: $rootScope.room
+            //}
+        }).success(function (data) {
                 $scope.floor = $rootScope.floor;
                 $scope.unit = $rootScope.unit;
                 $scope.room = $rootScope.room;
                 $scope.ownerName = $rootScope.ownName;
 
-               $scope.freeShow=false;
+                $scope.freeShow = false;
                 var list = data.amountList;
+
+                //模拟数据house
+                var house = [];
 
                 var ret = {};
                 ret.datas = new Array();
@@ -306,7 +327,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
 
                 $scope.payments = ret.datas;
 
-                $scope.selectAll = function() {
+                $scope.selectAll = function () {
 
                 }
 
@@ -315,7 +336,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 $scope.total = 0;
 
                 //               单点
-                $scope.update = function(ele) {
+                $scope.update = function (ele) {
                     if (ele.selected) {
                         if ($scope.selected.indexOf(ele.id) == -1) {
                             $scope.selected.push(ele.id);
@@ -346,7 +367,8 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                                     ef += v3[i].amount;
                                     emonth.push(v3[i].month)
                                 }
-                            };
+                            }
+                            ;
                         }
                     }
                     $rootScope.waterFree = wf;
@@ -355,7 +377,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                     $rootScope.emonth = emonth;
                 }
 
-                $scope.updateYearmonth = function(yearmonth, selected) {
+                $scope.updateYearmonth = function (yearmonth, selected) {
                     for (var i = 0; i < $scope.payments.length; i++) {
                         if ($scope.payments[i].yearmonth == yearmonth) {
                             for (var j = 0; j < $scope.payments[i].eles.length; j++) {
@@ -398,7 +420,8 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                                     ef += v3[i].amount;
                                     emonth.push(v3[i].month)
                                 }
-                            };
+                            }
+                            ;
                         }
                     }
                     $rootScope.waterFree = wf;
@@ -407,10 +430,10 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                     $rootScope.emonth = emonth;
                 }
 
-                $scope.updateAll = function(sel) {
-                    angular.forEach($scope.payments, function(payment) {
+                $scope.updateAll = function (sel) {
+                    angular.forEach($scope.payments, function (payment) {
                         payment.selected = sel;
-                        angular.forEach(payment.eles, function(ele) {
+                        angular.forEach(payment.eles, function (ele) {
                             if (sel) {
                                 if ($scope.selected.indexOf(ele.id) == -1) {
                                     $scope.selected.push(ele.id);
@@ -446,7 +469,8 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                                     emonth.push(v3[i].month)
                                 }
 
-                            };
+                            }
+                            ;
                         }
                     }
                     $rootScope.waterFree = wf;
@@ -454,35 +478,35 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                     $rootScope.wmonth = wmonth;
                     $rootScope.emonth = emonth;
                 }
-               // var i = 0;
-               // $scope.flg_src = "images/flag_01.png";
-               // $scope.toggle = function() {
-               //     i++;
+                // var i = 0;
+                // $scope.flg_src = "images/flag_01.png";
+                // $scope.toggle = function() {
+                //     i++;
                 //    if (i % 2 == 0) {
                 //        $scope.flg_src = "images/flag_01.png";
 
-                 //   } else {
-                  //      $scope.flg_src = "images/flag_02.png";
-                  //  }
+                //   } else {
+                //      $scope.flg_src = "images/flag_02.png";
+                //  }
                 //}
 
             }
-);
+        );
 
-        }
-    ]).controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
-            $http({
-                method: "GET",
-                url: basePath + "/archives/getRoom.do",
-                params: {}
-            }).success(function(data) {
+    }
+]).controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+    function ($scope, $http, $stateParams, $rootScope, $state) {
+        $http({
+            method: "GET",
+            url: basePath + "/archives/getRoom.do",
+            params: {}
+        }).success(function (data) {
 
-            });
-            $scope.watmonth_f = $rootScope.wmonth.sort();
-            $scope.watmonth = $scope.watmonth_f.join(",");
-            $scope.elmonth_f = $rootScope.emonth.sort();
-            $scope.elmonth = $scope.elmonth_f.join(",");
+        });
+        $scope.watmonth_f = $rootScope.wmonth.sort();
+        $scope.watmonth = $scope.watmonth_f.join(",");
+        $scope.elmonth_f = $rootScope.emonth.sort();
+        $scope.elmonth = $scope.elmonth_f.join(",");
 
         //按数字大小排序有bug，1月，11月，7月
         //$scope.watmonth_f = $rootScope.wmonth;
@@ -494,28 +518,41 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
         //$scope.elmonth.join(',');
 
 
-            $scope.floor = $rootScope.floor;
-            $scope.unit = $rootScope.unit;
-            $scope.room = $rootScope.room;
+        $scope.floor = $rootScope.floor;
+        $scope.unit = $rootScope.unit;
+        $scope.room = $rootScope.room;
 
-            $scope.waterFr = $rootScope.waterFree;
-            $scope.eleFr = $rootScope.eleFree;
+        $scope.waterFr = $rootScope.waterFree;
+        $scope.eleFr = $rootScope.eleFree;
 
-            var j = 0;
-            $scope.flg_src = "images/right_1.png";
-            $scope.toggle = function() {
-                j++;
-                if (j % 2 == 0) {
-                    $scope.flg_src = "images/right_1.png";
+        var j = 0;
+        $scope.flg_src = "images/right_1.png";
+        $scope.toggle = function () {
+            j++;
+            if (j % 2 == 0) {
+                $scope.flg_src = "images/right_1.png";
 
-                } else {
-                    $scope.flg_src = "images/right.png";
-                }
+            } else {
+                $scope.flg_src = "images/right.png";
             }
         }
-    ])
-    .controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state','$location',
-        function($scope, $http, $stateParams, $rootScope, $state,$location) {
+    }
+])
+    .controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
+        function ($scope, $http, $stateParams, $rootScope, $state, $location) {
+            //1.6获取微信用户openid
+            $http({
+                method: "GET",
+                url: basePath + '/getopenid' + $location.url().substring($location.url().indexOf("?"))
+            }).success(function (data) {
+                //sessionStorage.setItem("openId", data.openId);
+                //sessionStorage.setItem("accessToken", data.accessToken);
+                console.log("succees");
+
+            }).error(function (data) {
+
+            });
+
 
             $scope.slides7 = [{
                 id: 10,
@@ -532,22 +569,45 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             }];
             //判断请求1月5日
             //console.log($location);
-            //$scope.getInto=function(){
-            //    //console.log($location);
-            //    $http({
-            //        method: "GET",
-            //        url: basePath + '/archives/getAddress',
-            //        params: {
-            //            //offset: '0'
-            //        }
-            //    }).success(function(data) {
-            //        if(data.type==0){
-            //            $state.go("owner-address");
-            //        }else{
-            //            $state.go("account");
-            //        }
-            //    });
-            //}
+            $scope.getInto = function () {
+                //console.log($location);
+                //$http({
+                //    method: "GET",
+                //    url: basePath + '/archives/getAddress',
+                //    params: {
+                //        //offset: '0'
+                //    }
+                //}).success(function(data) {
+                var data = new Object();
+                data.type = 1;
+                if (data.type == 1) {
+                    $state.go("address");
+                } else {
+                    $state.go("account");
+                }
+                //});
+            }
+
+            //自定义全局数组，存储地址
+
+            //$rootScope.mydata=[{
+            //    "username":"鲍庆鑫",
+            //    "useraddress":"鹤岗",
+            //    "type":"1"
+            //},{
+            //    "username":"高佳鹏",
+            //    "useraddress":"双鸭山",
+            //    "type":"0"
+            //},{
+            //    "username":"周杰伦",
+            //    "useraddress":"台湾",
+            //    "type":"0"
+            //},{
+            //    "username":"啦啦啦",
+            //    "useraddress":"呜呜",
+            //    "type":"0"
+            //}];
+
 
             $scope.carouselIndex7 = 0;
 
@@ -557,17 +617,16 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             });
 
 
-
         }
     ])
     .controller('shopInfoCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
+        function ($scope, $http, $stateParams, $rootScope, $state) {
             $rootScope.site = $stateParams.site;
             $scope.currentPage = 0;
             $scope.pageSize = 5;
             $scope.shops = [];
 
-            $scope.load = function(goPage, limit) {
+            $scope.load = function (goPage, limit) {
                 if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || goPage < 1 || $scope.busy) {
                     return;
                 } else if ($rootScope.site != 3) {
@@ -580,18 +639,18 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                             limit: limit == 8 ? limit : $scope.pageSize,
                             type: $stateParams.site - 1
                         }
-                    }).success(function(data) {
+                    }).success(function (data) {
                         $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
                         $scope.currentPage = goPage;
                         $scope.busy = false;
-                        $scope.shops.push.apply($scope.shops,data.items);
-                    }).error(function(data){
+                        $scope.shops.push.apply($scope.shops, data.items);
+                    }).error(function (data) {
                         //console.log("server error!");
                     });
                 }
             }
 
-            $scope.load(1,8);
+            $scope.load(1, 8);
         }
     ]).controller('ownerCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
         function ($scope, $http, $stateParams, $rootScope, $state) {
@@ -607,7 +666,57 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             //        $scope.flg_src = "images/flag_02.png";
             //    }
             //}
-            $scope.flag=true;
+            //$scope.flag = true;
+            $scope.mydatas = [{
+                "username": "鲍庆鑫",
+                "useraddress": "鹤岗",
+                "type": "1",
+                "id": "1"
+            }, {
+                "username": "高佳鹏",
+                "useraddress": "双鸭山",
+                "type": "0",
+                "id": "2"
+            }, {
+                "username": "周杰伦",
+                "useraddress": "台湾",
+                "type": "0",
+                "id": "31"
+            }, {
+                "username": "啦啦啦",
+                "useraddress": "呜呜",
+                "type": "0",
+                "id": "4"
+            }];
+            $scope.change_flag = function (a) {
+                alert(a);
+            }
+            $scope.deleteAddress = function (a) {
+                $scope.sure_delete = true;
+                $scope.sure = function () {
+                    $scope.sure_delete = false;
+                    //$http({
+                    //    method: "GET",
+                    //    url: basePath + "/getBusiness.do",
+                    //    params: {
+                    //       XX:XX
+                    //    }
+                    //}).success(function (data) {
+                    //    $scope.mydatas.splice(a,1);
+                    //}).error(function (data) {
+                    //
+                    //});
+                    $scope.mydatas.splice(a, 1);
+                }
+                $scope.cancel = function () {
+                    $scope.sure_delete = false;
+                }
+
+            }
+            $scope.add_address = function () {
+                $scope.mydatas.push({"username": "鲍庆鑫", "useraddress": "鹤岗", "type": "1"});
+            }
+            //$scope.persons=$rootScope.mydata;
         }
     ]).controller('accountRecordCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
         function ($scope, $http, $stateParams, $rootScope, $state) {
@@ -624,11 +733,36 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             //    }
             //}
             //$scope.flag=true;
+            $scope.mydata = [{
+                "money": 100.00,
+                "address": "鹤岗",
+                "type": "1",
+                "id": "1",
+                "date": "2015-11"
+            }, {
+                "money": 20.03,
+                "address": "双鸭山",
+                "type": "1",
+                "id": "2",
+                "date": "2015-9"
+            }, {
+                "money": 5.02,
+                "address": "台湾",
+                "type": "0",
+                "id": "3",
+                "date": "2015-12"
+            }, {
+                "money": 32.11,
+                "address": "呜呜",
+                "type": "0",
+                "id": "4",
+                "date": "2015-5"
+            }];
         }
     ])
-    //自定义过滤器 截取字符串长度
-skhControllers.filter('cut', function() {
-    return function(value, wordwise, max, tail) {
+//自定义过滤器 截取字符串长度
+skhControllers.filter('cut', function () {
+    return function (value, wordwise, max, tail) {
         if (!value) return '';
 
         max = parseInt(max, 10);

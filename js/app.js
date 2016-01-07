@@ -1,15 +1,15 @@
-var basePath = "http://127.56.162.201/skh";
 //var basePath = "http://123.56.162.201/skh";
-//var basePath="http://192.168.0.127:8080/skh";
+var basePath = "http://192.168.0.127:8080/skh";
+//var basePath="http://192.168.0.128:8080/skh";
 
-var myApp = angular.module('myApp', ['ui.router','angular-carousel', 'skhControllers']);
+var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'skhControllers']);
 
-myApp.config(function($stateProvider, $urlRouterProvider) {
+myApp.config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/home");
 
     $stateProvider
-         .state('notice', {
+        .state('notice', {
             url: "/notice/list",
             templateUrl: "tpl/notice/notice.list.htm",
             controller: 'noticeListCtrl'
@@ -79,45 +79,45 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: "tpl/service/account.html",
             controller: "accountCtrl"
         })
-        .state('payment',{
-            url:"/payment",
+        .state('payment', {
+            url: "/payment",
             templateUrl: "tpl/service/payment.html",
             controller: "paymentCtrl"
         })
-        .state('home',{
-            url:"/home",
+        .state('home', {
+            url: "/home",
             templateUrl: "tpl/index/home.html",
             controller: "homeCtrl"
         })
-        .state('home.shop-info',{
-            url:"/shop-info/:site",
+        .state('home.shop-info', {
+            url: "/shop-info/:site",
             templateUrl: "tpl/index/shop-info.html",
             controller: "shopInfoCtrl"
         })
-        .state('owner-address',{
-            url:"/owner-address",
+        .state('owner-address', {
+            url: "/owner-address",
             templateUrl: "tpl/service/owner-address.html",
             controller: "ownerCtrl"
         })
-        .state('account-record',{
-            url:"/account-record",
-            templateUrl:"tpl/service/account-record.html",
-            controller:"accountRecordCtrl"
+        .state('account-record', {
+            url: "/account-record",
+            templateUrl: "tpl/service/account-record.html",
+            controller: "accountRecordCtrl"
         })
 
     ;
-}).config(function($httpProvider) {
+}).config(function ($httpProvider) {
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
     // Override $http service's default transformRequest
-    $httpProvider.defaults.transformRequest = [function(data) {
+    $httpProvider.defaults.transformRequest = [function (data) {
         /**
          * The workhorse; converts an object to x-www-form-urlencoded serialization.
          * @param {Object} obj
          * @return {String}
          */
-        var param = function(obj) {
+        var param = function (obj) {
             var query = '';
             var name, value, fullSubName, subName, subValue, innerObj, i;
 
@@ -150,4 +150,11 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
 
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
-});
+}).run(['$rootScope', function ($rootScope) {
+    $rootScope.$on('$stateChangeSuccess', function (event, to, toParams, from, fromParams) {
+        $rootScope.previousState = from.name;
+        $rootScope.currentState = to.name;
+        console.log('Previous state:' + $rootScope.previousState)
+        console.log('Current state:' + $rootScope.currentState)
+    });
+}]);
