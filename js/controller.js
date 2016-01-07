@@ -187,70 +187,86 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 }, 3000)
             })
         }
+
     }
 ]).controller('addressCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
-    function ($scope, $http, $stateParams, $rootScope) {
+        function($scope, $http, $stateParams, $rootScope) {
 
-        if ($stateParams.id) {
-            //用户
-            $rootScope.ownName = $stateParams.user;
-            //console.log($rootScope.ownName);
-            $rootScope.room = $stateParams.id;
-        }
-    }
-]).controller('addressFloorCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
-    function ($scope, $http, $stateParams, $rootScope) {
-
-        $rootScope.floor = null;
-        $rootScope.unit = null;
-        $rootScope.room = null;
-
-        $http({
-            method: "GET",
-            url: basePath + "/archives/getFloor.do"
-        }).success(function (data) {
-            $scope.nfloors = data;
-        });
-    }
-]).controller('addressUnitCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-    function ($scope, $http, $stateParams, $rootScope, $state) {
-
-        if ($rootScope.previousState == "address" || ($scope.type == 3 && $rootScope.previousState == "address-room")) {
-            $state.go("address-floor");
-            return;
-        }
-
-        $rootScope.unit = null;
-        $rootScope.room = null;
-
-        $http({
-            method: "GET",
-            url: basePath + "/archives/getUnit.do",
-            params: {
-                floor: $stateParams.id
+            if ($stateParams.id) {
+                //用户
+                $rootScope.ownerName = $stateParams.user;
+                $rootScope.room = $stateParams.id;
             }
-        }).success(function (data) {
-            $scope.nunits = data.items;
-            $rootScope.floor = $stateParams.id;
-            $rootScope.type = data.type;
-            if (data.type == 0) {
-                $rootScope.ownName = data.ownerName;
-                $state.go("address");
+        }
+    ]).controller('addressFloorCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
+        function($scope, $http, $stateParams, $rootScope) {
+
+            $rootScope.floor=null;
+            $rootScope.unit=null;
+            $rootScope.room=null;
+
+            $http({
+                method: "GET",
+                url: basePath + "/archives/getFloor.do"
+            }).success(function(data) {
+                $scope.floors = data;
+            });
+        }
+    ]).controller('addressUnitCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+        function($scope, $http, $stateParams, $rootScope, $state) {
+            if($rootScope.previousState == "address" ||($scope.type == 3 && $rootScope.previousState == "address-room")){
+                $state.go("address-floor");
+                return;
             }
 
-            if (data.type == 3) {
-                $scope.nrooms = data.items;
-                $state.go("address-room");
-            }
-        });
-    }
-]).controller('addressRoomCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-    function ($scope, $http, $stateParams, $rootScope, $state) {
-        $rootScope.room = null;
-        if ($rootScope.previousState == "address") {
-            $state.go("address-unit");
-            return;
+            $rootScope.unit=null;
+            $rootScope.room=null;
+
+            $http({
+                method: "GET",
+                url: basePath + "/archives/getUnit.do",
+                params: {
+                    floor: $stateParams.id
+                }
+            }).success(function(data) {
+                $scope.units = data.items;
+                $rootScope.floor = $stateParams.id;
+                $rootScope.type = data.type;
+                if (data.type == 0) {
+                    $rootScope.ownerName = data.ownerName;
+                    $state.go("address");
+                }
+
+                else if (data.type == 3) {
+                    $scope.rooms = data.items;
+                    $state.go("address-room");
+                }
+            });
         }
+    ]).controller('addressRoomCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+        function($scope, $http, $stateParams, $rootScope, $state) {
+            $rootScope.room=null;
+            if($rootScope.previousState == "address"){
+                $state.go("address-unit");
+                return;
+            }
+            if ($scope.type == 3) {
+                $rootScope.room = $stateParams.id;
+            }
+
+            $http({
+                method: "GET",
+                url: basePath + "/archives/getRoom.do",
+                params: {
+                    floor: $rootScope.floor,
+                    unit: $stateParams.id
+                }
+            }).success(function(data) {
+                console.log(data.ownerName);
+                $rootScope.unit = $stateParams.id;
+                $scope.rooms = data.items;
+
+            });
         if ($scope.type == 3) {
             $rootScope.room = $stateParams.id;
         }

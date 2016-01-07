@@ -1,3 +1,4 @@
+
 //var basePath = "http://123.56.162.201/skh";
 var basePath = "http://192.168.0.127:8080/skh";
 //var basePath="http://192.168.0.128:8080/skh";
@@ -51,8 +52,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state('address', {
             url: "/address",
-            templateUrl: "tpl/service/address.html",
-            controller: "addressCtrl"
+            templateUrl: "tpl/service/address.html"
         })
         .state('address-with-roomId', {
             url: "/address/:id,:user",
