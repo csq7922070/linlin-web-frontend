@@ -191,11 +191,16 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
     }
 ]).controller('addressCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
         function($scope, $http, $stateParams, $rootScope) {
-
+            //$rootScope.floor=null;
+            //$rootScope.unit=null;
+            //$rootScope.room=null;
             if ($stateParams.id) {
                 //用户
                 $rootScope.ownerName = $stateParams.user;
                 $rootScope.room = $stateParams.id;
+            }
+            $scope.add_newaddress=function(){
+                $rootScope.mydata.push({"username": $rootScope.floor, "useraddress":121212, "type": "1","id":4})
             }
         }
     ]).controller('addressFloorCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
@@ -572,17 +577,21 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
 
             $scope.slides7 = [{
                 id: 10,
-                label: "slide #10",
-                img: "http://lorempixel.com/450/300/sports/0"
+                label: "slide #1",
+                //img: "http://lorempixel.com/450/300/sports/0"
+                img:"images/banner_01.png"
             }, {
                 id: 11,
-                label: "slide #11",
-                img: "http://lorempixel.com/450/300/people/1"
+                label: "slide #2",
+                //img: "http://lorempixel.com/450/300/people/1"
+                img:"images/banner_02.png"
             }, {
                 id: 12,
-                label: "slide #12",
+                label: "slide #3",
                 img: "http://lorempixel.com/450/300/people/2"
             }];
+            $scope.carouselIndex7 = 0;
+
             //判断请求1月5日
             //console.log($location);
             $scope.getInto = function () {
@@ -602,30 +611,54 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                     $state.go("account");
                 }
                 //});
+
+                $rootScope.mydata = [{
+                    "username": "bob",
+                    "useraddress": "啥啊啊啊啊",
+                    "type": "1",
+                    "id": "1"
+                }, {
+                    "username": "gao",
+                    "useraddress": "事实上山",
+                    "type": "0",
+                    "id": "2"
+                }, {
+                    "username": "周杰伦",
+                    "useraddress": "台湾",
+                    "type": "0",
+                    "id": "31"
+                }, {
+                    "username": "啦啦啦",
+                    "useraddress": "呜呜",
+                    "type": "0",
+                    "id": "4"
+                }];
+
             }
-
-            //自定义全局数组，存储地址
-
-            //$rootScope.mydata=[{
-            //    "username":"鲍庆鑫",
-            //    "useraddress":"鹤岗",
-            //    "type":"1"
-            //},{
-            //    "username":"高佳鹏",
-            //    "useraddress":"双鸭山",
-            //    "type":"0"
-            //},{
-            //    "username":"周杰伦",
-            //    "useraddress":"台湾",
-            //    "type":"0"
-            //},{
-            //    "username":"啦啦啦",
-            //    "useraddress":"呜呜",
-            //    "type":"0"
+            //
+            //$rootScope.mydata = [{
+            //    "username": "鲍庆鑫",
+            //    "useraddress": "鹤岗",
+            //    "type": "1",
+            //    "id": "1"
+            //}, {
+            //    "username": "高佳鹏",
+            //    "useraddress": "双鸭山",
+            //    "type": "0",
+            //    "id": "2"
+            //}, {
+            //    "username": "周杰伦",
+            //    "useraddress": "台湾",
+            //    "type": "0",
+            //    "id": "31"
+            //}, {
+            //    "username": "啦啦啦",
+            //    "useraddress": "呜呜",
+            //    "type": "0",
+            //    "id": "4"
             //}];
 
 
-            $scope.carouselIndex7 = 0;
 
             $rootScope.site = 1;
             $state.go("home.shop-info", {
@@ -683,27 +716,30 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             //    }
             //}
             //$scope.flag = true;
-            $scope.mydatas = [{
-                "username": "鲍庆鑫",
-                "useraddress": "鹤岗",
-                "type": "1",
-                "id": "1"
-            }, {
-                "username": "高佳鹏",
-                "useraddress": "双鸭山",
-                "type": "0",
-                "id": "2"
-            }, {
-                "username": "周杰伦",
-                "useraddress": "台湾",
-                "type": "0",
-                "id": "31"
-            }, {
-                "username": "啦啦啦",
-                "useraddress": "呜呜",
-                "type": "0",
-                "id": "4"
-            }];
+
+            //$scope.mydatas = [{
+            //    "username": "鲍庆鑫",
+            //    "useraddress": "鹤岗",
+            //    "type": "1",
+            //    "id": "1"
+            //}, {
+            //    "username": "高佳鹏",
+            //    "useraddress": "双鸭山",
+            //    "type": "0",
+            //    "id": "2"
+            //}, {
+            //    "username": "周杰伦",
+            //    "useraddress": "台湾",
+            //    "type": "0",
+            //    "id": "31"
+            //}, {
+            //    "username": "啦啦啦",
+            //    "useraddress": "呜呜",
+            //    "type": "0",
+            //    "id": "4"
+            //}];
+            $scope.mydatas=$rootScope.mydata;
+            console.log($rootScope.mydata)
             $scope.change_flag = function (a) {
                 alert(a);
             }
@@ -730,7 +766,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
 
             }
             $scope.add_address = function () {
-                $scope.mydatas.push({"username": "鲍庆鑫", "useraddress": "鹤岗", "type": "1"});
+                //$scope.mydatas.push({"username": "鲍庆鑫", "useraddress": "鹤岗", "type": "1"});
             }
             //$scope.persons=$rootScope.mydata;
         }
@@ -749,31 +785,31 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             //    }
             //}
             //$scope.flag=true;
-            $scope.mydata = [{
-                "money": 100.00,
-                "address": "鹤岗",
-                "type": "1",
-                "id": "1",
-                "date": "2015-11"
-            }, {
-                "money": 20.03,
-                "address": "双鸭山",
-                "type": "1",
-                "id": "2",
-                "date": "2015-9"
-            }, {
-                "money": 5.02,
-                "address": "台湾",
-                "type": "0",
-                "id": "3",
-                "date": "2015-12"
-            }, {
-                "money": 32.11,
-                "address": "呜呜",
-                "type": "0",
-                "id": "4",
-                "date": "2015-5"
-            }];
+            //$scope.mydata = [{
+            //    "money": 100.00,
+            //    "address": "鹤岗",
+            //    "type": "1",
+            //    "id": "1",
+            //    "date": "2015-11"
+            //}, {
+            //    "money": 20.03,
+            //    "address": "双鸭山",
+            //    "type": "1",
+            //    "id": "2",
+            //    "date": "2015-9"
+            //}, {
+            //    "money": 5.02,
+            //    "address": "台湾",
+            //    "type": "0",
+            //    "id": "3",
+            //    "date": "2015-12"
+            //}, {
+            //    "money": 32.11,
+            //    "address": "呜呜",
+            //    "type": "0",
+            //    "id": "4",
+            //    "date": "2015-5"
+            //}];
         }
     ])
 //自定义过滤器 截取字符串长度

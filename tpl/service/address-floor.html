@@ -1,11 +1,39 @@
-<!--<div class="weui_cells_title title_style">B</div>-->
-<div class="weui_cells weui_cells_access address_down">
+<!--<div ng-repeat="floor in floors">-->
+<!--<div class="weui_cells_title title_style" style="border: 1px solid #000000;margin: 0">B</div>-->
+<!--</div>-->
 
-    <a class="weui_cell" ng-repeat="floor in floors" ui-sref="address-unit({id:floor})">
+<!--<div class="weui_cells weui_cells_access address_down">-->
+
+<!--<a class="weui_cell" ng-repeat="floor in floors" ui-sref="address-unit({id:floor})">-->
+<!--<div class="weui_cell_bd weui_cell_primary">-->
+<!--<p>{{floor}}</p>-->
+<!--</div>-->
+<!--<div class="weui_cell_ft">-->
+<!--</div>-->
+<!--</a>-->
+<!--</div>-->
+<div class="weui_cells weui_cells_access address_down" ng-repeat="floor in floors">
+
+    <!--<a class="weui_cell" ui-sref="address-unit({id:floor})">-->
+    <!--<div class="weui_cell_bd weui_cell_primary">-->
+    <!--<p>{{floor.initial}}</p>-->
+    <!--</div>-->
+    <!--<div class="weui_cell_ft">-->
+    <!--</div>-->
+    <!--</a>-->
+    <a class="weui_cell" style="background-color: #EEEEEE;height: 30px;border-top: none">
         <div class="weui_cell_bd weui_cell_primary">
-            <p>{{floor}}</p>
+            <p>{{floor.initial}}</p>
+        </div>
+    </a>
+
+    <!--<div class="weui_cells_title title_style" style="border: 1px solid #000000;margin: 0">B</div>-->
+    <a class="weui_cell" ng-repeat="item in floor.items" ui-sref="address-unit({id:item.floor})">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>{{item.floor}}</p>
         </div>
         <div class="weui_cell_ft">
         </div>
     </a>
+
 </div>

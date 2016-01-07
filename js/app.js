@@ -1,7 +1,7 @@
 
 //var basePath = "http://123.56.162.201/skh";
-var basePath = "http://192.168.0.127:8080/skh";
-//var basePath="http://192.168.0.128:8080/skh";
+//var basePath = "http://192.168.0.127:8080/skh";
+var basePath="http://192.168.0.128:8080/skh";
 
 var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'skhControllers']);
 
@@ -154,7 +154,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
     $rootScope.$on('$stateChangeSuccess', function (event, to, toParams, from, fromParams) {
         $rootScope.previousState = from.name;
         $rootScope.currentState = to.name;
-        console.log('Previous state:' + $rootScope.previousState)
-        console.log('Current state:' + $rootScope.currentState)
+        console.log('Previous state:' + $rootScope.previousState);
+        console.log('Current state:' + $rootScope.currentState);
     });
 }]);
