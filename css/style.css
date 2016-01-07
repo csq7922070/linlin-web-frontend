@@ -77,14 +77,14 @@
 	margin-right: 10px;
 }
 
-input[type="button"] {
+/*input[type="button"] {
 	margin-left: 20px;
-	background: white;
+	background: #4996ee;
 	border: 1px solid #e6e6e6;
 	height: 23px;
 	width: 80px;
 	border-radius: 2px;
-}
+}*/
 
 #main .main_m {
 	border-collapse: collapse;

@@ -108,8 +108,7 @@ a {
 
 /*ģ̬��*/
 
-.prompt_mask,
-.prompt_mask_err {
+.prompt_mask,.prompt_mask_err {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.61);
@@ -211,9 +210,9 @@ a {
     word-break: break-all;
 }
 
-body {
+/* body {
     padding-top: 15px;
-}
+} */
 
 .complaint_title {
     position: relative;
@@ -418,22 +417,22 @@ body {
 }
 
 .date_state {
-    clear: both;
     margin: 0px auto;
     height: 20px;
     font-size: 14px;
+    padding-top: 10px;
+
 }
 
 .date {
     margin-top: 10px;
-    float: left;
+    /*float: left;*/
     color: #999999;
+    font-size: 14px;
 }
 
 .state {
-    float: right;
-    margin-top: 10px;
-    color: #e95912;
+    float: right;    color: #e95912;
 }
 
 .goods {
@@ -507,7 +506,7 @@ body {
     border: 1px solid #cccccc;
     border-radius: 5px;
     line-height: 28px;
-    color: #999999;
+    color: #999999!important;
     padding-left: 8px;
     background-color: #ffffff;
     display: block;
@@ -544,8 +543,8 @@ textarea {
     height: 30px;
     border-radius: 5px;
     line-height: 30px;
-    font-size: 14px;
-    color: #333333;
+    /* font-size: 14px;
+    color: #333333; */
     padding-right: 18px;
 }
 

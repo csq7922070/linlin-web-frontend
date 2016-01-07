@@ -1,5 +1,5 @@
-<div class="complaint_title">
-    <img src="image/icon_07.png" alt="">投诉建议
+<div class="complaint_title" style="margin-top:10px;">
+    <img src="images/icon_07.png" alt="">投诉建议
 </div>
 <div class="complaint">
     <span>时间：</span> <span class="complaint_time">{{complain.createDate}}</span>
@@ -8,14 +8,13 @@
     <span class="complaint_detail">{{complain.content}}</span>
 </div>
 <div class="complaint_title">
-    <img src="image/icon_08.png" alt="">物业回复
+    <img src="images/icon_08.png" alt="">物业回复
 </div>
 <div class="property" ng-if="complain.state == 0">
-    <span class="property_detail">
-				</span>
+    <span class="property_detail"></span>
 </div>
 <div class="property" ng-if="complain.state != 0">
-    <span>时间：</span> <span class="property_time">{{complain.replyTime}}</span>
+    <span>时间：</span> <span class="property_time">{{complain.lastModifiedDate}}</span>
     <span class="property_detail">{{complain.reply}}</span>
 </div>
 <div class="complaint_title">

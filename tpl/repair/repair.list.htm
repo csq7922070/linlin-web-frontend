@@ -20,14 +20,20 @@
     <ul class="item_service">
         <li ng-repeat="repair in repairs">
             <a ui-sref="repair-detail({id:repair.id})">
-                <div class='date_state'><span class='date'>
-                    </span><span class='state'>{{repair.createDate}}</span></div>
-                <div class='goods'>{{repair.device}}
+                <div class='date_state'>
+                    <span class='date' >{{repair.createDate}}</span>
+                    <span class='state' ng-if="repair.repairState==0">等待指派</span>
+                    <span class='state' ng-if="repair.repairState==1">已指派</span>
+                    <span class='state' ng-if="repair.repairState==2">指派完成待确认</span>
+                    <span class='state' ng-if="repair.repairState==3">完成</span>
                 </div>
+                <div class='goods'>{{repair.device}}</div>
             </a>
-            <div class='state_btn'><a ui-sref="repair-detail({id:repair.id})" class="check">查看</a>
-                             <!--确认完成,状态为3时-->
-                <a class='complete' ng-show="repair.repairState == 3" ng-click="repair.confirm()">确认完成</a></div>
+            <div class='state_btn'>
+                <a ui-sref="repair-detail({id:repair.id})" class="check">查看</a>
+                <!--确认完成,状态为3时-->
+                <a class='complete' ng-if="repair.repairState==2" ng-click="repair.confirm()">确认完成</a>
+            </div>
         </li>
     </ul>
 </div>
