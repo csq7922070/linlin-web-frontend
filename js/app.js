@@ -1,7 +1,4 @@
-
-//var basePath = "http://123.56.162.201/skh";
-var basePath = "http://192.168.0.127:8080/skh";
-//var basePath="http://192.168.0.128:8080/skh";
+var basePath = "http://192.168.0.128:8080/skh";
 
 var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'skhControllers']);
 
@@ -54,28 +51,28 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
             url: "/address",
             templateUrl: "tpl/service/address.html"
         })
-        .state('address-with-roomId', {
-            url: "/address/:id,:user",
-            templateUrl: "tpl/service/address.html",
-            controller: "addressCtrl"
-        })
         .state('address-floor', {
             url: "/address-floor/",
             templateUrl: "tpl/service/address-floor.html",
             controller: "addressFloorCtrl"
         })
         .state('address-unit', {
-            url: "/address-unit/:id",
+            url: "/address-unit/:floor",
             templateUrl: "tpl/service/address-unit.html",
             controller: "addressUnitCtrl"
         })
         .state('address-room', {
-            url: "/address-room/:id",
+            url: "/address-room/:floor/:unit",
             templateUrl: "tpl/service/address-room.html",
             controller: "addressRoomCtrl"
         })
+         .state('address-final', {
+            url: "/address-final/:floor/:unit/:room",
+            templateUrl: "tpl/service/address.html",
+            controller: "addressCtrl"
+        })
         .state('account', {
-            url: "/account/:id",
+            url: "/account/:floor/:unit/:room",
             templateUrl: "tpl/service/account.html",
             controller: "accountCtrl"
         })

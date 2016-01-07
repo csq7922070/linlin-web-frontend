@@ -59,18 +59,8 @@
 </div>
 <!--下一步按钮-->
 <div class="address_btn">
-    <!--<a class="weui_btn weui_btn_primary length_btn" ui-sref="account" style="font-size: 16px" ng-click="add_address">下一步</a>-->
-    <!--下面是链接到地址的btn-->
-<<<<<<< Upstream, based on branch 'master' of http://192.168.0.95:10080/g731/linlin-web-frontend.git
-    <!--<a class="weui_btn weui_btn_primary length_btn"  ui-sref="account" style="font-size: 16px" disabled>下一步</a>-->
-    <button class="weui_btn weui_btn_primary length_btn" ui-sref="account" ng-if="floor" style="font-size: 16px">下一步
+    <button class="weui_btn weui_btn_primary length_btn" ui-sref="account({floor:floor,unit:unit,room:room})" ng-disabled="!floor||(!unit&&type==2)||(!room&&type==3)" ng-class="{'disabled':!floor||(!unit&&type==2)||(!room&&type==3)}" style="font-size: 16px">下一步
     </button>
-    <button class="weui_btn weui_btn_primary length_btn" ng-if="!floor"
-            style="font-size: 16px;background-color: #bababa" disabled>下一步
-    </button>
-=======
-    <a class="weui_btn weui_btn_primary length_btn"  ui-sref="account" style="font-size: 16px" ng-disabled="3==3">下一步</a>
->>>>>>> 4f5c0d6 地址选择bug修改
 </div>
 <!--提示框-->
 <div class="weui_dialog_confirm" style="display: none">

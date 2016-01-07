@@ -727,3 +727,7 @@ ul[rn-carousel] {
 /*.div.rn-carousel-indicator span{*/
     /*color: blue!important;*/
 /*}*/
+
+.disabled{
+   background-color: #bababa!important;
+}
