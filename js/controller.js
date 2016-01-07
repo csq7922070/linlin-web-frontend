@@ -204,6 +204,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             $rootScope.floor=null;
             $rootScope.unit=null;
             $rootScope.room=null;
+            $rootScope.type=null;
 
             $http({
                 method: "GET",
@@ -265,7 +266,6 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 console.log(data.ownerName);
                 $rootScope.unit = $stateParams.id;
                 $scope.rooms = data.items;
-
             });
         if ($scope.type == 3) {
             $rootScope.room = $stateParams.id;
