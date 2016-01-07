@@ -1,9 +1,8 @@
 <div class="weui_cells_title title_style" style="margin-top: -6px">#</div>
 <div class="weui_cells weui_cells_access address_down">
-    <a class="weui_cell" ng-repeat="room in rooms" ui-sref="address-with-roomId({id:room.room,user:room.ownerName})">
+    <a class="weui_cell" ng-repeat="room in rooms" ui-sref="address-final({floor:floor,unit:unit,room:room.room})">
         <div class="weui_cell_bd weui_cell_primary">
             <p>{{room.room}}</p>
-            <!--<p>{{nroom.ownerName}}</p>-->
         </div>
         <div class="weui_cell_ft">
         </div>
