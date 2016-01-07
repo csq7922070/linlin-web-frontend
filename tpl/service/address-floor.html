@@ -1,11 +1,34 @@
-<!--<div class="weui_cells_title title_style">B</div>-->
-<div class="weui_cells weui_cells_access address_down">
+<div class="weui_cells weui_cells_access address_down" ng-repeat="floors in datas">
 
-    <a class="weui_cell" ng-repeat="nfloor in nfloors" ui-sref="address-unit({id:nfloor})">
-        <div class="weui_cell_bd weui_cell_primary">
-            <p>{{nfloor}}</p>
-        </div>
-        <div class="weui_cell_ft">
-        </div>
-    </a>
+<a class="weui_cell" style="background-color: #EEEEEE;height: 30px;border-top: none">
+    <div class="weui_cell_bd weui_cell_primary">
+        <p>{{floors.initial}}</p>
+    </div>
+</a>
+
+
+<a class="weui_cell" ng-repeat="floor in floors.items" ui-sref="address-unit({floor:floor.floor})" ng-if="floor.type == 2">
+    <div class="weui_cell_bd weui_cell_primary">
+        <p>{{floor.floor}}</p>
+    </div>
+    <div class="weui_cell_ft">
+    </div>
+</a>
+
+<a class="weui_cell" ng-repeat="floor in floors.items" ui-sref="address-room({floor:floor.floor})" ng-if="floor.type == 1">
+    <div class="weui_cell_bd weui_cell_primary">
+        <p>{{floor.floor}}</p>
+    </div>
+    <div class="weui_cell_ft">
+    </div>
+</a>
+<a class="weui_cell" ng-repeat="floor in floors.items" ui-sref="address-final({floor:floor.floor})" ng-if="floor.type == 0">
+    <div class="weui_cell_bd weui_cell_primary">
+        <p>{{floor.floor}}</p>
+    </div>
+    <div class="weui_cell_ft">
+    </div>
+</a>
+
 </div>
+

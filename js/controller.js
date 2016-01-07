@@ -186,16 +186,17 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                     }, 3000)
                 })
             }
+
         }
     ]).controller('addressCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
         function($scope, $http, $stateParams, $rootScope) {
-
-            if ($stateParams.id) {
-                //用户
-                $rootScope.ownName = $stateParams.user;
-               // console.log($rootScope.ownName);
-                $rootScope.room = $stateParams.id;
+            $scope.add_newaddress=function(){
+                $rootScope.mydata.push({"username": $rootScope.floor, "useraddress":121212, "type": "1","id":4})
             }
+            console.log("floor" + $stateParams.floor + " unit" + $stateParams.unit + " room" + $stateParams.room);
+            $scope.floor = $stateParams.floor;
+            $scope.unit = $stateParams.unit;
+            $scope.room = $stateParams.room;
         }
     ]).controller('addressFloorCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
         function($scope, $http, $stateParams, $rootScope) {
@@ -203,7 +204,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 method: "GET",
                 url: basePath + "/archives/getFloor.do"
             }).success(function(data) {
-                $scope.nfloors = data;
+                $scope.datas = data;
             });
         }
     ]).controller('addressUnitCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
@@ -212,40 +213,26 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 method: "GET",
                 url: basePath + "/archives/getUnit.do",
                 params: {
-                    floor: $stateParams.id
+                    floor: $stateParams.floor
                 }
             }).success(function(data) {
-                $scope.nunits = data.items;
-                $rootScope.floor = $stateParams.id;
-                $rootScope.type = data.type;
-                if (data.type == 0) {
-                    $rootScope.ownName = data.ownerName;
-                    $state.go("address");
-                }
-
-                if (data.type == 3) {
-                    $scope.nrooms = data.items;
-                    $state.go("address-room");
-                }
+                $scope.units = data.items;
+                $scope.floor = $stateParams.floor;
             });
         }
     ]).controller('addressRoomCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
         function($scope, $http, $stateParams, $rootScope, $state) {
-            if ($scope.type == 3) {
-                $rootScope.room = $stateParams.id;
-            }
-
             $http({
                 method: "GET",
                 url: basePath + "/archives/getRoom.do",
                 params: {
-                    floor: $rootScope.floor,
-                    unit: $stateParams.id
+                    floor: $stateParams.floor,
+                    unit: $stateParams.unit
                 }
             }).success(function(data) {
-                $rootScope.unit = $stateParams.id;
-                $scope.nrooms = data.items;
-
+                $scope.floor = $stateParams.floor;
+                $scope.unit = $stateParams.unit;
+                $scope.rooms = data.items;
             });
         }
     ]).controller('accountCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
@@ -254,9 +241,8 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 method: "GET",
                 url: basePath + "/payment/getAmount.do",
                 params: {
-                    floor: $rootScope.floor,
-                    unit: $rootScope.unit,
-                    room: $rootScope.room
+                    paymentState: 0,
+                    id: 1
                 }
             }).success(function(data) {
                 $scope.floor = $rootScope.floor;
@@ -264,8 +250,11 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 $scope.room = $rootScope.room;
                 $scope.ownerName = $rootScope.ownName;
 
-               $scope.freeShow=false;
+                $scope.freeShow = false;
                 var list = data.amountList;
+
+                //模拟数据house
+                var house = [];
 
                 var ret = {};
                 ret.datas = new Array();
@@ -405,66 +394,65 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 }
 
                 $scope.updateAll = function(sel) {
-                    angular.forEach($scope.payments, function(payment) {
-                        payment.selected = sel;
-                        angular.forEach(payment.eles, function(ele) {
-                            if (sel) {
-                                if ($scope.selected.indexOf(ele.id) == -1) {
-                                    $scope.selected.push(ele.id);
-                                    $scope.total += ele.amount;
-                                    ele.selected = true;
-                                }
-                            } else {
-                                if ($scope.selected.indexOf(ele.id) != -1) {
-                                    var idx = $scope.selected.indexOf(ele.id);
-                                    $scope.selected.splice(idx, 1);
-                                    $scope.total -= ele.amount;
-                                    ele.selected = false;
-                                }
-                            }
-                        })
-                    })
-
-                    var wf = 0;
-                    var ef = 0;
-                    var v2 = $scope.selected;
-                    var wmonth = [];
-                    var emonth = [];
-
-                    var v3 = list;
-                    for (var i = 0; i < v3.length; i++) {
-                        for (var j = 0; j < v2.length; j++) {
-                            if (v3[i].id == (v2[j])) {
-                                if (v3[i].paymentType == 0) {
-                                    wf += v3[i].amount;
-                                    wmonth.push(v3[i].month)
+                        angular.forEach($scope.payments, function(payment) {
+                            payment.selected = sel;
+                            angular.forEach(payment.eles, function(ele) {
+                                if (sel) {
+                                    if ($scope.selected.indexOf(ele.id) == -1) {
+                                        $scope.selected.push(ele.id);
+                                        $scope.total += ele.amount;
+                                        ele.selected = true;
+                                    }
                                 } else {
-                                    ef += v3[i].amount;
-                                    emonth.push(v3[i].month)
+                                    if ($scope.selected.indexOf(ele.id) != -1) {
+                                        var idx = $scope.selected.indexOf(ele.id);
+                                        $scope.selected.splice(idx, 1);
+                                        $scope.total -= ele.amount;
+                                        ele.selected = false;
+                                    }
                                 }
+                            })
+                        })
 
-                            };
+                        var wf = 0;
+                        var ef = 0;
+                        var v2 = $scope.selected;
+                        var wmonth = [];
+                        var emonth = [];
+
+                        var v3 = list;
+                        for (var i = 0; i < v3.length; i++) {
+                            for (var j = 0; j < v2.length; j++) {
+                                if (v3[i].id == (v2[j])) {
+                                    if (v3[i].paymentType == 0) {
+                                        wf += v3[i].amount;
+                                        wmonth.push(v3[i].month)
+                                    } else {
+                                        ef += v3[i].amount;
+                                        emonth.push(v3[i].month)
+                                    }
+
+                                };
+                            }
                         }
+                        $rootScope.waterFree = wf;
+                        $rootScope.eleFree = ef;
+                        $rootScope.wmonth = wmonth;
+                        $rootScope.emonth = emonth;
                     }
-                    $rootScope.waterFree = wf;
-                    $rootScope.eleFree = ef;
-                    $rootScope.wmonth = wmonth;
-                    $rootScope.emonth = emonth;
-                }
-               // var i = 0;
-               // $scope.flg_src = "images/flag_01.png";
-               // $scope.toggle = function() {
-               //     i++;
-                //    if (i % 2 == 0) {
-                //        $scope.flg_src = "images/flag_01.png";
+                    // var i = 0;
+                    // $scope.flg_src = "images/flag_01.png";
+                    // $scope.toggle = function() {
+                    //     i++;
+                    //    if (i % 2 == 0) {
+                    //        $scope.flg_src = "images/flag_01.png";
 
-                 //   } else {
-                  //      $scope.flg_src = "images/flag_02.png";
-                  //  }
+                //   } else {
+                //      $scope.flg_src = "images/flag_02.png";
+                //  }
                 //}
 
-            }
-);
+            });
 
         }
     ]).controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
@@ -481,14 +469,14 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             $scope.elmonth_f = $rootScope.emonth.sort();
             $scope.elmonth = $scope.elmonth_f.join(",");
 
-        //按数字大小排序有bug，1月，11月，7月
-        //$scope.watmonth_f = $rootScope.wmonth;
-        //$scope.watmonth = $scope.watmonth_f.sort();
-        //$scope.watmonth.join(',');
-        //$scope.elmonth_f = $rootScope.emonth;
-        ////console.log($scope.elmonth_f);
-        //$scope.elmonth = $scope.elmonth_f.sort();
-        //$scope.elmonth.join(',');
+            //按数字大小排序有bug，1月，11月，7月
+            //$scope.watmonth_f = $rootScope.wmonth;
+            //$scope.watmonth = $scope.watmonth_f.sort();
+            //$scope.watmonth.join(',');
+            //$scope.elmonth_f = $rootScope.emonth;
+            ////console.log($scope.elmonth_f);
+            //$scope.elmonth = $scope.elmonth_f.sort();
+            //$scope.elmonth.join(',');
 
 
             $scope.floor = $rootScope.floor;
@@ -511,44 +499,111 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             }
         }
     ])
-    .controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state','$location',
-        function($scope, $http, $stateParams, $rootScope, $state,$location) {
+    .controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
+        function($scope, $http, $stateParams, $rootScope, $state, $location) {
+            //1.6获取微信用户openid
+            $http({
+                method: "GET",
+                url: basePath + '/getopenid' + $location.url().substring($location.url().indexOf("?"))
+            }).success(function(data) {
+                //sessionStorage.setItem("openId", data.openId);
+                //sessionStorage.setItem("accessToken", data.accessToken);
+                console.log("succees");
+
+            }).error(function(data) {
+
+            });
+
 
             $scope.slides7 = [{
                 id: 10,
-                label: "slide #10",
-                img: "http://lorempixel.com/450/300/sports/0"
+                label: "slide #1",
+                //img: "http://lorempixel.com/450/300/sports/0"
+                img:"images/banner_01.png"
             }, {
                 id: 11,
-                label: "slide #11",
-                img: "http://lorempixel.com/450/300/people/1"
+                label: "slide #2",
+                //img: "http://lorempixel.com/450/300/people/1"
+                img:"images/banner_02.png"
             }, {
                 id: 12,
-                label: "slide #12",
+                label: "slide #3",
                 img: "http://lorempixel.com/450/300/people/2"
             }];
+            $scope.carouselIndex7 = 0;
+
             //判断请求1月5日
             //console.log($location);
-            //$scope.getInto=function(){
-            //    console.log($location);
-            //    $http({
-            //        method: "GET",
-            //        url: basePath + '/repair/list' + $location.url(),
-            //        params: {
-            //            //offset: '0'
-            //        }
-            //    }).success(function(data) {
-            //        $state.go("account");
-            //    });
-            //}
+            $scope.getInto = function() {
+                //console.log($location);
+                //$http({
+                //    method: "GET",
+                //    url: basePath + '/archives/getAddress',
+                //    params: {
+                //        //offset: '0'
+                //    }
+                //}).success(function(data) {
+                var data = new Object();
+                data.type = 1;
+                if (data.type == 1) {
+                    $state.go("address");
+                } else {
+                    $state.go("account");
+                }
+                //});
 
-            $scope.carouselIndex7 = 0;
+                $rootScope.mydata = [{
+                    "username": "bob",
+                    "useraddress": "啥啊啊啊啊",
+                    "type": "1",
+                    "id": "1"
+                }, {
+                    "username": "gao",
+                    "useraddress": "事实上山",
+                    "type": "0",
+                    "id": "2"
+                }, {
+                    "username": "周杰伦",
+                    "useraddress": "台湾",
+                    "type": "0",
+                    "id": "31"
+                }, {
+                    "username": "啦啦啦",
+                    "useraddress": "呜呜",
+                    "type": "0",
+                    "id": "4"
+                }];
+
+            }
+            //
+            //$rootScope.mydata = [{
+            //    "username": "鲍庆鑫",
+            //    "useraddress": "鹤岗",
+            //    "type": "1",
+            //    "id": "1"
+            //}, {
+            //    "username": "高佳鹏",
+            //    "useraddress": "双鸭山",
+            //    "type": "0",
+            //    "id": "2"
+            //}, {
+            //    "username": "周杰伦",
+            //    "useraddress": "台湾",
+            //    "type": "0",
+            //    "id": "31"
+            //}, {
+            //    "username": "啦啦啦",
+            //    "useraddress": "呜呜",
+            //    "type": "0",
+            //    "id": "4"
+            //}];
+
+
 
             $rootScope.site = 1;
             $state.go("home.shop-info", {
                 site: 1
             });
-
 
 
         }
@@ -577,17 +632,17 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                         $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
                         $scope.currentPage = goPage;
                         $scope.busy = false;
-                        $scope.shops.push.apply($scope.shops,data.items);
-                    }).error(function(data){
-                        console.log("server error!");
+                        $scope.shops.push.apply($scope.shops, data.items);
+                    }).error(function(data) {
+                        //console.log("server error!");
                     });
                 }
             }
 
-            $scope.load(1,8);
+            $scope.load(1, 8);
         }
     ]).controller('ownerCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function ($scope, $http, $stateParams, $rootScope, $state) {
+        function($scope, $http, $stateParams, $rootScope, $state) {
             //var i = 0;
             //$scope.flg_src = "images/flag_01.png";
             //$scope.toggle = function () {
@@ -600,10 +655,44 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             //        $scope.flg_src = "images/flag_02.png";
             //    }
             //}
-            $scope.flag=true;
+            //$scope.flag = true;
+          
+            $scope.mydatas=$rootScope.mydata;
+            console.log($rootScope.mydata)
+        
+            $scope.change_flag = function(a) {
+                // alert(a);
+            }
+            $scope.deleteAddress = function(a) {
+                $scope.sure_delete = true;
+                $scope.sure = function() {
+                    $scope.sure_delete = false;
+                    //$http({
+                    //    method: "GET",
+                    //    url: basePath + "/getBusiness.do",
+                    //    params: {
+                    //       XX:XX
+                    //    }
+                    //}).success(function (data) {
+                    //    $scope.mydatas.splice(a,1);
+                    //}).error(function (data) {
+                    //
+                    //});
+                    $scope.mydatas.splice(a, 1);
+                }
+                $scope.cancel = function() {
+                    $scope.sure_delete = false;
+                }
+
+            }
+            $scope.add_address = function () {
+                //$scope.mydatas.push({"username": "打豆豆", "useraddress": "方法", "type": "1"});
+            }
+            //$scope.persons=$rootScope.mydata;
+            
         }
     ]).controller('accountRecordCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function ($scope, $http, $stateParams, $rootScope, $state) {
+        function($scope, $http, $stateParams, $rootScope, $state) {
             //var i = 0;
             //$scope.flg_src = "images/flag_01.png";
             //$scope.toggle = function () {
@@ -617,6 +706,31 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             //    }
             //}
             //$scope.flag=true;
+            //$scope.mydata = [{
+            //    "money": 100.00,
+            //    "address": "鹤岗",
+            //    "type": "1",
+            //    "id": "1",
+            //    "date": "2015-11"
+            //}, {
+            //    "money": 20.03,
+            //    "address": "双鸭山",
+            //    "type": "1",
+            //    "id": "2",
+            //    "date": "2015-9"
+            //}, {
+            //    "money": 5.02,
+            //    "address": "台湾",
+            //    "type": "0",
+            //    "id": "3",
+            //    "date": "2015-12"
+            //}, {
+            //    "money": 32.11,
+            //    "address": "呜呜",
+            //    "type": "0",
+            //    "id": "4",
+            //    "date": "2015-5"
+            //}];
         }
     ])
     //自定义过滤器 截取字符串长度
