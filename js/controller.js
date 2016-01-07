@@ -73,7 +73,6 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                     });
                 }
             }
-
             $scope.load(1, $scope.pageSize);
         }
     ]).controller('repairDetailCtrl', ['$scope', '$http', '$stateParams', '$timeout',
