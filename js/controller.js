@@ -42,7 +42,8 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                         url: basePath + "/repair/list.do",
                         params: {
                             offset: $scope.pageSize * (goPage - 1),
-                            limit: $scope.pageSize
+                            limit: $scope.pageSize,
+                            openid:sessionStorage.getItem("openId")
                         }
                     }).success(function(data) {
                         $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
@@ -122,7 +123,8 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                         'mobile': $scope.mobile,
                         'unit': $scope.unit,
                         'roomNo': $scope.roomNo,
-                        'floor': $scope.floor
+                        'floor': $scope.floor,
+                        'openid':sessionStorage.getItem("openId")
                     }
                 }).success(function(data) {
                     $scope.suc_show = true;
@@ -144,7 +146,8 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 url: basePath + "/complain/list.do",
                 params: {
                     offset: '0',
-                    limit: 1000
+                    limit: 1000,
+                    openid:sessionStorage.getItem("openId")
                 }
             }).success(function(data) {
                 $scope.complains = data.items;
@@ -173,7 +176,8 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                     data: {
                         title: $scope.title,
                         mobile: $scope.mobile,
-                        content: $scope.content
+                        content: $scope.content,
+                        openid:sessionStorage.getItem("openId")
                     }
                 }).success(function(data) {
                     $scope.suc_show = true;
@@ -195,6 +199,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 $rootScope.mydata.push({"username": $rootScope.floor, "useraddress":121212, "type": "1","id":4})
             }
             console.log("floor" + $stateParams.floor + " unit" + $stateParams.unit + " room" + $stateParams.room);
+            console.log("succees");
             $scope.floor = $stateParams.floor;
             $scope.unit = $stateParams.unit;
             $scope.room = $stateParams.room;
@@ -205,6 +210,8 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 method: "GET",
                 url: basePath + "/archives/getFloor.do"
             }).success(function(data) {
+                sessionStorage.setItem("openId", 123);
+                console.log("获取sessionStorage");
                 $scope.datas = data;
             });
         }
@@ -507,10 +514,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 method: "GET",
                 url: basePath + '/getopenid' + $location.url().substring($location.url().indexOf("?"))
             }).success(function(data) {
-                //sessionStorage.setItem("openId", data.openId);
-                //sessionStorage.setItem("accessToken", data.accessToken);
-                console.log("succees");
-
+                sessionStorage.setItem("openId", data.openid);
             }).error(function(data) {
 
             });
@@ -577,29 +581,6 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
 
             }
             //
-            //$rootScope.mydata = [{
-            //    "username": "鲍庆鑫",
-            //    "useraddress": "鹤岗",
-            //    "type": "1",
-            //    "id": "1"
-            //}, {
-            //    "username": "高佳鹏",
-            //    "useraddress": "双鸭山",
-            //    "type": "0",
-            //    "id": "2"
-            //}, {
-            //    "username": "周杰伦",
-            //    "useraddress": "台湾",
-            //    "type": "0",
-            //    "id": "31"
-            //}, {
-            //    "username": "啦啦啦",
-            //    "useraddress": "呜呜",
-            //    "type": "0",
-            //    "id": "4"
-            //}];
-
-
 
             $rootScope.site = 1;
             $state.go("home.shop-info", {
