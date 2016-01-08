@@ -7,7 +7,7 @@
 </a>
 
 
-<a class="weui_cell" ng-repeat="floor in floors.items | orderBy:'floor'" ui-sref="address-unit({floor1:floor.floor})" ng-if="floor.type == 2">
+<a class="weui_cell" ng-repeat="floor in floors.items | orderBy:'floor'" ui-sref="address-unit({floor:floor.floor})" ng-if="floor.type == 2">
     <div class="weui_cell_bd weui_cell_primary">
         <p>{{floor.floor}}</p>
     </div>
@@ -22,7 +22,7 @@
     <div class="weui_cell_ft">
     </div>
 </a>
-<a class="weui_cell" ng-repeat="floor in floors.items | orderBy:'floor'" ui-sref="address-final({floor:floor.floor})" ng-if="floor.type == 0">
+<a class="weui_cell" ng-repeat="floor in floors.items | orderBy:'floor'" ui-sref="address-final({id:floor.id,username:floor.ownerName,floor:floor.floor,initial:floor.initial})" ng-if="floor.type == 0">
     <div class="weui_cell_bd weui_cell_primary">
         <p>{{floor.floor}}</p>
     </div>

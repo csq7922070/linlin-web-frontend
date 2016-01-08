@@ -76,11 +76,12 @@ p {
 .account_page a {
     margin-top: -5px;
 }
-.account_page .weui_cell:before, .weui_cells:before{
+
+.account_page .weui_cell:before, .weui_cells:before {
     border: none;
 }
 
-.account_page .weui_cells:before{
+.account_page .weui_cells:before {
     border: none;
 }
 
@@ -94,7 +95,7 @@ p {
 }
 
 .border_line:before {
-    border-top: 1px solid #D9D9D9!important;
+    border-top: 1px solid #D9D9D9 !important;
     /*border-top: 1px solid red!important;*/
 }
 
@@ -151,9 +152,11 @@ p {
 .vis_none {
     visibility: hidden;
 }
-.pos_up{
+
+.pos_up {
     margin-top: 8px;
 }
+
 /*---------------------------------------支付页面--------------------------------------------*/
 .page_pay .weui_cell:nth-of-type(3):before {
     border-top: none;
@@ -169,14 +172,17 @@ p {
     margin-top: 10px;
     margin-bottom: 20px;
 }
-.friends_paid{
+
+.friends_paid {
     margin-top: 10px;
     font-size: 12px;
-   color: #dd4545;
+    color: #dd4545;
 }
-.page_pay{
+
+.page_pay {
     margin-top: 10px;
 }
+
 /*---------------------------------------home页面--------------------------------------------------*/
 .village {
     background-color: #4996ee;
@@ -326,6 +332,19 @@ p {
 .body_normal {
     margin-top: 0px;
 }
-.owner_bottom{
+
+.owner_bottom {
     height: 44px;
+}
+
+.img_active {
+    background-image: url("../images/flag_02.png");
+    width: 30px;
+    height: 30px;
+}
+
+.dis_active {
+    background-image: url("../images/flag_01.png");
+    width: 30px;
+    height: 30px;
 }

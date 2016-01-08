@@ -1,6 +1,6 @@
-//var basePath="http://192.168.0.128:8080/skh";
-var basePath="http://123.56.162.201/skh";
-//var basePath="http://192.168.0.119:8080/skh";
+//var basePath="http://192.168.0.133:8080/skh";
+var basePath = "http://123.56.162.201/skh";
+//var basePath="http://192.168.0.124:8080/skh";
 
 var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'skhControllers']);
 
@@ -68,13 +68,13 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: "tpl/service/address-room.html",
             controller: "addressRoomCtrl"
         })
-         .state('address-final', {
-            url: "/address-final/:floor/:unit/:room",
+        .state('address-final', {
+            url: "/address-final/:id/:floor/:unit/:room/:username/:initial",
             templateUrl: "tpl/service/address.html",
             controller: "addressCtrl"
         })
         .state('account', {
-            url: "/account/:floor/:unit/:room",
+            url: "/account/:floor/:unit/:room/:id/:username",
             templateUrl: "tpl/service/account.html",
             controller: "accountCtrl"
         })
@@ -153,7 +153,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
     $rootScope.$on('$stateChangeSuccess', function (event, to, toParams, from, fromParams) {
         $rootScope.previousState = from.name;
         $rootScope.currentState = to.name;
-        console.log('Previous state:' + $rootScope.previousState);
-        console.log('Current state:' + $rootScope.currentState);
+        //console.log('Previous state:' + $rootScope.previousState);
+        //console.log('Current state:' + $rootScope.currentState);
     });
 }]);

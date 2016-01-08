@@ -1,12 +1,14 @@
-<div class="weui_cells weui_cells_access address_down account_page owner_top" ng-repeat="person in mydatas" >
+<div class="weui_cells weui_cells_access address_down account_page owner_top" ng-repeat="house in houses">
     <!--加上ng -repeat-->
-    <div class="weui_cell" ui-sref="account">
+    <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
             <p>业主信息</p>
         </div>
-        <div class="address_section">
-            <!--<span>{{floor}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>-->
-            {{person.useraddress}}
+        <!--:floor/:unit/:room/:id/:username-->
+        <div class="address_section"
+             ui-sref="account({floor:house.floor,unit:house.unit,room:house.room,id:house.id,username:house.owners[0].ownerName})">
+            <span>{{house.floor}}</span><span ng-if="house.info">-{{house.unit}}</span><span ng-if="house.room">-{{house.room}}</span>
+            <!--{{info.floor}}-->
         </div>
     </div>
     <div class="weui_cell">
@@ -14,87 +16,27 @@
             <p></p>
         </div>
         <div class="people_name">
-            {{person.username}}
+            {{house.owners[0].ownerName}}
         </div>
     </div>
     <div class="weui_cell ofen_address">
-        <div class="weui_cell_hd" ng-init="aa=1" ng-click="aa=-aa">
+        <div class="weui_cell_hd" ng-click="house.change_flag()"
+             ng-class="{'img_active':house.id==id,'dis_active':house.id!=id}">
             <!--<img src="images/flag_01.png" alt="icon" ng-if="person.type==0" style="width:30px;">-->
             <!--<img src="images/flag_02.png" alt="icon" ng-if="person.type!=0" style="width:30px;">-->
-            <img src="images/flag_01.png" alt="icon" ng-if="aa==1" style="width:30px;">
-            <img src="images/flag_02.png" alt="icon" ng-if="aa!=1" style="width:30px;">
+            <!--<img src="images/flag_01.png" alt="icon" style="width:30px;">-->
+            <!--<img src="images/flag_02.png" alt="icon" style="width:30px;">-->
         </div>
         <div class="weui_cell_bd weui_cell_primary">
             <p>设为我的常用地址</p>
         </div>
-        <div class="owner_name_del" ng-click="deleteAddress($index)">删除</div>
+        <div class="owner_name_del" ng-click="house.deleteAddress($index)">删除</div>
     </div>
 </div>
-<!--<div class="weui_cells weui_cells_access address_down account_page owner_top" >-->
-    <!--&lt;!&ndash;加上ng -repeat&ndash;&gt;-->
-    <!--<a class="weui_cell" ui-sref="account">-->
-        <!--<div class="weui_cell_bd weui_cell_primary">-->
-            <!--<p>业主信息</p>-->
-        <!--</div>-->
-        <!--<div class="address_section">-->
-            <!--<span>{{floor}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>帝景园2-1-1-->
-        <!--</div>-->
-    <!--</a>-->
-    <!--<a class="weui_cell">-->
-        <!--<div class="weui_cell_bd weui_cell_primary">-->
-            <!--<p></p>-->
-        <!--</div>-->
-        <!--<div class="people_name">-->
-            <!--&lt;!&ndash;{{ownerName}}&ndash;&gt;-->
-            <!--刘景-->
-        <!--</div>-->
-    <!--</a>-->
-    <!--<a class="weui_cell ofen_address">-->
 
-        <!--<div class="weui_cell_hd" ng-click="flag=!flag">-->
-            <!--<img src="images/flag_01.png" alt="icon" ng-if="flag" style="width:30px;">-->
-            <!--<img src="images/flag_02.png" alt="icon" ng-if="!flag" style="width:30px;">-->
-        <!--</div>-->
-        <!--<div class="weui_cell_bd weui_cell_primary">-->
-            <!--<p>设为我的常用地址</p>-->
-        <!--</div>-->
-        <!--<div class="owner_name_del">删除</div>-->
-    <!--</a>-->
-<!--</div>-->
-<!--<div class="weui_cells weui_cells_access address_down account_page owner_top">-->
-    <!--&lt;!&ndash;加上ng -repeat&ndash;&gt;-->
-    <!--<a class="weui_cell">-->
-        <!--<div class="weui_cell_bd weui_cell_primary">-->
-            <!--<p>业主信息</p>-->
-        <!--</div>-->
-        <!--<div class="address_section">-->
-            <!--&lt;!&ndash;<span>{{floor}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>&ndash;&gt;帝景园2-1-1-->
-            <!--&lt;!&ndash;刘*宇&ndash;&gt;-->
-        <!--</div>-->
-    <!--</a>-->
-    <!--<a class="weui_cell">-->
-        <!--<div class="weui_cell_bd weui_cell_primary">-->
-            <!--<p></p>-->
-        <!--</div>-->
-        <!--<div class="people_name">-->
-            <!--{{ownerName}}刘*宇-->
-        <!--</div>-->
-    <!--</a>-->
-    <!--<a class="weui_cell ofen_address">-->
-        <!--<div class="weui_cell_hd" ng-click="flag=!flag">-->
-            <!--<img src="images/flag_01.png" alt="icon" ng-if="flag" style="width:30px;">-->
-            <!--<img src="images/flag_02.png" alt="icon" ng-if="!flag" style="width:30px;">-->
-        <!--</div>-->
-
-        <!--<div class="weui_cell_bd weui_cell_primary">-->
-            <!--<p>设为我的常用地址</p>-->
-        <!--</div>-->
-        <!--<div class="owner_name_del" ng-click="del_owner()">删除</div>-->
-    <!--</a>-->
-<!--</div>-->
 <div class="owner_bottom"></div>
 <!--<div class="add_address" ui-sref="address({location:1})" ng-click="add_address()">+新增地址</div>-->
-<div class="add_address" ng-click="add_address()" ui-sref="address">+新增地址</div>
+<div class="add_address" ng-click="add_address()" ui-sref="address-final">+新增地址</div>
 <!--提示框-->
 <div class="weui_dialog_confirm" ng-show="sure_delete">
     <div class="weui_mask"></div>
