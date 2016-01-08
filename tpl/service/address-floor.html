@@ -1,11 +1,9 @@
 <div class="weui_cells weui_cells_access address_down" ng-repeat="floors in datas">
-
-<a class="weui_cell" style="background-color: #EEEEEE;height: 30px;border-top: none">
-    <div class="weui_cell_bd weui_cell_primary">
-        <p>{{floors.initial}}</p>
-    </div>
-</a>
-
+    <a class="weui_cell" style="background-color: #EEEEEE;height: 30px;border-top: none">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>{{floors.initial}}</p>
+        </div>
+    </a>
 
 <a class="weui_cell" ng-repeat="floor in floors.items | orderBy:'floor'" ui-sref="address-unit({floor:floor.floor})" ng-if="floor.type == 2">
     <div class="weui_cell_bd weui_cell_primary">
@@ -29,6 +27,4 @@
     <div class="weui_cell_ft">
     </div>
 </a>
-
 </div>
-

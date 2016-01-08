@@ -2,8 +2,18 @@
 <html ng-app="myApp">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no">
+
 <head>
     <title>linlin</title>
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?d2f7253c2704c660af00f37d5d12fbef";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
     <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
     <script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script type="text/javascript" src="bower_components/angular-carousel/dist/angular-carousel.min.js"></script>
@@ -21,7 +31,7 @@
 </head>
 
 <body>
-<div ui-view></div>
+    <div ui-view></div>
 </body>
 
 </html>
