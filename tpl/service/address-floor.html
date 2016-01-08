@@ -12,7 +12,7 @@
             <div class="weui_cell_ft">
             </div>
         </a>
-        <a  class="weui_cell" ui-sref="address-room({floor:floor.floor})" ng-if="floor.type == 1">
+        <a class="weui_cell" ui-sref="address-room({floor:floor.floor})" ng-if="floor.type == 1">
             <div class="weui_cell_bd weui_cell_primary">
                 <p>{{floor.floor}}</p>
             </div>
@@ -27,33 +27,5 @@
             </div>
         </a>
     </div>
-<<<<<<< Upstream, based on branch 'master' of http://192.168.0.95:10080/g731/linlin-web-frontend.git
-</a>
-
-
-<a class="weui_cell" ng-repeat="floor in floors.items | orderBy:'floor'" ui-sref="address-unit({floor1:floor.floor})" ng-if="floor.type == 2">
-    <div class="weui_cell_bd weui_cell_primary">
-        <p>{{floor.floor}}</p>
-    </div>
-    <div class="weui_cell_ft">
-    </div>
-</a>
-
-<a class="weui_cell" ng-repeat="floor in floors.items | orderBy:'floor'" ui-sref="address-room({floor:floor.floor})" ng-if="floor.type == 1">
-    <div class="weui_cell_bd weui_cell_primary">
-        <p>{{floor.floor}}</p>
-    </div>
-    <div class="weui_cell_ft">
-    </div>
-</a>
-<a class="weui_cell" ng-repeat="floor in floors.items | orderBy:'floor'" ui-sref="address-final({floor:floor.floor})" ng-if="floor.type == 0">
-    <div class="weui_cell_bd weui_cell_primary">
-        <p>{{floor.floor}}</p>
-    </div>
-    <div class="weui_cell_ft">
-    </div>
-</a>
-
-=======
->>>>>>> f94abbf 楼栋地址查询修改
+    </a>
 </div>
