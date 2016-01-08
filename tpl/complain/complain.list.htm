@@ -20,9 +20,10 @@
         <li>
             <div class='date_state'>
                 <span class='date'>{{complain.createDate}}</span>
-                <span class='state'>{{complain.complainState}}</span>
+                <span class='state' ng-if="complain.complainState == 0">未回复</span>
+                <span class='state' ng-if="complain.complainState == 1">已回复</span>
             </div>
-            <div class='goods'>{{complain.content}}</div>
+            <div class='goods'>{{complain.title}}</div>
             <div class='state_btn'>
                 <a ui-sref="complain-detail({id:complain.id})" class='check'> 查看 </a>
             </div>
