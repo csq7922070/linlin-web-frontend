@@ -1,9 +1,33 @@
 <div class="weui_cells weui_cells_access address_down" ng-repeat="floors in datas">
-
-<a class="weui_cell" style="background-color: #EEEEEE;height: 30px;border-top: none">
-    <div class="weui_cell_bd weui_cell_primary">
-        <p>{{floors.initial}}</p>
+    <a class="weui_cell" style="background-color: #EEEEEE;height: 30px;border-top: none">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>{{floors.initial}}</p>
+        </div>
+    </a>
+    <div ng-repeat="floor in floors.items">
+        <a class="weui_cell" ui-sref="address-final({floor:floor.floor})" ng-if="floor.type == 0">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>{{floor.floor}}</p>
+            </div>
+            <div class="weui_cell_ft">
+            </div>
+        </a>
+        <a  class="weui_cell" ui-sref="address-room({floor:floor.floor})" ng-if="floor.type == 1">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>{{floor.floor}}</p>
+            </div>
+            <div class="weui_cell_ft">
+            </div>
+        </a>
+        <a class="weui_cell" ui-sref="address-unit({floor:floor.floor})" ng-if="floor.type == 2">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>{{floor.floor}}</p>
+            </div>
+            <div class="weui_cell_ft">
+            </div>
+        </a>
     </div>
+<<<<<<< Upstream, based on branch 'master' of http://192.168.0.95:10080/g731/linlin-web-frontend.git
 </a>
 
 
@@ -30,5 +54,6 @@
     </div>
 </a>
 
+=======
+>>>>>>> f94abbf 楼栋地址查询修改
 </div>
-
