@@ -22,10 +22,6 @@
     <div class="weui_cell ofen_address">
         <div class="weui_cell_hd" ng-click="house.change_flag()"
              ng-class="{'img_active':house.id==id,'dis_active':house.id!=id}">
-            <!--<img src="images/flag_01.png" alt="icon" ng-if="person.type==0" style="width:30px;">-->
-            <!--<img src="images/flag_02.png" alt="icon" ng-if="person.type!=0" style="width:30px;">-->
-            <!--<img src="images/flag_01.png" alt="icon" style="width:30px;">-->
-            <!--<img src="images/flag_02.png" alt="icon" style="width:30px;">-->
         </div>
         <div class="weui_cell_bd weui_cell_primary">
             <p>设为我的常用地址</p>
@@ -36,7 +32,7 @@
 
 <div class="owner_bottom"></div>
 <!--<div class="add_address" ui-sref="address({location:1})" ng-click="add_address()">+新增地址</div>-->
-<div class="add_address" ng-click="add_address()" ui-sref="address-final">+新增地址</div>
+<div class="add_address"  ui-sref="address-final">+新增地址</div>
 <!--提示框-->
 <div class="weui_dialog_confirm" ng-show="sure_delete">
     <div class="weui_mask"></div>

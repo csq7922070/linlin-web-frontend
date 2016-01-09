@@ -5,9 +5,7 @@ var basePath = "http://123.56.162.201/skh";
 var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'skhControllers']);
 
 myApp.config(function ($stateProvider, $urlRouterProvider) {
-
     $urlRouterProvider.otherwise("/home");
-
     $stateProvider
         .state('notice', {
             url: "/notice/list",

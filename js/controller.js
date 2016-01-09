@@ -196,8 +196,6 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
     function ($scope, $http, $stateParams, $rootScope) {
         //添加地址
         $scope.add_newaddress = function () {
-            //自定义传参数
-            //$rootScope.mydata.push({"username": $rootScope.floor, "useraddress":121212, "type": "1","id":4});
 
             //1.8向后台添加地址
             $http({
@@ -235,8 +233,6 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             method: "GET",
             url: basePath + "/archives/getFloor.do"
         }).success(function (data) {
-            //sessionStorage.setItem("openId", 123);
-            //console.log("获取sessionStorage");
             $scope.datas = data;
         });
     }
@@ -271,13 +267,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
 ]).controller('accountCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
     function ($scope, $http, $stateParams, $rootScope, $state) {
         //显示当前页面的业主信息
-
-        if ($stateParams.username != "") {
-            $scope.ownerName = $stateParams.username;
-        }
-        else {
-            $scope.ownerName = $
-        }
+        $scope.ownerName = $stateParams.username;
         $scope.floor = $stateParams.floor;
         $scope.unit = $stateParams.unit;
         $scope.room = $stateParams.room;
@@ -291,17 +281,8 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 id: $stateParams.id
             }
         }).success(function (data) {
-            //$scope.floor = $rootScope.floor;
-            //$scope.unit = $rootScope.unit;
-            //$scope.room = $rootScope.room;
-            //$scope.ownerName = $rootScope.ownName;
-
             $scope.freeShow = false;
             var list = data.amountList;
-
-            //模拟数据house
-            var house = [];
-
             var ret = {};
             ret.datas = new Array();
 
@@ -337,16 +318,12 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             }
 
             $scope.payments = ret.datas;
-
             $scope.selectAll = function () {
-
             }
-
             $scope.selected = [];
-
             $scope.total = 0;
 
-            //               单点
+            //按钮单点
             $scope.update = function (ele) {
                 if (ele.selected) {
                     if ($scope.selected.indexOf(ele.id) == -1) {
@@ -408,7 +385,6 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                                 }
                             }
                         }
-
                         break;
                     }
                 }
@@ -479,7 +455,6 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                                 ef += v3[i].amount;
                                 emonth.push(v3[i].month)
                             }
-
                         }
                         ;
                     }
@@ -489,18 +464,6 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 $rootScope.wmonth = wmonth;
                 $rootScope.emonth = emonth;
             }
-            // var i = 0;
-            // $scope.flg_src = "images/flag_01.png";
-            // $scope.toggle = function() {
-            //     i++;
-            //    if (i % 2 == 0) {
-            //        $scope.flg_src = "images/flag_01.png";
-
-            //   } else {
-            //      $scope.flg_src = "images/flag_02.png";
-            //  }
-            //}
-
         });
     }
 ]).controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
@@ -540,11 +503,13 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
     .controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
         function ($scope, $http, $stateParams, $rootScope, $state, $location) {
             //1.6获取微信用户openid
+            //sessionStorage.setItem("openId", "126");
             $http({
                 method: "GET",
                 url: basePath + '/getopenid' + $location.url().substring($location.url().indexOf("?"))
             }).success(function (data) {
                 sessionStorage.setItem("openId", data.openid);
+                //sessionStorage.setItem("openId", "126");
                 console.log("获取openid成功");
             }).error(function (data) {
                 console.log("获取openid失败");
@@ -554,12 +519,10 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             $scope.slides7 = [{
                 id: 10,
                 label: "slide #1",
-                //img: "http://lorempixel.com/450/300/sports/0"
                 img: "images/banner_01.png"
             }, {
                 id: 11,
                 label: "slide #2",
-                //img: "http://lorempixel.com/450/300/people/1"
                 img: "images/banner_02.png"
             }, {
                 id: 12,
@@ -570,14 +533,15 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
 
             $scope.getInto = function () {
                 //向后台传openid
+                console.log(sessionStorage.getItem("openId"));
                 $http({
                     method: "GET",
                     url: basePath + "/archives/getAddress",
                     //openid:sessionStorage.getItem("openid")
                     params: {
                         openid: sessionStorage.getItem("openId")
+                        //openid: 125
                     }
-                    //openid:123
                 }).success(function (data) {
                     if (data.type == 1) {
                         console.log("默认地址type=1");
@@ -594,9 +558,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                         console.log("默认地址type=0");
 
                         ///account/:floor/:unit/:room/:id/:username
-                        $state.go("address", {
-                            //floor:
-                        });
+                        $state.go("address",{});
                     }
                     //console.log("向后台传openid成功");
                 }).error(function (data) {
@@ -608,8 +570,6 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             $state.go("home.shop-info", {
                 site: 1
             });
-
-
         }
     ])
     .controller('shopInfoCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
@@ -679,8 +639,6 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
 
                     };
                     house.change_flag = function (b) {
-                        //$scope.sure=function(){
-                        //$scope.sure_delete = false;
                         $http({
                             method: "POST",
                             url: basePath + "/archives/updateHouseActive",
@@ -695,66 +653,15 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                         }).error(function (data) {
                             console.log("设置默认地址失败");
                         });
-                        //}
                     }
-                    //house.activate=function(){
-                    //
-                    //}
+
                 })
             }).error(function (data) {
-
             });
-
-            //$scope.mydatas=$rootScope.mydata;
-            //console.log($rootScope.mydata)
-
-            //$scope.change_flag = function(a) {
-            //    // alert(a);
-            //}
-            //$scope.deleteAddress = function(a) {
-            //    $scope.sure_delete = true;
-            //    $scope.sure = function() {
-            //        $scope.sure_delete = false;
-            //        $http({
-            //            method: "GET",
-            //            url: basePath + "/archives/delHouse",
-            //            params: {
-            //               id:XX
-            //            }
-            //        }).success(function (data) {
-            //            $scope.mydatas.splice(a,1);
-            //        }).error(function (data) {
-            //
-            //        });
-            //        //$scope.mydatas.splice(a, 1);
-            //        console.log("执行删除,没有数据")
-            //    }
-            //    $scope.cancel = function() {
-            //        $scope.sure_delete = false;
-            //    }
-            //
-            //}
-            $scope.add_address = function () {
-                //$scope.mydatas.push({"username": "打豆豆", "useraddress": "方法", "type": "1"});
-            }
-            //$scope.persons=$rootScope.mydata;
-
         }
     ]).controller('accountRecordCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
         function ($scope, $http, $stateParams, $rootScope, $state) {
-            //var i = 0;
-            //$scope.flg_src = "images/flag_01.png";
-            //$scope.toggle = function () {
-            //    i++;
-            //    if (i % 2 == 0) {
-            //        $scope.flg_src = "images/flag_01.png";
-            //
-            //    }
-            //    else {
-            //        $scope.flg_src = "images/flag_02.png";
-            //    }
-            //}
-            //$scope.flag=true;
+            console.log("成功加载record.html")
         }
     ])
 //自定义过滤器 截取字符串长度
@@ -773,7 +680,6 @@ skhControllers.filter('cut', function () {
                 value = value.substr(0, lastspace);
             }
         }
-
         return value + (tail || '...');
     };
 })
