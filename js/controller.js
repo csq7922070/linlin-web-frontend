@@ -706,6 +706,9 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                                 console.log("删除失败")
                             });
                         }
+                        $scope.cancel=function(){
+                            $scope.sure_delete = false;
+                        }
                     };
                     house.change_flag = function (b) {
                         $http({
