@@ -1,7 +1,7 @@
 <div when-scrolled="load({{currentPage+1}},{{pageSize}})">
     <div class="row home_list" ng-repeat="shop in shops" ng-if="site!=3">
         <a href="{{shop.business_url}}">
-            <div class="col-xs-4"><img ng-src="{{shop.s_photo_url}}" alt="暂无图片" style="padding-left: 2px;border-radius: 5px"></div>
+            <div class="col-xs-4"><img ng-src="{{shop.s_photo_url}}" err-src="images/404.png" alt="暂无图片" style="padding-left: 2px;border-radius: 5px"></div>
             <div class="col-xs-8 clear_padd">
                 <div class="shop_name">{{shop.name}}</div>
                 <div class="star"><img ng-src="images/star_{{shop.avgRating}}.png" style="height: 14px"></div>
