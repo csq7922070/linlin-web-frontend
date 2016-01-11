@@ -97,7 +97,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
             controller: "ownerCtrl"
         })
         .state('account-record', {
-            url: "/account-record",
+            url: "/account-record/:id",
             templateUrl: "tpl/service/account-record.html",
             controller: "accountRecordCtrl"
         })

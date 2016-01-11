@@ -54,7 +54,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                         r.confirm = function () {
                             $http({
                                 method: "POST",
-                                url: basePath + "/repair/confirm.do",
+                                url: basePath + "/repair/finish.do",
                                 data: {
                                     id: r.id
                                 }
@@ -273,6 +273,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
         $scope.unit = $stateParams.unit;
         $scope.room = $stateParams.room;
         $scope.id = $stateParams.id;
+        console.log($stateParams.id)
         //获取水电费等数据
         $http({
             method: "GET",
@@ -282,96 +283,148 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 id: $stateParams.id
             }
         }).success(function (data) {
-            $scope.freeShow = false;
-            var list = data.amountList;
-            var ret = {};
-            ret.datas = new Array();
+            if(data!=""){
+                $scope.freeShow = false;
+                var list = data.amountList;
+                var ret = {};
+                ret.datas = new Array();
 
-            for (var i = 0; i < list.length; i++) {
-                var yearmonth = list[i].year + "年" + list[i].month + "月";
-                var ele = {};
-                ele.id = list[i].id;
-                ele.type = list[i].paymentType;
-                ele.amount = list[i].amount;
-                if (ret.datas.length > 0) {
-                    for (var j = 0; j < ret.datas.length; j++) {
-                        if (ret.datas[j].yearmonth == yearmonth) {
-                            ret.datas[j].eles.push(ele);
-                            break;
+                for (var i = 0; i < list.length; i++) {
+                    var yearmonth = list[i].year + "年" + list[i].month + "月";
+                    var ele = {};
+                    ele.id = list[i].id;
+                    ele.type = list[i].paymentType;
+                    ele.amount = list[i].amount;
+                    if (ret.datas.length > 0) {
+                        for (var j = 0; j < ret.datas.length; j++) {
+                            if (ret.datas[j].yearmonth == yearmonth) {
+                                ret.datas[j].eles.push(ele);
+                                break;
+                            }
                         }
-                    }
 
-                    if (j == ret.datas.length) {
+                        if (j == ret.datas.length) {
+                            var data = {};
+                            data.yearmonth = yearmonth;
+                            data.eles = new Array();
+                            data.eles.push(ele);
+                            ret.datas.push(data);
+                        }
+
+                    } else {
                         var data = {};
                         data.yearmonth = yearmonth;
                         data.eles = new Array();
                         data.eles.push(ele);
                         ret.datas.push(data);
                     }
-
-                } else {
-                    var data = {};
-                    data.yearmonth = yearmonth;
-                    data.eles = new Array();
-                    data.eles.push(ele);
-                    ret.datas.push(data);
-                }
-            }
-
-            $scope.payments = ret.datas;
-            $scope.selectAll = function () {
-            }
-            $scope.selected = [];
-            $scope.total = 0;
-
-            //按钮单点
-            $scope.update = function (ele) {
-                if (ele.selected) {
-                    if ($scope.selected.indexOf(ele.id) == -1) {
-                        $scope.selected.push(ele.id);
-                        $scope.total += ele.amount;
-                    }
-                } else {
-                    if ($scope.selected.indexOf(ele.id) != -1) {
-                        var idx = $scope.selected.indexOf(ele.id);
-                        $scope.selected.splice(idx, 1);
-                        $scope.total -= ele.amount;
-                    }
                 }
 
-                var wf = 0;
-                var ef = 0;
-                var wmonth = [];
-                var emonth = [];
-                var v2 = $scope.selected;
+                $scope.payments = ret.datas;
+                $scope.selectAll = function () {
+                }
+                $scope.selected = [];
+                $scope.total = 0;
 
-                var v3 = list;
-                for (var i = 0; i < v3.length; i++) {
-                    for (var j = 0; j < v2.length; j++) {
-                        if (v3[i].id == (v2[j])) {
-                            if (v3[i].paymentType == 0) {
-                                wf += v3[i].amount;
-                                wmonth.push(v3[i].month)
-                            } else {
-                                ef += v3[i].amount;
-                                emonth.push(v3[i].month)
-                            }
+                //按钮单点
+                $scope.update = function (ele) {
+                    if (ele.selected) {
+                        if ($scope.selected.indexOf(ele.id) == -1) {
+                            $scope.selected.push(ele.id);
+                            $scope.total += ele.amount;
                         }
-                        ;
+                    } else {
+                        if ($scope.selected.indexOf(ele.id) != -1) {
+                            var idx = $scope.selected.indexOf(ele.id);
+                            $scope.selected.splice(idx, 1);
+                            $scope.total -= ele.amount;
+                        }
                     }
-                }
-                $rootScope.waterFree = wf;
-                $rootScope.eleFree = ef;
-                $rootScope.wmonth = wmonth;
-                $rootScope.emonth = emonth;
-            }
 
-            $scope.updateYearmonth = function (yearmonth, selected) {
-                for (var i = 0; i < $scope.payments.length; i++) {
-                    if ($scope.payments[i].yearmonth == yearmonth) {
-                        for (var j = 0; j < $scope.payments[i].eles.length; j++) {
-                            var ele = $scope.payments[i].eles[j];
-                            if (selected) {
+                    var wf = 0;
+                    var ef = 0;
+                    var wmonth = [];
+                    var emonth = [];
+                    var v2 = $scope.selected;
+
+                    var v3 = list;
+                    for (var i = 0; i < v3.length; i++) {
+                        for (var j = 0; j < v2.length; j++) {
+                            if (v3[i].id == (v2[j])) {
+                                if (v3[i].paymentType == 0) {
+                                    wf += v3[i].amount;
+                                    wmonth.push(v3[i].month)
+                                } else {
+                                    ef += v3[i].amount;
+                                    emonth.push(v3[i].month)
+                                }
+                            }
+                            ;
+                        }
+                    }
+                    $rootScope.waterFree = wf;
+                    $rootScope.eleFree = ef;
+                    $rootScope.wmonth = wmonth;
+                    $rootScope.emonth = emonth;
+                }
+
+                $scope.updateYearmonth = function (yearmonth, selected) {
+                    for (var i = 0; i < $scope.payments.length; i++) {
+                        if ($scope.payments[i].yearmonth == yearmonth) {
+                            for (var j = 0; j < $scope.payments[i].eles.length; j++) {
+                                var ele = $scope.payments[i].eles[j];
+                                if (selected) {
+                                    if ($scope.selected.indexOf(ele.id) == -1) {
+                                        $scope.selected.push(ele.id);
+                                        $scope.total += ele.amount;
+                                        ele.selected = true;
+                                    }
+                                } else {
+                                    if ($scope.selected.indexOf(ele.id) != -1) {
+                                        var idx = $scope.selected.indexOf(ele.id);
+                                        $scope.selected.splice(idx, 1);
+                                        $scope.total -= ele.amount;
+                                        ele.selected = false;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+
+                    var wf = 0;
+                    var ef = 0;
+                    var v2 = $scope.selected;
+
+                    var wmonth = [];
+                    var emonth = [];
+
+                    var v3 = list;
+                    for (var i = 0; i < v3.length; i++) {
+                        for (var j = 0; j < v2.length; j++) {
+                            if (v3[i].id == (v2[j])) {
+                                if (v3[i].paymentType == 0) {
+                                    wf += v3[i].amount;
+                                    wmonth.push(v3[i].month)
+                                } else {
+                                    ef += v3[i].amount;
+                                    emonth.push(v3[i].month)
+                                }
+                            }
+                            ;
+                        }
+                    }
+                    $rootScope.waterFree = wf;
+                    $rootScope.eleFree = ef;
+                    $rootScope.wmonth = wmonth;
+                    $rootScope.emonth = emonth;
+                }
+
+                $scope.updateAll = function (sel) {
+                    angular.forEach($scope.payments, function (payment) {
+                        payment.selected = sel;
+                        angular.forEach(payment.eles, function (ele) {
+                            if (sel) {
                                 if ($scope.selected.indexOf(ele.id) == -1) {
                                     $scope.selected.push(ele.id);
                                     $scope.total += ele.amount;
@@ -385,90 +438,43 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                                     ele.selected = false;
                                 }
                             }
-                        }
-                        break;
-                    }
-                }
-
-                var wf = 0;
-                var ef = 0;
-                var v2 = $scope.selected;
-
-                var wmonth = [];
-                var emonth = [];
-
-                var v3 = list;
-                for (var i = 0; i < v3.length; i++) {
-                    for (var j = 0; j < v2.length; j++) {
-                        if (v3[i].id == (v2[j])) {
-                            if (v3[i].paymentType == 0) {
-                                wf += v3[i].amount;
-                                wmonth.push(v3[i].month)
-                            } else {
-                                ef += v3[i].amount;
-                                emonth.push(v3[i].month)
-                            }
-                        }
-                        ;
-                    }
-                }
-                $rootScope.waterFree = wf;
-                $rootScope.eleFree = ef;
-                $rootScope.wmonth = wmonth;
-                $rootScope.emonth = emonth;
-            }
-
-            $scope.updateAll = function (sel) {
-                angular.forEach($scope.payments, function (payment) {
-                    payment.selected = sel;
-                    angular.forEach(payment.eles, function (ele) {
-                        if (sel) {
-                            if ($scope.selected.indexOf(ele.id) == -1) {
-                                $scope.selected.push(ele.id);
-                                $scope.total += ele.amount;
-                                ele.selected = true;
-                            }
-                        } else {
-                            if ($scope.selected.indexOf(ele.id) != -1) {
-                                var idx = $scope.selected.indexOf(ele.id);
-                                $scope.selected.splice(idx, 1);
-                                $scope.total -= ele.amount;
-                                ele.selected = false;
-                            }
-                        }
+                        })
                     })
-                })
 
-                var wf = 0;
-                var ef = 0;
-                var v2 = $scope.selected;
-                var wmonth = [];
-                var emonth = [];
+                    var wf = 0;
+                    var ef = 0;
+                    var v2 = $scope.selected;
+                    var wmonth = [];
+                    var emonth = [];
 
-                var v3 = list;
-                for (var i = 0; i < v3.length; i++) {
-                    for (var j = 0; j < v2.length; j++) {
-                        if (v3[i].id == (v2[j])) {
-                            if (v3[i].paymentType == 0) {
-                                wf += v3[i].amount;
-                                wmonth.push(v3[i].month)
-                            } else {
-                                ef += v3[i].amount;
-                                emonth.push(v3[i].month)
+                    var v3 = list;
+                    for (var i = 0; i < v3.length; i++) {
+                        for (var j = 0; j < v2.length; j++) {
+                            if (v3[i].id == (v2[j])) {
+                                if (v3[i].paymentType == 0) {
+                                    wf += v3[i].amount;
+                                    wmonth.push(v3[i].month)
+                                } else {
+                                    ef += v3[i].amount;
+                                    emonth.push(v3[i].month)
+                                }
                             }
+                            ;
                         }
-                        ;
                     }
+                    $rootScope.waterFree = wf;
+                    $rootScope.eleFree = ef;
+                    $rootScope.wmonth = wmonth;
+                    $rootScope.emonth = emonth;
                 }
-                $rootScope.waterFree = wf;
-                $rootScope.eleFree = ef;
-                $rootScope.wmonth = wmonth;
-                $rootScope.emonth = emonth;
             }
+        }).error(function(data){
+            console.log("数据")
         });
     }
 ]).controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
     function ($scope, $http, $stateParams, $rootScope, $state) {
+
         //$http({
         //    method: "GET",
         //    url: basePath + "/archives/getRoom.do",
@@ -476,10 +482,11 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
         //}).success(function (data) {
         //
         //});
-        //$scope.watmonth_f = $rootScope.wmonth;
-        //$scope.watmonth = $scope.watmonth_f.join(",");
-        //$scope.elmonth_f = $rootScope.emonth;
-        //$scope.elmonth = $scope.elmonth_f.join(",");
+        //这里不要删除
+        $scope.watmonth_f = $rootScope.wmonth;
+        $scope.watmonth = $scope.watmonth_f.join(",");
+        $scope.elmonth_f = $rootScope.emonth;
+        $scope.elmonth = $scope.elmonth_f.join(",");
         //
         //$scope.floor = $rootScope.floor;
         //$scope.unit = $rootScope.unit;
@@ -574,7 +581,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
     .controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
         function ($scope, $http, $stateParams, $rootScope, $state, $location) {
             //1.6获取微信用户openid
-            //sessionStorage.setItem("openid", "126");
+            //sessionStorage.setItem("openid", "127");
             $http({
                 method: "GET",
                 url: basePath + '/getopenid' + $location.url().substring($location.url().indexOf("?"))
@@ -585,7 +592,6 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             }).error(function (data) {
                 console.log("获取openid失败");
             });
-
 
             $scope.slides7 = [{
                 id: 10,
@@ -601,41 +607,6 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 img: "http://lorempixel.com/450/300/people/2"
             }];
             $scope.carouselIndex7 = 0;
-
-            $scope.getInto = function () {
-                //向后台传openid
-                console.log(sessionStorage.getItem("openid"));
-                $http({
-                    method: "GET",
-                    url: basePath + "/archives/getAddress",
-                    //openid:sessionStorage.getItem("openid")
-                    params: {
-                        openid: sessionStorage.getItem("openid")
-                        //openid: 125
-                    }
-                }).success(function (data) {
-                    if (data.type == 1) {
-                        console.log("默认地址type=1");
-
-                        $state.go("account", {
-                            floor: data.items.floor,
-                            unit: data.items.unit,
-                            room: data.items.roomNo,
-                            id: data.items.id,
-                            username: data.items.owners[0].ownerName
-                        });
-                    }
-                    else if (data.type == 0) {
-                        console.log("默认地址type=0");
-
-                        ///account/:floor/:unit/:room/:id/:username
-                        $state.go("address",{});
-                    }
-                    //console.log("向后台传openid成功");
-                }).error(function (data) {
-                    console.log("向后台传openid失败");
-                });
-            }
 
             $rootScope.site = 1;
             $state.go("home.shop-info", {
@@ -686,54 +657,73 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                     openid: sessionStorage.getItem("openid")
                 }
             }).success(function (data) {
-                $scope.houses = data.items;
-                data.items.forEach(function (house) {
-                    house.deleteAddress = function (a) {
-                        //console.log("click")
-                        $scope.sure_delete = true;
-                        $scope.sure = function () {
-                            $scope.sure_delete = false;
+                if(data!=""){
+                    $scope.houses = data.items;
+                    console.log(data);
+                    data.items.forEach(function (house) {
+                        house.deleteAddress = function (a) {
+                            //console.log("click")
+                            $scope.sure_delete = true;
+                            $scope.sure = function () {
+                                $scope.sure_delete = false;
+                                $http({
+                                    method: "POST",
+                                    url: basePath + "/archives/delHouse",
+                                    data: {
+                                        id: house.id
+                                    }
+                                }).success(function (data) {
+                                    $scope.houses.splice(a, 1);
+                                    console.log("删除成功")
+                                }).error(function (data) {
+                                    console.log("删除失败")
+                                });
+                            }
+                            $scope.cancel=function(){
+                                $scope.sure_delete = false;
+                            }
+                        };
+                        house.change_flag = function (b) {
                             $http({
                                 method: "POST",
-                                url: basePath + "/archives/delHouse",
+                                url: basePath + "/archives/updateHouseActive",
                                 data: {
-                                    id: house.id
+                                    id: house.id,
+                                    openid: sessionStorage.getItem("openid")
                                 }
                             }).success(function (data) {
-                                $scope.houses.splice(a, 1);
-                                console.log("删除成功")
+                                //$scope.houses.splice(a,1);
+                                $scope.id = house.id;
+                                console.log("设置默认地址成功");
                             }).error(function (data) {
-                                console.log("删除失败")
+                                console.log("设置默认地址失败");
                             });
                         }
-                        $scope.cancel=function(){
-                            $scope.sure_delete = false;
-                        }
-                    };
-                    house.change_flag = function (b) {
-                        $http({
-                            method: "POST",
-                            url: basePath + "/archives/updateHouseActive",
-                            data: {
-                                id: house.id,
-                                openid: sessionStorage.getItem("openid")
-                            }
-                        }).success(function (data) {
-                            //$scope.houses.splice(a,1);
-                            $scope.id = house.id;
-                            console.log("设置默认地址成功");
-                        }).error(function (data) {
-                            console.log("设置默认地址失败");
-                        });
-                    }
 
-                })
+                    })
+                }
+
             }).error(function (data) {
             });
         }
     ]).controller('accountRecordCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
         function ($scope, $http, $stateParams, $rootScope, $state) {
-            console.log("成功加载record.html")
+            //console.log("成功加载record.html")
+            //$scope.id=$stateParams.
+            //console.log($stateParams.id);
+            //$http({
+            //    method: "GET",
+            //    url: basePath + "/payment/getAmount.do",
+            //    params: {
+            //        paymentState: 1,
+            //        id: $stateParams.id
+            //    }
+            //}).success(function (data) {
+            //    $scope.records=data;
+            //});
+            //这里是写好的数据
+            $scope.records={"amountList":[{"id":4,"year":"2015","month":12,"amount":35.99,"paymentType":"1","number":"3456°-1246°","count":"-2210°"},{"id":5,"year":"2015","month":11,"amount":4.11,"paymentType":"0","number":"0m³-3456m³","count":"3456m³"}],"amountSum":"444.00"}
+            //console.log($scope.records);console.log($scope.records.amountList[0].amount)
         }
     ])
 //自定义过滤器 截取字符串长度
