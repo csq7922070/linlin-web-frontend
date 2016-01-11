@@ -575,7 +575,6 @@ textarea {
 .container > div:nth-of-type(3) input {
     width: 80%;
 }
-
 .submit_btn {
     margin-top: 20px;
     border: none;
@@ -585,15 +584,16 @@ textarea {
     font-size: 16px;
     text-align: center;
     padding: 5px 5px;
-    background-color: #ccc;
+    background-color: #4996EE;
+    color: #ffffff;
     /*background: #ccc;*/
 }
-
-
 /*.submit_width{
     padding: 0 24px;
 }*/
-
+button[disabled], html input[disabled]{
+    background-color:  #ccc!important;
+}
 
 /*������ʾ*/
 

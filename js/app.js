@@ -1,6 +1,6 @@
 //var basePath="http://192.168.0.133:8080/skh";
-var basePath = "http://localhost:8080/skh";
-//var basePath="http://192.168.0.124:8080/skh";
+//var basePath = "http://123.56.162.201/skh";
+var basePath="http://192.168.0.136:8080/skh";
 
 var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'skhControllers']);
 

@@ -63,6 +63,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                                 $timeout(function () {
                                     $scope.suc_show = false;
                                 }, 3000)
+
                                 //console.log("id:"+r.id)
                             }).error(function (data) {
                                 $scope.err_show = true;
@@ -130,6 +131,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 $scope.suc_show = true;
                 $timeout(function () {
                     $scope.suc_show = false;
+                    $state.go("repair");
                 }, 3000)
             }).error(function (data) {
                 $scope.err_show = true;
@@ -183,6 +185,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 $scope.suc_show = true;
                 $timeout(function () {
                     $scope.suc_show = false;
+                    $state.go("complain");
                 }, 3000)
             }).error(function (data) {
                 $scope.err_show = true;
@@ -283,7 +286,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 id: $stateParams.id
             }
         }).success(function (data) {
-            if(data!=""){
+            if (data != "") {
                 $scope.freeShow = false;
                 var list = data.amountList;
                 var ret = {};
@@ -468,66 +471,37 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                     $rootScope.emonth = emonth;
                 }
             }
-        }).error(function(data){
+        }).error(function (data) {
             console.log("数据")
         });
     }
 ]).controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
     function ($scope, $http, $stateParams, $rootScope, $state) {
 
-        //$http({
-        //    method: "GET",
-        //    url: basePath + "/archives/getRoom.do",
-        //    params: {}
-        //}).success(function (data) {
-        //
-        //});
-        //这里不要删除
         $scope.watmonth_f = $rootScope.wmonth;
         $scope.watmonth = $scope.watmonth_f.join(",");
         $scope.elmonth_f = $rootScope.emonth;
         $scope.elmonth = $scope.elmonth_f.join(",");
-        //
-        //$scope.floor = $rootScope.floor;
-        //$scope.unit = $rootScope.unit;
-        //$scope.room = $rootScope.room;
-        //
-        //$scope.waterFr = $rootScope.waterFree;
-        //$scope.eleFr = $rootScope.eleFree;
-        //
-        //var j = 0;
-        //$scope.flg_src = "images/right_1.png";
-        //$scope.toggle = function () {
-        //    j++;
-        //    if (j % 2 == 0) {
-        //        $scope.flg_src = "images/right_1.png";
-        //
-        //    } else {
-        //        $scope.flg_src = "images/right.png";
-        //    }
-        //}
-        //微信支付功能
-        $scope.my_moeny=1;
-        $scope.money_payment=function(){
+
+        $scope.floor = $rootScope.floor;
+        $scope.unit = $rootScope.unit;
+        $scope.room = $rootScope.room;
+
+        $scope.waterFr = $rootScope.waterFree;
+        $scope.eleFr = $rootScope.eleFree;
+
+        $scope.totalFee = $rootScope.waterFree + $rootScope.eleFree;
+
+        $scope.money_payment = function () {
             console.log("支付功能开始");
             $http({
                 method: "GET",
                 url: basePath + '/payment/webchatPay',
                 params: {
-                    total_fee:  $scope.my_moeny,
+                    total_fee: $scope.totalFee,
                     openid: sessionStorage.getItem("openid")
-                    //openid: 123
                 }
-            })
-            //$http({
-            //    method: "POST",
-            //    url: basePath + '/payment/webchatPay',
-            //    data: {
-            //        total_fee:  $scope.my_moeny,
-            //        openid: sessionStorage.getItem("openid")
-            //    }
-            //})
-                .error(function (response, status, headers, config) {
+            }).error(function (response, status, headers, config) {
                     self.error = "连接错误!";
                 })
                 .then(function (response) {
@@ -580,18 +554,23 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
 ])
     .controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
         function ($scope, $http, $stateParams, $rootScope, $state, $location) {
+
+            var url = $location.url().substring($location.url().indexOf("?"));
+            if (url.indexOf("home") != -1) {
+                url = "";
+            }
             //1.6获取微信用户openid
-            //sessionStorage.setItem("openid", "127");
             $http({
                 method: "GET",
-                url: basePath + '/getopenid' + $location.url().substring($location.url().indexOf("?"))
-            }).success(function (data) {
+                url: basePath + '/getopenid' + url
+            }).success(function(data) {
                 sessionStorage.setItem("openid", data.openid);
-                //sessionStorage.setItem("openid", "126");
+
                 console.log("获取openid成功");
-            }).error(function (data) {
+            }).error(function(data) {
                 console.log("获取openid失败");
             });
+
 
             $scope.slides7 = [{
                 id: 10,
@@ -657,10 +636,13 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                     openid: sessionStorage.getItem("openid")
                 }
             }).success(function (data) {
-                if(data!=""){
+                if (data != "") {
                     $scope.houses = data.items;
-                    console.log(data);
                     data.items.forEach(function (house) {
+                        if (house.active == 0) {
+                            $scope.activeId = house.id;
+                        }
+
                         house.deleteAddress = function (a) {
                             //console.log("click")
                             $scope.sure_delete = true;
@@ -679,11 +661,14 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                                     console.log("删除失败")
                                 });
                             }
-                            $scope.cancel=function(){
+                            $scope.cancel = function () {
                                 $scope.sure_delete = false;
                             }
                         };
-                        house.change_flag = function (b) {
+                        house.change_flag = function () {
+                            if (house.active == 0) {
+                                return;
+                            }
                             $http({
                                 method: "POST",
                                 url: basePath + "/archives/updateHouseActive",
@@ -692,14 +677,12 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                                     openid: sessionStorage.getItem("openid")
                                 }
                             }).success(function (data) {
-                                //$scope.houses.splice(a,1);
-                                $scope.id = house.id;
+                                $scope.activeId = house.id;
                                 console.log("设置默认地址成功");
                             }).error(function (data) {
                                 console.log("设置默认地址失败");
                             });
                         }
-
                     })
                 }
 
@@ -722,7 +705,25 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             //    $scope.records=data;
             //});
             //这里是写好的数据
-            $scope.records={"amountList":[{"id":4,"year":"2015","month":12,"amount":35.99,"paymentType":"1","number":"3456°-1246°","count":"-2210°"},{"id":5,"year":"2015","month":11,"amount":4.11,"paymentType":"0","number":"0m³-3456m³","count":"3456m³"}],"amountSum":"444.00"}
+            $scope.records = {
+                "amountList": [{
+                    "id": 4,
+                    "year": "2015",
+                    "month": 12,
+                    "amount": 35.99,
+                    "paymentType": "1",
+                    "number": "3456°-1246°",
+                    "count": "-2210°"
+                }, {
+                    "id": 5,
+                    "year": "2015",
+                    "month": 11,
+                    "amount": 4.11,
+                    "paymentType": "0",
+                    "number": "0m³-3456m³",
+                    "count": "3456m³"
+                }], "amountSum": "444.00"
+            }
             //console.log($scope.records);console.log($scope.records.amountList[0].amount)
         }
     ])

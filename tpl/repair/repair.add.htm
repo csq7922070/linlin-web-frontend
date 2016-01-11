@@ -21,15 +21,16 @@
               ng-show="repairForm.mobile.$touched && repairForm.mobile.$dirty && repairForm.mobile.$invalid">*请输入正确的手机号码</span>
 
         <div>
+            <span>楼栋号:</span>
+            <input type="text" name="floor" maxlength="4" ng-model="floor" required ng-maxlength="4"
+                   ng-class="{'has-error':repairForm.floor.$touched && repairForm.floor.$dirty && repairForm.floor.$invalid}">
+        </div>
+        <div>
             <span>单元号:</span>
             <input type="text" name="unit" maxlength="4" ng-model="unit" required ng-maxlength="4"
                    ng-class="{'has-error':repairForm.unit.$touched && repairForm.unit.$dirty && repairForm.unit.$invalid}">
         </div>
-        <div>
-            <span>楼层号:</span>
-            <input type="text" name="floor" maxlength="4" ng-model="floor" required ng-maxlength="4"
-                   ng-class="{'has-error':repairForm.floor.$touched && repairForm.floor.$dirty && repairForm.floor.$invalid}">
-        </div>
+
         <div>
             <span>房间号:</span>
             <input type="text" name="roomNo" maxlength="4" ng-model="roomNo" required ng-maxlength="4"
