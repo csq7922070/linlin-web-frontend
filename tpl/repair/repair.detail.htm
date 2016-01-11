@@ -8,7 +8,11 @@
             </li>
             <li><span class="number">报修单号:</span><span class="list_num">{{repair.number}}</span>
             </li>
-            <li><span class="list_state">状态:</span><span class="list_ste">{{repair.repairState}}</span>
+            <li><span class="list_state">状态:</span>
+                <span class="list_ste" ng-if="repair.repairState==0">等待指派</span>
+                <span class="list_ste" ng-if="repair.repairState==1">指派完成</span>
+                <span class="list_ste" ng-if="repair.repairState==2">指派完成待确认</span>
+                <span class="list_ste" ng-if="repair.repairState==3">已完成</span>
             </li>
             <li ng-if="repair.repairState==2"><span class="w_time">完成时间:</span><span class="suc_time">{{repair.endTime}}</span></li>
             <input ng-if="repair.repairState==1" class="l_btn" type="button" value="确认完成" ng-click="repair.confirm()">

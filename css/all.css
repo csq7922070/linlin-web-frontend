@@ -304,6 +304,7 @@ a {
     font-weight: bold;
     font-size: 16px;
     color: #333333;
+    padding: 8px 15px 0px;
 }
 
 .detail_date {
@@ -321,6 +322,8 @@ a {
     font-size: 14px;
     color: #333333;
     height: 50px;
+    padding-left: 15px;
+    padding-right: 15px;
     /*width: 200px;*/
     /*overflow: hidden;
     white-space: nowrap;
