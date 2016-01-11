@@ -35,7 +35,7 @@
             <p>应付金额</p>
         </div>
         <div class="no_img">
-            ￥<span ng-if="waterFr">{{waterFr}}</span>元
+            ￥<span ng-if="waterFr">{{waterFr|number:2}}</span>元
         </div>
     </a>
 </div>
@@ -74,8 +74,7 @@
             <p>支付金额</p>
         </div>
         <div class="address_section">
-            <!--￥<span ng-if="waterFr+eleFr">{{waterFr+eleFr|number:2}}</span>元-->
-            ￥{{my_moeny}}元
+            ￥<span ng-if="waterFr+eleFr">{{waterFr+eleFr|number:2}}</span>元
         </div>
     </a>
 </div>
