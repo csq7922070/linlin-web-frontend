@@ -1,4 +1,4 @@
-#header {
+﻿#header {
 	height: 43px;
 	background: #f0f0f0;
 	line-height: 43px;
@@ -6,10 +6,10 @@
 	margin-top: 82px;
 	border-bottom: 1px solid #e0e0e0;
 }
-#header span{
+#header span{ 
 	font-size: 14px;
 }
-
+ 
 #content{
 	width: 100%;
 	display: flex;
