@@ -7,8 +7,8 @@
                 <div class='notice_message' style="padding-left:0px;height:50px;overflow: hidden" name='content'>{{notice.content}}</div>
             </a>
         </li>
-        <li ng-repeat="notice in notices" ng-if="notices.length==0">
-            <div class='notice'>暂无公告</div>
+        <li ng-if="notices.length==0" style="background-color: #EEEEEE;border: none;text-align: center;font-size: 18px;padding-top: 30px">
+            <div>您所在的小区暂时没有公告!!!</div>
         </li>
     </ul>
 </div>
