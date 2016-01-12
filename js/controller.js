@@ -167,7 +167,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                     $scope.busy = true;
                     $http({
                         method: "GET",
-                        url: basePath + '/complain/list.do',
+                        url: basePath + '/complain/getByOpenid',
                         params: {
                             offset: $scope.pageSize * (goPage - 1),
                             limit: $scope.pageSize,
@@ -607,7 +607,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             }, {
                 id: 12,
                 label: "slide #3",
-                img: "http://lorempixel.com/450/300/people/2"
+                img: "images/banner_03.png"
             }];
             $scope.carouselIndex7 = 0;
 

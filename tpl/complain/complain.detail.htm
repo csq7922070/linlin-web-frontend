@@ -7,16 +7,16 @@
     <span>投诉：</span> <span class="complaint_name">{{complain.title}}</span>
     <span class="complaint_detail">{{complain.content}}</span>
 </div>
-<div class="complaint_title">
+<div class="complaint_title" ng-if="complain.complainState!=0">
     <img src="images/icon_08.png" alt="">物业回复
 </div>
-<div class="property" ng-if="complain.state == 0">
+<div class="property" ng-if="complain.complainState!=0">
     <span class="property_detail"></span>
 </div>
-<div class="property" ng-if="complain.state != 0">
-    <span>时间：</span> <span class="property_time">{{complain.lastModifiedDate}}</span>
+<div class="property" ng-if="complain.complainState != 0">
+    <span>时间：</span> <span class="property_time">{{complain.replyTime}}</span>
     <span class="property_detail">{{complain.reply}}</span>
 </div>
-<div class="complaint_title">
+<div class="complaint_title" ng-if="complain.complainState != 0">
     <img src="images/icon_09.png">处理完成
 </div>

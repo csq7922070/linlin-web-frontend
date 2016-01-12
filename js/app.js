@@ -1,6 +1,6 @@
-//var basePath = "http://mifan.4zlink.com:8080/mifan";
-var basePath = "http://localhost:8080/skh";
-
+var basePath = "http://mifan.4zlink.com:8080/mifan";
+//var basePath = "http://localhost:8080/skh";
+//var basePath = "http://192.168.0.117:8080/skh";
 var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'skhControllers']);
 
 myApp.config(function ($stateProvider, $urlRouterProvider) {
