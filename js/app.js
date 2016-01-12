@@ -104,8 +104,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state('html-error', {
             url: "/html-error",
-            templateUrl: "tpl/index/html-error.html",
-            controller: "htmlErrorCtrl"
+            templateUrl: "tpl/index/html-error.html"
         })
 
     ;
