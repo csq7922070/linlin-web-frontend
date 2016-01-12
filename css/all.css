@@ -322,7 +322,6 @@ a {
     padding-top: 10px;
     font-size: 14px;
     color: #333333;
-    height: 50px;
     padding-left: 15px;
     padding-right: 15px;
     /*width: 200px;*/
@@ -589,8 +588,8 @@ textarea {
     text-align: center;
     padding: 5px 5px;
     background-color: #4996EE;
-    color: #ffffff;
-    /*background: #ccc;*/
+    color: #ffffff!important;
+    margin-bottom: 20px;
 }
 /*.submit_width{
     padding: 0 24px;

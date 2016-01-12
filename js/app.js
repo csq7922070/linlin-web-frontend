@@ -101,6 +101,11 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: "tpl/service/account-record.html",
             controller: "accountRecordCtrl"
         })
+        .state('html-error', {
+            url: "/html-error",
+            templateUrl: "tpl/index/html-error.html",
+            controller: "htmlErrorCtrl"
+        })
 
     ;
 }).config(function ($httpProvider) {

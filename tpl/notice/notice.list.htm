@@ -1,11 +1,14 @@
 <div class="container-fluid contain" style="background: white" when-scrolled="load({{currentPage+1}},pageSize)">
     <ul class="list">
-        <li ng-repeat="notice in notices">
+        <li ng-repeat="notice in notices" ng-if="notices.length>0">
             <a ui-sref="notice-detail({id:notice.id})">
                 <div class='notice' name='title'>{{notice.title}}</div>
-                <div class='notice_date' name='createtime'>{{notice.createDate}}</div>
-                <div class='notice_message' style="padding-left:0px;" name='content'>{{notice.content}}</div>
+                <div class='notice_date' name='createtime'>{{notice.createDate.substring(5,10)}}</div>
+                <div class='notice_message' style="padding-left:0px;height:50px;overflow: hidden" name='content'>{{notice.content}}</div>
             </a>
+        </li>
+        <li ng-repeat="notice in notices" ng-if="notices.length==0">
+            <div class='notice'>暂无公告</div>
         </li>
     </ul>
 </div>
