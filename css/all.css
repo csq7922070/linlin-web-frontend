@@ -194,6 +194,7 @@ a {
     font-size: 14px;
     color: #FE6A6A;
     padding-bottom: 10px;
+    padding-top: 6px;
 }
 
 .notice_message {
@@ -280,7 +281,7 @@ a {
 }
 
 .complaint_publish button {
-    background: #ccc;
+    background: #4996ee;
     width: 100%;
     height: 40px;
     line-height: 40px;
@@ -695,23 +696,23 @@ button[disabled], html input[disabled]{
     text-align: center;
 }
 
-.bgimage {
-    text-align: right;
-    color: white;
-    background-size: cover;
-    height: 100%;
-    background-position: center center;
-}
+/*.bgimage {*/
+    /*text-align: right;*/
+    /*color: white;*/
+    /*background-size: cover;*/
+    /*height: 100%;*/
+    /*background-position: center center;*/
+/*}*/
 
 ul[rn-carousel] {
     width: 100%;
-    height: 150px;
+    height: 186px;
     margin: 0 auto;
 }
 
 .carousel5 li {
     width: 100%;
-    height: 100%;
+    height: 186px;
     font-size: 30px;
     background-color: #ccc;
 }

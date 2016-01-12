@@ -185,11 +185,13 @@ p {
 
 /*---------------------------------------home页面--------------------------------------------------*/
 .village {
-    background-color: #4996ee;
+    /*background-color: #4996ee;*/
     color: #ffffff;
-    /*font-size: 14px;*/
     padding: 8px 12px;
-    /*margin-top: -16px;*/
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 100;
 }
 
 .home_nav {
