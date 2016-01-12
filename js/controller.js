@@ -77,14 +77,14 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                                     $scope.suc_show = true;
                                     $timeout(function() {
                                         $scope.suc_show = false;
-                                    }, 3000)
+                                    }, 3000);
 
                                     //console.log("id:"+r.id)
                                 }).error(function(data) {
                                     $scope.err_show = true;
                                     $timeout(function() {
                                         $scope.err_show = false;
-                                    }, 3000)
+                                    }, 3000);
                                 })
                             }
                         })
