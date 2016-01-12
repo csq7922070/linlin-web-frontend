@@ -318,35 +318,35 @@ skhControllers.controller('addressUnitCtrl', ['$scope', '$http', '$stateParams',
         }
     ]);
 skhControllers.controller('complainAddCtrl', ['$scope', '$http', '$timeout', '$state',
-        function($scope, $http, $timeout, $state) {
-            $scope.suc_show = false;
-            $scope.err_show = false;
-            $scope.submitForm = function() {
-                $http({
-                    method: "POST",
-                    url: basePath + "/complain/add.do",
-                    data: {
-                        title: $scope.title,
-                        mobile: $scope.mobile,
-                        content: $scope.content,
-                        openid: sessionStorage.getItem("openid")
-                    }
-                }).success(function(data) {
-                    $scope.suc_show = true;
-                    $timeout(function() {
-                        $scope.suc_show = false;
-                        $state.go("complain");
-                    }, 3000)
-                }).error(function(data) {
-                    $scope.err_show = true;
-                    $timeout(function() {
-                        $scope.err_show = false;
-                    }, 3000)
-                })
-            }
-
+    function($scope, $http, $timeout, $state) {
+        $scope.suc_show = false;
+        $scope.err_show = false;
+        $scope.submitForm = function() {
+            $http({
+                method: "POST",
+                url: basePath + "/complain/add.do",
+                data: {
+                    title: $scope.title,
+                    mobile: $scope.mobile,
+                    content: $scope.content,
+                    openid: sessionStorage.getItem("openid")
+                }
+            }).success(function(data) {
+                $scope.suc_show = true;
+                $timeout(function() {
+                    $scope.suc_show = false;
+                    $state.go("complain");
+                }, 3000)
+            }).error(function(data) {
+                $scope.err_show = true;
+                $timeout(function() {
+                    $scope.err_show = false;
+                }, 3000)
+            })
         }
-    ]);
+
+    }
+]);
 skhControllers.controller('complainDetailCtrl', ['$scope', '$http', '$stateParams',
         function($scope, $http, $stateParams) {
             $http({
@@ -641,95 +641,97 @@ skhControllers.controller('repairAddCtrl', ['$scope', '$http', '$timeout', '$sta
         }
     ]);
 skhControllers.controller('repairDetailCtrl', ['$scope', '$http', '$stateParams', '$timeout',
-        function($scope, $http, $stateParams, $timeout) {
-            $scope.suc_show = false;
-            $scope.err_show = false;
+    function($scope, $http, $stateParams, $timeout) {
+        $scope.suc_show = false;
+        $scope.err_show = false;
 
-            $http({
-                method: "GET",
-                url: basePath + "/repair/get.do",
-                params: {
-                    'id': $stateParams.id
-                }
-            }).success(function(data) {
-                $scope.repair = data;
-                $scope.repair.confirm = function() {
-                    $http({
-                        method: "POST",
-                        url: basePath + "/repair/confirm.do",
-                        data: {
-                            id: $scope.repair.id
-                        }
-                    }).success(function(data) {
-                        $scope.suc_show = true;
-                        $timeout(function() {
-                            $scope.suc_show = false;
-                        }, 3000)
-                    }).error(function(data) {
-                        $scope.err_show = true;
-                        $timeout(function() {
-                            $scope.err_show = false;
-                        }, 3000)
-                    })
-                }
-            });
-        }
-    ]);
-skhControllers.controller('repairListCtrl', ['$scope', '$http', '$timeout',
-        function($scope, $http, $timeout) {
-            $scope.currentPage = 0;
-            $scope.pageSize = 10;
-            $scope.suc_show = false;
-            $scope.err_show = false;
-            $scope.repairs = [];
-
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || goPage < 1 || $scope.busy) {
-                    return;
-                } else {
-                    $scope.busy = true;
-                    $http({
-                        method: "GET",
-                        url: basePath + "/repair/list.do",
-                        params: {
-                            offset: $scope.pageSize * (goPage - 1),
-                            limit: $scope.pageSize,
-                            openid: sessionStorage.getItem("openid")
-                        }
-                    }).success(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        data.items.forEach(function(r) {
-                            $scope.repairs.push(r);
-                            r.confirm = function() {
-                                $http({
-                                    method: "POST",
-                                    url: basePath + "/repair/finish.do",
-                                    data: {
-                                        id: r.id
-                                    }
-                                }).success(function(data) {
-                                    $scope.suc_show = true;
-                                    $timeout(function() {
-                                        $scope.suc_show = false;
-                                    }, 3000);
-
-                                    //console.log("id:"+r.id)
-                                }).error(function(data) {
-                                    $scope.err_show = true;
-                                    $timeout(function() {
-                                        $scope.err_show = false;
-                                    }, 3000);
-                                })
-                            }
-                        })
-                    });
-                }
+        $http({
+            method: "GET",
+            url: basePath + "/repair/get.do",
+            params: {
+                'id': $stateParams.id
             }
-            $scope.load(1, $scope.pageSize);
+        }).success(function(data) {
+            $scope.repair = data;
+            $scope.repair.confirm = function() {
+                $http({
+                    method: "POST",
+                    url: basePath + "/repair/confirm.do",
+                    data: {
+                        id: $scope.repair.id
+                    }
+                }).success(function(data) {
+                    $scope.suc_show = true;
+                    $timeout(function() {
+                        $scope.suc_show = false;
+                        $scope.success=true;
+                    }, 3000)
+                }).error(function(data) {
+                    $scope.err_show = true;
+                    $timeout(function() {
+                        $scope.err_show = false;
+                    }, 3000)
+                })
+            }
+        });
+    }
+]);
+skhControllers.controller('repairListCtrl', ['$scope', '$http', '$timeout','$state',
+    function($scope, $http, $timeout,$state) {
+        $scope.currentPage = 0;
+        $scope.pageSize = 10;
+        $scope.suc_show = false;
+        $scope.err_show = false;
+        $scope.repairs = [];
+
+        $scope.load = function(goPage, limit) {
+            if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || goPage < 1 || $scope.busy) {
+                return;
+            } else {
+                $scope.busy = true;
+                $http({
+                    method: "GET",
+                    url: basePath + "/repair/list.do",
+                    params: {
+                        offset: $scope.pageSize * (goPage - 1),
+                        limit: $scope.pageSize,
+                        openid: sessionStorage.getItem("openid")
+                    }
+                }).success(function(data) {
+                    $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                    $scope.currentPage = goPage;
+                    $scope.busy = false;
+                    data.items.forEach(function(r) {
+                        $scope.repairs.push(r);
+                        r.confirm = function() {
+                            $http({
+                                method: "POST",
+                                url: basePath + "/repair/finish.do",
+                                data: {
+                                    id: r.id
+                                }
+                            }).success(function(data) {
+                                $scope.suc_show = true;
+                                $timeout(function() {
+                                    $scope.suc_show = false;
+                                    $state.go("repair",{}, {reload: true});
+                                }, 3000);
+
+                                //console.log("id:"+r.id)
+                            }).error(function(data) {
+                                $scope.err_show = true;
+                                $timeout(function() {
+                                    $scope.err_show = false;
+                                }, 3000);
+                            })
+                        }
+                    })
+                });
+            }
         }
-    ]);
+        $scope.load(1, $scope.pageSize);
+    }
+]);
 skhControllers.controller('shopInfoCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
         function($scope, $http, $stateParams, $rootScope, $state) {
             $rootScope.site = $stateParams.site;
