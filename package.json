@@ -14,5 +14,16 @@
     "linlin-web-frontend"
   ],
   "author": "4zlink",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "bower": "^1.7.2",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-inject": "^3.0.0",
+    "gulp-less": "^3.0.5",
+    "gulp-load-plugins": "^1.2.0",
+    "gulp-watch": "^4.3.5",
+    "http-server": "^0.8.5",
+    "run-sequence": "^1.1.5"
+  }
 }
