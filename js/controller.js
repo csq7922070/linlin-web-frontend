@@ -110,7 +110,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 $scope.repair.confirm = function() {
                     $http({
                         method: "POST",
-                        url: basePath + "/repair/confirm.do",
+                        url: basePath + "/repair/finish.do",
                         data: {
                             id: $scope.repair.id
                         }
