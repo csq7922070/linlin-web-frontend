@@ -286,6 +286,7 @@ skhControllers.controller('addressFloorCtrl', ['$scope', '$http', '$stateParams'
                 $scope.datas = data;
             });
         }
+<<<<<<< HEAD
     ]);
 skhControllers.controller('addressRoomCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
         function($scope, $http, $stateParams, $rootScope, $state) {
@@ -295,6 +296,59 @@ skhControllers.controller('addressRoomCtrl', ['$scope', '$http', '$stateParams',
                 params: {
                     floor: $stateParams.floor,
                     unit: $stateParams.unit
+=======
+    ]).controller('repairListCtrl', ['$scope', '$http', '$timeout','$state',
+        function($scope, $http, $timeout,$state) {
+            $scope.currentPage = 0;
+            $scope.pageSize = 10;
+            $scope.suc_show = false;
+            $scope.err_show = false;
+            $scope.repairs = [];
+
+            $scope.load = function(goPage, limit) {
+                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || goPage < 1 || $scope.busy) {
+                    return;
+                } else {
+                    $scope.busy = true;
+                    $http({
+                        method: "GET",
+                        url: basePath + "/repair/list.do",
+                        params: {
+                            offset: $scope.pageSize * (goPage - 1),
+                            limit: $scope.pageSize,
+                            openid: sessionStorage.getItem("openid")
+                        }
+                    }).success(function(data) {
+                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                        $scope.currentPage = goPage;
+                        $scope.busy = false;
+                        data.items.forEach(function(r) {
+                            $scope.repairs.push(r);
+                            r.confirm = function() {
+                                $http({
+                                    method: "POST",
+                                    url: basePath + "/repair/finish.do",
+                                    data: {
+                                        id: r.id
+                                    }
+                                }).success(function(data) {
+                                    $scope.suc_show = true;
+                                    $timeout(function() {
+                                        $scope.suc_show = false;
+                                        $state.go("repair",{}, {reload: true});
+                                    }, 3000);
+
+                                    //console.log("id:"+r.id)
+                                }).error(function(data) {
+                                    $scope.err_show = true;
+                                    $timeout(function() {
+                                        $scope.err_show = false;
+                                    }, 3000);
+                                })
+                            }
+                        })
+                    });
+>>>>>>> feature/bqx
                 }
             }).success(function(data) {
                 $scope.floor = $stateParams.floor;
@@ -312,8 +366,32 @@ skhControllers.controller('addressUnitCtrl', ['$scope', '$http', '$stateParams',
                     floor: $stateParams.floor
                 }
             }).success(function(data) {
+<<<<<<< HEAD
                 $scope.units = data.items;
                 $scope.floor = $stateParams.floor;
+=======
+                $scope.repair = data;
+                $scope.repair.confirm = function() {
+                    $http({
+                        method: "POST",
+                        url: basePath + "/repair/confirm.do",
+                        data: {
+                            id: $scope.repair.id
+                        }
+                    }).success(function(data) {
+                        $scope.suc_show = true;
+                        $timeout(function() {
+                            $scope.suc_show = false;
+                            $scope.success=true;
+                        }, 3000)
+                    }).error(function(data) {
+                        $scope.err_show = true;
+                        $timeout(function() {
+                            $scope.err_show = false;
+                        }, 3000)
+                    })
+                }
+>>>>>>> feature/bqx
             });
         }
     ]);

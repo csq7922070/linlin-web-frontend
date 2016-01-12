@@ -2,7 +2,7 @@
     <form ng-submit="submitForm()" method="post" name="complainForm" novalidate>
         <input type="text" name="title" ng-model="title" placeholder="标题" required>
         <textarea name="content" name="content" ng-model="content" required cols="30" rows="10" placeholder="请详细描述出现的问题"></textarea>
-        <input type="text" name="mobile" maxlength="11" placeholder="您的手机号码">
+        <input type="text" name="mobile" ng-model="mobile" maxlength="11" placeholder="您的手机号码">
         <button class="submit_but" type="submit" ng-disabled="complainForm.$invalid">提交</button>
     </form>
 </div>
