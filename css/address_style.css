@@ -225,7 +225,7 @@ p {
 
 .shop_name {
     font-size: 16px;
-
+    color: #333333;
 }
 
 .tab_nav {
@@ -234,6 +234,8 @@ p {
     line-height: 50px;
     margin-top: 8px;
     font-size: 16px;
+    color: #555555;
+    font-weight: bold;
 }
 
 .tab_nav div {
@@ -273,12 +275,13 @@ p {
 
 .cell_phone {
     padding-bottom: 6px;
+    color: #777777;
 }
 
 .purchase {
     border-top: 1px solid #EEEEEE;
     padding-top: 8px;
-    color: #aaaaaa;
+    color: #999999;
 }
 
 .shop_name {
@@ -312,6 +315,8 @@ p {
 
 .online_visit {
     text-align: center;
+    overflow: hidden;
+    height: auto;
 }
 
 /*--------------------------------------------owner-name--------------------------------------------------*/

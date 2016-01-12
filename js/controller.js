@@ -39,8 +39,8 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 $scope.notice = data;
             })
         }
-    ]).controller('repairListCtrl', ['$scope', '$http', '$timeout',
-        function($scope, $http, $timeout) {
+    ]).controller('repairListCtrl', ['$scope', '$http', '$timeout','$state',
+        function($scope, $http, $timeout,$state) {
             $scope.currentPage = 0;
             $scope.pageSize = 10;
             $scope.suc_show = false;
@@ -77,6 +77,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                                     $scope.suc_show = true;
                                     $timeout(function() {
                                         $scope.suc_show = false;
+                                        $state.go("repair",{}, {reload: true});
                                     }, 3000);
 
                                     //console.log("id:"+r.id)
@@ -117,6 +118,7 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                         $scope.suc_show = true;
                         $timeout(function() {
                             $scope.suc_show = false;
+                            $scope.success=true;
                         }, 3000)
                     }).error(function(data) {
                         $scope.err_show = true;
