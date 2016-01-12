@@ -14,5 +14,8 @@
     "linlin-web-frontend"
   ],
   "author": "4zlink",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  }
 }
