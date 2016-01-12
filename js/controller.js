@@ -750,7 +750,12 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 }
                 //console.log($scope.records);console.log($scope.records.amountList[0].amount)
         }
+    ]).controller('htmlErrorCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+        function($scope, $http, $stateParams, $rootScope, $state) {
+
+        }
     ])
+
     //自定义过滤器 截取字符串长度
 skhControllers.filter('cut', function() {
     return function(value, wordwise, max, tail) {
