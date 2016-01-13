@@ -1,4 +1,4 @@
-myApp.directive('whenScrolled', function ($document) {
+myApp.directive('whenScrolled', ['$document', function ($document) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
@@ -11,4 +11,4 @@ myApp.directive('whenScrolled', function ($document) {
             });
         }
     };
-});
+}]);
