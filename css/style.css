@@ -21,7 +21,7 @@
 #nume{
 	width: 255px;
 	height: 100%;
-	background: url(../images/menu_bg_1.png);	
+	background: url('/images/menu_bg_1.png');	
 	/*float: left;*/
 }
 #nume .notice{
