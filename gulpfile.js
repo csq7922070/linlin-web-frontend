@@ -26,36 +26,40 @@ gulp.task('minifycss', function(){
 gulp.task('concat:controllers', function () {
   return gulp.src('js/controllers/*.js')
         .pipe(concat('controller.js'))//合并后的文件名
-        .pipe(gulp.dest('js/'));
+        .pipe(gulp.dest('dist/js/temp'));
 });
 
 gulp.task('concat:directives', function () {
   return gulp.src('js/directives/*.js')
         .pipe(concat('directive.js'))//合并后的文件名
-        .pipe(gulp.dest('js/'));
+        .pipe(gulp.dest('dist/js/temp'));
 });
 
 gulp.task('concat:services', function () {
   return gulp.src('js/services/*.js')
         .pipe(concat('service.js'))//合并后的文件名
-        .pipe(gulp.dest('js/'));
+        .pipe(gulp.dest('dist/js/temp'));
 });
 
 gulp.task('concat:filters', function () {
   return gulp.src('js/filters/*.js')
         .pipe(concat('filter.js'))//合并后的文件名
-        .pipe(gulp.dest('js/'));
+        .pipe(gulp.dest('dist/js/temp'));
 });
+
+gulp.task('concat:js', function(){
+  runSequence(['concat:controllers', 'concat:directives', 'concat:services', 'concat:filters']);
+})
 
 gulp.task('minifyjs', function(){
-  return gulp.src('js/*.js')      //压缩的文件
-        .pipe(rename({suffix: '.min'}))   //输出文件夹
-        .pipe(uglify())
-        .pipe(gulp.dest('dist/js'));   //执行压缩
+  return gulp.src(['js/app.js','dist/js/temp/*.js'])      //压缩的文件
+        .pipe(rename({suffix: '.min'}))   //输出文件重命名
+        .pipe(uglify()) //执行压缩
+        .pipe(gulp.dest('dist/js'));   
 });
 
-gulp.task('build', [], function () {
-  runSequence(['concat:controllers','concat:directives','concat:services','concat:filters','minifycss']);
+gulp.task('build', ['concat:js'], function () {
+  runSequence(['minifyjs', 'minifycss']);
 });
 
 gulp.task('default', ['build']);
