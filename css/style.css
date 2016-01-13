@@ -21,11 +21,7 @@
 #nume{
 	width: 255px;
 	height: 100%;
-<<<<<<< HEAD
-	background: url(/images/menu_bg_1.png);	
-=======
-	background: url('/images/menu_bg_1.png');	
->>>>>>> 06be048e65f4c6bf984a3ba8c1df79b98f2f2044
+	background: url('/images/menu_bg_1.png');
 	/*float: left;*/
 }
 #nume .notice{
