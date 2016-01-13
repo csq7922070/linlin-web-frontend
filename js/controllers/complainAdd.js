@@ -2,6 +2,12 @@ skhControllers.controller('complainAddCtrl', ['$scope', '$http', '$timeout', '$s
     function($scope, $http, $timeout, $state) {
         $scope.suc_show = false;
         $scope.err_show = false;
+        $scope.mask_close=function(){
+            $scope.suc_show = false;
+        }
+        $scope.mask_err_close=function(){
+            $scope.err_show = false;
+        }
         $scope.submitForm = function() {
             $http({
                 method: "POST",

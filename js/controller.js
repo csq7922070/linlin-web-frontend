@@ -321,6 +321,12 @@ skhControllers.controller('complainAddCtrl', ['$scope', '$http', '$timeout', '$s
     function($scope, $http, $timeout, $state) {
         $scope.suc_show = false;
         $scope.err_show = false;
+        $scope.mask_close=function(){
+            $scope.suc_show = false;
+        }
+        $scope.mask_err_close=function(){
+            $scope.err_show = false;
+        }
         $scope.submitForm = function() {
             $http({
                 method: "POST",
@@ -408,8 +414,6 @@ skhControllers.controller('homeCtrl', ['$scope', '$http', '$stateParams', '$root
                     console.log("获取openid失败");
                 });
             }
-
-
 
             $scope.slides7 = [{
                 id: 10,
@@ -615,6 +619,12 @@ skhControllers.controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$r
     ]);
 skhControllers.controller('repairAddCtrl', ['$scope', '$http', '$timeout', '$state',
         function($scope, $http, $timeout, $state) {
+            $scope.mask_close=function(){
+                $scope.suc_show = false;
+            }
+            $scope.mask_err_close=function(){
+                $scope.err_show = false;
+            }
             $scope.submitForm = function() {
                 $http({
                     method: "POST",

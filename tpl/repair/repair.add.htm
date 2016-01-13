@@ -44,14 +44,14 @@
         <div class="prompt_dialog">
             <div class="prompt_icon"></div>
             <div class="prompt_font">提交成功</div>
-            <input type="button" class="prompt_btn" value="确定" onclick="mask_close()">
+            <input type="button" class="prompt_btn" value="确定" ng-click="mask_close()">
         </div>
     </div>
     <div class="prompt_mask_err" ng-show="err_show">
         <div class="prompt_dialog">
             <div class="prompt_icon_err"></div>
             <div class="prompt_font">提交失败，请稍后再试</div>
-            <input type="button" class="prompt_btn" value="确定" onclick="mask_err_close()">
+            <input type="button" class="prompt_btn" value="确定" ng-click="mask_err_close()">
         </div>
     </div>
     <div class="container">
