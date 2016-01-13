@@ -1,304 +1,4 @@
-﻿var skhControllers = angular.module('skhControllers', ['ui.router']);
-
-skhControllers.controller('noticeListCtrl', ['$scope', '$http',
-        function($scope, $http) {
-            $scope.currentPage = 0;
-            $scope.pageSize = 10;
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || goPage < 1 || $scope.busy) {
-                    return;
-                } else {
-                    $scope.busy = true;
-                    $http({
-                        method: "GET",
-                        url: basePath + '/notice/list.do',
-                        params: {
-                            offset: $scope.pageSize * (goPage - 1),
-                            limit: $scope.pageSize,
-                            openid: sessionStorage.getItem("openid")
-                        }
-                    }).success(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        $scope.notices = data.items;
-                    });
-                }
-            }
-            $scope.load(1, $scope.pageSize);
-        }
-    ]).controller("noticeDetailCtrl", ['$scope', '$http', '$stateParams',
-        function($scope, $http, $stateParams) {
-            $http({
-                method: "GET",
-                url: basePath + "/notice/get.do",
-                params: {
-                    id: $stateParams.id
-                }
-            }).success(function(data) {
-                $scope.notice = data;
-            })
-        }
-    ]).controller('repairListCtrl', ['$scope', '$http', '$timeout','$state',
-        function($scope, $http, $timeout,$state) {
-            $scope.currentPage = 0;
-            $scope.pageSize = 10;
-            $scope.suc_show = false;
-            $scope.err_show = false;
-            $scope.repairs = [];
-
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || goPage < 1 || $scope.busy) {
-                    return;
-                } else {
-                    $scope.busy = true;
-                    $http({
-                        method: "GET",
-                        url: basePath + "/repair/list.do",
-                        params: {
-                            offset: $scope.pageSize * (goPage - 1),
-                            limit: $scope.pageSize,
-                            openid: sessionStorage.getItem("openid")
-                        }
-                    }).success(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        data.items.forEach(function(r) {
-                            $scope.repairs.push(r);
-                            r.confirm = function() {
-                                $http({
-                                    method: "POST",
-                                    url: basePath + "/repair/finish.do",
-                                    data: {
-                                        id: r.id
-                                    }
-                                }).success(function(data) {
-                                    $scope.suc_show = true;
-                                    $timeout(function() {
-                                        $scope.suc_show = false;
-                                        $state.go("repair",{}, {reload: true});
-                                    }, 3000);
-
-                                    //console.log("id:"+r.id)
-                                }).error(function(data) {
-                                    $scope.err_show = true;
-                                    $timeout(function() {
-                                        $scope.err_show = false;
-                                    }, 3000);
-                                })
-                            }
-                        })
-                    });
-                }
-            }
-            $scope.load(1, $scope.pageSize);
-        }
-    ]).controller('repairDetailCtrl', ['$scope', '$http', '$stateParams', '$timeout',
-        function($scope, $http, $stateParams, $timeout) {
-            $scope.suc_show = false;
-            $scope.err_show = false;
-
-            $http({
-                method: "GET",
-                url: basePath + "/repair/get.do",
-                params: {
-                    'id': $stateParams.id
-                }
-            }).success(function(data) {
-                $scope.repair = data;
-                $scope.repair.confirm = function() {
-                    $http({
-                        method: "POST",
-                        url: basePath + "/repair/finish.do",
-                        data: {
-                            id: $scope.repair.id
-                        }
-                    }).success(function(data) {
-                        $scope.suc_show = true;
-                        $timeout(function() {
-                            $scope.suc_show = false;
-                            $scope.success=true;
-                        }, 3000)
-                    }).error(function(data) {
-                        $scope.err_show = true;
-                        $timeout(function() {
-                            $scope.err_show = false;
-                        }, 3000)
-                    })
-                }
-            });
-        }
-    ]).controller('repairAddCtrl', ['$scope', '$http', '$timeout', '$state',
-        function($scope, $http, $timeout, $state) {
-            $scope.submitForm = function() {
-                $http({
-                    method: "POST",
-                    url: basePath + "/repair/add.do",
-                    data: {
-                        'device': $scope.device,
-                        'remark': $scope.remark,
-                        'mobile': $scope.mobile,
-                        'unit': $scope.unit,
-                        'roomNo': $scope.roomNo,
-                        'floor': $scope.floor,
-                        'openid': sessionStorage.getItem("openid")
-                    }
-                }).success(function(data) {
-                    $scope.suc_show = true;
-                    $timeout(function() {
-                        $scope.suc_show = false;
-                        $state.go("repair");
-                    }, 3000)
-                }).error(function(data) {
-                    $scope.err_show = true;
-                    $timeout(function() {
-                        $scope.err_show = false;
-                    }, 3000)
-                })
-            }
-        }
-    ]).controller('complainListCtrl', ['$scope', '$http',
-        function($scope, $http) {
-            $scope.currentPage = 0;
-            $scope.pageSize = 10;
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || goPage < 1 || $scope.busy) {
-                    return;
-                } else {
-                    $scope.busy = true;
-                    $http({
-                        method: "GET",
-                        url: basePath + '/complain/getByOpenid',
-                        params: {
-                            offset: $scope.pageSize * (goPage - 1),
-                            limit: $scope.pageSize,
-                            openid: sessionStorage.getItem("openid")
-                        }
-                    }).success(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        $scope.complains = data.items;
-                    });
-                }
-            }
-            $scope.load(1, $scope.pageSize);
-        }
-    ]).controller('complainDetailCtrl', ['$scope', '$http', '$stateParams',
-        function($scope, $http, $stateParams) {
-            $http({
-                method: "GET",
-                url: basePath + "/complain/get.do",
-                params: {
-                    id: $stateParams.id
-                }
-            }).success(function(data) {
-                $scope.complain = data;
-            });
-        }
-    ]).controller('complainAddCtrl', ['$scope', '$http', '$timeout', '$state',
-        function($scope, $http, $timeout, $state) {
-            $scope.suc_show = false;
-            $scope.err_show = false;
-            $scope.submitForm = function() {
-                $http({
-                    method: "POST",
-                    url: basePath + "/complain/add.do",
-                    data: {
-                        title: $scope.title,
-                        mobile: $scope.mobile,
-                        content: $scope.content,
-                        openid: sessionStorage.getItem("openid")
-                    }
-                }).success(function(data) {
-                    $scope.suc_show = true;
-                    $timeout(function() {
-                        $scope.suc_show = false;
-                        $state.go("complain");
-                    }, 3000)
-                }).error(function(data) {
-                    $scope.err_show = true;
-                    $timeout(function() {
-                        $scope.err_show = false;
-                    }, 3000)
-                })
-            }
-
-        }
-    ]).controller('addressCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
-        function($scope, $http, $stateParams, $rootScope) {
-            //添加地址
-            $scope.add_newaddress = function() {
-
-                //1.8向后台添加地址
-                $http({
-                    method: "POST",
-                    url: basePath + "/archives/addHouse",
-                    data: {
-                        court: "阿尔卡迪亚",
-                        floor: $stateParams.floor,
-                        unit: $stateParams.unit,
-                        roomNo: $stateParams.room,
-                        openid: sessionStorage.getItem("openid"),
-                        id: $stateParams.id,
-                        initial: $stateParams.initial
-                    }
-                }).success(function(data) {
-                    console.log("后台添加地址成功");
-                }).error(function(data) {
-                    console.log("后台添加地址成功");
-                })
-            }
-            console.log("floor" + $stateParams.floor + " unit" + $stateParams.unit + " room" + $stateParams.room);
-            console.log("succees");
-            $scope.floor = $stateParams.floor;
-            $scope.unit = $stateParams.unit;
-            $scope.room = $stateParams.room;
-            //添加业主姓名与id
-            $scope.username = $stateParams.username;
-            $scope.id = $stateParams.id;
-            console.log("username:" + $scope.username + " id:" + $scope.id)
-            console.log($stateParams.initial);
-        }
-    ]).controller('addressFloorCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
-        function($scope, $http, $stateParams, $rootScope) {
-            $http({
-                method: "GET",
-                url: basePath + "/archives/getFloor.do"
-            }).success(function(data) {
-                $scope.datas = data;
-            });
-        }
-    ]).controller('addressUnitCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
-            $http({
-                method: "GET",
-                url: basePath + "/archives/getUnit.do",
-                params: {
-                    floor: $stateParams.floor
-                }
-            }).success(function(data) {
-                $scope.units = data.items;
-                $scope.floor = $stateParams.floor;
-            });
-        }
-    ]).controller('addressRoomCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
-            $http({
-                method: "GET",
-                url: basePath + "/archives/getRoom.do",
-                params: {
-                    floor: $stateParams.floor,
-                    unit: $stateParams.unit
-                }
-            }).success(function(data) {
-                $scope.floor = $stateParams.floor;
-                $scope.unit = $stateParams.unit;
-                $scope.rooms = data.items;
-            });
-        }
-    ]).controller('accountCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+skhControllers.controller('accountCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
         function($scope, $http, $stateParams, $rootScope, $state) {
             //显示当前页面的业主信息
             $scope.ownerName = $stateParams.username;
@@ -501,7 +201,342 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 console.log("数据")
             });
         }
-    ]).controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+    ]);
+skhControllers.controller('accountRecordCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+        function($scope, $http, $stateParams, $rootScope, $state) {
+            //console.log("成功加载record.html")
+            //$scope.id=$stateParams.
+            //console.log($stateParams.id);
+            //$http({
+            //    method: "GET",
+            //    url: basePath + "/payment/getAmount.do",
+            //    params: {
+            //        paymentState: 1,
+            //        id: $stateParams.id
+            //    }
+            //}).success(function (data) {
+            //    $scope.records=data;
+            //});
+            //这里是写好的数据
+            $scope.records = {
+                    "amountList": [{
+                        "id": 4,
+                        "year": "2015",
+                        "month": 12,
+                        "amount": 35.99,
+                        "paymentType": "1",
+                        "number": "3456°-1246°",
+                        "count": "-2210°"
+                    }, {
+                        "id": 5,
+                        "year": "2015",
+                        "month": 11,
+                        "amount": 4.11,
+                        "paymentType": "0",
+                        "number": "0m³-3456m³",
+                        "count": "3456m³"
+                    }],
+                    "amountSum": "444.00"
+                }
+                //console.log($scope.records);console.log($scope.records.amountList[0].amount)
+        }
+    ]);
+skhControllers.controller('addressCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
+        function($scope, $http, $stateParams, $rootScope) {
+            //添加地址
+            $scope.add_newaddress = function() {
+
+                //1.8向后台添加地址
+                $http({
+                    method: "POST",
+                    url: basePath + "/archives/addHouse",
+                    data: {
+                        court: "阿尔卡迪亚",
+                        floor: $stateParams.floor,
+                        unit: $stateParams.unit,
+                        roomNo: $stateParams.room,
+                        openid: sessionStorage.getItem("openid"),
+                        id: $stateParams.id,
+                        initial: $stateParams.initial
+                    }
+                }).success(function(data) {
+                    console.log("后台添加地址成功");
+                }).error(function(data) {
+                    console.log("后台添加地址成功");
+                })
+            }
+            console.log("floor" + $stateParams.floor + " unit" + $stateParams.unit + " room" + $stateParams.room);
+            console.log("succees");
+            $scope.floor = $stateParams.floor;
+            $scope.unit = $stateParams.unit;
+            $scope.room = $stateParams.room;
+            //添加业主姓名与id
+            $scope.username = $stateParams.username;
+            $scope.id = $stateParams.id;
+            console.log("username:" + $scope.username + " id:" + $scope.id)
+            console.log($stateParams.initial);
+        }
+    ]);
+skhControllers.controller('addressFloorCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
+        function($scope, $http, $stateParams, $rootScope) {
+            $http({
+                method: "GET",
+                url: basePath + "/archives/getFloor.do"
+            }).success(function(data) {
+                $scope.datas = data;
+            });
+        }
+    ]);
+skhControllers.controller('addressRoomCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+        function($scope, $http, $stateParams, $rootScope, $state) {
+            $http({
+                method: "GET",
+                url: basePath + "/archives/getRoom.do",
+                params: {
+                    floor: $stateParams.floor,
+                    unit: $stateParams.unit
+                }
+            }).success(function(data) {
+                $scope.floor = $stateParams.floor;
+                $scope.unit = $stateParams.unit;
+                $scope.rooms = data.items;
+            });
+        }
+    ]);
+skhControllers.controller('addressUnitCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+        function($scope, $http, $stateParams, $rootScope, $state) {
+            $http({
+                method: "GET",
+                url: basePath + "/archives/getUnit.do",
+                params: {
+                    floor: $stateParams.floor
+                }
+            }).success(function(data) {
+                $scope.units = data.items;
+                $scope.floor = $stateParams.floor;
+            });
+        }
+    ]);
+skhControllers.controller('complainAddCtrl', ['$scope', '$http', '$timeout', '$state',
+    function($scope, $http, $timeout, $state) {
+        $scope.suc_show = false;
+        $scope.err_show = false;
+        $scope.submitForm = function() {
+            $http({
+                method: "POST",
+                url: basePath + "/complain/add.do",
+                data: {
+                    title: $scope.title,
+                    mobile: $scope.mobile,
+                    content: $scope.content,
+                    openid: sessionStorage.getItem("openid")
+                }
+            }).success(function(data) {
+                $scope.suc_show = true;
+                $timeout(function() {
+                    $scope.suc_show = false;
+                    $state.go("complain");
+                }, 3000)
+            }).error(function(data) {
+                $scope.err_show = true;
+                $timeout(function() {
+                    $scope.err_show = false;
+                }, 3000)
+            })
+        }
+
+    }
+]);
+skhControllers.controller('complainDetailCtrl', ['$scope', '$http', '$stateParams',
+        function($scope, $http, $stateParams) {
+            $http({
+                method: "GET",
+                url: basePath + "/complain/get.do",
+                params: {
+                    id: $stateParams.id
+                }
+            }).success(function(data) {
+                $scope.complain = data;
+            });
+        }
+    ]);
+skhControllers.controller('complainListCtrl', ['$scope', '$http',
+        function($scope, $http) {
+            $scope.currentPage = 0;
+            $scope.pageSize = 10;
+            $scope.load = function(goPage, limit) {
+                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || goPage < 1 || $scope.busy) {
+                    return;
+                } else {
+                    $scope.busy = true;
+                    $http({
+                        method: "GET",
+                        url: basePath + '/complain/getByOpenid',
+                        params: {
+                            offset: $scope.pageSize * (goPage - 1),
+                            limit: $scope.pageSize,
+                            openid: sessionStorage.getItem("openid")
+                        }
+                    }).success(function(data) {
+                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                        $scope.currentPage = goPage;
+                        $scope.busy = false;
+                        $scope.complains = data.items;
+                    });
+                }
+            }
+            $scope.load(1, $scope.pageSize);
+        }
+    ]);
+skhControllers.controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
+        function($scope, $http, $stateParams, $rootScope, $state, $location) {
+
+            var url = $location.url().substring($location.url().indexOf("?"));
+            if (url.indexOf("home") != -1) {
+                url = "";
+            }
+            //1.6获取微信用户openid
+            if(sessionStorage.getItem("openid")==null){
+                $http({
+                    method: "GET",
+                    url: basePath + '/getopenid' + url
+                }).success(function(data) {
+                    sessionStorage.setItem("openid", data.openid);
+
+                    console.log("获取openid成功");
+                }).error(function(data) {
+                    console.log("获取openid失败");
+                });
+            }
+
+
+
+            $scope.slides7 = [{
+                id: 10,
+                label: "slide #1",
+                img: "images/banner_01.png"
+            }, {
+                id: 11,
+                label: "slide #2",
+                img: "images/banner_02.png"
+            }, {
+                id: 12,
+                label: "slide #3",
+                img: "images/banner_03.png"
+            }];
+            $scope.carouselIndex7 = 0;
+
+            $rootScope.site = 1;
+            $state.go("home.shop-info", {
+                site: 1
+            });
+        }
+    ]);
+skhControllers.controller("noticeDetailCtrl", ['$scope', '$http', '$stateParams',
+        function($scope, $http, $stateParams) {
+            $http({
+                method: "GET",
+                url: basePath + "/notice/get.do",
+                params: {
+                    id: $stateParams.id
+                }
+            }).success(function(data) {
+                $scope.notice = data;
+            })
+        }
+    ]);
+skhControllers.controller('noticeListCtrl', ['$scope', '$http',
+        function($scope, $http) {
+            $scope.currentPage = 0;
+            $scope.pageSize = 10;
+            $scope.load = function(goPage, limit) {
+                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || goPage < 1 || $scope.busy) {
+                    return;
+                } else {
+                    $scope.busy = true;
+                    $http({
+                        method: "GET",
+                        url: basePath + '/notice/list.do',
+                        params: {
+                            offset: $scope.pageSize * (goPage - 1),
+                            limit: $scope.pageSize,
+                            openid: sessionStorage.getItem("openid")
+                        }
+                    }).success(function(data) {
+                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                        $scope.currentPage = goPage;
+                        $scope.busy = false;
+                        $scope.notices = data.items;
+                    });
+                }
+            }
+            $scope.load(1, $scope.pageSize);
+        }
+    ]);
+skhControllers.controller('ownerCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+        function($scope, $http, $stateParams, $rootScope, $state) {
+            //获取业主地址信息
+            $http({
+                method: "GET",
+                url: basePath + "/archives/findHouseByOpenid",
+                params: {
+                    openid: sessionStorage.getItem("openid")
+                }
+            }).success(function(data) {
+                if (data != "") {
+                    $scope.houses = data.items;
+                    data.items.forEach(function(house) {
+                        if (house.active == 0) {
+                            $scope.activeId = house.id;
+                        }
+
+                        house.deleteAddress = function(a) {
+                            //console.log("click")
+                            $scope.sure_delete = true;
+                            $scope.sure = function() {
+                                $scope.sure_delete = false;
+                                $http({
+                                    method: "POST",
+                                    url: basePath + "/archives/delHouse",
+                                    data: {
+                                        id: house.id
+                                    }
+                                }).success(function(data) {
+                                    $scope.houses.splice(a, 1);
+                                    console.log("删除成功")
+                                }).error(function(data) {
+                                    console.log("删除失败")
+                                });
+                            }
+                            $scope.cancel = function() {
+                                $scope.sure_delete = false;
+                            }
+                        };
+                        house.change_flag = function() {
+                            if (house.active == 0) {
+                                return;
+                            }
+                            $http({
+                                method: "POST",
+                                url: basePath + "/archives/updateHouseActive",
+                                data: {
+                                    id: house.id,
+                                    openid: sessionStorage.getItem("openid")
+                                }
+                            }).success(function(data) {
+                                $scope.activeId = house.id;
+                                console.log("设置默认地址成功");
+                            }).error(function(data) {
+                                console.log("设置默认地址失败");
+                            });
+                        }
+                    })
+                }
+
+            }).error(function(data) {});
+        }
+    ]);
+skhControllers.controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
         function($scope, $http, $stateParams, $rootScope, $state) {
 
             $scope.watmonth_f = $rootScope.wmonth;
@@ -577,52 +612,130 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
             }
 
         }
-    ])
-    .controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-        function($scope, $http, $stateParams, $rootScope, $state, $location) {
-
-            var url = $location.url().substring($location.url().indexOf("?"));
-            if (url.indexOf("home") != -1) {
-                url = "";
+    ]);
+skhControllers.controller('repairAddCtrl', ['$scope', '$http', '$timeout', '$state',
+        function($scope, $http, $timeout, $state) {
+            $scope.submitForm = function() {
+                $http({
+                    method: "POST",
+                    url: basePath + "/repair/add.do",
+                    data: {
+                        'device': $scope.device,
+                        'remark': $scope.remark,
+                        'mobile': $scope.mobile,
+                        'unit': $scope.unit,
+                        'roomNo': $scope.roomNo,
+                        'floor': $scope.floor,
+                        'openid': sessionStorage.getItem("openid")
+                    }
+                }).success(function(data) {
+                    $scope.suc_show = true;
+                    $timeout(function() {
+                        $scope.suc_show = false;
+                        $state.go("repair");
+                    }, 3000)
+                }).error(function(data) {
+                    $scope.err_show = true;
+                    $timeout(function() {
+                        $scope.err_show = false;
+                    }, 3000)
+                })
             }
-            //1.6获取微信用户openid
-            if(sessionStorage.getItem("openid")==null){
+        }
+    ]);
+skhControllers.controller('repairDetailCtrl', ['$scope', '$http', '$stateParams', '$timeout',
+    function($scope, $http, $stateParams, $timeout) {
+        $scope.suc_show = false;
+        $scope.err_show = false;
+
+        $http({
+            method: "GET",
+            url: basePath + "/repair/get.do",
+            params: {
+                'id': $stateParams.id
+            }
+        }).success(function(data) {
+            $scope.repair = data;
+            $scope.repair.confirm = function() {
+                $http({
+                    method: "POST",
+                    url: basePath + "/repair/finish.do",
+                    data: {
+                        id: $scope.repair.id
+                    }
+                }).success(function(data) {
+                    $scope.suc_show = true;
+                    $timeout(function() {
+                        $scope.suc_show = false;
+                        $scope.success=true;
+                    }, 3000)
+                }).error(function(data) {
+                    $scope.err_show = true;
+                    $timeout(function() {
+                        $scope.err_show = false;
+                    }, 3000)
+                })
+            }
+        });
+    }
+]);
+skhControllers.controller('repairListCtrl', ['$scope', '$http', '$timeout','$state',
+    function($scope, $http, $timeout,$state) {
+        $scope.currentPage = 0;
+        $scope.pageSize = 10;
+        $scope.suc_show = false;
+        $scope.err_show = false;
+        $scope.repairs = [];
+
+        $scope.load = function(goPage, limit) {
+            if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || goPage < 1 || $scope.busy) {
+                return;
+            } else {
+                $scope.busy = true;
                 $http({
                     method: "GET",
-                    url: basePath + '/getopenid' + url
+                    url: basePath + "/repair/list.do",
+                    params: {
+                        offset: $scope.pageSize * (goPage - 1),
+                        limit: $scope.pageSize,
+                        openid: sessionStorage.getItem("openid")
+                    }
                 }).success(function(data) {
-                    sessionStorage.setItem("openid", data.openid);
+                    $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                    $scope.currentPage = goPage;
+                    $scope.busy = false;
+                    data.items.forEach(function(r) {
+                        $scope.repairs.push(r);
+                        r.confirm = function() {
+                            $http({
+                                method: "POST",
+                                url: basePath + "/repair/finish.do",
+                                data: {
+                                    id: r.id
+                                }
+                            }).success(function(data) {
+                                $scope.suc_show = true;
+                                $timeout(function() {
+                                    $scope.suc_show = false;
+                                    $state.go("repair",{}, {reload: true});
+                                }, 3000);
 
-                    console.log("获取openid成功");
-                }).error(function(data) {
-                    console.log("获取openid失败");
+                                //console.log("id:"+r.id)
+                            }).error(function(data) {
+                                $scope.err_show = true;
+                                $timeout(function() {
+                                    $scope.err_show = false;
+                                }, 3000);
+                            })
+                        }
+                    })
                 });
             }
-
-
-
-            $scope.slides7 = [{
-                id: 10,
-                label: "slide #1",
-                img: "images/banner_01.png"
-            }, {
-                id: 11,
-                label: "slide #2",
-                img: "images/banner_02.png"
-            }, {
-                id: 12,
-                label: "slide #3",
-                img: "images/banner_03.png"
-            }];
-            $scope.carouselIndex7 = 0;
-
-            $rootScope.site = 1;
-            $state.go("home.shop-info", {
-                site: 1
-            });
         }
-    ])
-    .controller('shopInfoCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+        $scope.load(1, $scope.pageSize);
+    }
+]);
+skhControllers.controller('shopInfoCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
         function($scope, $http, $stateParams, $rootScope, $state) {
             $rootScope.site = $stateParams.site;
             $scope.currentPage = 0;
@@ -655,128 +768,4 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
 
             $scope.load(1, 8);
         }
-    ]).controller('ownerCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
-            //获取业主地址信息
-            $http({
-                method: "GET",
-                url: basePath + "/archives/findHouseByOpenid",
-                params: {
-                    openid: sessionStorage.getItem("openid")
-                }
-            }).success(function(data) {
-                if (data != "") {
-                    $scope.houses = data.items;
-                    data.items.forEach(function(house) {
-                        if (house.active == 0) {
-                            $scope.activeId = house.id;
-                        }
-
-                        house.deleteAddress = function(a) {
-                            //console.log("click")
-                            $scope.sure_delete = true;
-                            $scope.sure = function() {
-                                $scope.sure_delete = false;
-                                $http({
-                                    method: "POST",
-                                    url: basePath + "/archives/delHouse",
-                                    data: {
-                                        id: house.id
-                                    }
-                                }).success(function(data) {
-                                    $scope.houses.splice(a, 1);
-                                    console.log("删除成功")
-                                }).error(function(data) {
-                                    console.log("删除失败")
-                                });
-                            }
-                            $scope.cancel = function() {
-                                $scope.sure_delete = false;
-                            }
-                        };
-                        house.change_flag = function() {
-                            if (house.active == 0) {
-                                return;
-                            }
-                            $http({
-                                method: "POST",
-                                url: basePath + "/archives/updateHouseActive",
-                                data: {
-                                    id: house.id,
-                                    openid: sessionStorage.getItem("openid")
-                                }
-                            }).success(function(data) {
-                                $scope.activeId = house.id;
-                                console.log("设置默认地址成功");
-                            }).error(function(data) {
-                                console.log("设置默认地址失败");
-                            });
-                        }
-                    })
-                }
-
-            }).error(function(data) {});
-        }
-    ]).controller('accountRecordCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
-            //console.log("成功加载record.html")
-            //$scope.id=$stateParams.
-            //console.log($stateParams.id);
-            //$http({
-            //    method: "GET",
-            //    url: basePath + "/payment/getAmount.do",
-            //    params: {
-            //        paymentState: 1,
-            //        id: $stateParams.id
-            //    }
-            //}).success(function (data) {
-            //    $scope.records=data;
-            //});
-            //这里是写好的数据
-            $scope.records = {
-                    "amountList": [{
-                        "id": 4,
-                        "year": "2015",
-                        "month": 12,
-                        "amount": 35.99,
-                        "paymentType": "1",
-                        "number": "3456°-1246°",
-                        "count": "-2210°"
-                    }, {
-                        "id": 5,
-                        "year": "2015",
-                        "month": 11,
-                        "amount": 4.11,
-                        "paymentType": "0",
-                        "number": "0m³-3456m³",
-                        "count": "3456m³"
-                    }],
-                    "amountSum": "444.00"
-                }
-                //console.log($scope.records);console.log($scope.records.amountList[0].amount)
-        }
-    ]).controller('htmlErrorCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
-
-        }
-    ])
-
-    //自定义过滤器 截取字符串长度
-skhControllers.filter('cut', function() {
-    return function(value, wordwise, max, tail) {
-        if (!value) return '';
-
-        max = parseInt(max, 10);
-        if (!max) return value;
-        if (value.length <= max) return value;
-
-        value = value.substr(0, max);
-        if (wordwise) {
-            var lastspace = value.lastIndexOf(' ');
-            if (lastspace != -1) {
-                value = value.substr(0, lastspace);
-            }
-        }
-        return value + (tail || '...');
-    };
-})
+    ]);

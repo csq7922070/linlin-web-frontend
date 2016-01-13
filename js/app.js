@@ -2,6 +2,7 @@ var basePath = "http://mifan.4zlink.com:8080/mifan";
 //var basePath = "http://localhost:8080/skh";
 //var basePath = "http://192.168.0.117:8080/skh";
 
+var skhControllers = angular.module('skhControllers', ['ui.router']);
 var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'skhControllers']);
 
 myApp.config(function ($stateProvider, $urlRouterProvider) {
@@ -103,8 +104,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state('html-error', {
             url: "/html-error",
-            templateUrl: "tpl/index/html-error.html",
-            controller: "htmlErrorCtrl"
+            templateUrl: "tpl/index/html-error.html"
         })
 
     ;
