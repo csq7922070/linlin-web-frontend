@@ -315,7 +315,7 @@ p {
 
 .online_visit {
     text-align: center;
-    overflow: hidden;
+    /*overflow: hidden;*/
     height: auto;
 }
 

@@ -1,5 +1,11 @@
 skhControllers.controller('repairAddCtrl', ['$scope', '$http', '$timeout', '$state',
         function($scope, $http, $timeout, $state) {
+            $scope.mask_close=function(){
+                $scope.suc_show = false;
+            }
+            $scope.mask_err_close=function(){
+                $scope.err_show = false;
+            }
             $scope.submitForm = function() {
                 $http({
                     method: "POST",
