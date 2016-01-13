@@ -140,7 +140,7 @@ a {
     height: 60px;
     margin: 0px auto;
     margin-top: 5px;
-    background-image: url("/images/icon_05.png");
+    background-image: url("../../images/icon_05.png");
     background-size: cover;
     text-indent: -9999px;
 }
@@ -153,7 +153,7 @@ a {
     height: 60px;
     margin: 0px auto;
     margin-top: 5px;
-    background-image: url("/images/icon_06.png");
+    background-image: url("../../images/icon_06.png");
     background-size: cover;
     text-indent: -9999px;
 }
@@ -298,7 +298,7 @@ a {
     position: absolute;
     left: 24px;
     top: 22px;
-    background-image: url("/images/icon_04.png");
+    background-image: url("../../images/icon_04.png");
 }
 
 .detail_notice {
@@ -364,7 +364,7 @@ a {
     width: 80px;
     height: 80px;
     margin: 100px auto 80px;
-    background-image: url("/images/icon_03.png");
+    background-image: url("../../images/icon_03.png");
     background-size: cover;
 }
 
