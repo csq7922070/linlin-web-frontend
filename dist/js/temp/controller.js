@@ -402,19 +402,21 @@ skhControllers.controller('homeCtrl', ['$scope', '$http', '$stateParams', '$root
                 url = "";
             }
             //1.6获取微信用户openid
-            if(sessionStorage.getItem("openid")==null){
-                $http({
-                    method: "GET",
-                    url: basePath + '/getopenid' + url
-                }).success(function(data) {
-                    sessionStorage.setItem("openid", data.openid);
+            $http({
+                method: "GET",
+                url: basePath + '/getopenid' + url
+            }).success(function(data) {
+                sessionStorage.setItem("openid", data.openid);
 
-                    console.log("获取openid成功");
-                }).error(function(data) {
-                    console.log("获取openid失败");
-                });
-            }
+<<<<<<< HEAD:js/controller.js
+=======
+                console.log("获取openid成功");
+            }).error(function(data) {
+                console.log("获取openid失败");
+            });
 
+
+>>>>>>> 06be048e65f4c6bf984a3ba8c1df79b98f2f2044:dist/js/temp/controller.js
             $scope.slides7 = [{
                 id: 10,
                 label: "slide #1",

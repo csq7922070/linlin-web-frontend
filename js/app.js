@@ -5,7 +5,7 @@ var basePath = "http://mifan.4zlink.com:8080/mifan";
 var skhControllers = angular.module('skhControllers', ['ui.router']);
 var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'skhControllers']);
 
-myApp.config(function ($stateProvider, $urlRouterProvider) {
+myApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/home");
     $stateProvider
         .state('notice', {
@@ -105,10 +105,8 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
         .state('html-error', {
             url: "/html-error",
             templateUrl: "tpl/index/html-error.html"
-        })
-
-    ;
-}).config(function ($httpProvider) {
+        });
+}]).config(['$httpProvider', function ($httpProvider) {
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -152,7 +150,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
 
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
-}).run(['$rootScope', function ($rootScope) {
+}]).run(['$rootScope', function ($rootScope) {
     $rootScope.$on('$stateChangeSuccess', function (event, to, toParams, from, fromParams) {
         $rootScope.previousState = from.name;
         $rootScope.currentState = to.name;
