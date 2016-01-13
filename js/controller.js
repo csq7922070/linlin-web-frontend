@@ -586,16 +586,19 @@ skhControllers.controller('noticeListCtrl', ['$scope', '$http',
                 url = "";
             }
             //1.6获取微信用户openid
-            $http({
-                method: "GET",
-                url: basePath + '/getopenid' + url
-            }).success(function(data) {
-                sessionStorage.setItem("openid", data.openid);
+            if(sessionStorage.getItem("openid")==null){
+                $http({
+                    method: "GET",
+                    url: basePath + '/getopenid' + url
+                }).success(function(data) {
+                    sessionStorage.setItem("openid", data.openid);
 
-                console.log("获取openid成功");
-            }).error(function(data) {
-                console.log("获取openid失败");
-            });
+                    console.log("获取openid成功");
+                }).error(function(data) {
+                    console.log("获取openid失败");
+                });
+            }
+
 
 
             $scope.slides7 = [{
