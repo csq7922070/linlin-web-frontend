@@ -39,7 +39,7 @@ gulp.task('concat:services', function () {
   return gulp.src('js/services/*.js')
         .pipe(concat('service.js'))//合并后的文件名
         .pipe(gulp.dest('dist/js/temp'));
-});
+}); 
 
 gulp.task('concat:filters', function () {
   return gulp.src('js/filters/*.js')
@@ -47,9 +47,7 @@ gulp.task('concat:filters', function () {
         .pipe(gulp.dest('dist/js/temp'));
 });
 
-gulp.task('concat:js', function(){
-  runSequence(['concat:controllers', 'concat:directives', 'concat:services', 'concat:filters']);
-})
+gulp.task('concat:js', ['concat:controllers', 'concat:directives', 'concat:services', 'concat:filters']);
 
 gulp.task('minifyjs', function(){
   return gulp.src(['js/app.js','dist/js/temp/*.js'])      //压缩的文件
