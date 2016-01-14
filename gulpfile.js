@@ -43,15 +43,19 @@ gulp.task('clean:dist', function (cb) {
 });
 
 gulp.task('build:js', [], function(){
-  return gulp.src(['app/app.js','app/*/*.js','app/common/directives/*','app/common/services/*','app/common/filters/*'])
+  return gulp.src(['app/app.js', 'app/*/*.js', 'app/common/**/*.js'])
         .pipe(concat('all.js'))      //压缩的文件
         .pipe(rename({suffix: '.min'}))   //输出文件重命名
-        //.pipe(uglify()) //执行压缩
+        .pipe(uglify()) //执行压缩
         .pipe(gulp.dest('dist/js'));   
 });
 
 gulp.task('build', ['clean:dist'], function () {
   runSequence(['copy', 'build:js', 'minifycss']);
+});
+
+gulp.task('watch', function(){
+  gulp.watch('app/**', ['build']);
 });
 
 gulp.task('default', ['build']);
