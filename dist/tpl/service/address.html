@@ -1,0 +1,75 @@
+<div class="weui_cells weui_cells_access address_down">
+    <a class="weui_cell" href="javascript:;">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>城市</p>
+        </div>
+        <div class="weui_cell_ft">
+            廊坊市
+        </div>
+    </a>
+    <a class="weui_cell" href="javascript:;">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>小区</p>
+        </div>
+        <div class="weui_cell_ft">
+            阿尔卡迪亚小区
+        </div>
+    </a>
+    <a class="weui_cell" ui-sref="address-floor">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>楼号</p>
+        </div>
+        <div ng-if="floor" class="weui_cell_ft" name="floor">
+            {{floor}}
+        </div>
+        <div ng-if="!floor" class="weui_cell_ft" name="floor">
+            请选择
+        </div>
+    </a>
+    <a class="weui_cell" ng-disabled="type==0">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>单元</p>
+        </div>
+        <div ng-if="unit" class="weui_cell_ft" name="floor">
+            {{unit}}
+        </div>
+        <div ng-if="!unit" class="weui_cell_ft" name="unit">
+            请选择
+        </div>
+    </a>
+    <a class="weui_cell" ng-disabled="type==0||type==3">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>门牌号</p>
+        </div>
+        <div ng-if="room" class="weui_cell_ft" name="floor">
+            {{room}}
+        </div>
+        <div ng-if="!room" class="weui_cell_ft" name="room">
+            请选择
+        </div>
+    </a>
+    <a class="weui_cell address_detail" href="javascript:;">
+        <span class="sure_address">
+            确认地址
+        </span>
+        <span class="sure_address right_detail">
+            阿尔卡迪亚小区<span>{{floor}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>
+        </span>
+    </a>
+</div>
+<!--下一步按钮-->
+<div class="address_btn">
+    <button class="weui_btn weui_btn_primary length_btn" ui-sref="account({floor:floor,unit:unit,room:room,id:id,username:username})" ng-disabled="!floor||(!unit&&type==2)||(!room&&type==3)" ng-class="{'disabled':!floor||(!unit&&type==2)||(!room&&type==3)}" style="font-size: 16px" ng-click="add_newaddress()">下一步
+    </button>
+</div>
+<!--提示框-->
+<div class="weui_dialog_confirm" style="display: none">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title">确定要放弃本次编辑</strong></div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:;" class="weui_btn_dialog default small_color">确定</a>
+            <a href="javascript:;" class="weui_btn_dialog primary small_color">取消</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="weui_cells weui_cells_access address_down account_page owner_top" ng-repeat="house in houses">
+    <!--加上ng -repeat-->
+    <div class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>业主信息</p>
+        </div>
+        <!--:floor/:unit/:room/:id/:username-->
+        <div class="address_section"
+             ui-sref="account({floor:house.floor,unit:house.unit,room:house.room,id:house.id,username:house.owners[0].ownerName})">
+            <span>{{house.floor}}</span><span ng-if="house.info">-{{house.unit}}</span><span ng-if="house.room">-{{house.room}}</span>
+            <!--{{info.floor}}-->
+        </div>
+    </div>
+    <div class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p></p>
+        </div>
+        <div class="people_name">
+            {{house.owners[0].ownerName}}
+        </div>
+    </div>
+    <div class="weui_cell ofen_address">
+        <div class="weui_cell_hd" ng-click="house.change_flag()"
+             ng-class="{'img_active':house.id==activeId,'dis_active':house.id!=activeId}">
+        </div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>设为我的常用地址</p>
+        </div>
+        <div class="owner_name_del" ng-click="house.deleteAddress($index)">删除</div>
+    </div>
+</div>
+
+<div class="owner_bottom"></div>
+<!--<div class="add_address" ui-sref="address({location:1})" ng-click="add_address()">+新增地址</div>-->
+<div class="add_address"  ui-sref="address-final">+新增地址</div>
+<!--提示框-->
+<div class="weui_dialog_confirm" ng-show="sure_delete">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title">确定要删除吗?</strong></div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:;" class="weui_btn_dialog default small_color" ng-click="sure()">确定</a>
+            <a href="javascript:;" class="weui_btn_dialog primary small_color" ng-click="cancel()">取消</a>
+        </div>
+    </div>
+</div>
