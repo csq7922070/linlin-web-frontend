@@ -23,5 +23,9 @@
     "bootstrap": "~3.3.6",
     "angular-ui-bootstrap": "~0.14.3",
     "angular-carousel": "~1.0.1"
+  },
+  "devDependencies": {
+    "angular-carousel": "~1.0.1",
+    "angular-mocks": "~1.4.8"
   }
 }
