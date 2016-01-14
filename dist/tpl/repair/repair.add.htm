@@ -1,0 +1,60 @@
+<div class="container-fluid nav">
+    <div class="rows">
+        <div class="col-xs-6">
+            <a ui-sref="repair">报修记录</a>
+        </div>
+        <div class="col-xs-6">
+            <a ui-sref="repair-add" class="under_line">我要报修</a>
+        </div>
+    </div>
+</div>
+<form ng-submit="submitForm()" name="repairForm" class="form-signin" method="post" novalidate>
+    <div class="container">
+        <input type="text" placeholder="需要修理的设备" name="device" ng-model="device" maxlength="20" required
+               ng-maxlength="20"
+               ng-class="{'has-error':repairForm.device.$touched && repairForm.device.$dirty && repairForm.device.$invalid}">
+        <textarea name="remark" ng-model="remark" maxlength="1000" placeholder="请详细描述下出现的问题" required ng-maxlength="20"
+                  ng-class="{'has-error':repairForm.remark.$touched && repairForm.remark.$dirty && repairForm.remark.$invalid}"></textarea>
+        <input type="text" placeholder="您的手机号码" name="mobile" ng-model="mobile"
+               ng-pattern="/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/" maxlength="11" required>
+        <span class="room_hidden"
+              ng-show="repairForm.mobile.$touched && repairForm.mobile.$dirty && repairForm.mobile.$invalid">*请输入正确的手机号码</span>
+
+        <div>
+            <span>楼栋号:</span>
+            <input type="text" name="floor" maxlength="4" ng-model="floor" required ng-maxlength="4"
+                   ng-class="{'has-error':repairForm.floor.$touched && repairForm.floor.$dirty && repairForm.floor.$invalid}">
+        </div>
+        <div>
+            <span>单元号:</span>
+            <input type="text" name="unit" maxlength="4" ng-model="unit" required ng-maxlength="4"
+                   ng-class="{'has-error':repairForm.unit.$touched && repairForm.unit.$dirty && repairForm.unit.$invalid}">
+        </div>
+
+        <div>
+            <span>房间号:</span>
+            <input type="text" name="roomNo" maxlength="4" ng-model="roomNo" required ng-maxlength="4"
+                   ng-class="{'has-error':repairForm.roomNo.$touched && repairForm.roomNo.$dirty && repairForm.roomNo.$invalid}">
+        </div>
+        <div class="room_hidden"
+             ng-show="repairForm.roomNo.$touched && repairForm.roomNo.$dirty && repairForm.roomNo.$invalid">*请输入正确的房间号码
+        </div>
+    </div>
+    <div class="prompt_mask" ng-show="suc_show">
+        <div class="prompt_dialog">
+            <div class="prompt_icon"></div>
+            <div class="prompt_font">提交成功</div>
+            <input type="button" class="prompt_btn" value="确定" ng-click="mask_close()">
+        </div>
+    </div>
+    <div class="prompt_mask_err" ng-show="err_show">
+        <div class="prompt_dialog">
+            <div class="prompt_icon_err"></div>
+            <div class="prompt_font">提交失败，请稍后再试</div>
+            <input type="button" class="prompt_btn" value="确定" ng-click="mask_err_close()">
+        </div>
+    </div>
+    <div class="container">
+        <button type="submit" type="button" class="submit_btn" ng-disabled="repairForm.$invalid">提交</button>
+    </div>
+</form>

@@ -16,33 +16,44 @@ var sourcemaps = require('gulp-sourcemaps');
 // Build //
 ///////////
 
+gulp.task('copy', function() {
+  gulp.src('app/index.html')
+  .pipe(gulp.dest('dist'));
+  gulp.src('app/tpl/**')
+  .pipe(gulp.dest('dist/tpl'));
+  gulp.src('app/images/**')
+  .pipe(gulp.dest('dist/images'));
+  gulp.src('bower_components/**')
+  .pipe(gulp.dest('dist/bower_components'));
+});
+
 gulp.task('minifycss', function(){
-  return gulp.src('css/*.css')      //压缩的文件
+  return gulp.src('app/css/*.css')      //压缩的文件
         .pipe(rename({suffix: '.min'}))   //输出文件夹
         .pipe(minifycss())
         .pipe(gulp.dest('dist/css'));   //执行压缩
 });
 
 gulp.task('concat:controllers', function () {
-  return gulp.src('js/controllers/*.js')
+  return gulp.src('app/js/controllers/*.js')
         .pipe(concat('controller.js'))//合并后的文件名
         .pipe(gulp.dest('dist/js/temp'));
 });
 
 gulp.task('concat:directives', function () {
-  return gulp.src('js/directives/*.js')
+  return gulp.src('app/js/directives/*.js')
         .pipe(concat('directive.js'))//合并后的文件名
         .pipe(gulp.dest('dist/js/temp'));
 });
 
 gulp.task('concat:services', function () {
-  return gulp.src('js/services/*.js')
+  return gulp.src('app/js/services/*.js')
         .pipe(concat('service.js'))//合并后的文件名
         .pipe(gulp.dest('dist/js/temp'));
 }); 
 
 gulp.task('concat:filters', function () {
-  return gulp.src('js/filters/*.js')
+  return gulp.src('app/js/filters/*.js')
         .pipe(concat('filter.js'))//合并后的文件名
         .pipe(gulp.dest('dist/js/temp'));
 });
@@ -50,14 +61,18 @@ gulp.task('concat:filters', function () {
 gulp.task('concat:js', ['concat:controllers', 'concat:directives', 'concat:services', 'concat:filters']);
 
 gulp.task('minifyjs', function(){
-  return gulp.src(['js/app.js','dist/js/temp/*.js'])      //压缩的文件
+  return gulp.src(['app/js/app.js','dist/js/temp/*.js'])      //压缩的文件
         .pipe(rename({suffix: '.min'}))   //输出文件重命名
         .pipe(uglify()) //执行压缩
         .pipe(gulp.dest('dist/js'));   
 });
 
-gulp.task('build', ['concat:js'], function () {
-  runSequence(['minifyjs', 'minifycss']);
+gulp.task('build:js', ['concat:js'], function(){
+  runSequence(['minifyjs']);
+});
+
+gulp.task('build', [], function () {
+  runSequence(['copy', 'build:js', 'minifycss']);
 });
 
 gulp.task('default', ['build']);

@@ -321,6 +321,12 @@ skhControllers.controller('complainAddCtrl', ['$scope', '$http', '$timeout', '$s
     function($scope, $http, $timeout, $state) {
         $scope.suc_show = false;
         $scope.err_show = false;
+        $scope.mask_close=function(){
+            $scope.suc_show = false;
+        }
+        $scope.mask_err_close=function(){
+            $scope.err_show = false;
+        }
         $scope.submitForm = function() {
             $http({
                 method: "POST",
@@ -396,17 +402,18 @@ skhControllers.controller('homeCtrl', ['$scope', '$http', '$stateParams', '$root
                 url = "";
             }
             //1.6获取微信用户openid
-            $http({
-                method: "GET",
-                url: basePath + '/getopenid' + url
-            }).success(function(data) {
-                sessionStorage.setItem("openid", data.openid);
+            if(sessionStorage.getItem("openid")==null){
+                $http({
+                    method: "GET",
+                    url: basePath + '/getopenid' + url
+                }).success(function(data) {
+                    sessionStorage.setItem("openid", data.openid);
 
-                console.log("获取openid成功");
-            }).error(function(data) {
-                console.log("获取openid失败");
-            });
-
+                    console.log("获取openid成功");
+                }).error(function(data) {
+                    console.log("获取openid失败");
+                });
+            }
 
             $scope.slides7 = [{
                 id: 10,
@@ -612,6 +619,12 @@ skhControllers.controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$r
     ]);
 skhControllers.controller('repairAddCtrl', ['$scope', '$http', '$timeout', '$state',
         function($scope, $http, $timeout, $state) {
+            $scope.mask_close=function(){
+                $scope.suc_show = false;
+            }
+            $scope.mask_err_close=function(){
+                $scope.err_show = false;
+            }
             $scope.submitForm = function() {
                 $http({
                     method: "POST",
