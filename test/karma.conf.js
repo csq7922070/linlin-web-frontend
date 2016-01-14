@@ -25,6 +25,7 @@ module.exports = function(config) {
       // endbower
       "bower_components/angular/angular.js",
       "bower_components/angular-mocks/angular-mocks.js",
+      "app/js/**/*.js",
       "test/spec/**/*.js"
     ],
 
