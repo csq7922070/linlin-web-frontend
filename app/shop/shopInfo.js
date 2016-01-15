@@ -28,7 +28,7 @@ skhControllers.controller('shopInfoCtrl', ['$scope', '$http', '$stateParams', '$
                     });
                 }
             }
-
+            
             $scope.load(1, 8);
         }
     ]);
