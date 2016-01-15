@@ -1,3 +1,5 @@
+var myModule = angular.module('myModule', []);
+
 myModule.directive('aGreatEye', function () {
     return {
         restrict: 'E',

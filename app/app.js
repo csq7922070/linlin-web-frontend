@@ -10,42 +10,42 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, 
     $stateProvider
         .state('notice', {
             url: "/notice/list",
-            templateUrl: "tpl/notice/notice.list.htm",
+            templateUrl: "tpl/notice/notice.list.html",
             controller: 'noticeListCtrl'
         })
         .state('notice-detail', {
             url: "/notice/:id",
-            templateUrl: "tpl/notice/notice.detail.htm",
+            templateUrl: "tpl/notice/notice.detail.html",
             controller: "noticeDetailCtrl"
         })
         .state('repair', {
             url: "/repair-list",
-            templateUrl: "tpl/repair/repair.list.htm",
+            templateUrl: "tpl/repair/repair.list.html",
             controller: 'repairListCtrl'
         })
         .state('repair-detail', {
             url: "/repair/:id",
-            templateUrl: "tpl/repair/repair.detail.htm",
+            templateUrl: "tpl/repair/repair.detail.html",
             controller: 'repairDetailCtrl'
         })
         .state('repair-add', {
             url: "/repair-add",
-            templateUrl: "tpl/repair/repair.add.htm",
+            templateUrl: "tpl/repair/repair.add.html",
             controller: 'repairAddCtrl'
         })
         .state('complain', {
             url: "/complain-list",
-            templateUrl: "tpl/complain/complain.list.htm",
+            templateUrl: "tpl/complain/complain.list.html",
             controller: "complainListCtrl"
         })
         .state('complain-detail', {
             url: "/complain/:id",
-            templateUrl: "tpl/complain/complain.detail.htm",
+            templateUrl: "tpl/complain/complain.detail.html",
             controller: "complainDetailCtrl"
         })
         .state('complain-add', {
             url: "/complain-add",
-            templateUrl: "tpl/complain/complain.add.htm",
+            templateUrl: "tpl/complain/complain.add.html",
             controller: "complainAddCtrl"
         })
         .state('address', {
@@ -54,17 +54,17 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, 
         })
         .state('address-floor', {
             url: "/address-floor/",
-            templateUrl: "tpl/service/address-floor.html",
+            templateUrl: "tpl/address/block/block.html",
             controller: "addressFloorCtrl"
         })
         .state('address-unit', {
             url: "/address-unit/:floor",
-            templateUrl: "tpl/service/address-unit.html",
+            templateUrl: "tpl/address/unit/unit.html",
             controller: "addressUnitCtrl"
         })
         .state('address-room', {
             url: "/address-room/:floor/:unit",
-            templateUrl: "tpl/service/address-room.html",
+            templateUrl: "tpl/address/room/room.html",
             controller: "addressRoomCtrl"
         })
         .state('address-final', {
@@ -84,12 +84,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, 
         })
         .state('home', {
             url: "/home",
-            templateUrl: "tpl/index/home.html",
+            templateUrl: "tpl/home/home.html",
             controller: "homeCtrl"
         })
         .state('home.shop-info', {
             url: "/shop-info/:site",
-            templateUrl: "tpl/index/shop-info.html",
+            templateUrl: "tpl/shop/shop-info.html",
             controller: "shopInfoCtrl"
         })
         .state('owner-address', {
@@ -104,7 +104,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, 
         })
         .state('html-error', {
             url: "/html-error",
-            templateUrl: "tpl/index/html-error.html"
+            templateUrl: "tpl/home/html-error.html"
         });
 }]).config(['$httpProvider', function ($httpProvider) {
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
