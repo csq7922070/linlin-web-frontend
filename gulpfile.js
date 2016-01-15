@@ -43,7 +43,7 @@ gulp.task('clean:dist', function (cb) {
 });
 
 gulp.task('build:js', [], function(){
-  return gulp.src(['app/app.js', 'app/*/*.js', 'app/common/**/*.js'])
+  return gulp.src(['app/app.js', 'app/common/**/*.js', 'app/*/*.js'])
         .pipe(concat('all.js'))      //压缩的文件
         .pipe(rename({suffix: '.min'}))   //输出文件重命名
         .pipe(uglify()) //执行压缩
