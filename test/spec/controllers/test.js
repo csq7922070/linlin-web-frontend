@@ -43,5 +43,13 @@ angular.module('myApplicationModule', [])
         $scope.grade();
         expect($scope.strength).toEqual('strong');
       });
+
+      it('sets the strength to "weak" if the password length is <3 chars', function() {
+        var $scope = {};
+        var controller = $controller('myController', { $scope: $scope });
+        $scope.password = '12';
+        $scope.grade();
+        expect($scope.strength).toEqual('weak');
+      });
     });
   });
