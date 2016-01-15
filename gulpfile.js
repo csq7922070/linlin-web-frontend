@@ -38,28 +38,36 @@ gulp.task('minifycss', function(){
         .pipe(gulp.dest('dist/css'));   //执行压缩
 });
 
-gulp.task('clean:dist', function (cb) {
-  rimraf('dist', cb);
+gulp.task('clean:dist', function () {
+  del.sync(['dist/bower_components/*','dist/css/*','dist/images/*','dist/js/*','dist/tpl/*','dist/*.html'], {force: true});
 });
 
 gulp.task('build:js', [], function(){
-<<<<<<< HEAD
-  return gulp.src(['app/app.js','app/common/directives/*','app/common/services/*','app/common/resources/*','app/common/filters/*','app/*/*.js'])
-=======
   return gulp.src(['app/app.js', 'app/*/*.js', 'app/common/**/*.js'])
->>>>>>> branch 'feature/refactorDir' of http://192.168.0.95:10080/g731/linlin-web-frontend.git
+        .pipe(concat('all.js'))      //压缩的文件
+        .pipe(rename({suffix: '.min'}))   //输出文件重命名
+        //.pipe(uglify()) //执行压缩
+        .pipe(gulp.dest('dist/js'));   
+});
+
+gulp.task('build:minifyjs', [], function(){
+  return gulp.src(['app/app.js', 'app/*/**/*.js', 'app/common/**/*.js'])
         .pipe(concat('all.js'))      //压缩的文件
         .pipe(rename({suffix: '.min'}))   //输出文件重命名
         .pipe(uglify()) //执行压缩
         .pipe(gulp.dest('dist/js'));   
 });
 
-gulp.task('build', ['clean:dist'], function () {
+gulp.task('build:test', ['clean:dist'], function () {
   runSequence(['copy', 'build:js', 'minifycss']);
 });
 
-gulp.task('watch', function(){
-  gulp.watch('app/**', ['build']);
+gulp.task('build:dist', ['clean:dist'], function(){
+  runSequence(['copy', 'build:minifyjs', 'minifycss']);
 });
 
-gulp.task('default', ['build']);
+gulp.task('watch', function(){
+  gulp.watch('app/**', ['build:test']);
+});
+
+gulp.task('default', ['build:test']);
