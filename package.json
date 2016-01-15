@@ -49,15 +49,8 @@
     "karma-phantomjs-launcher": "^0.2.3",
     "phantomjs": "^1.9.19",
     "rimraf": "^2.5.0",
-<<<<<<< HEAD
-    "run-sequence": "^1.1.5"
-  },
-  "dependencies": {
-    "gulp": "^3.9.0"
-=======
     "run-sequence": "^1.1.5",
     "protractor": "^2.1.0",
     "shelljs": "^0.2.6"
->>>>>>> feature/refactor
   }
 }
