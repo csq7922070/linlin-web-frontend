@@ -1,8 +1,8 @@
-skhControllers.controller('accountCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+skhControllers.controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
         function($scope, $http, $stateParams, $rootScope, $state) {
             //显示当前页面的业主信息
             $scope.ownerName = $stateParams.username;
-            $scope.floor = $stateParams.floor;
+            $scope.block = $stateParams.block;
             $scope.unit = $stateParams.unit;
             $scope.room = $stateParams.room;
             $scope.id = $stateParams.id;

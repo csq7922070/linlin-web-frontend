@@ -6,7 +6,7 @@ skhControllers.controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$r
             $scope.elmonth_f = $rootScope.emonth;
             $scope.elmonth = $scope.elmonth_f.join(",");
 
-            $scope.floor = $rootScope.floor;
+            $scope.block = $rootScope.block;
             $scope.unit = $rootScope.unit;
             $scope.room = $rootScope.room;
 

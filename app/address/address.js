@@ -9,7 +9,7 @@ skhControllers.controller('addressCtrl', ['$scope', '$http', '$stateParams', '$r
                     url: basePath + "/archives/addHouse",
                     data: {
                         court: "阿尔卡迪亚",
-                        floor: $stateParams.floor,
+                        block: $stateParams.block,
                         unit: $stateParams.unit,
                         roomNo: $stateParams.room,
                         openid: sessionStorage.getItem("openid"),
@@ -22,9 +22,9 @@ skhControllers.controller('addressCtrl', ['$scope', '$http', '$stateParams', '$r
                     console.log("后台添加地址成功");
                 })
             }
-            console.log("floor" + $stateParams.floor + " unit" + $stateParams.unit + " room" + $stateParams.room);
+            console.log("block" + $stateParams.block + " unit" + $stateParams.unit + " room" + $stateParams.room);
             console.log("succees");
-            $scope.floor = $stateParams.floor;
+            $scope.block = $stateParams.block;
             $scope.unit = $stateParams.unit;
             $scope.room = $stateParams.room;
             //添加业主姓名与id

@@ -4,11 +4,11 @@ skhControllers.controller('addressUnitCtrl', ['$scope', '$http', '$stateParams',
                 method: "GET",
                 url: basePath + "/archives/getUnit.do",
                 params: {
-                    floor: $stateParams.floor
+                    block: $stateParams.block
                 }
             }).success(function(data) {
                 $scope.units = data.items;
-                $scope.floor = $stateParams.floor;
+                $scope.block = $stateParams.block;
             });
         }
     ]);

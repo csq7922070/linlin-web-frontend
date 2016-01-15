@@ -4,11 +4,11 @@ skhControllers.controller('addressRoomCtrl', ['$scope', '$http', '$stateParams',
                 method: "GET",
                 url: basePath + "/archives/getRoom.do",
                 params: {
-                    floor: $stateParams.floor,
+                    block: $stateParams.block,
                     unit: $stateParams.unit
                 }
             }).success(function(data) {
-                $scope.floor = $stateParams.floor;
+                $scope.block = $stateParams.block;
                 $scope.unit = $stateParams.unit;
                 $scope.rooms = data.items;
             });
