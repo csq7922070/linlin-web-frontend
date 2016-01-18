@@ -1,6 +1,6 @@
-<div class="container-fluid contain" style="background: white" when-scrolled="load({{currentPage+1}},pageSize)">
+<div class="container-fluid contain" style="background: white" when-scrolled="vm.load({{vm.currentPage+1}},pageSize)">
     <ul class="list">
-        <li ng-repeat="notice in notices" ng-if="notices.length>0">
+        <li ng-repeat="notice in vm.notices" ng-if="vm.notices.length>0">
             <a ui-sref="notice-detail({id:notice.id})">
                 <div class='notice' name='title'>{{notice.title}}</div>
                 <div class='notice_date' name='createtime'>{{notice.createDate.substring(5,10)}}</div>

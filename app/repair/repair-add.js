@@ -1,29 +1,33 @@
-skhControllers.controller('repairAddCtrl', ['$scope', '$http', '$timeout', '$state', 'repairs', 'curd',
-    function($scope, $http, $timeout, $state, repairs, curd) {
-        $scope.mask_close = function() {
-            $scope.suc_show = false;
-        }
-        $scope.mask_err_close = function() {
-            $scope.err_show = false;
-        }
-        $scope.submitForm = function() {
-            params = $scope.repair;
-            curd.save(repairs, params).$promise.then(successcb, errcb);
-        }
+(function() {
+    angular.module('app.repair').controller('repairAddCtrl', ['$timeout', '$state', 'repairs',
+        function($timeout, $state, repairs) {
+            var vm = this;
 
-        function successcb() {
-            $scope.suc_show = true;
-            $timeout(function() {
-                $scope.suc_show = false;
-                $state.go("repair");
-            }, 3000);
-        }
+            vm.mask_close = function() {
+                vm.suc_show = false;
+            }
+            vm.mask_err_close = function() {
+                vm.err_show = false;
+            }
+            vm.submitForm = function() {
+                params = vm.repair;
+                repairs.save(params).$promise.then(successcb, errcb);
+            }
 
-        function errcb() {
-            $scope.err_show = true;
-            $timeout(function() {
-                $scope.err_show = false;
-            }, 3000);
+            function successcb() {
+                vm.suc_show = true;
+                $timeout(function() {
+                    vm.suc_show = false;
+                    $state.go("repair");
+                }, 3000);
+            }
+
+            function errcb() {
+                vm.err_show = true;
+                $timeout(function() {
+                    vm.err_show = false;
+                }, 3000);
+            }
         }
-    }
-]);
+    ]);
+})();

@@ -1,28 +1,28 @@
-skhControllers.controller('noticeListCtrl', ['$scope', '$http',
-        function($scope, $http) {
-            $scope.currentPage = 0;
-            $scope.pageSize = 10;
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || goPage < 1 || $scope.busy) {
+(function() {
+    angular.module('app.notice').controller('noticeListCtrl', ['notices',
+        function(notices) {
+            var vm = this;
+            vm.currentPage = 0;
+            vm.pageSize = 10;
+            vm.load = function(goPage, limit) {
+                if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
                     return;
                 } else {
-                    $scope.busy = true;
-                    $http({
-                        method: "GET",
-                        url: basePath + '/notice/list.do',
-                        params: {
-                            offset: $scope.pageSize * (goPage - 1),
-                            limit: $scope.pageSize,
-                            openid: sessionStorage.getItem("openid")
-                        }
-                    }).success(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        $scope.notices = data.items;
+                    vm.busy = true;
+                    params = {
+                        offset: vm.pageSize * (goPage - 1),
+                        limit: vm.pageSize,
+                        openid: sessionStorage.getItem("openid")
+                    }
+                    notices.query(params).$promise.then(function(data) {
+                        vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
+                        vm.currentPage = goPage;
+                        vm.busy = false;
+                        vm.notices = data.items;
                     });
                 }
             }
-            $scope.load(1, $scope.pageSize);
+            vm.load(1, vm.pageSize);
         }
     ]);
+})();
