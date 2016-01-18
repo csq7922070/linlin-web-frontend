@@ -43,8 +43,7 @@ gulp.task('clean:dist', function () {
 });
 
 gulp.task('build:js', [], function(){
-<<<<<<< HEAD
-  return gulp.src(['app/app.js', 'app/common/**/*.js', 'app/*/*.js'])
+  return gulp.src(['app/app.js', 'app/*/**/*.js', 'app/common/**/*.js'])
         .pipe(concat('all.js'))      //压缩的文件
         .pipe(rename({suffix: '.min'}))   //输出文件重命名
         //.pipe(uglify()) //执行压缩
@@ -53,9 +52,6 @@ gulp.task('build:js', [], function(){
 
 gulp.task('build:minifyjs', [], function(){
   return gulp.src(['app/app.js', 'app/*/**/*.js', 'app/common/**/*.js'])
-=======
-  return gulp.src(['app/app.js', 'app/*/*.js', 'app/common/**/*.js'])
->>>>>>> refactorDirNew
         .pipe(concat('all.js'))      //压缩的文件
         .pipe(rename({suffix: '.min'}))   //输出文件重命名
         //.pipe(uglify()) //执行压缩
