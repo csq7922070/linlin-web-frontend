@@ -8,15 +8,15 @@
         </div>
     </div>
 </div>
-<div ng-if="complains.length == 0" class="container-fluid">
+<div ng-if="vm.complains.length == 0" class="container-fluid">
     <div class="icon_err"></div>
     <div class="err_b_font">您还没有发表过投诉建议哦！</div>
     <a ui-sref="complain-add">
         <input type="button" value="我要发表" class="repair_btn">
     </a>
 </div>
-<ul class="item_service" ng-if="complains.length > 0" when-scrolled="load({{currentPage+1}},pageSize)">
-    <div class="contain_down" ng-repeat="complain in complains">
+<ul class="item_service" ng-if="vm.complains.length > 0" when-scrolled="load({{currentPage+1}},pageSize)">
+    <div class="contain_down" ng-repeat="complain in vm.complains">
         <li>
             <div class='date_state'>
                 <span class='date'>{{complain.createDate}}</span>

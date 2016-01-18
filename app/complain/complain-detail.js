@@ -1,13 +1,15 @@
-skhControllers.controller('complainDetailCtrl', ['$scope', '$http', '$stateParams',
-        function($scope, $http, $stateParams) {
-            $http({
-                method: "GET",
-                url: basePath + "/complain/get.do",
-                params: {
-                    id: $stateParams.id
-                }
-            }).success(function(data) {
-                $scope.complain = data;
-            });
+(function () {
+    angular.module('app.complain').controller('complainDetailCtrl', ['$stateParams', 'complains',
+        function ($stateParams, complains) {
+            params = {
+                id: $stateParams.id
+            }
+            complains.get(params).$promise.then(function(data) {
+                vm.repair = data;
+            },function(data){
+                    console.log("err!");
+            })
         }
-    ]);
+
+    ])
+})
