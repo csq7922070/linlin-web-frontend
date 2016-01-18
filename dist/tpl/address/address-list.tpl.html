@@ -6,7 +6,7 @@
         </div>
         <!--:block/:unit/:room/:id/:username-->
         <div class="address_section"
-             ui-sref="account({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.owners[0].ownerName})">
+             ui-sref="bill({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.owners[0].ownerName})">
             <span>{{house.block}}</span><span ng-if="house.info">-{{house.unit}}</span><span ng-if="house.room">-{{house.room}}</span>
             <!--{{info.block}}-->
         </div>
