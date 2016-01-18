@@ -1,14 +1,15 @@
-skhControllers.controller('repairListCtrl', ['$scope', '$http', '$timeout', '$state', 'repairs', 'curd',
-    function($scope, $http, $timeout, $state, repairs, curd) {
-        $scope.currentPage = 0;
-        $scope.pageSize = 10;
-        $scope.suc_show = false;
-        $scope.err_show = false;
-        $scope.repairs = [];
+angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state', 'repairs',
+    function($timeout, $state, repairs) {
+        var vm = this;
+        vm.currentPage = 0;
+        vm.pageSize = 10;
+        vm.suc_show = false;
+        vm.err_show = false;
+        vm.repairs = [];
         var params = {};
 
-        $scope.load = function(goPage, limit) {
-            if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || goPage < 1 || $scope.busy) {
+        vm.load = function(goPage, limit) {
+            if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
                 return;
             } else {
                 params = {
@@ -18,47 +19,43 @@ skhControllers.controller('repairListCtrl', ['$scope', '$http', '$timeout', '$st
                     queryType: 'openid'
                 };
 
-                curd.query(repairs, params).$promise.then(function(data) {
-                    $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                    $scope.currentPage = goPage;
-                    $scope.busy = false;
-                    Array.prototype.push.apply($scope.repairs, data.items);
+                repairs.query(params).$promise.then(function(data) {
+                    vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
+                    vm.currentPage = goPage;
+                    vm.busy = false;
+                    Array.prototype.push.apply(vm.repairs, data.items);
                 }, function(data) {
                     console.log("err!");
                 });
-
-                // repairStateful.query(params);
-
-                // $scope.$watch("repairStateful.data", function(newVal, oldVal) {
-                //     if (newVal != oldVal && newVal != null) {
-                //         $scope.repairs = newVal.items;
-                //     }
-                // });
             }
         }
 
-        $scope.confirm = function(id) {
+        vm.confirm = function(id) {
             params = {
                 id: id,
-                state : 3
+                state: 3
             };
 
-            curd.save(repairs, params).$promise.then(function(data) {
-                $scope.suc_show = true;
-                $timeout(function() {
-                    $scope.suc_show = false;
-                    $state.go("repair", {}, {
-                        reload: true
-                    });
-                }, 3000);
-            }, function(data) {
-                $scope.err_show = true;
-                $timeout(function() {
-                    $scope.err_show = false;
-                }, 3000);
-            })
+            repairs.save(params).$promise.then(successcb, errcb);
         }
 
-        $scope.load(1, $scope.pageSize);
+        function successcb() {
+            vm.suc_show = true;
+            $timeout(function() {
+                vm.suc_show = false;
+                $state.go("repair", {}, {
+                    reload: true
+                });
+            }, 3000);
+        }
+
+        function errcb() {
+            vm.err_show = true;
+            $timeout(function() {
+                vm.err_show = false;
+            }, 3000);
+        }
+
+        vm.load(1, vm.pageSize);
     }
 ]);

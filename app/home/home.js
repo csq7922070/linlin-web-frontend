@@ -1,4 +1,5 @@
-skhControllers.controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
+(function() {
+    angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
         function($scope, $http, $stateParams, $rootScope, $state, $location) {
 
             var url = $location.url().substring($location.url().indexOf("?"));
@@ -6,7 +7,7 @@ skhControllers.controller('homeCtrl', ['$scope', '$http', '$stateParams', '$root
                 url = "";
             }
             //1.6获取微信用户openid
-            if(sessionStorage.getItem("openid")==null){
+            if (sessionStorage.getItem("openid") == null) {
                 $http({
                     method: "GET",
                     url: basePath + '/getopenid' + url
@@ -40,3 +41,5 @@ skhControllers.controller('homeCtrl', ['$scope', '$http', '$stateParams', '$root
             });
         }
     ]);
+
+})();

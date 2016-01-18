@@ -2,13 +2,13 @@
     <div class="repair_list">
         <div class="list_top">报修详单</div>
         <ul>
-            <li><span class="equip">报修设备:</span><span class="device">{{repair.device}}</span>
+            <li><span class="equip">报修设备:</span><span class="device">{{vm.repair.device}}</span>
             </li>
-            <li><span class="b_date">报修日期:</span><span class="date_time">{{repair.createDate}}</span>
+            <li><span class="b_date">报修日期:</span><span class="date_time">{{vm.repair.createDate}}</span>
             </li>
-            <li><span class="number">报修单号:</span><span class="list_num">{{repair.number}}</span>
+            <li><span class="number">报修单号:</span><span class="list_num">{{vm.repair.number}}</span>
             </li>
-            <li ng-if="repair.worker"><span class="number">维修人员:</span><span>{{repair.worker}}</span>
+            <li ng-if="repair.worker"><span class="number">维修人员:</span><span>{{vm.repair.worker}}</span>
             </li>
             <li><span class="list_state">状态:</span>
                 <span class="list_ste" ng-if="repair.state==0">等待指派</span>
@@ -16,10 +16,10 @@
                 <span class="list_ste" ng-if="repair.state==2">指派完成待确认</span>
                 <span class="list_ste" ng-if="repair.state==3">已完成</span>
             </li>
-            <li ng-if="repair.state==2"><span class="w_time">完成时间:</span><span class="suc_time">{{repair.confirmDate}}</span></li>
+            <li ng-if="repair.state==2"><span class="w_time">完成时间:</span><span class="suc_time">{{vm.repair.confirmDate}}</span></li>
         </ul>
     </div>
-    <input ng-if="repair.state==2" class="l_btn" type="button" value="确认完成" ng-hide="success" ng-click="confirm(repair.id)">
+    <input ng-if="repair.state==2" class="l_btn" type="button" value="确认完成" ng-hide="success" ng-click="vm.confirm(vm.repair.id)">
 </div>
 <div class="prompt_mask" ng-show="suc_show">
     <div class="prompt_dialog">
