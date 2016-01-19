@@ -1,4 +1,4 @@
-<div class="weui_cells weui_cells_access address_down" ng-repeat="blocks in datas">
+<div class="weui_cells weui_cells_access address_down" ng-repeat="blocks in vm.blocks">
     <a class="weui_cell" style="background-color: #EEEEEE;height: 30px;border-top: none">
         <div class="weui_cell_bd weui_cell_primary">
             <p>{{blocks.initial}}</p>
@@ -20,7 +20,7 @@
     <div class="weui_cell_ft">
     </div>
 </a>
-<a class="weui_cell" ng-repeat="block in blocks.items | orderBy:'block'" ui-sref="address-final({id:block.id,username:block.ownerName,block:block.block,initial:block.initial})" ng-if="block.type == 0">
+<a class="weui_cell" ng-repeat="block in blocks.items | orderBy:'block'" ui-sref="address({id:block.id,username:block.ownerName,block:block.block,initial:block.initial})" ng-if="block.type == 0">
     <div class="weui_cell_bd weui_cell_primary">
         <p>{{block.block}}</p>
     </div>

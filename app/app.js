@@ -1,6 +1,6 @@
 // var basePath = "http://mifan.4zlink.com:8080/mifan";
 //var basePath = "http://localhost:8080/skh";
- var basePath = "http://192.168.0.137:8080/skh";
+ var basePath = "http://192.168.0.129:8080/skh";
 
 var skhControllers = angular.module('skhControllers', []);
 
@@ -9,8 +9,9 @@ angular.module('app.notice', ['resources.notice']);
 angular.module('app.repair', ['resources.repair']);
 angular.module('app.shop', ['resources.shop']);
 angular.module('app.complain', ['resources.complain']);
+angular.module('app.address', ['resources.address']);
 
-var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop','app.complain', 'skhControllers']);
+var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop','app.complain','app.address', 'skhControllers']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -67,8 +68,8 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         })
         .state('address-edit', {
             url: "/address-edit",
-            templateUrl: "tpl/address/address-edit.tpl.html",
-            controllerAs: 'vm'
+            templateUrl: "tpl/address/address-edit.tpl.html"
+            //controllerAs: 'vm'
         })
         .state('address-block', {
             url: "/address-block/",

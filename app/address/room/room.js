@@ -1,16 +1,15 @@
-skhControllers.controller('addressRoomCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
-            $http({
-                method: "GET",
-                url: basePath + "/archives/getRoom.do",
-                params: {
-                    block: $stateParams.block,
-                    unit: $stateParams.unit
-                }
-            }).success(function(data) {
-                $scope.block = $stateParams.block;
-                $scope.unit = $stateParams.unit;
-                $scope.rooms = data.items;
-            });
+angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
+    function ($stateParams, addresses) {
+        var vm = this;
+        params={
+            type:'room',
+            block:$stateParams.block,
+            unit:$stateParams.unit
         }
-    ]);
+        addresses.query(params).$promise.then(function(data){
+            vm.block = $stateParams.block;
+            vm.unit = $stateParams.unit;
+            vm.rooms = data.items;
+        })
+    }
+])

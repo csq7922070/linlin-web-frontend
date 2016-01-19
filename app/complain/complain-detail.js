@@ -1,6 +1,7 @@
 (function () {
     angular.module('app.complain').controller('complainDetailCtrl', ['$stateParams', 'complains',
         function ($stateParams, complains) {
+            var vm = this;
             params = {
                 id: $stateParams.id
             }
@@ -12,4 +13,4 @@
         }
 
     ])
-})
+})();
