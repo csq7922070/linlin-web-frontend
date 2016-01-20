@@ -344,13 +344,15 @@ p {
 }
 
 .img_active {
-    background-image: url("../images/flag_02.png");
-    width: 30px;
-    height: 30px;
+    background:  url("../images/flag_02.png") no-repeat;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
 }
 
 .dis_active {
-    background-image: url("../images/flag_01.png");
-    width: 30px;
-    height: 30px;
+    background: url("../images/flag_01.png") no-repeat;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
 }

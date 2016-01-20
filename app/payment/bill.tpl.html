@@ -1,7 +1,11 @@
 ﻿<div class="weui_cells weui_cells_access address_down account_page">
     <a class="weui_cell ofen_address" style="padding: 0px 15px;position: relative;top: 10px">
-        <div class="weui_cell_hd">
-            <img src="images/flag_01.png" alt="icon" style="width:30px;">
+        <!--<div class="weui_cell_hd">-->
+            <!--<img src="images/flag_01.png" alt="icon" style="width:30px;">-->
+        <!--</div>-->
+        <div class="weui_cell_hd" ng-click="vm.change_flag(house)"
+             ng-class="{'img_active':house.id==vm.activeId,'dis_active':house.id!=vm.activeId}">
+            <!--ng-class="{'img_active':house.active==0,'dis_active':house.active==1}">-->
         </div>
         <div class="weui_cell_bd weui_cell_primary">
             <p style="position: relative;top: 2px">
@@ -17,7 +21,7 @@
             <span>{{vm.block}}</span><span ng-if="vm.unit">-{{vm.unit}}</span><span ng-if="vm.room">-{{vm.room}}</span>
         </div>
     </a>
-    <a class="weui_cell" ui-sref="owner-address">
+    <a class="weui_cell" ui-sref="address-list({id:id})">
         <div class="weui_cell_bd weui_cell_primary">
             <p></p>
         </div>

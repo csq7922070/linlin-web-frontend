@@ -20,8 +20,8 @@
         <li>
             <div class='date_state'>
                 <span class='date'>{{complain.createDate}}</span>
-                <span class='state' ng-if="complain.complainState == 0">未回复</span>
-                <span class='state' ng-if="complain.complainState == 1">已回复</span>
+                <span class='state' ng-if="complain.state == 0">未回复</span>
+                <span class='state' ng-if="complain.state == 1">已回复</span>
             </div>
             <div class='goods'>{{complain.title}}</div>
             <div class='state_btn'>
