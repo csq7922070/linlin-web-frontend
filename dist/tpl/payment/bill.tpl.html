@@ -9,12 +9,12 @@
             </p>
         </div>
     </a>
-    <a class="weui_cell" ui-sref="owner-address({id:id})">
+    <a class="weui_cell" ui-sref="address-list({id:id})">
         <div class="weui_cell_bd weui_cell_primary">
             <p>业主信息</p>
         </div>
         <div class="address_section">
-            <span>{{block}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>
+            <span>{{vm.block}}</span><span ng-if="vm.unit">-{{vm.unit}}</span><span ng-if="vm.room">-{{vm.room}}</span>
         </div>
     </a>
     <a class="weui_cell" ui-sref="owner-address">
@@ -22,7 +22,7 @@
             <p></p>
         </div>
         <div class="people_name">
-            {{ownerName}}
+            {{vm.ownerName}}
         </div>
     </a>
 </div>

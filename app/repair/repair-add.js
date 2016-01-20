@@ -10,6 +10,7 @@
                 vm.err_show = false;
             }
             vm.submitForm = function() {
+                vm.repair.openid=sessionStorage.getItem("openid");
                 params = vm.repair;
                 repairs.save(params).$promise.then(successcb, errcb);
             }
