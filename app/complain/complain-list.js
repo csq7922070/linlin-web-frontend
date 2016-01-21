@@ -20,7 +20,7 @@ angular.module('app.complain').controller('complainListCtrl', ['complains',
                     vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
                     vm.currentPage = goPage;
                     vm.busy = false;
-                    vm.complains = data.items;
+                     Array.prototype.push.apply(vm.complains,data.items);
                 }, function (data) {
                     console.log("err!");
                 })
