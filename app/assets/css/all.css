@@ -168,7 +168,9 @@ a {
 /*��ť*/
 
 .prompt_btn {
-    padding: 5px 40px;
+    text-align: center;
+    width: 150px;
+    padding: 5px 0px;
     background-color: #4996ee;
     border: none;
     margin: 0 auto 10px;
