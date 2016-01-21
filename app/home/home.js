@@ -13,7 +13,10 @@
                     url: basePath + '/getopenid' + url
                 }).success(function(data) {
                     sessionStorage.setItem("openid", data.openid);
-
+                   //添加微信支付
+                    sessionStorage.setItem("timestamp", data.timestamp);
+                    sessionStorage.setItem("noncestr", data.noncestr);
+                    sessionStorage.setItem("sign", data.sign);
                     console.log("获取openid成功");
                 }).error(function(data) {
                     console.log("获取openid失败");

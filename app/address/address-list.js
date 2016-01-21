@@ -7,13 +7,9 @@ angular.module('app.address').controller('addressListCtrl', ['$stateParams', '$s
         }
         addresses.query(params).$promise.then(function (data) {
             console.log("获取业主信息成功");
-            if (data != "") {
+            if (data.items.length!=0) {
                 vm.houses = data.items;
-                   vm.houses.forEach(function(h){
-                       if(h.active==0){
-                           vm.activeId= h.id;
-                       }
-                   })
+                vm.activeId= data.activeId;
             }
         },function(data){
             console.log("获取业主信息失败")
@@ -24,13 +20,14 @@ angular.module('app.address').controller('addressListCtrl', ['$stateParams', '$s
             vm.sure = function () {
                 vm.sure_delete = false;
                 params = {
-                    id: house.id
+                    id: house.id,
+                    openid:sessionStorage.getItem("openid")
                 }
                 addresses.delete(params).$promise.then(function (data) {
-                    console.log("删除成功")
+                    console.log("删除成功");
                     house.rowState=1;
                 }, function (data) {
-                    console.log("删除失败")
+                    console.log("删除失败");
                 })
             }
         };
@@ -50,6 +47,7 @@ angular.module('app.address').controller('addressListCtrl', ['$stateParams', '$s
             addresses.save(params).$promise.then(function () {
                 vm.activeId = house.id;
             }, function (data) {
+                console.log("默认地址设置成功")
             })
         }
     }

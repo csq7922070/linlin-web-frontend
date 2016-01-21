@@ -1,22 +1,31 @@
-skhControllers.controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
+angular.module('app.bill').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state','addresses','payments',
+        function($scope, $http, $stateParams, $rootScope, $state,addresses,payments) {
             //显示当前页面的业主信息
             $scope.ownerName = $stateParams.username;
             $scope.block = $stateParams.block;
             $scope.unit = $stateParams.unit;
             $scope.room = $stateParams.room;
             $scope.id = $stateParams.id;
-            console.log($stateParams.id)
-                //获取水电费等数据
-            $http({
-                method: "GET",
-                url: basePath + "/payment/getAmount.do",
-                params: {
-                    paymentState: 0,
-                    id: $stateParams.id
+            $scope.activeId = $stateParams.activeId;
+
+            $scope.change_flag=function(){
+                if($scope.id == $scope.activeId ){
+                    return;
                 }
-            }).success(function(data) {
-                if (data != "") {
+                addresses.save({id:$stateParams.id,openid: sessionStorage.getItem("openid")}).$promise.then(function(){
+                    $scope.activeId=$stateParams.id;
+                });
+            }
+
+            params = {
+                id:'query',
+                paymentState: 0,
+                queryType:'houseId',
+                houseId: $stateParams.id
+            };
+
+            payments.query(params).$promise.then(function(data) {
+                if (data.amountList != 0) {
                     $scope.freeShow = false;
                     var list = data.amountList;
                     var ret = {};
@@ -26,8 +35,12 @@ skhControllers.controller('billCtrl', ['$scope', '$http', '$stateParams', '$root
                         var yearmonth = list[i].year + "年" + list[i].month + "月";
                         var ele = {};
                         ele.id = list[i].id;
-                        ele.type = list[i].paymentType;
+                        ele.type = list[i].type;
                         ele.amount = list[i].amount;
+
+                        ele.number=list[i].number;
+                        ele.count=list[i].count;
+
                         if (ret.datas.length > 0) {
                             for (var j = 0; j < ret.datas.length; j++) {
                                 if (ret.datas[j].yearmonth == yearmonth) {
@@ -52,7 +65,7 @@ skhControllers.controller('billCtrl', ['$scope', '$http', '$stateParams', '$root
                             ret.datas.push(data);
                         }
                     }
-
+                    console.log($scope.payments)
                     $scope.payments = ret.datas;
                     $scope.selectAll = function() {}
                     $scope.selected = [];
@@ -78,12 +91,12 @@ skhControllers.controller('billCtrl', ['$scope', '$http', '$stateParams', '$root
                         var wmonth = [];
                         var emonth = [];
                         var v2 = $scope.selected;
-
+                        console.log(v2)
                         var v3 = list;
                         for (var i = 0; i < v3.length; i++) {
                             for (var j = 0; j < v2.length; j++) {
                                 if (v3[i].id == (v2[j])) {
-                                    if (v3[i].paymentType == 0) {
+                                    if (v3[i].type == 0) {
                                         wf += v3[i].amount;
                                         wmonth.push(v3[i].month)
                                     } else {
@@ -97,6 +110,8 @@ skhControllers.controller('billCtrl', ['$scope', '$http', '$stateParams', '$root
                         $rootScope.eleFree = ef;
                         $rootScope.wmonth = wmonth;
                         $rootScope.emonth = emonth;
+                        $rootScope.ids=$scope.selected.join(",");
+                        console.log($rootScope.ids)
                     }
 
                     $scope.updateYearmonth = function(yearmonth, selected) {
@@ -126,7 +141,7 @@ skhControllers.controller('billCtrl', ['$scope', '$http', '$stateParams', '$root
                         var wf = 0;
                         var ef = 0;
                         var v2 = $scope.selected;
-
+                        console.log(v2)
                         var wmonth = [];
                         var emonth = [];
 
@@ -134,7 +149,7 @@ skhControllers.controller('billCtrl', ['$scope', '$http', '$stateParams', '$root
                         for (var i = 0; i < v3.length; i++) {
                             for (var j = 0; j < v2.length; j++) {
                                 if (v3[i].id == (v2[j])) {
-                                    if (v3[i].paymentType == 0) {
+                                    if (v3[i].type == 0) {
                                         wf += v3[i].amount;
                                         wmonth.push(v3[i].month)
                                     } else {
@@ -148,6 +163,8 @@ skhControllers.controller('billCtrl', ['$scope', '$http', '$stateParams', '$root
                         $rootScope.eleFree = ef;
                         $rootScope.wmonth = wmonth;
                         $rootScope.emonth = emonth;
+                        $rootScope.ids=$scope.selected.join(",");
+                        console.log($rootScope.ids)
                     }
 
                     $scope.updateAll = function(sel) {
@@ -176,12 +193,12 @@ skhControllers.controller('billCtrl', ['$scope', '$http', '$stateParams', '$root
                         var v2 = $scope.selected;
                         var wmonth = [];
                         var emonth = [];
-
+                        console.log(v2)
                         var v3 = list;
                         for (var i = 0; i < v3.length; i++) {
                             for (var j = 0; j < v2.length; j++) {
                                 if (v3[i].id == (v2[j])) {
-                                    if (v3[i].paymentType == 0) {
+                                    if (v3[i].type == 0) {
                                         wf += v3[i].amount;
                                         wmonth.push(v3[i].month)
                                     } else {
@@ -195,10 +212,10 @@ skhControllers.controller('billCtrl', ['$scope', '$http', '$stateParams', '$root
                         $rootScope.eleFree = ef;
                         $rootScope.wmonth = wmonth;
                         $rootScope.emonth = emonth;
+                        $rootScope.ids=$scope.selected.join(",");
+                        console.log($rootScope.ids)
                     }
                 }
-            }).error(function(data) {
-                console.log("数据")
-            });
+            })
         }
     ]);

@@ -2,7 +2,7 @@ angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addres
     function ($stateParams, addresses) {
         var vm = this;
         vm.add_newaddress = function () {
-            console.log("触发")
+            console.log("触发");
             params = {
                 community: "阿尔卡迪亚",
                 block: $stateParams.block,

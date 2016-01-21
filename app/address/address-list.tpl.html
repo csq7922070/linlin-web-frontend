@@ -1,28 +1,24 @@
 <div class="weui_cells weui_cells_access address_down account_page owner_top" ng-repeat="house in vm.houses" ng-if="house.rowState==0">
-    <!--加上ng -repeat-->
     <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
             <p>业主信息</p>
         </div>
-        <!--:block/:unit/:room/:id/:username-->
         <div class="address_section"
-             ui-sref="bill({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.owners[0].ownerName})">
-            <span>{{house.block}}</span><span ng-if="house.info">-{{house.unit}}</span><span ng-if="house.room">-{{house.room}}</span>
-            <!--{{info.block}}-->
+             ui-sref="bill({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.owner.ownerName,activeId:vm.activeId})">
+            <span>{{house.block}}</span><span ng-if="house.unit">-{{house.unit}}</span><span ng-if="house.room">-{{house.room}}</span>
         </div>
     </div>
     <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
             <p></p>
         </div>
-        <div class="people_name">
-            {{house.owners[0].ownerName}}
+        <div class="people_name" ui-sref="bill({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.owner.ownerName,activeId:vm.activeId})">
+            {{house.owner.ownerName}}
         </div>
     </div>
     <div class="weui_cell ofen_address">
         <div class="weui_cell_hd" ng-click="vm.change_flag(house)"
              ng-class="{'img_active':house.id==vm.activeId,'dis_active':house.id!=vm.activeId}">
-        <!--ng-class="{'img_active':house.active==0,'dis_active':house.active==1}">-->
         </div>
         <div class="weui_cell_bd weui_cell_primary">
             <p>设为我的常用地址</p>
@@ -32,7 +28,6 @@
 </div>
 
 <div class="owner_bottom"></div>
-<!--<div class="add_address" ui-sref="address({location:1})" ng-click="add_address()">+新增地址</div>-->
 <div class="add_address"  ui-sref="address-edit">+新增地址</div>
 <!--提示框-->
 <div class="weui_dialog_confirm" ng-show="vm.sure_delete">

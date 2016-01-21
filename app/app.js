@@ -10,8 +10,9 @@ angular.module('app.repair', ['resources.repair']);
 angular.module('app.shop', ['resources.shop']);
 angular.module('app.complain', ['resources.complain']);
 angular.module('app.address', ['resources.address']);
+angular.module('app.bill',['resources.address','resources.payment']);
 
-var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop','app.complain','app.address', 'skhControllers']);
+var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop','app.complain','app.address','app.bill', 'skhControllers']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -102,13 +103,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controllerAs: 'vm'
         })
         .state('bill', {
-            url: "/bill/:block/:unit/:room/:id/:username",
+            url: "/bill/:block/:unit/:room/:id/:username/:activeId",
             templateUrl: "tpl/payment/bill.tpl.html",
-            controller: "billCtrl",
-            controllerAs: 'vm'
+            controller: "billCtrl"
         })
         .state('payment', {
-            url: "/payment",
+            url: "/payment/:block/:unit/:room/",
             templateUrl: "tpl/payment/payment.tpl.html",
             controller: "paymentCtrl",
             controllerAs: 'vm'
@@ -116,8 +116,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         .state('payment-list', {
             url: "/payment-list/:id",
             templateUrl: "tpl/payment/payment-list.tpl.html",
-            controller: "paymentListCtrl",
-            controllerAs: 'vm'
+            controller: "paymentListCtrl"
         })
         .state('home', {
             url: "/home",

@@ -1,14 +1,14 @@
-skhControllers.controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
+skhControllers.controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state','$q',
+        function($scope, $http, $stateParams, $rootScope, $state, $q) {
 
             $scope.watmonth_f = $rootScope.wmonth;
             $scope.watmonth = $scope.watmonth_f.join(",");
             $scope.elmonth_f = $rootScope.emonth;
             $scope.elmonth = $scope.elmonth_f.join(",");
 
-            $scope.block = $rootScope.block;
-            $scope.unit = $rootScope.unit;
-            $scope.room = $rootScope.room;
+            $scope.block = $stateParams.block;
+            $scope.unit = $stateParams.unit;
+            $scope.room = $stateParams.room;
 
             $scope.waterFr = $rootScope.waterFree;
             $scope.eleFr = $rootScope.eleFree;
@@ -19,10 +19,11 @@ skhControllers.controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$r
                 console.log("支付功能开始");
                 $http({
                         method: "GET",
-                        url: basePath + '/payment/webchatPay',
+                        url: basePath + '/payments',
                         params: {
                             total_fee: $scope.totalFee,
-                            openid: sessionStorage.getItem("openid")
+                            openid: sessionStorage.getItem("openid"),
+                            ids:$rootScope.ids
                         }
                     }).error(function(response, status, headers, config) {
                         self.error = "连接错误!";
@@ -37,8 +38,7 @@ skhControllers.controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$r
                             prepay_id: response.data.prepay_id,
                             timestamp: response.data.timestamp,
                             nonceStr: response.data.nonceStr,
-                            paySign: response.data.sign,
-                            timestamp: response.data.timestamp
+                            paySign: response.data.sign
                         });
                     })
                     .then(function(data) {
