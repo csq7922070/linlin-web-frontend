@@ -612,3 +612,10 @@ ul[rn-carousel] {
 .disabled{
    background-color: #bababa!important;
 }
+div.rn-carousel-indicator span.active{
+    color: #ffffff;
+}
+div.rn-carousel-indicator span{
+    color: rgba(255, 255, 255, 0.47);
+    margin-left: 5px;
+}

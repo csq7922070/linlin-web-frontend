@@ -18,7 +18,7 @@ skhControllers.controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$r
             $scope.money_payment = function() {
                 console.log("支付功能开始");
                 $http({
-                        method: "GET",
+                        method: "POST",
                         url: basePath + '/payments',
                         params: {
                             total_fee: $scope.totalFee,

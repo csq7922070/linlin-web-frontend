@@ -1,14 +1,4 @@
 <div class="weui_cells weui_cells_access address_down account_page">
-    <a class="weui_cell ofen_address" style="padding: 0px 15px;position: relative;top: 10px">
-        <div class="weui_cell_hd" ng-click="change_flag()"
-             ng-class="{'img_active':id==activeId,'dis_active':id!=activeId}">
-        </div>
-        <div class="weui_cell_bd weui_cell_primary">
-            <p style="position: relative;top: 2px">
-                <small>我的常用地址</small>
-            </p>
-        </div>
-    </a>
     <a class="weui_cell" ui-sref="address-list({id:id})">
         <div class="weui_cell_bd weui_cell_primary">
             <p>业主信息</p>
@@ -23,6 +13,16 @@
         </div>
         <div class="people_name">
             {{ownerName}}
+        </div>
+    </a>
+    <a class="weui_cell ofen_address" style="padding: 0px 15px;">
+        <div class="weui_cell_hd" ng-click="change_flag()"
+             ng-class="{'img_active':id==activeId,'dis_active':id!=activeId}">
+        </div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <p style="position: relative;top: 2px">
+                <small>我的常用地址</small>
+            </p>
         </div>
     </a>
 </div>
@@ -94,7 +94,7 @@
 <div class="weui_cells weui_cells_access acc_footer" style="font-size: 16px">
     <div class="weui_cell">
         <div class="weui_cell_hd">
-            <input type="checkbox" ng-model="sel" ng-change="updateAll(sel)" id="sel_all" class="vis_none">
+            <input type="checkbox" ng-model="sel" ng-change="updateAll(sel)" id="sel_all" class="vis_none" ng-disabled="selected.length==0||!selected">
             <label for="sel_all" ng-if="sel" class="label_account"></label>
             <label for="sel_all" ng-if="!sel" class="label_account_click"></label>
         </div>
