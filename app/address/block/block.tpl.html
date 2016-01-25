@@ -4,27 +4,27 @@
             <p>{{blocks.initial}}</p>
         </div>
     </a>
-
-<a class="weui_cell" ng-repeat="block in blocks.items | orderBy:'block'" ui-sref="address-unit({block:block.block})" ng-if="block.type == 2">
-    <div class="weui_cell_bd weui_cell_primary">
-        <p>{{block.block}}</p>
+    <div class="weui_cell" ng-repeat="block in blocks.items|orderBy:'id'">
+        <a class="weui_cell"  ui-sref="address-unit({block:block.block})" ng-if="block.type == 2">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>{{block.block}}</p>
+            </div>
+            <div class="weui_cell_ft">
+            </div>
+        </a>
+        <a class="weui_cell"  ui-sref="address-room({block:block.block})" ng-if="block.type == 1">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>{{block.block}}</p>
+            </div>
+            <div class="weui_cell_ft">
+            </div>
+        </a>
+        <a class="weui_cell" ui-sref="address({id:block.id,username:block.ownerName,block:block.block,initial:block.initial})" ng-if="block.type == 0">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>{{block.block}}</p>
+            </div>
+            <div class="weui_cell_ft">
+            </div>
+        </a>
     </div>
-    <div class="weui_cell_ft">
-    </div>
-</a>
-
-<a class="weui_cell" ng-repeat="block in blocks.items | orderBy:'block'" ui-sref="address-room({block:block.block})" ng-if="block.type == 1">
-    <div class="weui_cell_bd weui_cell_primary">
-        <p>{{block.block}}</p>
-    </div>
-    <div class="weui_cell_ft">
-    </div>
-</a>
-<a class="weui_cell" ng-repeat="block in blocks.items | orderBy:'block'" ui-sref="address({id:block.id,username:block.ownerName,block:block.block,initial:block.initial})" ng-if="block.type == 0">
-    <div class="weui_cell_bd weui_cell_primary">
-        <p>{{block.block}}</p>
-    </div>
-    <div class="weui_cell_ft">
-    </div>
-</a>
 </div>

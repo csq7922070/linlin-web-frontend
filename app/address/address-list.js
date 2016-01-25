@@ -1,18 +1,18 @@
-angular.module('app.address').controller('addressListCtrl', ['$stateParams', '$state', 'addresses',
-    function ($stateParams, $state, addresses) {
+angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stateParams', '$state', 'addresses',
+    function ($rootScope,$stateParams, $state, addresses) {
         var vm = this;
         params = {
             type: 'openid',
             openid: sessionStorage.getItem("openid")
         }
         addresses.query(params).$promise.then(function (data) {
-            console.log("获取业主信息成功");
             if (data.items.length!=0) {
                 vm.houses = data.items;
                 vm.activeId= data.activeId;
+            }else if($rootScope.previousState == "home.shop-info"){
+                $state.go("address-edit");
             }
         },function(data){
-            console.log("获取业主信息失败")
         })
 
         vm.deleteAddress = function (house) {
@@ -24,10 +24,8 @@ angular.module('app.address').controller('addressListCtrl', ['$stateParams', '$s
                     openid:sessionStorage.getItem("openid")
                 }
                 addresses.delete(params).$promise.then(function (data) {
-                    console.log("删除成功");
                     house.rowState=1;
                 }, function (data) {
-                    console.log("删除失败");
                 })
             }
         };
@@ -47,7 +45,6 @@ angular.module('app.address').controller('addressListCtrl', ['$stateParams', '$s
             addresses.save(params).$promise.then(function () {
                 vm.activeId = house.id;
             }, function (data) {
-                console.log("默认地址设置成功")
             })
         }
     }
