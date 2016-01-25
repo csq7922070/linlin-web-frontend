@@ -1,4 +1,4 @@
-<div class="container-fluid contain" style="background: white" when-scrolled="vm.load({{vm.currentPage+1}},pageSize)">
+<div class="container-fluid contain" style="background: white" when-scrolled="vm.load(vm.currentPage+1,vm.pageSize)">
     <ul class="list">
         <li ng-repeat="notice in vm.notices" ng-if="vm.notices.length>0">
             <a ui-sref="notice-detail({id:notice.id})">
