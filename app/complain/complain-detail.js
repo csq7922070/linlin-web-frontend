@@ -6,7 +6,7 @@
                 id: $stateParams.id
             }
             complains.get(params).$promise.then(function(data) {
-                vm.repair = data;
+                vm.complain = data;
             },function(data){
                     console.log("err!");
             })
