@@ -65,7 +65,6 @@ angular.module('app.bill').controller('billCtrl', ['$scope', '$http', '$statePar
                             ret.datas.push(data);
                         }
                     }
-                    console.log($scope.payments)
                     $scope.payments = ret.datas;
                     $scope.selectAll = function() {}
                     $scope.selected = [];
