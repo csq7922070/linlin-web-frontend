@@ -6,7 +6,6 @@
 
 body {
     margin: 0 auto;
-    /*width: 320px;*/
     height: auto;
     background-color: #eeeeee;
     font-family: "����", serif;
@@ -21,15 +20,13 @@ a {
 }
 
 
-/*ͷ������*/
-
 .nav {
     height: 50px;
     background-color: #ffffff;
 }
 
 .nav div {
-    padding: 0px;
+    padding: 0;
 }
 
 .nav a {
@@ -66,38 +63,9 @@ a {
     right: -2px;
 }
 
-
-/*bootstrapģ̬��*/
-
-
-/*.modal-dialog{
-    margin: 40% 20%;
-}
-.modal-header,.modal-content,.modal-footer {
-    text-align: center!important;
-    border: none;
-    font-size: 16px;
-}
-.modal-header img {
-    width: 90px;
-}
-.btn-model{
-    width:90px;
-    height: 30px;
-    line-height: 30px;
-    background: #4996ee;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-size: 16px;
-}*/
-
-
-/*����*/
-
 .list {
     background: white;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .list li {
@@ -106,15 +74,13 @@ a {
 }
 
 
-/*ģ̬��*/
-
 .prompt_mask,.prompt_mask_err {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.61);
     position: fixed;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
 }
 
 .prompt_dialog {
@@ -125,37 +91,27 @@ a {
     position: absolute;
     top: 25%;
     left: 25%;
-    /*text-align: center;*/
 }
-
-
-/*�ύ�ɹ�*/
 
 .prompt_icon {
     width: 60px;
     height: 60px;
-    margin: 0px auto;
+    margin: 0 auto;
     margin-top: 5px;
     background-image: url("../images/icon_05.png");
     background-size: cover;
     text-indent: -9999px;
 }
 
-
-/*�ύʧ��*/
-
 .prompt_icon_err {
     width: 60px;
     height: 60px;
-    margin: 0px auto;
+    margin: 0 auto;
     margin-top: 5px;
     background-image: url("../images/icon_06.png");
     background-size: cover;
     text-indent: -9999px;
 }
-
-
-/*����*/
 
 .prompt_font {
     font-size: 16px;
@@ -164,13 +120,10 @@ a {
     margin: 10px;
 }
 
-
-/*��ť*/
-
 .prompt_btn {
     text-align: center;
     width: 150px;
-    padding: 5px 0px;
+    padding: 5px 0;
     background-color: #4996ee;
     border: none;
     margin: 0 auto 10px;
@@ -208,10 +161,6 @@ a {
     margin-top: 5px;
     word-break: break-all;
 }
-
-/* body {
-    padding-top: 15px;
-} */
 
 .complaint_title {
     position: relative;
@@ -303,7 +252,7 @@ a {
     font-weight: bold;
     font-size: 16px;
     color: #333333;
-    padding: 8px 15px 0px;
+    padding: 8px 15px 0;
 }
 
 .detail_date {
@@ -313,7 +262,7 @@ a {
 .detail_notice_time {
     font-size: 13px;
     color: #e95912;
-    padding: 14px 0px;
+    padding: 14px 0;
 }
 
 .notice_message {
@@ -322,28 +271,18 @@ a {
     color: #333333;
     padding-left: 15px;
     padding-right: 15px;
-    /*width: 200px;*/
-    /*overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;*/
 }
-
-
-/*.detail_list {
-    padding-left: 5px;
-    padding-right: 5px;
-}*/
 
 .detail_list li {
     width: 100%;
     height: auto;
     background-color: #ffffff;
-    padding: 10px 0px;
+    padding: 10px 0;
     border-bottom: 1px solid #e8e8e8;
 }
 
 .detail_list {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .notice {
@@ -355,7 +294,6 @@ a {
 
 .contain {
     background-color: #eeeeee;
-    /*display: none;*/
 }
 
 .icon_err {
@@ -396,7 +334,6 @@ a {
 }
 
 .contain_down {
-    /*margin-top: 16px;*/
     background-color: #ffffff;
 }
 
@@ -410,7 +347,7 @@ a {
     min-height: 80px;
     background-color: #ffffff;
     border-bottom: 1px solid #e8e8e8;
-    padding: 0px 12px;
+    padding: 0 12px;
 }
 
 .item_service li a {
@@ -418,7 +355,7 @@ a {
 }
 
 .date_state {
-    margin: 0px auto;
+    margin: 0 auto;
     height: 20px;
     font-size: 14px;
     padding-top: 10px;
@@ -427,7 +364,6 @@ a {
 
 .date {
     margin-top: 10px;
-    /*float: left;*/
     color: #999999;
     font-size: 14px;
 }
@@ -443,18 +379,15 @@ a {
     min-height: 40px;
 }
 
-
-/*��ť*/
-
 .state_btn {
-    margin: 0px auto 15px;
+    margin: 0 auto 15px;
     height: 15px;
     position: relative;
 }
 
 .state_btn a {
     position: absolute;
-    right: 0px;
+    right: 0;
     display: inline-block;
     background: #fff;
     border: 1px solid #4996ee;
@@ -469,38 +402,6 @@ a {
     right: 60px;
 }
 
-
-/*
-.state_btn input{
-    float: right;
-    font-size: 12px;
-    padding: 2px 10px;
-    border-radius: 5px;
-    font-family: "����-��", serif;
-    background-color: #ffffff;
-    box-shadow: none;
-}
-.state_btn input:nth-of-type(1){
-    border: 1px solid #4996ee;
-    color: #4996ee;
-    background-color: white;
-    margin-left: 5px;
-}
-.state_btn input:nth-of-type(2){
-    margin-right: 5px;
-    border: 1px solid #d2d2d2;
-    color: #666666;
-    background-color: white;
-}*/
-
-
-/*.contain {
-    margin-top: 10px;
-    background-color: #eeeeee;
-    padding-left: 24px;
-    padding-right: 24px;
-}*/
-
 .container input {
     width: 100%;
     height: 30px;
@@ -511,7 +412,7 @@ a {
     padding-left: 8px;
     background-color: #ffffff;
     display: block;
-    outline-width: 0px;
+    outline-width: 0;
     box-shadow: none;
     border-collapse: collapse;
     -webkit-appearance: none;
@@ -533,7 +434,7 @@ textarea {
     padding-top: 5px;
     display: block;
     resize: none;
-    outline-width: 0px;
+    outline-width: 0;
     box-shadow: none;
     border-collapse: collapse;
     -webkit-appearance: none;
@@ -544,8 +445,6 @@ textarea {
     height: 30px;
     border-radius: 5px;
     line-height: 30px;
-    /* font-size: 14px;
-    color: #333333; */
     padding-right: 18px;
 }
 
@@ -555,7 +454,6 @@ textarea {
 
 .container > div input {
     width: 30%;
-    /*float: left;*/
     margin-top: 0;
     position: relative;
     left: 20%;
@@ -589,14 +487,9 @@ textarea {
     color: #ffffff!important;
     margin-bottom: 20px;
 }
-/*.submit_width{
-    padding: 0 24px;
-}*/
 button[disabled], html input[disabled]{
     background-color:  #ccc!important;
 }
-
-/*������ʾ*/
 
 .phone_hidden {
     color: #e95912;
@@ -604,19 +497,17 @@ button[disabled], html input[disabled]{
     background-color: #eeeeee;
     position: relative;
     top: 5px;
-    /*display: none;*/
 }
 
 .room_hidden {
     font-size: 12px;
     color: #e95912;
     padding-top: 10px;
-    /*display: none;*/
 }
 
 .container-fluid {
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .repair_list {
@@ -639,6 +530,11 @@ button[disabled], html input[disabled]{
     border-top: none;
 }
 
+.repair_detail{
+    padding: 5px;
+    margin: 6px 0;
+}
+
 .repair_list ul {
     margin-top: 10px;
 }
@@ -646,7 +542,7 @@ button[disabled], html input[disabled]{
 .repair_list ul li {
     width: 300px;
     margin: auto;
-    padding: 9px 0px;
+    padding: 9px 0;
     font-size: 14px;
 }
 
@@ -664,7 +560,6 @@ button[disabled], html input[disabled]{
 
 .repair_list ul li span:nth-of-type(2) {
     padding-left: 6px;
-    /*display: block;*/
     white-space: normal;
     word-break: break-all;
 }
@@ -683,7 +578,6 @@ button[disabled], html input[disabled]{
 }
 
 .RD_s {
-    /*display: inline-block;*/
     width: 63px;
     text-align: right;
     font-size: 14px;
@@ -692,14 +586,6 @@ button[disabled], html input[disabled]{
 .center {
     text-align: center;
 }
-
-/*.bgimage {*/
-    /*text-align: right;*/
-    /*color: white;*/
-    /*background-size: cover;*/
-    /*height: 100%;*/
-    /*background-position: center center;*/
-/*}*/
 
 ul[rn-carousel] {
     width: 100%;
@@ -715,8 +601,6 @@ ul[rn-carousel] {
 }
 
 .carousel-demo {
-    /*margin-top: 20px;*/
-    /*display: inline-block;*/
     text-align: center;
 }
 .rn-carousel-indicator{
@@ -724,9 +608,6 @@ ul[rn-carousel] {
     position: relative;
     top: -2px;
 }
-/*.div.rn-carousel-indicator span{*/
-    /*color: blue!important;*/
-/*}*/
 
 .disabled{
    background-color: #bababa!important;
