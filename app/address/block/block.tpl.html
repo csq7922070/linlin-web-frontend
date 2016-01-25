@@ -1,26 +1,24 @@
-<div class="weui_cells weui_cells_access address_down" ng-repeat="blocks in vm.blocks">
-    <a class="weui_cell" style="background-color: #EEEEEE;height: 30px;border-top: none">
-        <div class="weui_cell_bd weui_cell_primary">
-            <p>{{blocks.initial}}</p>
-        </div>
-    </a>
-    <div class="weui_cell" ng-repeat="block in blocks.items|orderBy:'id'">
-        <a class="weui_cell"  ui-sref="address-unit({block:block.block})" ng-if="block.type == 2">
-            <div class="weui_cell_bd weui_cell_primary">
+<div ng-repeat="blocks in vm.blocks">
+    <div class="weui_cells_title title_style">
+        <p>{{blocks.initial}}</p>
+    </div>
+    <div class="weui_cells weui_cells_access address_down" style="margin-top:1px!important" ng-repeat="block in blocks.items|orderBy:'id'">
+        <a class="weui_cell" style="padding:0px 15px!important;margin-top:2px!important" ui-sref="address-unit({block:block.block})" ng-if="block.type == 2">
+            <div class="weui_cell_bd weui_cell_primary" style="margin:10px auto">
                 <p>{{block.block}}</p>
             </div>
             <div class="weui_cell_ft">
             </div>
         </a>
-        <a class="weui_cell"  ui-sref="address-room({block:block.block})" ng-if="block.type == 1">
-            <div class="weui_cell_bd weui_cell_primary">
+        <a class="weui_cell" style="padding:0px 15px!important;margin-top:2px!important" ui-sref="address-room({block:block.block})" ng-if="block.type == 1">
+            <div class="weui_cell_bd weui_cell_primary" style="margin:10px auto">
                 <p>{{block.block}}</p>
             </div>
             <div class="weui_cell_ft">
             </div>
         </a>
-        <a class="weui_cell" ui-sref="address({id:block.id,username:block.ownerName,block:block.block,initial:block.initial})" ng-if="block.type == 0">
-            <div class="weui_cell_bd weui_cell_primary">
+        <a class="weui_cell" style="padding:0px 15px!important;margin-top:2px!important" ui-sref="address({id:block.id,username:block.ownerName,block:block.block,initial:block.initial})" ng-if="block.type == 0">
+            <div class="weui_cell_bd weui_cell_primary" style="margin:10px auto">
                 <p>{{block.block}}</p>
             </div>
             <div class="weui_cell_ft">
