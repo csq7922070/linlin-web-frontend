@@ -21,22 +21,20 @@ p {
 }
 
 .address_down {
-    margin-top: 0px;
+    margin-top: 0;
     font-size: 14px;
 }
 
 .address_down:first-child {
-    /*margin-top: -8px;*/
     font-size: 14px;
 }
 
 .address_btn {
-    padding: 0px 12px;
+    padding: 0 12px;
 }
 
 .length_btn {
     margin-top: 36px;
-    /*padding: 0 12px;*/
     background-color: #4996ee;
 }
 
@@ -96,13 +94,12 @@ p {
 
 .border_line:before {
     border-top: 1px solid #D9D9D9 !important;
-    /*border-top: 1px solid red!important;*/
 }
 
 .acc_footer {
     width: 100%;
     position: fixed;
-    bottom: 0px !important;
+    bottom: 0 !important;
 }
 
 .my_btn {
@@ -188,8 +185,8 @@ p {
     color: #ffffff;
     padding: 8px 12px;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     z-index: 100;
 }
 
@@ -202,7 +199,7 @@ p {
     float: left;
     height: 100px;
     display: inline;
-    padding: 30px 0px 0px;
+    padding: 30px 0 0;
     width: 25%;
     text-align: center;
     cursor: pointer;
@@ -245,12 +242,12 @@ p {
 }
 
 .row {
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .clear_padd {
-    padding: 0px;
+    padding: 0;
 }
 
 .home_list {
@@ -265,7 +262,7 @@ p {
 }
 
 .home_list:nth-of-type(1) {
-    margin-top: 0px;
+    margin-top: 0;
     border-top: 1px solid #EEEEEE;
 }
 
@@ -290,14 +287,14 @@ p {
 }
 
 .font_icon {
-    padding: 0px 2px;
+    padding: 0 2px;
     color: #ffffff;
     display: inline-block;
     background-color: #4996ee;
 }
 
 .shop_info {
-    padding: 4px 0px;
+    padding: 4px 0;
     color: #777777;
 }
 
@@ -306,7 +303,7 @@ p {
     border-bottom: 1px solid #4996ee;
     display: inline-block;
     height: 50px;
-    padding: 0px 4px;
+    padding: 0 4px;
 }
 
 .home_nav p {
@@ -315,7 +312,6 @@ p {
 
 .online_visit {
     text-align: center;
-    /*overflow: hidden;*/
     height: auto;
 }
 
@@ -328,15 +324,11 @@ p {
     background-color: #ffffff;
     text-align: center;
     margin-top: 30px;
-    padding: 8px 0px;
+    padding: 8px 0;
     position: fixed;
     width: 100%;
-    bottom: 0px;
-    left: 0px;
-}
-
-.body_normal {
-    /*margin-top: 0px;*/
+    bottom: 0;
+    left: 0;
 }
 
 .owner_bottom {
