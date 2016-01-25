@@ -1,5 +1,5 @@
 <div ng-repeat="record in records">
-    <div class="weui_cells_title title_style body_normal">{{record.payDate}}</div>
+    <div class="weui_cells_title title_style body_normal">{{record.payDate.substring(0,4)}}年{{record.payDate.substring(5,7)}}月{{record.payDate.substring(8,10)}}日</div>
     <div class="weui_cells weui_cells_access address_down page_pay">
         <a class="weui_cell" href="javascript:;">
             <div class="weui_cell_bd weui_cell_primary">
@@ -11,7 +11,7 @@
         </a>
         <a class="weui_cell" href="javascript:;" ng-if="record.type==0">
             <div class="weui_cell_hd">
-                <img src="images/water.png" alt="icon" style="width:12px;margin-right:5px;display:block">
+                <img src="images/water.png" alt="icon" style="width:12px;margin-right:5px;margin-top: -2px;display:block">
             </div>
             <div class="weui_cell_bd weui_cell_primary">
                 <p>水费</p>
@@ -24,7 +24,7 @@
         </a>
         <a class="weui_cell" href="javascript:;"  ng-if="record.type==1">
             <div class="weui_cell_hd">
-                <img src="images/ele.png" alt="icon" style="width:12px;margin-right:5px;display:block">
+                <img src="images/ele.png" alt="icon" style="width:12px;margin-right:5px;margin-top: -2px;display:block">
             </div>
             <div class="weui_cell_bd weui_cell_primary">
                 <p>电费</p>

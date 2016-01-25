@@ -51,6 +51,8 @@
         <div class="weui_cell_hd">
             <input ng-checked="payment.selected" ng-model="ele.selected" type="checkbox" id="ele{{ele.id}}"
                    ng-change="update(ele)" class="vis_none">
+            <!--<label for="ele{{ele.id}}" ng-if="ele.selected" class="label_account"></label>-->
+            <!--<label for="ele{{ele.id}}" ng-if="!ele.selected" class="label_account_click"></label>-->
             <label for="ele{{ele.id}}" ng-if="ele.selected" class="label_account"></label>
             <label for="ele{{ele.id}}" ng-if="!ele.selected" class="label_account_click"></label>
         </div>
@@ -94,7 +96,7 @@
 <div class="weui_cells weui_cells_access acc_footer" style="font-size: 16px">
     <div class="weui_cell">
         <div class="weui_cell_hd">
-            <input type="checkbox" ng-model="sel" ng-change="updateAll(sel)" id="sel_all" class="vis_none" ng-disabled="selected.length==0||!selected">
+            <input type="checkbox" ng-model="sel" ng-change="updateAll(sel)" id="sel_all" class="vis_none" ng-disabled="!selected">
             <label for="sel_all" ng-if="sel" class="label_account"></label>
             <label for="sel_all" ng-if="!sel" class="label_account_click"></label>
         </div>
