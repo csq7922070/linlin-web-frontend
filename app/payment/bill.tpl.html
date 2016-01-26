@@ -15,6 +15,7 @@
             {{ownerName}}
         </div>
     </a>
+
     <a class="weui_cell ofen_address" style="padding: 0 15px;">
         <div class="weui_cell_hd" ng-click="change_flag()"
              ng-class="{'img_active':id==activeId,'dis_active':id!=activeId}">
@@ -71,8 +72,9 @@
     <div class="detail_free" style="background-color: #ffffff;">
         <div class="top_arrow color_aaa" ng-click="freeShow = !freeShow"
              style="height: 30px;text-align: right;padding: 0px 15px;"><span
-                ng-if="freeShow" class="color999">详情<img src="images/up_arrow.png" style="width: 24px;height: 24px"></span><span
-                ng-if="!freeShow"  class="color999">详情<img src="images/down_arrow.png" style="width: 24px;height: 24px"></span>
+                ng-if="freeShow" class="color999">详情<img src="images/up_arrow.png"
+                                                         style="width: 24px;height: 24px"></span><span
+                ng-if="!freeShow" class="color999">详情<img src="images/down_arrow.png" style="width: 24px;height: 24px"></span>
         </div>
         <div ng-show="freeShow" style="padding:0 15px">
             <div style="text-align: center" class="color_aaa">
@@ -83,18 +85,17 @@
                     ng-if="detail.type==0" style="float: left">水费</span><span style="float: left"
                                                                               ng-if="detail.type==1">电费</span>{{detail.number}}<span
                     style="float: right">{{detail.count}}</span></div>
-
         </div>
     </div>
 </div>
 <div class="free_info color555" style="text-align: center;font-size: 12px;padding: 10px 15px 4px;">
     计费标准参考：水费-0.35元/m³ 电费-0.50元/°
 </div>
-
 <div class="weui_cells weui_cells_access acc_footer" style="font-size: 16px">
     <div class="weui_cell">
         <div class="weui_cell_hd">
-            <input type="checkbox" ng-model="sel" ng-change="updateAll(sel)" id="sel_all" class="vis_none" ng-disabled="!selected">
+            <input type="checkbox" ng-model="sel" ng-change="updateAll(sel)" id="sel_all" class="vis_none"
+                   ng-disabled="!selected">
             <label for="sel_all" ng-if="sel" class="label_account"></label>
             <label for="sel_all" ng-if="!sel" class="label_account_click"></label>
         </div>
@@ -102,9 +103,12 @@
             <p style="display: inline" class="pos_lef color333">本页全选</p>
         </div>
         <div class="weui_cell_bd weui_cell_primary" style="display: inline;flex: 1.6;">
-            <span class="color333">合计:</span><span style="color: #f23737">￥{{total| number:2}}</span><span ng-if="!payments" style="color: #f23737">0.00</span>
+            <span class="color333">合计:</span><span style="color: #f23737">￥{{total| number:2}}</span><span
+                ng-if="!payments" style="color: #f23737">0.00</span>
         </div>
-        <button class="weui_btn weui_btn_mini weui_btn_primary my_btn" ui-sref="payment({block:block,unit:unit,room:room})" ng-disabled="selected.length==0||!selected">结算</button>
+        <button class="weui_btn weui_btn_mini weui_btn_primary my_btn"
+                ui-sref="payment({block:block,unit:unit,room:room})" ng-disabled="selected.length==0||!selected">结算
+        </button>
     </div>
 </div>
 <div class="hidden_footer"></div>
