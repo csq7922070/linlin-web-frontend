@@ -1,16 +1,16 @@
 // var basePath = "http://mifan.4zlink.com:8080/mifan";
 //var basePath = "http://localhost:8080/skh";
- var basePath = "http://192.168.0.128:8080/skh";
-
+ var basePath = "http://mifan.4zlink.com/mifan";
+//var basePath = "http://192.168.0.120:8080/skh";
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
 angular.module('app.repair', ['resources.repair']);
 angular.module('app.shop', ['resources.shop']);
 angular.module('app.complain', ['resources.complain']);
 angular.module('app.address', ['resources.address']);
-angular.module('app.payment',['resources.address','resources.payment']);
+angular.module('app.payment', ['resources.address', 'resources.payment']);
 
-var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop','app.complain','app.address','app.payment']);
+var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 'app.complain', 'app.address', 'app.payment']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -21,13 +21,13 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             url: "/notice-list",
             templateUrl: "tpl/notice/notice-list.tpl.html",
             controller: 'noticeListCtrl',
-            controllerAs:'vm'
+            controllerAs: 'vm'
         })
         .state('notice-detail', {
             url: "/notice/:id",
             templateUrl: "tpl/notice/notice-detail.tpl.html",
             controller: "noticeDetailCtrl",
-            controllerAs:'vm'
+            controllerAs: 'vm'
         })
         .state('repair', {
             url: "/repair-list",
@@ -68,7 +68,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         .state('address-edit', {
             url: "/address-edit",
             templateUrl: "tpl/address/address-edit.tpl.html"
-            //controllerAs: 'vm'
+                //controllerAs: 'vm'
         })
         .state('address-block', {
             url: "/address-block/",
@@ -181,7 +181,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
     $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
         $rootScope.previousState = from.name;
         $rootScope.currentState = to.name;
-         var url = to.name.replace(".","/");
+        var url = "/" + to.name.replace(".", "/");
         _hmt.push(['_trackPageview', url]);
     });
 }]);
