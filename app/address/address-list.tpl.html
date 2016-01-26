@@ -4,14 +4,8 @@
             <p>业主信息</p>
         </div>
         <div class="address_section"
-<<<<<<< HEAD
-             ui-sref="bill({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.owners[0].ownerName})">
-            <span>{{house.block}}</span><span ng-if="house.info">-{{house.unit}}</span><span ng-if="house.room">-{{house.room}}</span>
-            <!--{{info.block}}-->
-=======
              ui-sref="bill({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.owner.ownerName,activeId:vm.activeId})">
             <span>{{house.block}}</span><span ng-if="house.unit">-{{house.unit}}</span><span ng-if="house.room">-{{house.room}}</span>
->>>>>>> refactorDirNew
         </div>
     </div>
     <div class="weui_cell">
