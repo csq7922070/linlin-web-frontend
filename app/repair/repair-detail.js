@@ -11,7 +11,7 @@
 
             repairs.get(params).$promise.then(function(data) {
                 vm.repair = data;
-            })
+            });
 
             vm.confirm = function(id) {
                 params = {
@@ -23,7 +23,7 @@
                     vm.repair = data;
                     successcb();
                 }, errcb);
-            }
+            };
 
             function successcb() {
                 vm.suc_show = true;

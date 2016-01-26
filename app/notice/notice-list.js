@@ -4,6 +4,7 @@
             var vm = this;
             vm.currentPage = 0;
             vm.pageSize = 10;
+            vm.notices = [];
             vm.load = function(goPage, limit) {
                 if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
                     return;
@@ -18,7 +19,7 @@
                         vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
                         vm.currentPage = goPage;
                         vm.busy = false;
-                        vm.notices = data.items;
+                         Array.prototype.push.apply(vm.notices,data.items);
                     });
                 }
             }

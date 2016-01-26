@@ -8,7 +8,7 @@
         </div>
     </a>
 </div>
-<div class="weui_cells weui_cells_access address_down page_pay">
+<div class="weui_cells weui_cells_access address_down page_pay" ng-if="watmonth">
     <a class="weui_cell" href="javascript:;">
         <div class="weui_cell_hd">
             <img src="images/water.png" alt="icon" style="width:12px;margin-right:5px;display:block">
@@ -37,7 +37,7 @@
         </div>
     </a>
 </div>
-<div class="weui_cells weui_cells_access address_down page_pay">
+<div class="weui_cells weui_cells_access address_down page_pay" ng-if="elmonth">
     <a class="weui_cell sel_img" href="javascript:;">
         <div class="weui_cell_hd">
             <img src="images/ele.png" alt="icon" style="width:12px;margin-right:5px;display:block">
@@ -71,7 +71,7 @@
         <div class="weui_cell_bd weui_cell_primary">
             <p>支付金额</p>
         </div>
-        <div class="address_section">
+        <div class="address_section" style="color: #f23737">
             ￥<span>{{waterFr+eleFr|number:2}}</span>元
         </div>
     </a>

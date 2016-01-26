@@ -1,14 +1,14 @@
-skhControllers.controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
+skhControllers.controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state','$q',
+        function($scope, $http, $stateParams, $rootScope, $state, $q) {
 
             $scope.watmonth_f = $rootScope.wmonth;
             $scope.watmonth = $scope.watmonth_f.join(",");
             $scope.elmonth_f = $rootScope.emonth;
             $scope.elmonth = $scope.elmonth_f.join(",");
 
-            $scope.block = $rootScope.block;
-            $scope.unit = $rootScope.unit;
-            $scope.room = $rootScope.room;
+            $scope.block = $stateParams.block;
+            $scope.unit = $stateParams.unit;
+            $scope.room = $stateParams.room;
 
             $scope.waterFr = $rootScope.waterFree;
             $scope.eleFr = $rootScope.eleFree;
@@ -18,11 +18,12 @@ skhControllers.controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$r
             $scope.money_payment = function() {
                 console.log("支付功能开始");
                 $http({
-                        method: "GET",
-                        url: basePath + '/payment/webchatPay',
+                        method: "POST",
+                        url: basePath + '/payments',
                         params: {
                             total_fee: $scope.totalFee,
-                            openid: sessionStorage.getItem("openid")
+                            openid: sessionStorage.getItem("openid"),
+                            ids:$rootScope.ids
                         }
                     }).error(function(response, status, headers, config) {
                         self.error = "连接错误!";
@@ -37,14 +38,13 @@ skhControllers.controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$r
                             prepay_id: response.data.prepay_id,
                             timestamp: response.data.timestamp,
                             nonceStr: response.data.nonceStr,
-                            paySign: response.data.sign,
-                            timestamp: response.data.timestamp
+                            paySign: response.data.sign
                         });
                     })
                     .then(function(data) {
                         var deferred = $q.defer();
                         wx.config({
-                            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                             appId: data.appid, // 必填，公众号的唯一标识
                             timestamp: sessionStorage.getItem("timestamp"), // 必填，生成签名的时间戳
                             nonceStr: sessionStorage.getItem("noncestr"), // 必填，生成签名的随机串

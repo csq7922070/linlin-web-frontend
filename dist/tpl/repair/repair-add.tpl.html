@@ -11,7 +11,7 @@
 <form ng-submit="vm.submitForm()" name="repairForm" class="form-signin" method="post" novalidate>
     <div class="container">
         <input type="text" placeholder="需要修理的设备" name="device" ng-model="vm.repair.device" maxlength="20" required ng-maxlength="20" ng-class="{'has-error':repairForm.device.$touched && repairForm.device.$dirty && repairForm.device.$invalid}">
-        <textarea name="remark" ng-model="vm.repair.remark" maxlength="1000" placeholder="请详细描述下出现的问题" required ng-maxlength="20" ng-class="{'has-error':repairForm.remark.$touched && repairForm.remark.$dirty && repairForm.remark.$invalid}"></textarea>
+        <textarea class="repair_detail" name="remark" ng-model="vm.repair.remark" maxlength="1000" placeholder="请详细描述下出现的问题" required ng-maxlength="20" ng-class="{'has-error':repairForm.remark.$touched && repairForm.remark.$dirty && repairForm.remark.$invalid}"></textarea>
         <input type="text" placeholder="您的手机号码" name="mobile" ng-model="vm.repair.mobile" ng-pattern="/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/" maxlength="11" required>
         <span class="room_hidden" ng-show="repairForm.mobile.$touched && repairForm.mobile.$dirty && repairForm.mobile.$invalid">*请输入正确的手机号码</span>
         <div>

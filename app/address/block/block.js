@@ -1,10 +1,11 @@
-skhControllers.controller('addressBlockCtrl', ['$scope', '$http', '$stateParams', '$rootScope',
-        function($scope, $http, $stateParams, $rootScope) {
-            $http({
-                method: "GET",
-                url: basePath + "/archives/getBlock.do"
-            }).success(function(data) {
-                $scope.datas = data;
-            });
-        }
-    ]);
+angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type: "block"
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.blocks = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+}])
