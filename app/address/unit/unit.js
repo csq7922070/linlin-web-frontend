@@ -1,14 +1,13 @@
-skhControllers.controller('addressUnitCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-        function($scope, $http, $stateParams, $rootScope, $state) {
-            $http({
-                method: "GET",
-                url: basePath + "/archives/getUnit.do",
-                params: {
-                    floor: $stateParams.floor
-                }
-            }).success(function(data) {
-                $scope.units = data.items;
-                $scope.floor = $stateParams.floor;
-            });
-        }
-    ]);
+angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type:'unit',
+        block:$stateParams.block
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.units = data.items;
+        vm.block = $stateParams.block;
+    }, function (data) {
+        console.log("err!");
+    });
+}])

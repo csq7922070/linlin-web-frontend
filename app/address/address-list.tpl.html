@@ -1,0 +1,42 @@
+<div class="weui_cells weui_cells_access address_down account_page owner_top" ng-repeat="house in vm.houses" ng-if="house.rowState==0">
+    <div class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>业主信息</p>
+        </div>
+        <div class="address_section"
+             ui-sref="bill({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.owner.ownerName,activeId:vm.activeId})">
+            <span>{{house.block}}</span><span ng-if="house.unit">-{{house.unit}}</span><span ng-if="house.room">-{{house.room}}</span>
+        </div>
+    </div>
+    <div class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p></p>
+        </div>
+        <div class="people_name" ui-sref="bill({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.owner.ownerName,activeId:vm.activeId})">
+            {{house.owner.ownerName}}
+        </div>
+    </div>
+    <div class="weui_cell ofen_address">
+        <div class="weui_cell_hd" ng-click="vm.change_flag(house)"
+             ng-class="{'img_active':house.id==vm.activeId,'dis_active':house.id!=vm.activeId}">
+        </div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>设为我的常用地址</p>
+        </div>
+        <div class="owner_name_del" ng-click="vm.deleteAddress(house)">删除</div>
+    </div>
+</div>
+
+<div class="owner_bottom"></div>
+<div class="add_address"  ui-sref="address-edit"><img src="images/plus.png" style="width: 20px;height: 20px;position: relative;top: -2px;left: -8px">新增地址</div>
+<!--提示框-->
+<div class="weui_dialog_confirm" ng-show="vm.sure_delete">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title">确定要删除吗?</strong></div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:;" class="weui_btn_dialog default small_color" ng-click="vm.sure()">确定</a>
+            <a href="javascript:;" class="weui_btn_dialog primary small_color" ng-click="vm.cancel()">取消</a>
+        </div>
+    </div>
+</div>
