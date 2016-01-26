@@ -181,9 +181,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
     $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
         $rootScope.previousState = from.name;
         $rootScope.currentState = to.name;
-        //console.log('Previous state:' + $rootScope.previousState);
-        //console.log('Current state:' + $rootScope.currentState);
-        console.log(to.name);
-        _hmt.push(['_trackPageview', to.name]);
+         var url = to.name.replace(".","/");
+        _hmt.push(['_trackPageview', url]);
     });
 }]);
