@@ -1,4 +1,4 @@
-angular.module('app.bill').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', 'addresses', 'payments',
+angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', 'addresses', 'payments',
     function($scope, $http, $stateParams, $rootScope, $state, addresses, payments) {
         //显示当前页面的业主信息
         $scope.ownerName = $stateParams.username;

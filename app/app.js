@@ -2,17 +2,15 @@
 //var basePath = "http://localhost:8080/skh";
  var basePath = "http://192.168.0.120:8080/skh";
 
-var skhControllers = angular.module('skhControllers', []);
-
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
 angular.module('app.repair', ['resources.repair']);
 angular.module('app.shop', ['resources.shop']);
 angular.module('app.complain', ['resources.complain']);
 angular.module('app.address', ['resources.address']);
-angular.module('app.bill',['resources.address','resources.payment']);
+angular.module('app.payment',['resources.address','resources.payment']);
 
-var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop','app.complain','app.address','app.bill', 'skhControllers']);
+var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop','app.complain','app.address','app.payment']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -185,6 +183,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         $rootScope.currentState = to.name;
         //console.log('Previous state:' + $rootScope.previousState);
         //console.log('Current state:' + $rootScope.currentState);
+        console.log(to.name);
         _hmt.push(['_trackPageview', to.name]);
     });
 }]);
