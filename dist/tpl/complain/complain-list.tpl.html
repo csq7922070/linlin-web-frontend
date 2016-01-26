@@ -1,0 +1,32 @@
+<div class="container-fluid nav">
+    <div class="rows">
+        <div class="col-xs-6">
+            <a ui-sref="complain.list" class="under_line">历史记录</a>
+        </div>
+        <div class="col-xs-6">
+            <a ui-sref="complain-add">我要发表</a>
+        </div>
+    </div>
+</div>
+<div ng-if="vm.complains.length == 0" class="container-fluid">
+    <div class="icon_err"></div>
+    <div class="err_b_font">您还没有发表过投诉建议哦！</div>
+    <a ui-sref="complain-add">
+        <input type="button" value="我要发表" class="repair_btn">
+    </a>
+</div>
+<ul class="item_service" ng-if="vm.complains.length > 0" when-scrolled="vm.load(vm.currentPage+1,vm.pageSize)">
+    <div class="contain_down" ng-repeat="complain in vm.complains">
+        <li>
+            <div class='date_state'>
+                <span class='date'>{{complain.createDate}}</span>
+                <span class='state' ng-if="complain.state == 0">未回复</span>
+                <span class='state' ng-if="complain.state == 1">已回复</span>
+            </div>
+            <div class='goods'>{{complain.title}}</div>
+            <div class='state_btn'>
+                <a ui-sref="complain-detail({id:complain.id})" class='check'> 查看 </a>
+            </div>
+        </li>
+    </div>
+</ul>
