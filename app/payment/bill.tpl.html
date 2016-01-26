@@ -21,8 +21,11 @@
              ng-class="{'img_active':id==activeId,'dis_active':id!=activeId}">
         </div>
         <div class="weui_cell_bd weui_cell_primary">
-            <p style="position: relative;top: 2px" class="color_bbb">
-                <small>我的常用地址</small>
+            <p style="position: relative;top: 2px" class="color_bbb" ng-if="id!=activeId">
+                <small>设为我的常用地址</small>
+            </p>
+            <p style="position: relative;top: 2px" class="color_bbb" ng-if="id==activeId">
+                <small >我的常用地址</small>
             </p>
         </div>
     </a>
@@ -81,10 +84,12 @@
                 <small><span style="float: left;">类别</span><span>上月-本月</span><span style="float: right">用量</span>
                 </small>
             </div>
-            <div class="color777" style="text-align: center;padding: 4px 0" ng-repeat="detail in payment.eles "><span
-                    ng-if="detail.type==0" style="float: left">水费</span><span style="float: left"
-                                                                              ng-if="detail.type==1">电费</span>{{detail.number}}<span
-                    style="float: right">{{detail.count}}</span></div>
+            <div class="color777" style="text-align: center;padding: 4px 0" ng-repeat="detail in payment.eles ">
+                <span  ng-if="detail.type==0" style="float: left">水费</span>
+                <span style="float: left" ng-if="detail.type==1">电费</span>
+                {{detail.number}}
+                <span style="float: right">{{detail.count}}</span>
+            </div>
         </div>
     </div>
 </div>

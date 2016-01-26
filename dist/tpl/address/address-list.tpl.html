@@ -21,7 +21,8 @@
              ng-class="{'img_active':house.id==vm.activeId,'dis_active':house.id!=vm.activeId}">
         </div>
         <div class="weui_cell_bd weui_cell_primary">
-            <p class="color_aaa">设为我的常用地址</p>
+            <p class="color_aaa" ng-if="house.id!=vm.activeId">设为我的常用地址</p>
+            <p class="color_aaa" ng-if="house.id==vm.activeId">我的常用地址</p>
         </div>
         <div class="owner_name_del" ng-click="vm.deleteAddress(house)">删除</div>
     </div>
