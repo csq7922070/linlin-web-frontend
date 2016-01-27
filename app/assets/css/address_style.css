@@ -194,6 +194,9 @@ p {
 }
 
 /*---------------------------------------支付页面--------------------------------------------*/
+.weui_btn_primary:not(.weui_btn_disabled):active{
+    background-color: #cc7f1c;
+}
 .page_pay .weui_cell:nth-of-type(3):before {
     border-top: none;
 }
@@ -390,13 +393,13 @@ p {
 .img_active {
     background: url("../images/flag_02.png") no-repeat;
     background-size: contain;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
 }
 
 .dis_active {
     background: url("../images/flag_01.png") no-repeat;
     background-size: contain;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
 }
