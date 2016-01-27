@@ -1,7 +1,7 @@
 // var basePath = "http://mifan.4zlink.com:8080/mifan";
 //var basePath = "http://localhost:8080/skh";
- var basePath = "http://mifan.4zlink.com/mifan";
-//var basePath = "http://192.168.0.120:8080/skh";
+// var basePath = "http://mifan.4zlink.com/mifan";
+var basePath = "http://192.168.0.120:8080/skh";
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
 angular.module('app.repair', ['resources.repair']);
