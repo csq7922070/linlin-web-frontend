@@ -1,4 +1,4 @@
-<div class="weui_cells weui_cells_access address_down account_page" style="margin-top: 6px">
+<div class="weui_cells address_down account_page" style="margin-top: 6px">
     <a class="weui_cell" style="padding-top: 14px;padding-bottom: 0;">
         <div class="weui_cell_bd weui_cell_primary">
             <p class="color333" style="margin-bottom: 5px">业主信息</p>
@@ -34,7 +34,7 @@
     <small><span class="account_record" style="float: right;color: #4996ee;position:relative;top: 2px"
                  ui-sref="payment-list({id:2185})">缴费记录</span></small>
 </div>
-<div class="weui_cells weui_cells_access address_down account_page" ng-repeat="payment in payments"
+<div class="weui_cells address_down account_page" ng-repeat="payment in payments"
      ng-class="!$first?'pos_up':''">
     <a class="weui_cell" href="javascript:;">
         <div class="weui_cell_hd">
@@ -96,7 +96,7 @@
 <div class="free_info color555" style="text-align: center;font-size: 12px;padding: 10px 15px 4px;">
     计费标准参考：水费-0.35元/m³ 电费-0.50元/°
 </div>
-<div class="weui_cells weui_cells_access acc_footer" style="font-size: 16px">
+<div class="weui_cells acc_footer" style="font-size: 16px">
     <div class="weui_cell" style="padding-top: 0px;padding-bottom: 0px">
         <div class="weui_cell_hd">
             <input type="checkbox" ng-model="sel" ng-change="updateAll(sel)" id="sel_all" class="vis_none"
@@ -117,3 +117,4 @@
     </div>
 </div>
 <div class="hidden_footer"></div>
+
