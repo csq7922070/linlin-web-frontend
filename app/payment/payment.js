@@ -1,6 +1,7 @@
 angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$q',
     function($scope, $http, $stateParams, $rootScope, $state, $q) {
 
+<<<<<<< HEAD
         var tmpwmonth = $rootScope.wmonth.map(_parseInt).sort(compare);
         var tmpemonth = $rootScope.emonth.map(_parseInt).sort(compare);
 
@@ -8,6 +9,15 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
         var edate;
         $scope.watmonth = arrange($rootScope.wmonth.map(_parseInt).sort(compare));
         $scope.elmonth = arrange($rootScope.emonth.map(_parseInt).sort(compare));
+=======
+            $scope.watmonth_f = $rootScope.wmonth;
+            $scope.watmonth = $scope.watmonth_f.join(",");
+            $scope.elmonth_f = $rootScope.emonth;
+            $scope.elmonth = $scope.elmonth_f.join(",");
+            $scope.block = $stateParams.block;
+            $scope.unit = $stateParams.unit;
+            $scope.room = $stateParams.room;
+>>>>>>> branch 'refactorDirNew' of http://192.168.0.95:10080/g731/linlin-web-frontend.git
 
         console.log("$rootScope.wmonth" + $scope.watmonth + " $rootScope.emonth" + $scope.elmonth);
 

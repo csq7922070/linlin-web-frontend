@@ -1,14 +1,14 @@
 <div class="weui_cells weui_cells_access address_down account_page owner_top" ng-repeat="house in vm.houses" ng-if="house.rowState==0">
-    <div class="weui_cell">
+    <div class="weui_cell" style="padding-top: 10px;padding-bottom: 0;">
         <div class="weui_cell_bd weui_cell_primary">
-            <p class="color333">业主信息</p>
+            <p class="color333" style="margin-bottom: 5px">业主信息</p>
         </div>
         <div class="address_section color999"
              ui-sref="bill({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.ownerName,activeId:vm.activeId})">
             <span>{{house.block}}</span><span ng-if="house.unit">-{{house.unit}}</span><span ng-if="house.room">-{{house.room}}</span>
         </div>
     </div>
-    <div class="weui_cell">
+    <div class="weui_cell" style="padding-top: 0;padding-bottom: 0;">
         <div class="weui_cell_bd weui_cell_primary">
             <p></p>
         </div>
@@ -16,13 +16,13 @@
             {{house.ownerName}}
         </div>
     </div>
-    <div class="weui_cell ofen_address">
+    <div class="weui_cell ofen_address" style="padding-top: 0;padding-bottom: 10px;">
         <div class="weui_cell_hd" ng-click="vm.change_flag(house)"
              ng-class="{'img_active':house.id==vm.activeId,'dis_active':house.id!=vm.activeId}">
         </div>
         <div class="weui_cell_bd weui_cell_primary">
-            <p class="color_aaa" ng-if="house.id!=vm.activeId">设为我的常用地址</p>
-            <p class="color_aaa" ng-if="house.id==vm.activeId">我的常用地址</p>
+            <p class="color_aaa" style="position: relative;top: 2px;left: 14px" ng-if="house.id!=vm.activeId">设为我的常用地址</p>
+            <p class="color_aaa" style="position: relative;top: 2px;left: 14px" ng-if="house.id==vm.activeId">我的常用地址</p>
         </div>
         <div class="owner_name_del" ng-click="vm.deleteAddress(house)">删除</div>
     </div>
