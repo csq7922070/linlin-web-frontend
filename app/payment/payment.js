@@ -1,7 +1,6 @@
 angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$q',
     function($scope, $http, $stateParams, $rootScope, $state, $q) {
 
-<<<<<<< HEAD
         var tmpwmonth = $rootScope.wmonth.map(_parseInt).sort(compare);
         var tmpemonth = $rootScope.emonth.map(_parseInt).sort(compare);
 
@@ -9,60 +8,49 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
         var edate;
         $scope.watmonth = arrange($rootScope.wmonth.map(_parseInt).sort(compare));
         $scope.elmonth = arrange($rootScope.emonth.map(_parseInt).sort(compare));
-=======
-            $scope.watmonth_f = $rootScope.wmonth;
-            $scope.watmonth = $scope.watmonth_f.join(",");
-            $scope.elmonth_f = $rootScope.emonth;
-            $scope.elmonth = $scope.elmonth_f.join(",");
-            $scope.block = $stateParams.block;
-            $scope.unit = $stateParams.unit;
-            $scope.room = $stateParams.room;
->>>>>>> branch 'refactorDirNew' of http://192.168.0.95:10080/g731/linlin-web-frontend.git
-
-        console.log("$rootScope.wmonth" + $scope.watmonth + " $rootScope.emonth" + $scope.elmonth);
 
         if ($scope.watmonth.length > 1) {
             $scope.wyear = (tmpwmonth[0] + "").substr(0, 4);
             if ($scope.watmonth[0].length > 1) {
                 if ((tmpwmonth[1] + "").substr(0, 4) == $scope.wyear) {
-                    $scope.wmonth = (tmpwmonth[0] + "").substr(4,2) + "," + (tmpwmonth[1] + "").substr(4,2) + "月等";
+                    $scope.wmonth = (tmpwmonth[0] + "").substr(4, 2) + "," + (tmpwmonth[1] + "").substr(4, 2) + "月等";
                     wdate = $scope.wyear + "年" + $scope.wmonth;
                 } else {
-                    wdate = (tmpwmonth[0] + "").substr(0, 4) + "年" + (tmpwmonth[0] + "").substr(4,2) + "月," + (tmpwmonth[0] + "").substr(0, 4) + "年" + (tmpwmonth[0] + "").substr(4,2) + "月等";
+                    wdate = (tmpwmonth[0] + "").substr(0, 4) + "年" + (tmpwmonth[0] + "").substr(4, 2) + "月," + (tmpwmonth[0] + "").substr(0, 4) + "年" + (tmpwmonth[0] + "").substr(4, 2) + "月等";
                 }
             } else {
-                $scope.wmonth = (tmpwmonth[0] + "").substr(4,2) + "月";
-                wdate=$scope.wyear+"年"+$scope.wmonth;
+                $scope.wmonth = (tmpwmonth[0] + "").substr(4, 2) + "月";
+                wdate = $scope.wyear + "年" + $scope.wmonth;
             }
 
         } else {
-            $scope.wyear = (tmpwmonth[0] + "").substr(0, 4)+"年";
-            $scope.wmonth = (tmpwmonth[0] + "").substr(4,2) + "-" + (tmpwmonth[tmpwmonth.length - 1] + "").substr(4,2) + "月";
-            wdate=$scope.wyear+$scope.wmonth;
+            $scope.wyear = (tmpwmonth[0] + "").substr(0, 4) + "年";
+            $scope.wmonth = (tmpwmonth[0] + "").substr(4, 2) + "-" + (tmpwmonth[tmpwmonth.length - 1] + "").substr(4, 2) + "月";
+            wdate = $scope.wyear + $scope.wmonth;
         }
 
         if ($scope.elmonth.length > 1) {
             $scope.eyear = (tmpemonth[0] + "").substr(0, 4);
             if ($scope.elmonth[0].length > 1) {
                 if ((tmpemonth[1] + "").substr(0, 4) == $scope.eyear) {
-                    $scope.emonth = (tmpemonth[0] + "").substr(4,2) + "," + (tmpemonth[1] + "").substr(4,2) + "月等";
+                    $scope.emonth = (tmpemonth[0] + "").substr(4, 2) + "," + (tmpemonth[1] + "").substr(4, 2) + "月等";
                     edate = $scope.eyear + "年" + $scope.emonth;
                 } else {
-                    edate = (tmpemonth[0] + "").substr(0, 4) + "年" + (tmpemonth[0] + "").substr(4,2) + "月," + (tmpemonth[0] + "").substr(0, 4) + "年" + (tmpemonth[0] + "").substr(4,2) + "月等";
+                    edate = (tmpemonth[0] + "").substr(0, 4) + "年" + (tmpemonth[0] + "").substr(4, 2) + "月," + (tmpemonth[0] + "").substr(0, 4) + "年" + (tmpemonth[0] + "").substr(4, 2) + "月等";
                 }
             } else {
-                $scope.emonth = (tmpemonth[0] + "").substr(4,2) + "月";
-                edate=$scope.eyear+"年"+$scope.emonth;
+                $scope.emonth = (tmpemonth[0] + "").substr(4, 2) + "月";
+                edate = $scope.eyear + "年" + $scope.emonth;
             }
 
         } else {
-            $scope.eyear = (tmpemonth[0] + "").substr(0, 4)+"年";
-            $scope.emonth = (tmpemonth[0] + "").substr(4,2) + "-" + (tmpemonth[tmpemonth.length - 1] + "").substr(4,2) + "月";
-            edate=$scope.eyear+$scope.emonth;
+            $scope.eyear = (tmpemonth[0] + "").substr(0, 4) + "年";
+            $scope.emonth = (tmpemonth[0] + "").substr(4, 2) + "-" + (tmpemonth[tmpemonth.length - 1] + "").substr(4, 2) + "月";
+            edate = $scope.eyear + $scope.emonth;
         }
 
-        $scope.watmonth=wdate;
-        $scope.elmonth=edate;
+        $scope.watmonth = wdate;
+        $scope.elmonth = edate;
 
         $scope.block = $stateParams.block;
         $scope.unit = $stateParams.unit;
