@@ -4,7 +4,7 @@
             <p class="color333" style="margin-bottom: 5px">业主信息</p>
         </div>
         <div class="address_section color999"
-             ui-sref="bill({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.owner.ownerName,activeId:vm.activeId})">
+             ui-sref="bill({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.ownerName,activeId:vm.activeId})">
             <span>{{house.block}}</span><span ng-if="house.unit">-{{house.unit}}</span><span ng-if="house.room">-{{house.room}}</span>
         </div>
     </div>
@@ -12,8 +12,8 @@
         <div class="weui_cell_bd weui_cell_primary">
             <p></p>
         </div>
-        <div class="people_name color999" ui-sref="bill({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.owner.ownerName,activeId:vm.activeId})">
-            {{house.owner.ownerName}}
+        <div class="people_name color999" ui-sref="bill({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.ownerName,activeId:vm.activeId})">
+            {{house.ownerName}}
         </div>
     </div>
     <div class="weui_cell ofen_address" style="padding-top: 0;padding-bottom: 10px;">
