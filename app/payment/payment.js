@@ -1,4 +1,4 @@
-skhControllers.controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state','$q',
+angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state','$q',
         function($scope, $http, $stateParams, $rootScope, $state, $q) {
 
             $scope.watmonth_f = $rootScope.wmonth;

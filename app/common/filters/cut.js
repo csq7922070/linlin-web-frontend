@@ -1,5 +1,4 @@
-//自定义过滤器 截取字符串长度
-skhControllers.filter('cut', function() {
+angular.module('myApp').filter('cut', function() {
     return function(value, wordwise, max, tail) {
         if (!value) return '';
 
