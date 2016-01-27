@@ -127,10 +127,10 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
                             if (v3[i].id == (v2[j])) {
                                 if (v3[i].type == 0) {
                                     wf += v3[i].amount;
-                                    wmonth.push(v3[i].month)
+                                    wmonth.push(v3[i].year+v3[i].month);
                                 } else {
                                     ef += v3[i].amount;
-                                    emonth.push(v3[i].month)
+                                    emonth.push(v3[i].year+v3[i].month);
                                 }
                             };
                         }
@@ -187,10 +187,10 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
                             if (v3[i].id == (v2[j])) {
                                 if (v3[i].type == 0) {
                                     wf += v3[i].amount;
-                                    wmonth.push(v3[i].month)
+                                    wmonth.push(v3[i].year+v3[i].month);
                                 } else {
                                     ef += v3[i].amount;
-                                    emonth.push(v3[i].month)
+                                    emonth.push(v3[i].year+v3[i].month);
                                 }
                             };
                         }
@@ -236,10 +236,10 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
                             if (v3[i].id == (v2[j])) {
                                 if (v3[i].type == 0) {
                                     wf += v3[i].amount;
-                                    wmonth.push(v3[i].month)
+                                    wmonth.push(v3[i].year+v3[i].month);
                                 } else {
                                     ef += v3[i].amount;
-                                    emonth.push(v3[i].month)
+                                    emonth.push(v3[i].year+v3[i].month);
                                 }
                             };
                         }
