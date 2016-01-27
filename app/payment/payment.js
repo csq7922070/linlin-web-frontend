@@ -5,7 +5,6 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
             $scope.watmonth = $scope.watmonth_f.join(",");
             $scope.elmonth_f = $rootScope.emonth;
             $scope.elmonth = $scope.elmonth_f.join(",");
-
             $scope.block = $stateParams.block;
             $scope.unit = $stateParams.unit;
             $scope.room = $stateParams.room;
