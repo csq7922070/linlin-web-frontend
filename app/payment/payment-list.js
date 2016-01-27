@@ -1,4 +1,4 @@
-skhControllers.controller('paymentListCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
+angular.module('app.payment').controller('paymentListCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
     function ($scope, $http, $stateParams, $rootScope, $state) {
         $scope.id = $stateParams.id;
         $http({

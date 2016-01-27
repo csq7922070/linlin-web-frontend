@@ -14,7 +14,27 @@ a:active {
 p {
     margin-top: 5px;
 }
-
+.color_aaa{
+    color: #aaa;
+}
+.color_bbb{
+    color: #bbb;
+}
+.color333{
+    color: #333;
+}
+.color555{
+    color:#555;
+}
+.color666{
+    color: #666;
+}
+.color777{
+    color: #777;
+}
+.color999{
+    color: #999;
+}
 /*------------------------------address页--------------------------------------*/
 .weui_cells:after {
     border: none;

@@ -10,4 +10,4 @@ angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addr
     }, function (data) {
         console.log("err!");
     });
-}])
+}]);

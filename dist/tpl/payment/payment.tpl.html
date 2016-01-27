@@ -1,9 +1,9 @@
 <div class="weui_cells weui_cells_access address_down page_pay">
     <a class="weui_cell" href="javascript:;">
         <div class="weui_cell_bd weui_cell_primary">
-            <p>缴费户号</p>
+            <p class="color333">缴费户号</p>
         </div>
-        <div class="address_section">
+        <div class="address_section color999">
             <span>{{block}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>
         </div>
     </a>
@@ -14,23 +14,23 @@
             <img src="images/water.png" alt="icon" style="width:12px;margin-right:5px;display:block">
         </div>
         <div class="weui_cell_bd weui_cell_primary">
-            <p>水费</p>
+            <p class="color333">水费</p>
         </div>
-        <div class="no_img">
+        <div class="no_img color777">
             应缴金额
         </div>
     </a>
     <a class="weui_cell" href="javascript:;">
         <div class="weui_cell_bd weui_cell_primary">
-            <p>账期</p>
+            <p class="color999">账期</p>
         </div>
-        <div class="should_info">
+        <div class="should_info color999">
             <span ng-if="watmonth">{{watmonth}}</span>月
         </div>
     </a>
     <a class="weui_cell" href="javascript:;">
         <div class="weui_cell_bd weui_cell_primary">
-            <p>应付金额</p>
+            <p class="color555">应付金额</p>
         </div>
         <div class="no_img">
             ￥<span ng-if="waterFr">{{waterFr|number:2}}</span>元
@@ -43,25 +43,25 @@
             <img src="images/ele.png" alt="icon" style="width:12px;margin-right:5px;display:block">
         </div>
         <div class="weui_cell_bd weui_cell_primary">
-            <p>电费</p>
+            <p class="color333">电费</p>
         </div>
-        <div class="no_img">
+        <div class="no_img color555">
             应缴金额
         </div>
     </a>
     <a class="weui_cell sel_img" href="javascript:;">
         <div class="weui_cell_bd weui_cell_primary">
-            <p>账期</p>
+            <p class="color999">账期</p>
         </div>
-        <div class="should_info">
+        <div class="should_info color999">
             <span ng-if="elmonth">{{elmonth}}</span>月
         </div>
     </a>
     <a class="weui_cell sel_img" href="javascript:;">
         <div class="weui_cell_bd weui_cell_primary">
-            <p>应付金额</p>
+            <p class="color555">应付金额</p>
         </div>
-        <div class="no_img">
+        <div class="no_img color555">
             ￥<span ng-if="eleFr">{{eleFr|number:2}}</span>元
         </div>
     </a>
@@ -69,7 +69,7 @@
 <div class="weui_cells weui_cells_access address_down page_pay">
     <a class="weui_cell" href="javascript:;">
         <div class="weui_cell_bd weui_cell_primary">
-            <p>支付金额</p>
+            <p class="color333">支付金额</p>
         </div>
         <div class="address_section" style="color: #f23737">
             ￥<span>{{waterFr+eleFr|number:2}}</span>元
@@ -82,7 +82,7 @@
             <img src="images/wetalk_big.png" alt="icon" style="width:30px;margin-right:5px;display:block">
         </div>
         <div class="weui_cell_bd weui_cell_primary">
-            <p>微信支付</p>
+            <p class="color333">微信支付</p>
         </div>
         <div class="no_img">
             <!--<img src="{{flg_src}}" style="width: 24px">-->
