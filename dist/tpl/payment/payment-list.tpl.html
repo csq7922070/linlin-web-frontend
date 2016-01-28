@@ -1,39 +1,39 @@
 <div ng-repeat="record in records">
     <div class="weui_cells_title title_style body_normal"><span class="color777">{{record.payDate.substring(0,4)}}年{{record.payDate.substring(5,7)}}月{{record.payDate.substring(8,10)}}日</span></div>
     <div class="weui_cells address_down page_pay">
-        <a class="weui_cell" href="javascript:;">
+        <div class="weui_cell" href="javascript:;">
             <div class="weui_cell_bd weui_cell_primary">
                 <p class="color777">{{record.block}}<span ng-if="record.unit">-{{record.unit}}</span><span ng-if="record.room">-{{record.room}}</span></p>
             </div>
             <div class="no_img">
                 {{record.amount}}元
             </div>
-        </a>
-        <a class="weui_cell" href="javascript:;" ng-if="record.type==0">
+        </div>
+        <div class="weui_cell" href="javascript:;" ng-if="record.type==0">
             <div class="weui_cell_hd">
                 <img src="images/water.png" alt="icon" style="width:12px;margin-right:5px;margin-top: -2px;display:block">
             </div>
-            <div class="weui_cell_bd weui_cell_primary">
-                <p>水费</p>
+            <div class="weui_cell_bd weui_cell_primary" style="margin-left: 8px">
+               水费
             </div>
             <div class="should_info">
             <span class="color777">
                 {{record.year}}年{{record.month}}月
             </span>
             </div>
-        </a>
-        <a class="weui_cell" href="javascript:;"  ng-if="record.type==1">
+        </div>
+        <div class="weui_cell" href="javascript:;"  ng-if="record.type==1">
             <div class="weui_cell_hd">
                 <img src="images/ele.png" alt="icon" style="width:12px;margin-right:5px;margin-top: -2px;display:block">
             </div>
-            <div class="weui_cell_bd weui_cell_primary">
-                <p>电费</p>
+            <div class="weui_cell_bd weui_cell_primary" style="margin-left: 8px">
+                电费
             </div>
             <div class="no_img">
             <span class="color777">
                 {{record.year}}年{{record.month}}月
             </span>
             </div>
-        </a>
+        </div>
     </div>
 </div>
