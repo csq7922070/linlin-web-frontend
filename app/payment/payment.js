@@ -1,9 +1,13 @@
 angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$q',
     function($scope, $http, $stateParams, $rootScope, $state, $q) {
-
+        if($rootScope.wmonth!=null&&$rootScope.wmonth!=""){
+            $scope.watermonth=$rootScope.wmonth;
+        }
+        if($rootScope.emonth!=null&&$rootScope.emonth!=""){
+            $scope.elemonth=$rootScope.emonth;
+        }
         var tmpwmonth = $rootScope.wmonth.map(_parseInt).sort(compare);
         var tmpemonth = $rootScope.emonth.map(_parseInt).sort(compare);
-
         var wdate;
         var edate;
         $scope.watmonth = arrange($rootScope.wmonth.map(_parseInt).sort(compare));

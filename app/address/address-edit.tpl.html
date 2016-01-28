@@ -57,9 +57,14 @@
         </span>
     </a>
 </div>
+
 <!--下一步按钮-->
 <div class="address_btn">
-    <button class="weui_btn weui_btn_primary length_btn" ui-sref="bill({block:vm.block,unit:vm.unit,room:vm.room,id:vm.id,username:vm.username})" ng-disabled="!vm.block||(!vm.unit&&type==2)||(!vm.room&&type==3)" ng-class="{'disabled':!vm.block||(!vm.unit&&type==2)||(!vm.room&&type==3)}" style="font-size: 16px" ng-click="vm.add_newaddress()">下一步
+    <button class="weui_btn weui_btn_primary length_btn"
+            ui-sref="bill({block:vm.block,unit:vm.unit,room:vm.room,id:vm.id,username:vm.username})"
+            ng-disabled="!vm.block||(!vm.unit&&type==2)||(!vm.room&&type==3)"
+            ng-class="{'disabled':!vm.block||(!vm.unit&&type==2)||(!vm.room&&type==3)}" style="font-size: 16px"
+            ng-click="vm.add_newaddress()">下一步
     </button>
 </div>
 <!--提示框-->

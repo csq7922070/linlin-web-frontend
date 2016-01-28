@@ -1,12 +1,14 @@
 body {
   background-color: #eeeeee;
-  font-family: "黑体-简", serif;
+  font-family: arial, sans-serif;
 }
 a:hover {
   text-decoration: none;
+  text-underline: none;
 }
 a:active {
   text-decoration: none;
+  text-underline: none;
 }
 p {
   margin-top: 5px;
@@ -36,12 +38,34 @@ p {
 .weui_cells:after {
   border: none;
 }
+.no_click {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 .address_down {
   margin-top: 0;
   font-size: 14px;
 }
 .address_down:first-child {
   font-size: 14px;
+}
+.my_cell:before {
+  width: 100%;
+  height: 1px;
+  -webkit-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  transform-origin: 0 0;
+  transform: scaleY(0.5);
+  left: 15px;
+  content: " ";
+  position: absolute;
+  border-top: 1px solid #D9D9D9!important;
+  z-index: 1000;
+  margin-top: -15px;
 }
 .address_btn {
   padding: 0 12px;
@@ -62,7 +86,6 @@ p {
 }
 .sure_address {
   min-width: 70px;
-  float: left;
   color: #000000;
   min-height: 40px;
 }
@@ -146,6 +169,9 @@ p {
   margin-top: 8px;
 }
 /*---------------------------------------支付页面--------------------------------------------*/
+.btn_press:active {
+  background-color: #cc7f1c!important;
+}
 .page_pay .weui_cell:nth-of-type(3):before {
   border-top: none;
 }
@@ -169,10 +195,6 @@ p {
 .focus_none:focus,
 .focus_none:hover {
   color: white;
-}
-.length_btn:not(.weui_btn_disabled):active {
-  color: rgba(255, 255, 255, 0.4);
-  background-color: #cc7f1c;
 }
 /*---------------------------------------home页面--------------------------------------------------*/
 .village {
@@ -310,14 +332,14 @@ p {
 .img_active {
   background: url("../images/flag_02.png") no-repeat;
   background-size: contain;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 }
 .dis_active {
   background: url("../images/flag_01.png") no-repeat;
   background-size: contain;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 }
 
 * {
@@ -329,7 +351,7 @@ body {
   margin: 0 auto;
   height: auto;
   background-color: #eeeeee;
-  font-family: "����", serif;
+  font-family: arial, sans-serif;
 }
 input {
   font-family: "����", serif;
@@ -425,7 +447,7 @@ a {
 }
 .prompt_btn {
   text-align: center;
-  width: 150px;
+  width: 80%;
   padding: 5px 0;
   background-color: #4996ee;
   border: none;

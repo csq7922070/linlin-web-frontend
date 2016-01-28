@@ -1,6 +1,5 @@
 //var basePath = "http://localhost:8080/skh";
 var basePath = "http://mifan.4zlink.com:8080/mifan";
- 
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
 angular.module('app.repair', ['resources.repair']);
@@ -713,10 +712,14 @@ angular.module('app.payment').controller('paymentListCtrl', ['$scope', '$http', 
 ]);
 angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$q',
     function($scope, $http, $stateParams, $rootScope, $state, $q) {
-
+        if($rootScope.wmonth!=null&&$rootScope.wmonth!=""){
+            $scope.watermonth=$rootScope.wmonth;
+        }
+        if($rootScope.emonth!=null&&$rootScope.emonth!=""){
+            $scope.elemonth=$rootScope.emonth;
+        }
         var tmpwmonth = $rootScope.wmonth.map(_parseInt).sort(compare);
         var tmpemonth = $rootScope.emonth.map(_parseInt).sort(compare);
-
         var wdate;
         var edate;
         $scope.watmonth = arrange($rootScope.wmonth.map(_parseInt).sort(compare));
@@ -1040,24 +1043,6 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     ]);
 })();
 
-angular.module('myApp').filter('cut', function() {
-    return function(value, wordwise, max, tail) {
-        if (!value) return '';
-
-        max = parseInt(max, 10);
-        if (!max) return value;
-        if (value.length <= max) return value;
-
-        value = value.substr(0, max);
-        if (wordwise) {
-            var lastspace = value.lastIndexOf(' ');
-            if (lastspace != -1) {
-                value = value.substr(0, lastspace);
-            }
-        }
-        return value + (tail || '...');
-    };
-});
 myApp.directive('errSrc', function() {
   return {
     link: function(scope, element, attrs) {
@@ -1118,6 +1103,24 @@ myApp.directive('whenScrolled', ['$document', function ($document) {
         }
     };
 }]);
+angular.module('myApp').filter('cut', function() {
+    return function(value, wordwise, max, tail) {
+        if (!value) return '';
+
+        max = parseInt(max, 10);
+        if (!max) return value;
+        if (value.length <= max) return value;
+
+        value = value.substr(0, max);
+        if (wordwise) {
+            var lastspace = value.lastIndexOf(' ');
+            if (lastspace != -1) {
+                value = value.substr(0, lastspace);
+            }
+        }
+        return value + (tail || '...');
+    };
+});
 angular.module('resources.address', ['ngResource']).
     factory('addresses', ['$resource', function($resource) {
         return $resource(basePath+'/houses/:id', {id:'@id'}, {
