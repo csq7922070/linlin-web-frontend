@@ -388,12 +388,9 @@ p {
 .add_address {
     background-color: #ffffff;
     text-align: center;
-    margin-top: 4px;
+    margin-top: 5px;
     padding: 8px 0;
-    /*position: fixed;*/
     width: 100%;
-    /*bottom: 0;*/
-    /*left: 0;*/
 }
 
 .owner_bottom {
