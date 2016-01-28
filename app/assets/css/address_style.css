@@ -4,12 +4,19 @@ body {
 }
 a:hover {
     text-decoration: none;
-    text-underline: none;
+    text-underline: none!important;
 }
-
+.no-selection {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 a:active {
     text-decoration: none;
-    text-underline: none;
+    text-underline: none!important;
 }
 
 p {
@@ -88,12 +95,13 @@ p {
 }
 
 .length_btn:active {
+    color: white;
     background-color: #1199c4;
 }
 
 .length_btn:not(.weui_btn_disabled):active {
     color: rgba(255, 255, 255, 0.4);
-    background-color: #878787;
+    background-color: #2d7fdd;
 }
 
 .weui_dialog_ft .small_color {
