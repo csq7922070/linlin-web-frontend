@@ -29,6 +29,24 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
             houseId: $stateParams.id
         };
 
+            $scope.id = $stateParams.id;
+            $http({
+                method: "GET",
+                url: basePath + "/payments/query",
+                params: {
+                    queryType: 'openid',
+                    openid: sessionStorage.getItem("openid"),
+                    paymentState: 1,
+                    houseId: $stateParams.id
+                }
+            }).success(function (data) {
+                if(data!=null&&data!=""){
+                    $scope.list_show =true;
+                }
+                //$scope.records = data.items;
+            });
+
+
         payments.query(params).$promise.then(function(data) {
             if (data.amountList.length != 0) {
                 $scope.freeShow = false;

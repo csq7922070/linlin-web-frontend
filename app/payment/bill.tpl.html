@@ -32,7 +32,7 @@
 </div>
 <div class="weui_cells_title color333" style="padding-bottom: 4px">待缴费信息
     <small><span class="account_record" style="float: right;color: #4996ee;position:relative;top: 2px"
-                 ui-sref="payment-list({id:2185})">缴费记录</span></small>
+                 ui-sref="payment-list({id:2185})" ng-if="list_show">缴费记录</span></small>
 </div>
 <div class="weui_cells address_down account_page" ng-repeat="payment in payments"
      ng-class="!$first?'pos_up':''">
