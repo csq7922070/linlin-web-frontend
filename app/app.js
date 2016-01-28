@@ -9,12 +9,13 @@ angular.module('app.shop', ['resources.shop']);
 angular.module('app.complain', ['resources.complain']);
 angular.module('app.address', ['resources.address']);
 angular.module('app.payment', ['resources.address', 'resources.payment']);
+angular.module('app.location', []);
 
-var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 'app.complain', 'app.address', 'app.payment']);
+var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 'app.complain', 'app.address', 'app.payment', 'app.location']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/home");
+    $urlRouterProvider.otherwise("/auto-location");
 
     $stateProvider
         .state('notice', {
@@ -43,7 +44,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         })
         .state('repair-add', {
             url: "/repair-add",
-            templateUrl: "tpl/repair/repair-add.tpl.html",
+            templateUrl: "tpl/repair/repair-add.tpl.html", 
             controller: 'repairAddCtrl',
             controllerAs: 'vm'
         })
@@ -132,6 +133,18 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             url: "/html-error",
             templateUrl: "tpl/home/html-error.tpl.html",
             controllerAs: 'vm'
+        })
+        .state('auto-location', {
+            url: "/auto-location",
+            templateUrl: "tpl/location/auto-location.tpl.html",
+            controller: "autoLocationCtrl",
+            controllerAs: 'vm'
+        })
+        .state('search-location', {
+            url: "/search-location",
+            templateUrl: "tpl/location/search-location.tpl.html",
+            controller: "searchLocationCtrl",
+            controllerAs: 'vm'
         });
 }]).config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -185,3 +198,45 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         _hmt.push(['_trackPageview', url]);
     });
 }]);
+
+// function(){
+//     var list = [
+//         {
+//             time,
+//             date,
+//             block,
+//             type,
+//             ammount
+//         }
+//     ];
+
+//     var list2 = [];
+//     for(var i = 0;i<list.length;i++){
+//         var item = list[i];
+//         var find = false;
+//         for(var j = 0;j<list2.length;j++){
+//             var item2 = list2[j];
+//             if(item.time == item2.time && item.date == item2.date && item.block == item2.block){
+//                 find = true;
+//                 break;
+//             }
+//         }
+//         if(find){
+//             if(item.type == 1){
+//                 list2[j].shuifei = item.ammount;//水费属性赋值
+//             }else{
+//                 list[j].dianfei = item.ammount;//电费熟悉赋值
+//             }
+//         }else{
+//             var newItem = angular.copy(item);
+//             if(item.type == 1){
+//                 newItem.shuifei = item.ammount;
+//             }else{
+//                 newItem.dianfei = item.ammount;
+//             }
+//             list2.push(newItem);
+//         }
+//     }
+
+//     // list2数组是用来给页面模板显示用的数据
+// }
