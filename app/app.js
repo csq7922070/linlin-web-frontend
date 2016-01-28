@@ -1,123 +1,149 @@
-var basePath = "http://mifan.4zlink.com:8080/mifan";
 //var basePath = "http://localhost:8080/skh";
-//var basePath = "http://192.168.0.117:8080/skh";
+var basePath = "http://mifan.4zlink.com:8080/mifan";
+ 
+angular.module('app.home', []);
+angular.module('app.notice', ['resources.notice']);
+angular.module('app.repair', ['resources.repair']);
+angular.module('app.shop', ['resources.shop']);
+angular.module('app.complain', ['resources.complain']);
+angular.module('app.address', ['resources.address']);
+angular.module('app.payment', ['resources.address', 'resources.payment']);
 
-var skhControllers = angular.module('skhControllers', ['ui.router']);
-var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'skhControllers']);
+var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 'app.complain', 'app.address', 'app.payment']);
 
-myApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+
     $urlRouterProvider.otherwise("/home");
+
     $stateProvider
         .state('notice', {
-            url: "/notice/list",
-            templateUrl: "tpl/notice/notice.list.html",
-            controller: 'noticeListCtrl'
+            url: "/notice-list",
+            templateUrl: "tpl/notice/notice-list.tpl.html",
+            controller: 'noticeListCtrl',
+            controllerAs: 'vm'
         })
         .state('notice-detail', {
             url: "/notice/:id",
-            templateUrl: "tpl/notice/notice.detail.html",
-            controller: "noticeDetailCtrl"
+            templateUrl: "tpl/notice/notice-detail.tpl.html",
+            controller: "noticeDetailCtrl",
+            controllerAs: 'vm'
         })
         .state('repair', {
             url: "/repair-list",
-            templateUrl: "tpl/repair/repair.list.html",
-            controller: 'repairListCtrl'
+            templateUrl: "tpl/repair/repair-list.tpl.html",
+            controller: 'repairListCtrl',
+            controllerAs: 'vm'
         })
         .state('repair-detail', {
             url: "/repair/:id",
-            templateUrl: "tpl/repair/repair.detail.html",
-            controller: 'repairDetailCtrl'
+            templateUrl: "tpl/repair/repair-detail.tpl.html",
+            controller: 'repairDetailCtrl',
+            controllerAs: 'vm'
         })
         .state('repair-add', {
             url: "/repair-add",
-            templateUrl: "tpl/repair/repair.add.html",
-            controller: 'repairAddCtrl'
+            templateUrl: "tpl/repair/repair-add.tpl.html",
+            controller: 'repairAddCtrl',
+            controllerAs: 'vm'
         })
         .state('complain', {
             url: "/complain-list",
-            templateUrl: "tpl/complain/complain.list.html",
-            controller: "complainListCtrl"
+            templateUrl: "tpl/complain/complain-list.tpl.html",
+            controller: "complainListCtrl",
+            controllerAs: 'vm'
         })
         .state('complain-detail', {
             url: "/complain/:id",
-            templateUrl: "tpl/complain/complain.detail.html",
-            controller: "complainDetailCtrl"
+            templateUrl: "tpl/complain/complain-detail.tpl.html",
+            controller: "complainDetailCtrl",
+            controllerAs: 'vm'
         })
         .state('complain-add', {
             url: "/complain-add",
-            templateUrl: "tpl/complain/complain.add.html",
-            controller: "complainAddCtrl"
+            templateUrl: "tpl/complain/complain-add.tpl.html",
+            controller: "complainAddCtrl",
+            controllerAs: 'vm'
         })
-        .state('address', {
-            url: "/address",
-            templateUrl: "tpl/service/address.html"
+        .state('address-edit', {
+            url: "/address-edit",
+            templateUrl: "tpl/address/address-edit.tpl.html"
+                //controllerAs: 'vm'
         })
-        .state('address-floor', {
-            url: "/address-floor/",
-            templateUrl: "tpl/address/block/block.html",
-            controller: "addressFloorCtrl"
+        .state('address-block', {
+            url: "/address-block/",
+            templateUrl: "tpl/address/block/block.tpl.html",
+            controller: "addressBlockCtrl",
+            controllerAs: 'vm'
         })
         .state('address-unit', {
-            url: "/address-unit/:floor",
-            templateUrl: "tpl/address/unit/unit.html",
-            controller: "addressUnitCtrl"
+            url: "/address-unit/:block",
+            templateUrl: "tpl/address/unit/unit.tpl.html",
+            controller: "addressUnitCtrl",
+            controllerAs: 'vm'
         })
         .state('address-room', {
-            url: "/address-room/:floor/:unit",
-            templateUrl: "tpl/address/room/room.html",
-            controller: "addressRoomCtrl"
+            url: "/address-room/:block/:unit",
+            templateUrl: "tpl/address/room/room.tpl.html",
+            controller: "addressRoomCtrl",
+            controllerAs: 'vm'
         })
-        .state('address-final', {
-            url: "/address-final/:id/:floor/:unit/:room/:username/:initial",
-            templateUrl: "tpl/service/address.html",
-            controller: "addressCtrl"
+        .state('address', {
+            url: "/address/:id/:block/:unit/:room/:username/:initial",
+            templateUrl: "tpl/address/address-edit.tpl.html",
+            controller: "addressCtrl",
+            controllerAs: 'vm'
         })
-        .state('account', {
-            url: "/account/:floor/:unit/:room/:id/:username",
-            templateUrl: "tpl/service/account.html",
-            controller: "accountCtrl"
+        .state('address-list', {
+            url: "/address-list",
+            templateUrl: "tpl/address/address-list.tpl.html",
+            controller: "addressListCtrl",
+            controllerAs: 'vm'
+        })
+        .state('bill', {
+            url: "/bill/:block/:unit/:room/:id/:username/:activeId",
+            templateUrl: "tpl/payment/bill.tpl.html",
+            controller: "billCtrl"
         })
         .state('payment', {
-            url: "/payment",
-            templateUrl: "tpl/service/payment.html",
-            controller: "paymentCtrl"
+            url: "/payment/:block/:unit/:room/",
+            templateUrl: "tpl/payment/payment.tpl.html",
+            controller: "paymentCtrl",
+            controllerAs: 'vm'
+        })
+        .state('payment-list', {
+            url: "/payment-list/:id",
+            templateUrl: "tpl/payment/payment-list.tpl.html",
+            controller: "paymentListCtrl"
         })
         .state('home', {
             url: "/home",
-            templateUrl: "tpl/home/home.html",
-            controller: "homeCtrl"
+            templateUrl: "tpl/home/home.tpl.html",
+            controller: "homeCtrl",
+            controllerAs: 'vm'
         })
         .state('home.shop-info', {
             url: "/shop-info/:site",
-            templateUrl: "tpl/shop/shop-info.html",
-            controller: "shopInfoCtrl"
-        })
-        .state('owner-address', {
-            url: "/owner-address",
-            templateUrl: "tpl/service/owner-address.html",
-            controller: "ownerCtrl"
-        })
-        .state('account-record', {
-            url: "/account-record/:id",
-            templateUrl: "tpl/service/account-record.html",
-            controller: "accountRecordCtrl"
+            templateUrl: "tpl/shop/shop-info.tpl.html",
+            controller: "shopInfoCtrl",
+            controllerAs: 'vm'
         })
         .state('html-error', {
             url: "/html-error",
-            templateUrl: "tpl/home/html-error.html"
+            templateUrl: "tpl/home/html-error.tpl.html",
+            controllerAs: 'vm'
         });
-}]).config(['$httpProvider', function ($httpProvider) {
+}]).config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
     // Override $http service's default transformRequest
-    $httpProvider.defaults.transformRequest = [function (data) {
+    $httpProvider.defaults.transformRequest = [function(data) {
         /**
          * The workhorse; converts an object to x-www-form-urlencoded serialization.
          * @param {Object} obj
          * @return {String}
          */
-        var param = function (obj) {
+        var param = function(obj) {
             var query = '';
             var name, value, fullSubName, subName, subValue, innerObj, i;
 
@@ -150,12 +176,11 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, 
 
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
-}]).run(['$rootScope', function ($rootScope) {
-    $rootScope.$on('$stateChangeSuccess', function (event, to, toParams, from, fromParams) {
+}]).run(['$rootScope', function($rootScope) {
+    $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
         $rootScope.previousState = from.name;
         $rootScope.currentState = to.name;
-        //console.log('Previous state:' + $rootScope.previousState);
-        //console.log('Current state:' + $rootScope.currentState);
-        _hmt.push(['_trackPageview', to.name]);
+        var url = "/" + to.name.replace(".", "/");
+        _hmt.push(['_trackPageview', url]);
     });
 }]);
