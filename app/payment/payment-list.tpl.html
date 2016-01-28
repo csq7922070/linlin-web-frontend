@@ -9,7 +9,7 @@
                 {{record.amount}}元
             </div>
         </a>
-        <a class="weui_cell" href="javascript:;" ng-if="record.type==0">
+        <a class="weui_cell" href="javascript:;" ng-if="record.waterDates.length > 0">
             <div class="weui_cell_hd">
                 <img src="images/water.png" alt="icon" style="width:12px;margin-right:5px;margin-top: -2px;display:block">
             </div>
@@ -17,12 +17,12 @@
                 <p>水费</p>
             </div>
             <div class="should_info">
-            <span class="color777">
-                {{record.year}}年{{record.month}}月
+            <span class="color777" ng-bind="record.waterDateText">
+                <!-- {{record.year}}年{{record.month}}月 -->
             </span>
             </div>
         </a>
-        <a class="weui_cell" href="javascript:;"  ng-if="record.type==1">
+        <a class="weui_cell" href="javascript:;" ng-if="record.elecDates.length > 0">
             <div class="weui_cell_hd">
                 <img src="images/ele.png" alt="icon" style="width:12px;margin-right:5px;margin-top: -2px;display:block">
             </div>
@@ -30,8 +30,8 @@
                 <p>电费</p>
             </div>
             <div class="no_img">
-            <span class="color777">
-                {{record.year}}年{{record.month}}月
+            <span class="color777" ng-bind="record.elecDateText">
+                <!-- {{record.year}}年{{record.month}}月 -->
             </span>
             </div>
         </a>
