@@ -2,13 +2,14 @@ body {
     background-color: #eeeeee;
     font-family: arial, sans-serif;
 }
-
 a:hover {
     text-decoration: none;
+    text-underline: none;
 }
 
 a:active {
     text-decoration: none;
+    text-underline: none;
 }
 
 p {
@@ -47,7 +48,14 @@ p {
 .weui_cells:after {
     border: none;
 }
-
+.no_click{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 .address_down {
     margin-top: 0;
     font-size: 14px;
@@ -194,8 +202,8 @@ p {
 }
 
 /*---------------------------------------支付页面--------------------------------------------*/
-.weui_btn_primary:not(.weui_btn_disabled):active{
-    background-color: #cc7f1c;
+.btn_press:active{
+    background-color: #cc7f1c!important;
 }
 .page_pay .weui_cell:nth-of-type(3):before {
     border-top: none;
@@ -225,12 +233,6 @@ p {
 .focus_none:focus, .focus_none:hover {
     color: white;
 }
-
-.length_btn:not(.weui_btn_disabled):active {
-    color: rgba(255, 255, 255, .4);
-    background-color: #cc7f1c;
-}
-
 /*---------------------------------------home页面--------------------------------------------------*/
 .village {
     color: #ffffff;
