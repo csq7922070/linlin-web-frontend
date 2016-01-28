@@ -1,10 +1,7 @@
 //var basePath = "http://localhost:8080/skh";
-var basePath = "http://mifan.4zlink.com:8080/mifan";
-<<<<<<< HEAD:.tmp/scripts/main.js
- 
-=======
 //var basePath="http://192.168.0.120:8080/skh";
->>>>>>> refactorDirNew:dist/js/all.min.js
+var basePath = "http://mifan.4zlink.com:8080/mifan";
+
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
 angular.module('app.repair', ['resources.repair']);
@@ -1044,24 +1041,6 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     ]);
 })();
 
-angular.module('myApp').filter('cut', function() {
-    return function(value, wordwise, max, tail) {
-        if (!value) return '';
-
-        max = parseInt(max, 10);
-        if (!max) return value;
-        if (value.length <= max) return value;
-
-        value = value.substr(0, max);
-        if (wordwise) {
-            var lastspace = value.lastIndexOf(' ');
-            if (lastspace != -1) {
-                value = value.substr(0, lastspace);
-            }
-        }
-        return value + (tail || '...');
-    };
-});
 myApp.directive('errSrc', function() {
   return {
     link: function(scope, element, attrs) {
@@ -1122,6 +1101,24 @@ myApp.directive('whenScrolled', ['$document', function ($document) {
         }
     };
 }]);
+angular.module('myApp').filter('cut', function() {
+    return function(value, wordwise, max, tail) {
+        if (!value) return '';
+
+        max = parseInt(max, 10);
+        if (!max) return value;
+        if (value.length <= max) return value;
+
+        value = value.substr(0, max);
+        if (wordwise) {
+            var lastspace = value.lastIndexOf(' ');
+            if (lastspace != -1) {
+                value = value.substr(0, lastspace);
+            }
+        }
+        return value + (tail || '...');
+    };
+});
 angular.module('resources.address', ['ngResource']).
     factory('addresses', ['$resource', function($resource) {
         return $resource(basePath+'/houses/:id', {id:'@id'}, {
@@ -1182,6 +1179,17 @@ factory('shops', ['$resource', function($resource) {
         }
     })
 }]);
+angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type: "block"
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.blocks = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+}])
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
     function ($stateParams, addresses) {
         var vm = this;
@@ -1197,17 +1205,6 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'ad
         })
     }
 ])
-angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type: "block"
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.blocks = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-}])
 angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {
