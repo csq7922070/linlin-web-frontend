@@ -1,4 +1,4 @@
-<div class="weui_cells weui_cells_access address_down page_pay">
+<div class="weui_cells address_down page_pay">
     <a class="weui_cell" href="javascript:;">
         <div class="weui_cell_bd weui_cell_primary">
             <p class="color333">缴费户号</p>
@@ -8,7 +8,7 @@
         </div>
     </a>
 </div>
-<div class="weui_cells weui_cells_access address_down page_pay" ng-if="watmonth">
+<div class="weui_cells address_down page_pay" ng-if="watmonth">
     <a class="weui_cell" href="javascript:;">
         <div class="weui_cell_hd">
             <img src="images/water.png" alt="icon" style="width:12px;margin-right:5px;display:block">
@@ -16,7 +16,7 @@
         <div class="weui_cell_bd weui_cell_primary">
             <p class="color333" style="position: relative;top: 2px;left: 8px">水费</p>
         </div>
-        <div class="no_img color777">
+        <div class="no_img color555">
             应缴金额
         </div>
     </a>
@@ -32,12 +32,12 @@
         <div class="weui_cell_bd weui_cell_primary">
             <p class="color555">应付金额</p>
         </div>
-        <div class="no_img" style="position: relative;top: -4px">
+        <div class="no_img color333" style="position: relative;top: -4px">
             ￥<span ng-if="waterFr">{{waterFr|number:2}}</span>元
         </div>
     </a>
 </div>
-<div class="weui_cells weui_cells_access address_down page_pay" ng-if="elmonth">
+<div class="weui_cells address_down page_pay" ng-if="elmonth">
     <a class="weui_cell sel_img" href="javascript:;">
         <div class="weui_cell_hd">
             <img src="images/ele.png" alt="icon" style="width:12px;margin-right:5px;display:block">
@@ -61,12 +61,12 @@
         <div class="weui_cell_bd weui_cell_primary">
             <p class="color555">应付金额</p>
         </div>
-        <div class="no_img color555" style="position: relative;top: -4px">
+        <div class="no_img color333" style="position: relative;top: -4px">
             ￥<span ng-if="eleFr">{{eleFr|number:2}}</span>元
         </div>
     </a>
 </div>
-<div class="weui_cells weui_cells_access address_down page_pay">
+<div class="weui_cells address_down page_pay">
     <a class="weui_cell" href="javascript:;">
         <div class="weui_cell_bd weui_cell_primary">
             <p class="color333">支付金额</p>
@@ -76,7 +76,7 @@
         </div>
     </a>
 </div>
-<div class="weui_cells weui_cells_access address_down page_pay" ng-click="toggle()">
+<div class="weui_cells address_down page_pay" ng-click="toggle()">
     <a class="weui_cell sel_img" href="javascript:;">
         <div class="weui_cell_hd">
             <img src="images/wetalk_big.png" alt="icon" style="width:30px;margin-right:5px;display:block">
@@ -86,7 +86,7 @@
         </div>
         <div class="no_img">
             <!--<img src="{{flg_src}}" style="width: 24px">-->
-            <img src="images/right.png" style="width: 24px">
+            <img src="images/big_right.png" style="width: 24px">
         </div>
     </a>
 </div>

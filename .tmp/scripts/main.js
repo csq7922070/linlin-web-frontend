@@ -1,6 +1,10 @@
 //var basePath = "http://localhost:8080/skh";
 var basePath = "http://mifan.4zlink.com:8080/mifan";
+<<<<<<< HEAD:.tmp/scripts/main.js
  
+=======
+//var basePath="http://192.168.0.120:8080/skh";
+>>>>>>> refactorDirNew:dist/js/all.min.js
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
 angular.module('app.repair', ['resources.repair']);
@@ -1178,17 +1182,6 @@ factory('shops', ['$resource', function($resource) {
         }
     })
 }]);
-angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type: "block"
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.blocks = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-}])
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
     function ($stateParams, addresses) {
         var vm = this;
@@ -1204,6 +1197,17 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'ad
         })
     }
 ])
+angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type: "block"
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.blocks = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+}])
 angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {
