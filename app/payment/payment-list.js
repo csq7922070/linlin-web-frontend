@@ -1,5 +1,5 @@
-angular.module('app.payment').controller('paymentListCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-    function ($scope, $http, $stateParams, $rootScope, $state) {
+angular.module('app.payment').controller('paymentListCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$filter', 
+    function ($scope, $http, $stateParams, $rootScope, $state, $filter) {
         $scope.id = $stateParams.id;
         $http({
             method: "GET",
@@ -12,7 +12,7 @@ angular.module('app.payment').controller('paymentListCtrl', ['$scope', '$http', 
             }
         }).success(function (data) {
             if(data.items.length!=0){
-                $scope.records = data.items;
+                $scope.records = $filter("payListMerge")(data.items);
             }
         });
     }

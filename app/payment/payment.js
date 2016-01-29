@@ -8,63 +8,11 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
         }
         var tmpwmonth = $rootScope.wmonth.map(_parseInt).sort(compare);
         var tmpemonth = $rootScope.emonth.map(_parseInt).sort(compare);
-        var wdate;
-        var edate;
-        $scope.watmonth = arrange($rootScope.wmonth.map(_parseInt).sort(compare));
-        $scope.elmonth = arrange($rootScope.emonth.map(_parseInt).sort(compare));
+        var wmonthSections = arrange(tmpwmonth);
+        var emonthSections = arrange(tmpemonth);
 
-        if ($scope.watmonth.length > 1) {
-            $scope.wyear = (tmpwmonth[0] + "").substr(0, 4);
-            if ($scope.watmonth[0].length > 1) {
-                if ((tmpwmonth[1] + "").substr(0, 4) == $scope.wyear) {
-                    $scope.wmonth = (tmpwmonth[0] + "").substr(4, 2) + "," + (tmpwmonth[1] + "").substr(4, 2) + "月等";
-                    wdate = $scope.wyear + "年" + $scope.wmonth;
-                } else {
-                    wdate = (tmpwmonth[0] + "").substr(0, 4) + "年" + (tmpwmonth[0] + "").substr(4, 2) + "月," + (tmpwmonth[0] + "").substr(0, 4) + "年" + (tmpwmonth[0] + "").substr(4, 2) + "月等";
-                }
-            } else {
-                $scope.wmonth = (tmpwmonth[0] + "").substr(4, 2) + "月";
-                wdate = $scope.wyear + "年" + $scope.wmonth;
-            }
-
-        } else {
-            $scope.wyear = (tmpwmonth[0] + "").substr(0, 4) + "年";
-            $scope.wmonth = (tmpwmonth[0] + "").substr(4, 2) + "-" + (tmpwmonth[tmpwmonth.length - 1] + "").substr(4, 2) + "月";
-            wdate = $scope.wyear + $scope.wmonth;
-        }
-
-        if ($scope.elmonth.length > 1) {
-            $scope.eyear = (tmpemonth[0] + "").substr(0, 4);
-            if ($scope.elmonth[0].length > 1) {
-                if ((tmpemonth[1] + "").substr(0, 4) == $scope.eyear) {
-                    $scope.emonth = (tmpemonth[0] + "").substr(4, 2) + "," + (tmpemonth[1] + "").substr(4, 2) + "月等";
-                    edate = $scope.eyear + "年" + $scope.emonth;
-                } else {
-                    edate = (tmpemonth[0] + "").substr(0, 4) + "年" + (tmpemonth[0] + "").substr(4, 2) + "月," + (tmpemonth[0] + "").substr(0, 4) + "年" + (tmpemonth[0] + "").substr(4, 2) + "月等";
-                }
-            } else {
-                $scope.emonth = (tmpemonth[0] + "").substr(4, 2) + "月";
-                edate = $scope.eyear + "年" + $scope.emonth;
-            }
-
-        } else {
-            $scope.eyear = (tmpemonth[0] + "").substr(0, 4) + "年";
-            $scope.emonth = (tmpemonth[0] + "").substr(4, 2) + "-" + (tmpemonth[tmpemonth.length - 1] + "").substr(4, 2) + "月";
-            edate = $scope.eyear + $scope.emonth;
-        }
-
-        $scope.watmonth = wdate;
-        $scope.elmonth = edate;
-
-        $scope.block = $stateParams.block;
-        $scope.unit = $stateParams.unit;
-        $scope.room = $stateParams.room;
-
-        $scope.waterFr = $rootScope.waterFree;
-        $scope.eleFr = $rootScope.eleFree;
-
-        $scope.totalFee = $rootScope.waterFree + $rootScope.eleFree;
-
+        $scope.watmonth = getMergeDate(wmonthSections, tmpwmonth);
+        $scope.elmonth = getMergeDate(emonthSections, tmpemonth);
 
         function arrange(array) {
             var t;
@@ -93,6 +41,67 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
         function _parseInt() {
             return parseInt(arguments[0]);
         }
+
+        //monthSections是按相邻月分段的二位数组，tmpmonth是按时间排序的一维数组
+        function getMergeDate(monthSections, tmpmonth){
+            var year,month;
+            var date;
+            if(monthSections.length > 0){
+                year = (tmpmonth[0] + "").substr(0, 4);
+                month = (tmpmonth[0] + "").substr(4, 2);
+                if(tmpmonth[0] != tmpmonth[tmpmonth.length - 1]){
+                     month += "-" + (tmpmonth[tmpmonth.length - 1] + "").substr(4, 2);
+                } 
+                date = year + "年" + month + "月";
+            }
+            if (monthSections.length > 1) {
+                if(monthSections[0].len == 1){
+                    var nextYear = monthSections[0][0].substr(0, 4);
+                    if(nextYear == year)
+                        date = date.substr(0, date.length - 1);//同年情况下去掉前一个日期结尾的“月”
+                    date+="、";
+                    if(nextYear == year)
+                        date += getSectionDateTextWithoutYear(monthSections[1]);
+                    else{
+                        date += getSectionDateText(monthSections[1]);
+                    }
+                    if(monthSections.length > 2)
+                        date+="等";
+                } else if(monthSections[0].length > 1){
+                    date+="等";
+                }
+            } 
+
+            return date;
+        }
+
+        function getSectionDateText(section){
+            var text = section[0].substr(0,4) + "年" + section[0].substr(4);
+            if(section[0] != section[section.length - 1]){
+                text+= "-" + section[section.length - 1].substr(4);
+            }
+            text+="月";
+            return text;
+        }
+
+        function getSectionDateTextWithoutYear(section){
+            var text = section[0].substr(4);
+            if(section[0] != section[section.length - 1]){
+                text+= "-" + section[section.length - 1].substr(4);
+            }
+            text+="月";
+            return text;
+        }
+
+        $scope.block = $stateParams.block;
+        $scope.unit = $stateParams.unit;
+        $scope.room = $stateParams.room;
+
+        $scope.waterFr = $rootScope.waterFree;
+        $scope.eleFr = $rootScope.eleFree;
+
+        $scope.totalFee = $rootScope.waterFree + $rootScope.eleFree;
+
 
         $scope.money_payment = function() {
             console.log("支付功能开始");
