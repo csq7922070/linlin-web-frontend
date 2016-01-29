@@ -59,18 +59,23 @@ angular.module('myApp').filter('payListMerge', function() {
             if(sections.length > 0){
                 text = sections[0].dateText;
             }
-            if(sections.length > 1 && sections[0].length == 1){
-                if(sections[1].sy == sections[0].ey)
-                    text = text.substr(0, text.length - 1);//同年情况下去掉前一个日期结尾的“月”
-                text+="、";
-                if(sections[1].sy == sections[0].ey)
-                    text += sections[1].dateTextWithoutYear;
-                else{
-                    text += sections[1].dateText;
+            if(sections.length > 1){
+                if(sections[0].length == 1){
+                    if(sections[1].sy == sections[0].ey)
+                        text = text.substr(0, text.length - 1);//同年情况下去掉前一个日期结尾的“月”
+                    text+="、";
+                    if(sections[1].sy == sections[0].ey)
+                        text += sections[1].dateTextWithoutYear;
+                    else{
+                        text += sections[1].dateText;
+                    }
+                    if(sections.length > 2)
+                        text+="等";
+                }else if(sections[0].length > 1){
+                    text+="等";
                 }
             }
-            if(sections.length > 2)
-                text+="等";
+            
             return text;
         }
 

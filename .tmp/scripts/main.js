@@ -755,86 +755,56 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
             return parseInt(arguments[0]);
         }
 
+        //monthSections是按相邻月分段的二位数组，tmpmonth是按时间排序的一维数组
         function getMergeDate(monthSections, tmpmonth){
             var year,month;
             var date;
-            if (monthSections.length > 1) {
+            if(monthSections.length > 0){
                 year = (tmpmonth[0] + "").substr(0, 4);
-                if (monthSections[0].length > 1) {
-                    if ((tmpmonth[1] + "").substr(0, 4) == year) {
-                        month = (tmpmonth[0] + "").substr(4, 2) + "," + (tmpmonth[1] + "").substr(4, 2) + "月等";
-                        date = year + "年" + month;
-                    } else {
-                        date = (tmpmonth[0] + "").substr(0, 4) + "年" + (tmpmonth[0] + "").substr(4, 2) + "月," + (tmpmonth[0] + "").substr(0, 4) + "年" + (tmpmonth[0] + "").substr(4, 2) + "月等";
-                    }
-                } else {
-                    month = (tmpmonth[0] + "").substr(4, 2) + "月";
-                    date = year + "年" + month;
-                }
-
-            } else {
-                year = (tmpmonth[0] + "").substr(0, 4) + "年";
                 month = (tmpmonth[0] + "").substr(4, 2);
                 if(tmpmonth[0] != tmpmonth[tmpmonth.length - 1]){
-                     month += "-" + (tmpmonth[tmpmonth.length - 1] + "").substr(4, 2)
+                     month += "-" + (tmpmonth[tmpmonth.length - 1] + "").substr(4, 2);
                 } 
-                month += "月";
-                date = year + month;
+                date = year + "年" + month + "月";
             }
+            if (monthSections.length > 1) {
+                if(monthSections[0].len == 1){
+                    var nextYear = monthSections[0][0].substr(0, 4);
+                    if(nextYear == year)
+                        date = date.substr(0, date.length - 1);//同年情况下去掉前一个日期结尾的“月”
+                    date+="、";
+                    if(nextYear == year)
+                        date += getSectionDateTextWithoutYear(monthSections[1]);
+                    else{
+                        date += getSectionDateText(monthSections[1]);
+                    }
+                    if(monthSections.length > 2)
+                        date+="等";
+                } else if(monthSections[0].length > 1){
+                    date+="等";
+                }
+            } 
+
             return date;
         }
-        // var wyear,wmonth;
-        // if ($scope.watmonth.length > 1) {
-        //     wyear = (tmpwmonth[0] + "").substr(0, 4);
-        //     if ($scope.watmonth[0].length > 1) {
-        //         if ((tmpwmonth[1] + "").substr(0, 4) == wyear) {
-        //             wmonth = (tmpwmonth[0] + "").substr(4, 2) + "," + (tmpwmonth[1] + "").substr(4, 2) + "月等";
-        //             wdate = wyear + "年" + wmonth;
-        //         } else {
-        //             wdate = (tmpwmonth[0] + "").substr(0, 4) + "年" + (tmpwmonth[0] + "").substr(4, 2) + "月," + (tmpwmonth[0] + "").substr(0, 4) + "年" + (tmpwmonth[0] + "").substr(4, 2) + "月等";
-        //         }
-        //     } else {
-        //         wmonth = (tmpwmonth[0] + "").substr(4, 2) + "月";
-        //         wdate = wyear + "年" + wmonth;
-        //     }
 
-        // } else {
-        //     wyear = (tmpwmonth[0] + "").substr(0, 4) + "年";
-        //     wmonth = (tmpwmonth[0] + "").substr(4, 2);
-        //     if(tmpwmonth[0] != tmpwmonth[tmpwmonth.length - 1]){
-        //          wmonth += "-" + (tmpwmonth[tmpwmonth.length - 1] + "").substr(4, 2)
-        //     } 
-        //     wmonth += "月";
-        //     wdate = wyear + wmonth;
-        // }
+        function getSectionDateText(section){
+            var text = section[0].substr(0,4) + "年" + section[0].substr(4);
+            if(section[0] != section[section.length - 1]){
+                text+= "-" + section[section.length - 1].substr(4);
+            }
+            text+="月";
+            return text;
+        }
 
-        // var eyear,emonth;
-        // if ($scope.elmonth.length > 1) {
-        //     eyear = (tmpemonth[0] + "").substr(0, 4);
-        //     if ($scope.elmonth[0].length > 1) {
-        //         if ((tmpemonth[1] + "").substr(0, 4) == eyear) {
-        //             emonth = (tmpemonth[0] + "").substr(4, 2) + "," + (tmpemonth[1] + "").substr(4, 2) + "月等";
-        //             edate = eyear + "年" + emonth;
-        //         } else {
-        //             edate = (tmpemonth[0] + "").substr(0, 4) + "年" + (tmpemonth[0] + "").substr(4, 2) + "月," + (tmpemonth[0] + "").substr(0, 4) + "年" + (tmpemonth[0] + "").substr(4, 2) + "月等";
-        //         }
-        //     } else {
-        //         emonth = (tmpemonth[0] + "").substr(4, 2) + "月";
-        //         edate = eyear + "年" + emonth;
-        //     }
-
-        // } else {
-        //     eyear = (tmpemonth[0] + "").substr(0, 4) + "年";
-        //     emonth = (tmpemonth[0] + "").substr(4, 2);
-        //     if(tmpemonth[0] != tmpemonth[tmpemonth.length - 1]){
-        //          emonth += "-" + (tmpemonth[tmpemonth.length - 1] + "").substr(4, 2)
-        //     } 
-        //     emonth += "月";
-        //     edate = eyear + emonth;
-        // }
-
-        // $scope.watmonth = wdate;
-        // $scope.elmonth = edate;
+        function getSectionDateTextWithoutYear(section){
+            var text = section[0].substr(4);
+            if(section[0] != section[section.length - 1]){
+                text+= "-" + section[section.length - 1].substr(4);
+            }
+            text+="月";
+            return text;
+        }
 
         $scope.block = $stateParams.block;
         $scope.unit = $stateParams.unit;
@@ -906,6 +876,37 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
 
     }
 ]);
+
+(function() {
+    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
+        function($scope, $stateParams, $rootScope, shops) {
+            $rootScope.site = $stateParams.site;
+            $scope.currentPage = 0;
+            $scope.pageSize = 5;
+            $scope.shops = [];
+
+            $scope.load = function(goPage, limit) {
+                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
+                    return;
+                } else if ($rootScope.site != 3) {
+                    $scope.busy = true;
+                    params = {
+                        offset: $scope.pageSize * (goPage - 1),
+                        limit: limit == 8 ? limit : $scope.pageSize,
+                        type: $stateParams.site - 1
+                    }
+                    shops.query(params).$promise.then(function(data) {
+                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                        $scope.currentPage = goPage;
+                        $scope.busy = false;
+                        $scope.shops.push.apply($scope.shops, data.items);
+                    });
+                }
+            }
+            $scope.load(1, 8);
+        }
+    ]);
+})();
 
 (function() {
     angular.module('app.repair').controller('repairAddCtrl', ['$timeout', '$state', 'repairs',
@@ -1052,37 +1053,6 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     }
 ]);
 
-(function() {
-    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
-        function($scope, $stateParams, $rootScope, shops) {
-            $rootScope.site = $stateParams.site;
-            $scope.currentPage = 0;
-            $scope.pageSize = 5;
-            $scope.shops = [];
-
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
-                    return;
-                } else if ($rootScope.site != 3) {
-                    $scope.busy = true;
-                    params = {
-                        offset: $scope.pageSize * (goPage - 1),
-                        limit: limit == 8 ? limit : $scope.pageSize,
-                        type: $stateParams.site - 1
-                    }
-                    shops.query(params).$promise.then(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        $scope.shops.push.apply($scope.shops, data.items);
-                    });
-                }
-            }
-            $scope.load(1, 8);
-        }
-    ]);
-})();
-
 myApp.directive('errSrc', function() {
   return {
     link: function(scope, element, attrs) {
@@ -1222,18 +1192,23 @@ angular.module('myApp').filter('payListMerge', function() {
             if(sections.length > 0){
                 text = sections[0].dateText;
             }
-            if(sections.length > 1 && sections[0].length == 1){
-                if(sections[1].sy == sections[0].ey)
-                    text = text.substr(0, text.length - 1);//同年情况下去掉前一个日期结尾的“月”
-                text+="、";
-                if(sections[1].sy == sections[0].ey)
-                    text += sections[1].dateTextWithoutYear;
-                else{
-                    text += sections[1].dateText;
+            if(sections.length > 1){
+                if(sections[0].length == 1){
+                    if(sections[1].sy == sections[0].ey)
+                        text = text.substr(0, text.length - 1);//同年情况下去掉前一个日期结尾的“月”
+                    text+="、";
+                    if(sections[1].sy == sections[0].ey)
+                        text += sections[1].dateTextWithoutYear;
+                    else{
+                        text += sections[1].dateText;
+                    }
+                    if(sections.length > 2)
+                        text+="等";
+                }else if(sections[0].length > 1){
+                    text+="等";
                 }
             }
-            if(sections.length > 2)
-                text+="等";
+            
             return text;
         }
 
@@ -1342,6 +1317,17 @@ factory('shops', ['$resource', function($resource) {
         }
     })
 }]);
+angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type: "block"
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.blocks = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+}])
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
     function ($stateParams, addresses) {
         var vm = this;
@@ -1357,17 +1343,6 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'ad
         })
     }
 ])
-angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type: "block"
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.blocks = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-}])
 angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {
