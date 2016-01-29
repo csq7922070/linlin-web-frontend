@@ -197,46 +197,11 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         var url = "/" + to.name.replace(".", "/");
         _hmt.push(['_trackPageview', url]);
     });
-}]);
-
-// function(){
-//     var list = [
-//         {
-//             time,
-//             date,
-//             block,
-//             type,
-//             ammount
-//         }
-//     ];
-
-//     var list2 = [];
-//     for(var i = 0;i<list.length;i++){
-//         var item = list[i];
-//         var find = false;
-//         for(var j = 0;j<list2.length;j++){
-//             var item2 = list2[j];
-//             if(item.time == item2.time && item.date == item2.date && item.block == item2.block){
-//                 find = true;
-//                 break;
-//             }
-//         }
-//         if(find){
-//             if(item.type == 1){
-//                 list2[j].shuifei = item.ammount;//水费属性赋值
-//             }else{
-//                 list[j].dianfei = item.ammount;//电费熟悉赋值
-//             }
-//         }else{
-//             var newItem = angular.copy(item);
-//             if(item.type == 1){
-//                 newItem.shuifei = item.ammount;
-//             }else{
-//                 newItem.dianfei = item.ammount;
-//             }
-//             list2.push(newItem);
-//         }
-//     }
-
-//     // list2数组是用来给页面模板显示用的数据
-// }
+}]).value(
+    'communityInfo',{
+        name: '阿尔卡迪亚',
+        province: '河北',
+        city: '廊坊',
+        address: '顺义区华侨路23号'
+    }
+);

@@ -1,12 +1,7 @@
 //var basePath = "http://localhost:8080/skh";
-<<<<<<< HEAD
 //var basePath="http://192.168.0.120:8080/skh";
-var basePath = "http://mifan.4zlink.com:8080/mifan";
-
-=======
-//var basePath = "http://mifan.4zlink.com:8080/mifan";
 var basePath = "http://mitest.4zlink.com:8080/mifan";
->>>>>>> master
+
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
 angular.module('app.repair', ['resources.repair']);
@@ -202,50 +197,14 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         var url = "/" + to.name.replace(".", "/");
         _hmt.push(['_trackPageview', url]);
     });
-}]);
-
-// function(){
-//     var list = [
-//         {
-//             time,
-//             date,
-//             block,
-//             type,
-//             ammount
-//         }
-//     ];
-
-//     var list2 = [];
-//     for(var i = 0;i<list.length;i++){
-//         var item = list[i];
-//         var find = false;
-//         for(var j = 0;j<list2.length;j++){
-//             var item2 = list2[j];
-//             if(item.time == item2.time && item.date == item2.date && item.block == item2.block){
-//                 find = true;
-//                 break;
-//             }
-//         }
-//         if(find){
-//             if(item.type == 1){
-//                 list2[j].shuifei = item.ammount;//水费属性赋值
-//             }else{
-//                 list[j].dianfei = item.ammount;//电费熟悉赋值
-//             }
-//         }else{
-//             var newItem = angular.copy(item);
-//             if(item.type == 1){
-//                 newItem.shuifei = item.ammount;
-//             }else{
-//                 newItem.dianfei = item.ammount;
-//             }
-//             list2.push(newItem);
-//         }
-//     }
-
-//     // list2数组是用来给页面模板显示用的数据
-// }
-
+}]).value(
+    'communityInfo',{
+        name: '阿尔卡迪亚',
+        province: '河北',
+        city: '廊坊',
+        address: '顺义区华侨路23号'
+    }
+);
 angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stateParams', '$state', 'addresses',
     function ($rootScope,$stateParams, $state, addresses) {
         var vm = this;
@@ -409,7 +368,9 @@ angular.module('app.complain').controller('complainListCtrl', ['complains',
     }
 ]);
 angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-    function($scope, $http, $stateParams, $rootScope, $state, $location) {
+    'communityInfo',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo) {
+        $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
 
         var url = $location.url().substring($location.url().indexOf("?"));
         if (url.indexOf("home") != -1) {
@@ -454,58 +415,140 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
     }
 ]);
 
-(function() {
-    angular.module('app.notice').controller("noticeDetailCtrl", ['$stateParams', 'notices',
-        function($stateParams, notices) {
-            var vm = this;
-            notices.get({
-                id: $stateParams.id
-            }).$promise.then(function(data) {
-                vm.notice = data;
-            })
-        }
-    ]);
-})();
-
-(function() {
-    angular.module('app.notice').controller('noticeListCtrl', ['notices',
-        function(notices) {
-            var vm = this;
-            vm.currentPage = 0;
-            vm.pageSize = 10;
-            vm.notices = [];
-            vm.load = function(goPage, limit) {
-                if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
-                    return;
-                } else {
-                    vm.busy = true;
-                    params = {
-                        offset: vm.pageSize * (goPage - 1),
-                        limit: vm.pageSize,
-                        openid: sessionStorage.getItem("openid")
-                    }
-                    notices.query(params).$promise.then(function(data) {
-                        vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
-                        vm.currentPage = goPage;
-                        vm.busy = false;
-                         Array.prototype.push.apply(vm.notices,data.items);
-                    });
-                }
-            }
-            vm.load(1, vm.pageSize);
-        }
-    ]);
-})();
-
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-    function($scope, $http, $stateParams, $rootScope, $state, $location) {
+	'communityInfo',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo) {
+    	$scope.clickSearchField = function(){
+    		$state.go('search-location');
+    	}
 
+    	$scope.retryLocation = function(){
+    		console.log("retryLocation...");
+    	}
+
+    	$scope.changeCommunity = function(community){
+    		console.log(community);
+    		communityInfo.name = community.name;
+    		$state.go('home');
+    	}
+
+    	$scope.autoLocationCommunities = [
+    		{
+    			city: "北京",
+    			name: "万科金域华府",
+    			address: "京徽高速边500米",
+    			title: "北京, 万科金域华府"
+    		},
+    		{
+    			city: "北京",
+    			name: "万科金域华府",
+    			address: "京徽高速边500米",
+    			title: "北京, 万科金域华府"
+    		},
+    		{
+    			city: "北京",
+    			name: "万科金域华府",
+    			address: "京徽高速边500米",
+    			title: "北京, 万科金域华府"
+    		}
+    	];
+
+    	// //test
+    	// //-------------------------
+    	// var x=document.getElementById("auto-location-container");
+     //      function getLocation()
+     //      {
+     //        //alert("start");
+     //      if (navigator.geolocation)
+     //        {
+     //            //alert("start getCurrentPosition");
+     //        navigator.geolocation.getCurrentPosition(showPosition, showError);
+     //        }
+     //          else{
+     //            //alert("not supported by this browser");
+     //            x.innerHTML="Geolocation is not supported by this browser.";}
+     //          }
+     //      function showPosition(position)
+     //      {
+     //        //alert("showPosition...");
+     //      x.innerHTML="Latitude: " + position.coords.latitude +
+     //      "<br />Longitude: " + position.coords.longitude+
+     //      "<br />accuracy: " + position.coords.accuracy;
+     //      }
+     //      function showError(error)
+     //      {
+     //        //alert("showError");
+     //      switch(error.code)
+     //        {
+     //        case error.PERMISSION_DENIED:
+     //          x.innerHTML="User denied the request for Geolocation."
+     //          break;
+     //        case error.POSITION_UNAVAILABLE:
+     //          x.innerHTML="Location information is unavailable."
+     //          break;
+     //        case error.TIMEOUT:
+     //          x.innerHTML="The request to get user location timed out."
+     //          break;
+     //        case error.UNKNOWN_ERROR:
+     //          x.innerHTML="An unknown error occurred."
+     //          break;
+     //        }
+     //      }
+
+     //      getLocation();
+    	// // end test
+    	// //---------------------------
     }
 ]);
 
 angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-    function($scope, $http, $stateParams, $rootScope, $state, $location) {
+	'$timeout', 'communityInfo',
+    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo) {
+    	console.log(communityInfo);
+    	$scope.changeCommunity = function(community){
+    		console.log(community);
+    	}
 
+    	$scope.showInexistenceTip = false;
+
+    	var changePromise = null;
+    	$scope.$watch("communityName", function(newVal, oldVal){
+    		if(newVal != oldVal){
+    			if(changePromise){
+    				$timeout.cancel(changePromise);
+    			}
+    			changePromise = $timeout(function(){
+    				console.log("change...");
+    			}, 700);
+    		}
+    	});
+
+    	$scope.changeCommunity = function(community){
+    		console.log(community);
+    		communityInfo.name = community.name;
+    		$state.go('home');
+    	}
+
+    	$scope.searchLocationCommunities = [
+    		{
+    			city: "北京",
+    			name: "万科金域华府",
+    			address: "京徽高速边500米",
+    			title: "北京, 万科金域华府"
+    		},
+    		{
+    			city: "北京",
+    			name: "万科金域华府",
+    			address: "京徽高速边500米",
+    			title: "北京, 万科金域华府"
+    		},
+    		{
+    			city: "北京",
+    			name: "万科金域华府",
+    			address: "京徽高速边500米",
+    			title: "北京, 万科金域华府"
+    		}
+    	];
     }
 ]);
 
@@ -970,6 +1013,49 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
 ]);
 
 (function() {
+    angular.module('app.notice').controller("noticeDetailCtrl", ['$stateParams', 'notices',
+        function($stateParams, notices) {
+            var vm = this;
+            notices.get({
+                id: $stateParams.id
+            }).$promise.then(function(data) {
+                vm.notice = data;
+            })
+        }
+    ]);
+})();
+
+(function() {
+    angular.module('app.notice').controller('noticeListCtrl', ['notices',
+        function(notices) {
+            var vm = this;
+            vm.currentPage = 0;
+            vm.pageSize = 10;
+            vm.notices = [];
+            vm.load = function(goPage, limit) {
+                if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
+                    return;
+                } else {
+                    vm.busy = true;
+                    params = {
+                        offset: vm.pageSize * (goPage - 1),
+                        limit: vm.pageSize,
+                        openid: sessionStorage.getItem("openid")
+                    }
+                    notices.query(params).$promise.then(function(data) {
+                        vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
+                        vm.currentPage = goPage;
+                        vm.busy = false;
+                         Array.prototype.push.apply(vm.notices,data.items);
+                    });
+                }
+            }
+            vm.load(1, vm.pageSize);
+        }
+    ]);
+})();
+
+(function() {
     angular.module('app.repair').controller('repairAddCtrl', ['$timeout', '$state', 'repairs',
         function($timeout, $state, repairs) {
             var vm = this;
@@ -1223,8 +1309,6 @@ angular.module('myApp').filter('cut', function() {
         return value + (tail || '...');
     };
 });
-<<<<<<< HEAD
-=======
 angular.module('myApp').filter('payListMerge', function() {
     return function(input) {
         var result = [];//新增属性waterDates,elecDates,waterDateText,elecDateText
@@ -1351,7 +1435,6 @@ angular.module('myApp').filter('payListMerge', function() {
         return result;
     };
 });
->>>>>>> master
 angular.module('resources.address', ['ngResource']).
     factory('addresses', ['$resource', function($resource) {
         return $resource(basePath+'/houses/:id', {id:'@id'}, {
@@ -1423,6 +1506,19 @@ angular.module('app.address').controller('addressBlockCtrl',['$stateParams','add
         console.log("err!");
     });
 }])
+angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type:'unit',
+        block:$stateParams.block
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.units = data.items;
+        vm.block = $stateParams.block;
+    }, function (data) {
+        console.log("err!");
+    });
+}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
     function ($stateParams, addresses) {
         var vm = this;
@@ -1438,16 +1534,3 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'ad
         })
     }
 ])
-angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type:'unit',
-        block:$stateParams.block
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.units = data.items;
-        vm.block = $stateParams.block;
-    }, function (data) {
-        console.log("err!");
-    });
-}]);

@@ -1,5 +1,7 @@
 angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-    function($scope, $http, $stateParams, $rootScope, $state, $location) {
+    'communityInfo',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo) {
+        $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
 
         var url = $location.url().substring($location.url().indexOf("?"));
         if (url.indexOf("home") != -1) {

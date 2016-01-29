@@ -181,13 +181,8 @@ p {
   margin-top: 8px;
 }
 /*---------------------------------------支付页面--------------------------------------------*/
-<<<<<<< HEAD
-.weui_btn_primary:not(.weui_btn_disabled):active {
-  background-color: #cc7f1c;
-=======
 .btn_press:active {
   background-color: #cc7f1c!important;
->>>>>>> master
 }
 .page_pay .weui_cell:nth-of-type(3):before {
   border-top: none;
@@ -895,6 +890,9 @@ div.rn-carousel-indicator span {
 #auto-location-container {
   background: #fff;
 }
+#auto-location-container .delete {
+  display: none;
+}
 #auto-location-container .list-title {
   background-color: #eeeeee;
   margin: 0;
@@ -913,6 +911,10 @@ div.rn-carousel-indicator span {
 }
 #auto-location-container .location-tip-bar .retry-location {
   color: #4996ee;
+}
+
+.village:hover {
+  color: #fff;
 }
 
 .search-container {
@@ -1177,6 +1179,9 @@ th {
   text-align: left;
 }
 
+#search-location-container {
+  background: #fff;
+}
 #search-location-container .search-error-tip {
   text-align: center;
   padding-top: 123px;

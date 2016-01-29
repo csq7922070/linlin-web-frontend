@@ -1,11 +1,17 @@
 <div id="search-location-container">
 	<div class="search-container">
 <!-- 		<img class="search-icon" src="images/search.png"> -->
-		<input class="search-field" type="text" placeholder="请输入小区名称" />
-		<a class="delete" href="javascript:void(0)"></a>
+		<input class="search-field" type="text" placeholder="请输入小区名称" ng-model="communityName" />
+		<a class="delete" href="javascript:void(0)" ng-show="communityName"></a>
 	</div>
 	<ul>
-		<li class="list-item community-item">
+		<li class="list-item community-item" ng-repeat="item in searchLocationCommunities">
+			<a class="list-link" ng-click="changeCommunity(item)">
+				<span class="community-title" ng-bind="item.title"></span>
+				<span class="community-address" ng-bind="item.address"></span>
+			</a>
+		</li>
+<!-- 		<li class="list-item community-item">
 			<a class="list-link">
 				<span class="community-title">北京, 万科金域华府</span>
 				<span class="community-address">京徽高速边500米</span>
@@ -22,9 +28,9 @@
 				<span class="community-title">北京, 万科金域华府</span>
 				<span class="community-address">京徽高速边500米</span>
 			</a>
-		</li>
+		</li> -->
 	</ul>
-	<div class="search-error-tip">
+	<div class="search-error-tip" ng-show="showInexistenceTip">
 		<img class="search-error-icon" src="images/search-error.png">
 		<br/>
 		对不起, 您所在的小区<br/>
