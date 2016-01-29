@@ -10,8 +10,8 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
         var tmpemonth = $rootScope.emonth.map(_parseInt).sort(compare);
         var wdate;
         var edate;
-        $scope.watmonth = arrange($rootScope.wmonth.map(_parseInt).sort(compare));
-        $scope.elmonth = arrange($rootScope.emonth.map(_parseInt).sort(compare));
+        $scope.watmonth = arrange(tmpwmonth);
+        $scope.elmonth = arrange(tmpemonth);
 
         if ($scope.watmonth.length > 1) {
             $scope.wyear = (tmpwmonth[0] + "").substr(0, 4);
@@ -29,7 +29,11 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
 
         } else {
             $scope.wyear = (tmpwmonth[0] + "").substr(0, 4) + "年";
-            $scope.wmonth = (tmpwmonth[0] + "").substr(4, 2) + "-" + (tmpwmonth[tmpwmonth.length - 1] + "").substr(4, 2) + "月";
+            $scope.wmonth = (tmpwmonth[0] + "").substr(4, 2);
+            if(tmpwmonth[0] != tmpwmonth[tmpwmonth.length - 1]){
+                 $scope.wmonth += "-" + (tmpwmonth[tmpwmonth.length - 1] + "").substr(4, 2)
+            } 
+            $scope.wmonth += "月";
             wdate = $scope.wyear + $scope.wmonth;
         }
 
@@ -49,7 +53,11 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
 
         } else {
             $scope.eyear = (tmpemonth[0] + "").substr(0, 4) + "年";
-            $scope.emonth = (tmpemonth[0] + "").substr(4, 2) + "-" + (tmpemonth[tmpemonth.length - 1] + "").substr(4, 2) + "月";
+            $scope.emonth = (tmpemonth[0] + "").substr(4, 2);
+            if(tmpemonth[0] != tmpemonth[tmpemonth.length - 1]){
+                 $scope.emonth += "-" + (tmpemonth[tmpemonth.length - 1] + "").substr(4, 2)
+            } 
+            $scope.emonth += "月";
             edate = $scope.eyear + $scope.emonth;
         }
 

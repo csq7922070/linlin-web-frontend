@@ -723,8 +723,8 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
         var tmpemonth = $rootScope.emonth.map(_parseInt).sort(compare);
         var wdate;
         var edate;
-        $scope.watmonth = arrange($rootScope.wmonth.map(_parseInt).sort(compare));
-        $scope.elmonth = arrange($rootScope.emonth.map(_parseInt).sort(compare));
+        $scope.watmonth = arrange(tmpwmonth);
+        $scope.elmonth = arrange(tmpemonth);
 
         if ($scope.watmonth.length > 1) {
             $scope.wyear = (tmpwmonth[0] + "").substr(0, 4);
@@ -742,7 +742,11 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
 
         } else {
             $scope.wyear = (tmpwmonth[0] + "").substr(0, 4) + "年";
-            $scope.wmonth = (tmpwmonth[0] + "").substr(4, 2) + "-" + (tmpwmonth[tmpwmonth.length - 1] + "").substr(4, 2) + "月";
+            $scope.wmonth = (tmpwmonth[0] + "").substr(4, 2);
+            if(tmpwmonth[0] != tmpwmonth[tmpwmonth.length - 1]){
+                 $scope.wmonth += "-" + (tmpwmonth[tmpwmonth.length - 1] + "").substr(4, 2)
+            } 
+            $scope.wmonth += "月";
             wdate = $scope.wyear + $scope.wmonth;
         }
 
@@ -762,7 +766,11 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
 
         } else {
             $scope.eyear = (tmpemonth[0] + "").substr(0, 4) + "年";
-            $scope.emonth = (tmpemonth[0] + "").substr(4, 2) + "-" + (tmpemonth[tmpemonth.length - 1] + "").substr(4, 2) + "月";
+            $scope.emonth = (tmpemonth[0] + "").substr(4, 2);
+            if(tmpemonth[0] != tmpemonth[tmpemonth.length - 1]){
+                 $scope.emonth += "-" + (tmpemonth[tmpemonth.length - 1] + "").substr(4, 2)
+            } 
+            $scope.emonth += "月";
             edate = $scope.eyear + $scope.emonth;
         }
 
@@ -867,6 +875,37 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
 
     }
 ]);
+
+(function() {
+    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
+        function($scope, $stateParams, $rootScope, shops) {
+            $rootScope.site = $stateParams.site;
+            $scope.currentPage = 0;
+            $scope.pageSize = 5;
+            $scope.shops = [];
+
+            $scope.load = function(goPage, limit) {
+                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
+                    return;
+                } else if ($rootScope.site != 3) {
+                    $scope.busy = true;
+                    params = {
+                        offset: $scope.pageSize * (goPage - 1),
+                        limit: limit == 8 ? limit : $scope.pageSize,
+                        type: $stateParams.site - 1
+                    }
+                    shops.query(params).$promise.then(function(data) {
+                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                        $scope.currentPage = goPage;
+                        $scope.busy = false;
+                        $scope.shops.push.apply($scope.shops, data.items);
+                    });
+                }
+            }
+            $scope.load(1, 8);
+        }
+    ]);
+})();
 
 (function() {
     angular.module('app.repair').controller('repairAddCtrl', ['$timeout', '$state', 'repairs',
@@ -1012,37 +1051,6 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
         vm.load(1, vm.pageSize);
     }
 ]);
-
-(function() {
-    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
-        function($scope, $stateParams, $rootScope, shops) {
-            $rootScope.site = $stateParams.site;
-            $scope.currentPage = 0;
-            $scope.pageSize = 5;
-            $scope.shops = [];
-
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
-                    return;
-                } else if ($rootScope.site != 3) {
-                    $scope.busy = true;
-                    params = {
-                        offset: $scope.pageSize * (goPage - 1),
-                        limit: limit == 8 ? limit : $scope.pageSize,
-                        type: $stateParams.site - 1
-                    }
-                    shops.query(params).$promise.then(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        $scope.shops.push.apply($scope.shops, data.items);
-                    });
-                }
-            }
-            $scope.load(1, 8);
-        }
-    ]);
-})();
 
 myApp.directive('errSrc', function() {
   return {
@@ -1303,6 +1311,21 @@ factory('shops', ['$resource', function($resource) {
         }
     })
 }]);
+angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
+    function ($stateParams, addresses) {
+        var vm = this;
+        params={
+            type:'room',
+            block:$stateParams.block,
+            unit:$stateParams.unit
+        }
+        addresses.query(params).$promise.then(function(data){
+            vm.block = $stateParams.block;
+            vm.unit = $stateParams.unit;
+            vm.rooms = data.items;
+        })
+    }
+])
 angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {
@@ -1327,18 +1350,3 @@ angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addr
         console.log("err!");
     });
 }]);
-angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
-    function ($stateParams, addresses) {
-        var vm = this;
-        params={
-            type:'room',
-            block:$stateParams.block,
-            unit:$stateParams.unit
-        }
-        addresses.query(params).$promise.then(function(data){
-            vm.block = $stateParams.block;
-            vm.unit = $stateParams.unit;
-            vm.rooms = data.items;
-        })
-    }
-])
