@@ -1138,18 +1138,18 @@ angular.module('myApp').filter('payListMerge', function() {
             if(find){
                 temp.amount+=item.amount;
                 if(item.type == "0"){
-                    temp.waterDates.push({year: item.year,month: item.month});
+                    temp.waterDates.push({year: parseInt(item.year),month: parseInt(item.month)});
                 }else{// is "1"
-                    temp.elecDates.push({year: item.year,month: item.month});
+                    temp.elecDates.push({year: parseInt(item.year),month: parseInt(item.month)});
                 }
             }else{
                 var newItem = angular.copy(item);
                 newItem.waterDates = [];
                 newItem.elecDates = [];
                 if(item.type == "0"){
-                    newItem.waterDates.push({year: item.year,month: item.month});
+                    newItem.waterDates.push({year: parseInt(item.year),month: parseInt(item.month)});
                 }else{// is "1"
-                    newItem.elecDates.push({year: item.year,month: item.month});
+                    newItem.elecDates.push({year: parseInt(item.year),month: parseInt(item.month)});
                 }
                 result.push(newItem);
             }
@@ -1160,49 +1160,41 @@ angular.module('myApp').filter('payListMerge', function() {
         for(var i = 0;i<result.length;i++){
             var item = result[i];
             //将item对象的属性waterDates和elecDates2个数组按照年月进行升序排序处理
-            // todo
+            item.waterDates.sort(compareDate);
+            item.elecDates.sort(compareDate);
 
             item.waterDateText = getDateText(item.waterDates);
             item.elecDateText = getDateText(item.elecDates);
-            // if(item.waterDates.length == 1){
-            //     item.waterDateText = item.waterDates[0].year +　"年" + item.waterDates[0].month + "月";
-            // } else if(item.waterDates.length == 2){
-            //     if(item.waterDates[0].month == item.waterDates[1].month - 1)
-            //         item.waterDateText = item.waterDates[0].year +　"年" + item.waterDates[0].month + "-" + item.waterDates[1].month + "月";
-            //     else
-            //         item.waterDateText = item.waterDates[0].year +　"年" + item.waterDates[0].month + "、" + item.waterDates[1].month + "月";
-            // } else if(item.waterDates.length > 2){
-            //     if(item.waterDates[0].month == item.waterDates[1].month - 1)
-            //         item.waterDateText = item.waterDates[0].year +　"年" + item.waterDates[0].month + "-" + item.waterDates[1].month + "月";
-            //     else
-            //         item.waterDateText = item.waterDates[0].year +　"年" + item.waterDates[0].month + "、" + item.waterDates[1].month + "月";
-            // }
+        }
+
+        function compareDate(prev, next){
+            if(prev.year < next.year || (prev.year == next.year && prev.month < next.month)){
+                return -1;
+            }else if(prev.year == next.year && prev.month == next.month){
+                return 0;
+            }else{
+                return 1;
+            }
         }
 
         function getDateText(dates){
             var sections = getDateSections(dates);
             var text = "";
-            if(sections.length == 1){
-                text = getSectionDateText(sections[0]);
-            }else if(sections.length > 1){
-                if(sections[0].length > 1)
-                    text = getSectionDateText(sections[0]) + "等";
+            if(sections.length > 0){
+                text = sections[0].dateText;
+            }
+            if(sections.length > 1 && sections[0].length == 1){
+                if(sections[1].sy == sections[0].ey)
+                    text = text.substr(0, text.length - 1);//同年情况下去掉前一个日期结尾的“月”
+                text+="、";
+                if(sections[1].sy == sections[0].ey)
+                    text += sections[1].dateTextWithoutYear;
                 else{
-                    text = sections[0].sy+"年"+sections[0].sm+"、"+sections[1].sm+"月";
-                    if(sections[1].length > 1)
-                        text+="等";
+                    text += sections[1].dateText;
                 }
             }
-            return text;
-        }
-
-        function getSectionDateText(section){
-            var text = "";
-            if(section.length == 1){
-                text = section.sy +"年"+section.sm+"月";
-            }else if(section.length > 1){
-                text = section.sy +"年"+section.sm+"-" + section.em + "月";
-            }
+            if(sections.length > 2)
+                text+="等";
             return text;
         }
 
@@ -1216,13 +1208,38 @@ angular.module('myApp').filter('payListMerge', function() {
                 if(prev.ey == dates[i].year && prev.em == dates[i].month - 1){
                     prev.em = dates[i].month;
                     prev.length++;
-                }else if(prev.ey == dates[i].year){
+                }else{
                     prev = dates[i];
                     sections.push({sy:prev.year,sm:prev.month,ey:prev.year,em:prev.month,length:1});
                 }
             }
+            for(var i = 0;i<sections.length;i++){
+                sections[i].dateText = getSectionDateText(sections[i]);
+                sections[i].dateTextWithoutYear = getSectionDateTextWithoutYear(sections[i]);
+            }
             return sections;
         }
+
+        function getSectionDateText(section){
+            var text = "";
+            if(section.length == 1){
+                text = section.sy +"年"+section.sm+"月";
+            }else if(section.length > 1){
+                text = section.sy +"年"+section.sm+"-" + section.em + "月";
+            }
+            return text;
+        }
+
+        function getSectionDateTextWithoutYear(section){
+            var text = "";
+            if(section.length == 1){
+                text = section.sm+"月";
+            }else if(section.length > 1){
+                text = section.sm+"-" + section.em + "月";
+            }
+            return text;
+        }
+
         return result;
     };
 });
@@ -1297,6 +1314,19 @@ angular.module('app.address').controller('addressBlockCtrl',['$stateParams','add
         console.log("err!");
     });
 }])
+angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type:'unit',
+        block:$stateParams.block
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.units = data.items;
+        vm.block = $stateParams.block;
+    }, function (data) {
+        console.log("err!");
+    });
+}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
     function ($stateParams, addresses) {
         var vm = this;
@@ -1312,16 +1342,3 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'ad
         })
     }
 ])
-angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type:'unit',
-        block:$stateParams.block
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.units = data.items;
-        vm.block = $stateParams.block;
-    }, function (data) {
-        console.log("err!");
-    });
-}]);
