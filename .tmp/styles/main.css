@@ -21,6 +21,9 @@ a:active {
 p {
   margin-top: 5px;
 }
+.color_ccc {
+  color: #ccc;
+}
 .color_aaa {
   color: #aaa;
 }
@@ -96,10 +99,10 @@ p {
 .sure_address {
   min-width: 70px;
   color: #000000;
-  min-height: 40px;
+  min-height: 30px;
 }
 .right_detail {
-  min-height: 40px;
+  min-height: 30px;
   margin-left: 27px;
 }
 /*---------------------------------block页-----------------------------------------------*/
@@ -360,7 +363,7 @@ body {
   font-family: arial, sans-serif;
 }
 input {
-  font-family: "����", serif;
+  font-family: arial, serif;
 }
 a {
   text-decoration: none;
@@ -622,7 +625,7 @@ a {
   color: #555555;
 }
 .repair_btn {
-  font-family: "����-��", serif;
+  font-family: arial, serif;
   display: block;
   margin: 20px auto;
   border: none;
@@ -844,7 +847,7 @@ html input[disabled] {
   background-color: #ffffff;
   font-size: 16px;
   color: #333333;
-  font-family: "����-��", serif;
+  font-family: arial, serif;
 }
 .RD_s {
   width: 63px;
