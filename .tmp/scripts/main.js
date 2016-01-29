@@ -1,7 +1,12 @@
 //var basePath = "http://localhost:8080/skh";
+<<<<<<< HEAD
 //var basePath="http://192.168.0.120:8080/skh";
 var basePath = "http://mifan.4zlink.com:8080/mifan";
 
+=======
+//var basePath = "http://mifan.4zlink.com:8080/mifan";
+var basePath = "http://mitest.4zlink.com:8080/mifan";
+>>>>>>> master
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
 angular.module('app.repair', ['resources.repair']);
@@ -527,13 +532,31 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
                 $scope.activeId = $stateParams.id;
             });
         }
-
+        $scope.list_show =false;
         params = {
             id: 'query',
             paymentState: 0,
             queryType: 'houseId',
             houseId: $stateParams.id
         };
+
+            $scope.id = $stateParams.id;
+            $http({
+                method: "GET",
+                url: basePath + "/payments/query",
+                params: {
+                    queryType: 'openid',
+                    openid: sessionStorage.getItem("openid"),
+                    paymentState: 1,
+                    houseId: $stateParams.id
+                }
+            }).success(function (data) {
+                if(data.items.length>0){
+                    $scope.list_show =true;
+                }
+                //$scope.records = data.items;
+            });
+
 
         payments.query(params).$promise.then(function(data) {
             if (data.amountList.length != 0) {
@@ -762,8 +785,8 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
     }
 ]);
 
-angular.module('app.payment').controller('paymentListCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state',
-    function ($scope, $http, $stateParams, $rootScope, $state) {
+angular.module('app.payment').controller('paymentListCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$filter', 
+    function ($scope, $http, $stateParams, $rootScope, $state, $filter) {
         $scope.id = $stateParams.id;
         $http({
             method: "GET",
@@ -775,73 +798,26 @@ angular.module('app.payment').controller('paymentListCtrl', ['$scope', '$http', 
                 houseId: $stateParams.id
             }
         }).success(function (data) {
-            $scope.records = data.items;
+            //$scope.records = data.items;
+            $scope.records = $filter("payListMerge")(data.items);
         });
     }
 ]);
 angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$q',
     function($scope, $http, $stateParams, $rootScope, $state, $q) {
-
+        if($rootScope.wmonth!=null&&$rootScope.wmonth!=""){
+            $scope.watermonth=$rootScope.wmonth;
+        }
+        if($rootScope.emonth!=null&&$rootScope.emonth!=""){
+            $scope.elemonth=$rootScope.emonth;
+        }
         var tmpwmonth = $rootScope.wmonth.map(_parseInt).sort(compare);
         var tmpemonth = $rootScope.emonth.map(_parseInt).sort(compare);
+        var wmonthSections = arrange(tmpwmonth);
+        var emonthSections = arrange(tmpemonth);
 
-        var wdate;
-        var edate;
-        $scope.watmonth = arrange($rootScope.wmonth.map(_parseInt).sort(compare));
-        $scope.elmonth = arrange($rootScope.emonth.map(_parseInt).sort(compare));
-
-        if ($scope.watmonth.length > 1) {
-            $scope.wyear = (tmpwmonth[0] + "").substr(0, 4);
-            if ($scope.watmonth[0].length > 1) {
-                if ((tmpwmonth[1] + "").substr(0, 4) == $scope.wyear) {
-                    $scope.wmonth = (tmpwmonth[0] + "").substr(4, 2) + "," + (tmpwmonth[1] + "").substr(4, 2) + "月等";
-                    wdate = $scope.wyear + "年" + $scope.wmonth;
-                } else {
-                    wdate = (tmpwmonth[0] + "").substr(0, 4) + "年" + (tmpwmonth[0] + "").substr(4, 2) + "月," + (tmpwmonth[0] + "").substr(0, 4) + "年" + (tmpwmonth[0] + "").substr(4, 2) + "月等";
-                }
-            } else {
-                $scope.wmonth = (tmpwmonth[0] + "").substr(4, 2) + "月";
-                wdate = $scope.wyear + "年" + $scope.wmonth;
-            }
-
-        } else {
-            $scope.wyear = (tmpwmonth[0] + "").substr(0, 4) + "年";
-            $scope.wmonth = (tmpwmonth[0] + "").substr(4, 2) + "-" + (tmpwmonth[tmpwmonth.length - 1] + "").substr(4, 2) + "月";
-            wdate = $scope.wyear + $scope.wmonth;
-        }
-
-        if ($scope.elmonth.length > 1) {
-            $scope.eyear = (tmpemonth[0] + "").substr(0, 4);
-            if ($scope.elmonth[0].length > 1) {
-                if ((tmpemonth[1] + "").substr(0, 4) == $scope.eyear) {
-                    $scope.emonth = (tmpemonth[0] + "").substr(4, 2) + "," + (tmpemonth[1] + "").substr(4, 2) + "月等";
-                    edate = $scope.eyear + "年" + $scope.emonth;
-                } else {
-                    edate = (tmpemonth[0] + "").substr(0, 4) + "年" + (tmpemonth[0] + "").substr(4, 2) + "月," + (tmpemonth[0] + "").substr(0, 4) + "年" + (tmpemonth[0] + "").substr(4, 2) + "月等";
-                }
-            } else {
-                $scope.emonth = (tmpemonth[0] + "").substr(4, 2) + "月";
-                edate = $scope.eyear + "年" + $scope.emonth;
-            }
-
-        } else {
-            $scope.eyear = (tmpemonth[0] + "").substr(0, 4) + "年";
-            $scope.emonth = (tmpemonth[0] + "").substr(4, 2) + "-" + (tmpemonth[tmpemonth.length - 1] + "").substr(4, 2) + "月";
-            edate = $scope.eyear + $scope.emonth;
-        }
-
-        $scope.watmonth = wdate;
-        $scope.elmonth = edate;
-
-        $scope.block = $stateParams.block;
-        $scope.unit = $stateParams.unit;
-        $scope.room = $stateParams.room;
-
-        $scope.waterFr = $rootScope.waterFree;
-        $scope.eleFr = $rootScope.eleFree;
-
-        $scope.totalFee = $rootScope.waterFree + $rootScope.eleFree;
-
+        $scope.watmonth = getMergeDate(wmonthSections, tmpwmonth);
+        $scope.elmonth = getMergeDate(emonthSections, tmpemonth);
 
         function arrange(array) {
             var t;
@@ -870,6 +846,67 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
         function _parseInt() {
             return parseInt(arguments[0]);
         }
+
+        //monthSections是按相邻月分段的二位数组，tmpmonth是按时间排序的一维数组
+        function getMergeDate(monthSections, tmpmonth){
+            var year,month;
+            var date;
+            if(monthSections.length > 0){
+                year = (tmpmonth[0] + "").substr(0, 4);
+                month = (tmpmonth[0] + "").substr(4, 2);
+                if(tmpmonth[0] != tmpmonth[tmpmonth.length - 1]){
+                     month += "-" + (tmpmonth[tmpmonth.length - 1] + "").substr(4, 2);
+                } 
+                date = year + "年" + month + "月";
+            }
+            if (monthSections.length > 1) {
+                if(monthSections[0].len == 1){
+                    var nextYear = monthSections[0][0].substr(0, 4);
+                    if(nextYear == year)
+                        date = date.substr(0, date.length - 1);//同年情况下去掉前一个日期结尾的“月”
+                    date+="、";
+                    if(nextYear == year)
+                        date += getSectionDateTextWithoutYear(monthSections[1]);
+                    else{
+                        date += getSectionDateText(monthSections[1]);
+                    }
+                    if(monthSections.length > 2)
+                        date+="等";
+                } else if(monthSections[0].length > 1){
+                    date+="等";
+                }
+            } 
+
+            return date;
+        }
+
+        function getSectionDateText(section){
+            var text = section[0].substr(0,4) + "年" + section[0].substr(4);
+            if(section[0] != section[section.length - 1]){
+                text+= "-" + section[section.length - 1].substr(4);
+            }
+            text+="月";
+            return text;
+        }
+
+        function getSectionDateTextWithoutYear(section){
+            var text = section[0].substr(4);
+            if(section[0] != section[section.length - 1]){
+                text+= "-" + section[section.length - 1].substr(4);
+            }
+            text+="月";
+            return text;
+        }
+
+        $scope.block = $stateParams.block;
+        $scope.unit = $stateParams.unit;
+        $scope.room = $stateParams.room;
+
+        $scope.waterFr = $rootScope.waterFree;
+        $scope.eleFr = $rootScope.eleFree;
+
+        $scope.totalFee = $rootScope.waterFree + $rootScope.eleFree;
+
 
         $scope.money_payment = function() {
             console.log("支付功能开始");
@@ -1186,6 +1223,135 @@ angular.module('myApp').filter('cut', function() {
         return value + (tail || '...');
     };
 });
+<<<<<<< HEAD
+=======
+angular.module('myApp').filter('payListMerge', function() {
+    return function(input) {
+        var result = [];//新增属性waterDates,elecDates,waterDateText,elecDateText
+        for(var i = 0;i<input.length;i++){
+            var item = input[i];
+            var find = false;
+            for(var j = 0;j<result.length;j++){
+                var temp = result[j];
+                if(item.payDate == temp.payDate && item.ownerName == temp.ownerName){
+                    find = true;
+                    break;
+                }
+            }
+            if(find){
+                temp.amount+=item.amount;
+                if(item.type == "0"){
+                    temp.waterDates.push({year: parseInt(item.year),month: parseInt(item.month)});
+                }else{// is "1"
+                    temp.elecDates.push({year: parseInt(item.year),month: parseInt(item.month)});
+                }
+            }else{
+                var newItem = angular.copy(item);
+                newItem.waterDates = [];
+                newItem.elecDates = [];
+                if(item.type == "0"){
+                    newItem.waterDates.push({year: parseInt(item.year),month: parseInt(item.month)});
+                }else{// is "1"
+                    newItem.elecDates.push({year: parseInt(item.year),month: parseInt(item.month)});
+                }
+                result.push(newItem);
+            }
+        }
+        //对数组result中每个元素中的水费和电费日期分别进行合并处理，比如2015年2月、2015年3月合并为2015年2-3月
+        //2015年2月，2015年3月，2015年5月合并为2015年2、3月等
+        //2015年12月、2016年1月合并为2015年12月、2016年1月
+        for(var i = 0;i<result.length;i++){
+            var item = result[i];
+            //将item对象的属性waterDates和elecDates2个数组按照年月进行升序排序处理
+            item.waterDates.sort(compareDate);
+            item.elecDates.sort(compareDate);
+
+            item.waterDateText = getDateText(item.waterDates);
+            item.elecDateText = getDateText(item.elecDates);
+        }
+
+        function compareDate(prev, next){
+            if(prev.year < next.year || (prev.year == next.year && prev.month < next.month)){
+                return -1;
+            }else if(prev.year == next.year && prev.month == next.month){
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+
+        function getDateText(dates){
+            var sections = getDateSections(dates);
+            var text = "";
+            if(sections.length > 0){
+                text = sections[0].dateText;
+            }
+            if(sections.length > 1){
+                if(sections[0].length == 1){
+                    if(sections[1].sy == sections[0].ey)
+                        text = text.substr(0, text.length - 1);//同年情况下去掉前一个日期结尾的“月”
+                    text+="、";
+                    if(sections[1].sy == sections[0].ey)
+                        text += sections[1].dateTextWithoutYear;
+                    else{
+                        text += sections[1].dateText;
+                    }
+                    if(sections.length > 2)
+                        text+="等";
+                }else if(sections[0].length > 1){
+                    text+="等";
+                }
+            }
+            
+            return text;
+        }
+
+        function getDateSections(dates){
+            var sections = [];
+            if(dates.length > 0){
+                sections.push({sy:dates[0].year,sm:dates[0].month,ey:dates[0].year,em:dates[0].month,length:1});
+            }
+            var prev = sections.length > 0 ? sections[0] : null;
+            for(var i = 1;i<dates.length;i++){
+                if(prev.ey == dates[i].year && prev.em == dates[i].month - 1){
+                    prev.em = dates[i].month;
+                    prev.length++;
+                }else{
+                    prev = dates[i];
+                    sections.push({sy:prev.year,sm:prev.month,ey:prev.year,em:prev.month,length:1});
+                }
+            }
+            for(var i = 0;i<sections.length;i++){
+                sections[i].dateText = getSectionDateText(sections[i]);
+                sections[i].dateTextWithoutYear = getSectionDateTextWithoutYear(sections[i]);
+            }
+            return sections;
+        }
+
+        function getSectionDateText(section){
+            var text = "";
+            if(section.length == 1){
+                text = section.sy +"年"+section.sm+"月";
+            }else if(section.length > 1){
+                text = section.sy +"年"+section.sm+"-" + section.em + "月";
+            }
+            return text;
+        }
+
+        function getSectionDateTextWithoutYear(section){
+            var text = "";
+            if(section.length == 1){
+                text = section.sm+"月";
+            }else if(section.length > 1){
+                text = section.sm+"-" + section.em + "月";
+            }
+            return text;
+        }
+
+        return result;
+    };
+});
+>>>>>>> master
 angular.module('resources.address', ['ngResource']).
     factory('addresses', ['$resource', function($resource) {
         return $resource(basePath+'/houses/:id', {id:'@id'}, {
@@ -1246,6 +1412,17 @@ factory('shops', ['$resource', function($resource) {
         }
     })
 }]);
+angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type: "block"
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.blocks = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+}])
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
     function ($stateParams, addresses) {
         var vm = this;
@@ -1261,17 +1438,6 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'ad
         })
     }
 ])
-angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type: "block"
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.blocks = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-}])
 angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {

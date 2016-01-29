@@ -4,12 +4,25 @@ body {
 }
 a:hover {
   text-decoration: none;
+  text-underline: none!important;
+}
+.no-selection {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 a:active {
   text-decoration: none;
+  text-underline: none!important;
 }
 p {
   margin-top: 5px;
+}
+.color_ccc {
+  color: #ccc;
 }
 .color_aaa {
   color: #aaa;
@@ -35,6 +48,14 @@ p {
 /*------------------------------address页--------------------------------------*/
 .weui_cells:after {
   border: none;
+}
+.no_click {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .address_down {
   margin-top: 0;
@@ -65,11 +86,12 @@ p {
   background-color: #4996ee;
 }
 .length_btn:active {
+  color: white;
   background-color: #1199c4;
 }
 .length_btn:not(.weui_btn_disabled):active {
   color: rgba(255, 255, 255, 0.4);
-  background-color: #878787;
+  background-color: #2d7fdd;
 }
 .weui_dialog_ft .small_color {
   color: #4996ee;
@@ -77,10 +99,10 @@ p {
 .sure_address {
   min-width: 70px;
   color: #000000;
-  min-height: 40px;
+  min-height: 30px;
 }
 .right_detail {
-  min-height: 40px;
+  min-height: 30px;
   margin-left: 27px;
 }
 /*---------------------------------block页-----------------------------------------------*/
@@ -159,8 +181,13 @@ p {
   margin-top: 8px;
 }
 /*---------------------------------------支付页面--------------------------------------------*/
+<<<<<<< HEAD
 .weui_btn_primary:not(.weui_btn_disabled):active {
   background-color: #cc7f1c;
+=======
+.btn_press:active {
+  background-color: #cc7f1c!important;
+>>>>>>> master
 }
 .page_pay .weui_cell:nth-of-type(3):before {
   border-top: none;
@@ -185,10 +212,6 @@ p {
 .focus_none:focus,
 .focus_none:hover {
   color: white;
-}
-.length_btn:not(.weui_btn_disabled):active {
-  color: rgba(255, 255, 255, 0.4);
-  background-color: #cc7f1c;
 }
 /*---------------------------------------home页面--------------------------------------------------*/
 .village {
@@ -313,12 +336,9 @@ p {
 .add_address {
   background-color: #ffffff;
   text-align: center;
-  margin-top: 30px;
+  margin-top: 5px;
   padding: 8px 0;
-  position: fixed;
   width: 100%;
-  bottom: 0;
-  left: 0;
 }
 .owner_bottom {
   height: 44px;
@@ -348,7 +368,7 @@ body {
   font-family: arial, sans-serif;
 }
 input {
-  font-family: "����", serif;
+  font-family: arial, serif;
 }
 a {
   text-decoration: none;
@@ -441,7 +461,7 @@ a {
 }
 .prompt_btn {
   text-align: center;
-  width: 150px;
+  width: 80%;
   padding: 5px 0;
   background-color: #4996ee;
   border: none;
@@ -610,7 +630,7 @@ a {
   color: #555555;
 }
 .repair_btn {
-  font-family: "����-��", serif;
+  font-family: arial, serif;
   display: block;
   margin: 20px auto;
   border: none;
@@ -832,7 +852,7 @@ html input[disabled] {
   background-color: #ffffff;
   font-size: 16px;
   color: #333333;
-  font-family: "����-��", serif;
+  font-family: arial, serif;
 }
 .RD_s {
   width: 63px;

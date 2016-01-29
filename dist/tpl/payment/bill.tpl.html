@@ -32,11 +32,11 @@
 </div>
 <div class="weui_cells_title color333" style="padding-bottom: 4px">待缴费信息
     <small><span class="account_record" style="float: right;color: #4996ee;position:relative;top: 2px"
-                 ui-sref="payment-list({id:2185})">缴费记录</span></small>
+                 ui-sref="payment-list({id:2185})" ng-if="list_show">缴费记录</span></small>
 </div>
 <div class="weui_cells address_down account_page" ng-repeat="payment in payments"
      ng-class="!$first?'pos_up':''">
-    <a class="weui_cell" href="javascript:;">
+    <div class="weui_cell" href="javascript:;">
         <div class="weui_cell_hd">
             <input type="checkbox" ng-model="payment.selected" ng-checked="sel"
                    ng-change="updateYearmonth(payment.yearmonth,payment.selected)" id="all_sel{{payment.yearmonth}}"
@@ -50,8 +50,8 @@
         <div class="should_info color777">
             应缴金额
         </div>
-    </a>
-    <a class="weui_cell" href="javascript:;" ng-repeat="ele in payment.eles" ng-class=" $first ? 'border_line':''" style="padding-top: 0;padding-bottom: 0">
+    </div>
+    <div class="weui_cell" href="javascript:;" ng-repeat="ele in payment.eles" ng-class=" $first ? 'border_line':''" style="padding-top: 0;padding-bottom: 0">
         <div class="weui_cell_hd">
             <input ng-checked="payment.selected" ng-model="ele.selected" type="checkbox" id="ele{{ele.id}}"
                    ng-change="update(ele)" class="vis_none">
@@ -70,7 +70,7 @@
         <div class="color333">
             {{ele.amount}}元
         </div>
-    </a>
+    </div>
 
     <div class="detail_free" style="background-color: #ffffff;">
         <div class="top_arrow color_aaa" ng-click="freeShow = !freeShow"
@@ -81,7 +81,7 @@
         </div>
         <div ng-show="freeShow" style="padding:0 15px">
             <div style="text-align: center" class="color_aaa">
-                <small><span style="float: left;">类别</span><span>本月表数-上月表数</span><span style="float: right">用量</span>
+                <small><span style="float: left;margin-top: 2px">类别</span><span>本月表数-上月表数</span><span style="float: right;margin-top: 2px">用量</span>
                 </small>
             </div>
             <div class="color777" style="text-align: center;padding: 4px 0" ng-repeat="detail in payment.eles ">
@@ -111,7 +111,7 @@
             <span class="color333">合计:</span><span style="color: #f23737">￥{{total| number:2}}</span><span
                 ng-if="!payments" style="color: #f23737">0.00</span>
         </div>
-        <button class="weui_btn weui_btn_mini weui_btn_primary my_btn"
+        <button class="weui_btn weui_btn_mini weui_btn_primary my_btn btn_press"
                 ui-sref="payment({block:block,unit:unit,room:room})" ng-disabled="selected.length==0||!selected">结算
         </button>
     </div>
