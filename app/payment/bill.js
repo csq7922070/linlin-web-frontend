@@ -21,7 +21,7 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
                 $scope.activeId = $stateParams.id;
             });
         }
-
+        $scope.list_show =false;
         params = {
             id: 'query',
             paymentState: 0,
@@ -40,7 +40,7 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
                     houseId: $stateParams.id
                 }
             }).success(function (data) {
-                if(data!=null&&data!=""){
+                if(data.items.length>0){
                     $scope.list_show =true;
                 }
                 //$scope.records = data.items;
