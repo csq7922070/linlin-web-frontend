@@ -21,31 +21,12 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
                 $scope.activeId = $stateParams.id;
             });
         }
-        $scope.list_show =false;
         params = {
             id: 'query',
             paymentState: 0,
             queryType: 'houseId',
             houseId: $stateParams.id
         };
-
-            $scope.id = $stateParams.id;
-            $http({
-                method: "GET",
-                url: basePath + "/payments/query",
-                params: {
-                    queryType: 'openid',
-                    openid: sessionStorage.getItem("openid"),
-                    paymentState: 1,
-                    houseId: $stateParams.id
-                }
-            }).success(function (data) {
-                if(data.items.length>0){
-                    $scope.list_show =true;
-                }
-                //$scope.records = data.items;
-            });
-
 
         payments.query(params).$promise.then(function(data) {
             if (data.amountList.length != 0) {
