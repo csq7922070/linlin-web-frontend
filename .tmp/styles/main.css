@@ -350,6 +350,14 @@ p {
   width: 16px;
   height: 16px;
 }
+#pay-bottom-bar {
+  position: relative;
+}
+#pay-button {
+  position: absolute;
+  right: 14px;
+  top: 11px;
+}
 
 * {
   margin: 0;

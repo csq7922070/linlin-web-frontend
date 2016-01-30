@@ -500,12 +500,50 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
      //      }
 
      //      getLocation();
-     	//if (sessionStorage.getItem("openid") == null) {
+     		//if (sessionStorage.getItem("openid") == null) {
      		// var url = $location.url().substring($location.url().indexOf("?"));
 	      //   if (url.indexOf("home") != -1) {
 	      //       url = "";
 	      //   }
 	      //   url="";
+            $http({
+                method: "GET",
+                url: basePath + '/GPS/findSign'
+            }).success(function(data) {
+                sessionStorage.setItem("appid", data.appid);
+                //添加微信支付
+                sessionStorage.setItem("timestamp", data.timestamp);
+                sessionStorage.setItem("noncestr", data.noncestr);
+                sessionStorage.setItem("sign", data.sign);
+                console.log("获取openid成功");
+                wx.config({
+		            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		            appId: "wx050cc99d8cec1a73", // 必填，公众号的唯一标识
+		            timestamp: sessionStorage.getItem("timestamp"), // 必填，生成签名的时间戳
+		            nonceStr: sessionStorage.getItem("noncestr"), // 必填，生成签名的随机串
+		            signature: sessionStorage.getItem("sign"), // 必填，签名，见附录1
+		            jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		        });
+			     wx.ready(function(){
+					wx.getLocation({
+					    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+					    success: function (res) {
+					        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+					        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+					        var speed = res.speed; // 速度，以米/每秒计
+					        var accuracy = res.accuracy; // 位置精度
+					        alert("weixin location:" + latitude + ","+longitude+",精度："+accuracy);
+					    }
+					});
+			     });
+			     // wx.error(function(res){
+			     // 	alert("wx.error");
+			     // 	alert(res);
+			     // });
+            }).error(function(data) {
+                console.log("获取openid失败");
+            });
+        //}
             
      	
     	// end test
@@ -1040,14 +1078,43 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
                 })
                 .then(function(data) {
                     var deferred = $q.defer();
+                    alert(data.appid);
                     wx.config({
-                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                         appId: data.appid, // 必填，公众号的唯一标识
                         timestamp: sessionStorage.getItem("timestamp"), // 必填，生成签名的时间戳
                         nonceStr: sessionStorage.getItem("noncestr"), // 必填，生成签名的随机串
                         signature: sessionStorage.getItem("sign"), // 必填，签名，见附录1
                         jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
                     });
+                    // //wx.ready(function(){
+                    //     wx.getLocation({
+                    //         type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                    //         success: function (res) {
+                    //             var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                    //             var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                    //             var speed = res.speed; // 速度，以米/每秒计
+                    //             var accuracy = res.accuracy; // 位置精度
+                    //             alert("weixin location:" + latitude + ","+longitude+",精度："+accuracy);
+                    //         }
+                    //     });
+                    // // });
+                    // wx.ready(function(){
+                    //     wx.getLocation({
+                    //         type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                    //         success: function (res) {
+                    //             var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                    //             var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                    //             var speed = res.speed; // 速度，以米/每秒计
+                    //             var accuracy = res.accuracy; // 位置精度
+                    //             alert("weixin location:" + latitude + ","+longitude+",精度："+accuracy);
+                    //         }
+                    //     });
+                    //  });
+                    wx.error(function(res){
+                        alert("wx.error");
+                        alert(res);
+                     });
                     wx.chooseWXPay({
                         timestamp: data.timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
                         nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
@@ -1060,6 +1127,7 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
                             deferred.resolve('success');
                         }
                     });
+
                     return deferred.promise;
                 })
                 .then(function() {
@@ -1260,6 +1328,19 @@ angular.module('app.address').controller('addressBlockCtrl',['$stateParams','add
         console.log("err!");
     });
 }])
+angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type:'unit',
+        block:$stateParams.block
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.units = data.items;
+        vm.block = $stateParams.block;
+    }, function (data) {
+        console.log("err!");
+    });
+}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
     function ($stateParams, addresses) {
         var vm = this;
@@ -1275,100 +1356,6 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'ad
         })
     }
 ])
-angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type:'unit',
-        block:$stateParams.block
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.units = data.items;
-        vm.block = $stateParams.block;
-    }, function (data) {
-        console.log("err!");
-    });
-}]);
-myApp.directive('errSrc', function() {
-  return {
-    link: function(scope, element, attrs) {
-      element.bind('error', function() {
-        if (attrs.src != attrs.errSrc) {
-          attrs.$set('src', attrs.errSrc);
-        }
-      });
-    }
-  }
-});
-myApp.directive('globalLoading', function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            show: '=',
-            tip: '=',
-            lockClickHide: '='
-        },
-        templateUrl: 'tpl/common/directives/global-loading.tpl.html',
-        link: function(scope, element, attrs) {
-            scope.clickLoadingLayer = function(){
-                if(!scope.lockClickHide){
-                    scope.show = false;
-                }
-            }
-        }
-    }
-
-})
-
-myApp.directive('pagination', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            numPages: '=',
-            currentPage: '=',
-            pageSize: '=',
-            goPage: '&'
-        },
-        templateUrl: 'pagination.tpl.html',
-        link: function(scope, element, attrs) {
-
-            scope.isActive = function(page) {
-                return scope.currentPage === page;
-            }
-
-            scope.hasPre = function() {
-                return (scope.currentPage - 1 > 0);
-            }
-
-            scope.hasPre2 = function() {
-                return (scope.currentPage - 2 > 0);
-            }
-            scope.hasNext = function() {
-                return (scope.currentPage + 1 <= cope.numPages);
-            }
-
-            scope.hasNext2 = function() {
-                return (scope.currentPage + 2 <= cope.numPages);
-            }
-        }
-    }
-
-})
-
-myApp.directive('whenScrolled', ['$document', function ($document) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var raw = element[0];
-            $document.bind('scroll', function () {
-                var rectObject = raw.getBoundingClientRect();
-                if (window.innerHeight >= rectObject.bottom) {
-                    scope.$apply(attrs.whenScrolled);
-                }
-            });
-        }
-    };
-}]);
 angular.module('myApp').filter('cut', function() {
     return function(value, wordwise, max, tail) {
         if (!value) return '';
@@ -1513,6 +1500,87 @@ angular.module('myApp').filter('payListMerge', function() {
         return result;
     };
 });
+myApp.directive('errSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      element.bind('error', function() {
+        if (attrs.src != attrs.errSrc) {
+          attrs.$set('src', attrs.errSrc);
+        }
+      });
+    }
+  }
+});
+myApp.directive('globalLoading', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            tip: '=',
+            lockClickHide: '='
+        },
+        templateUrl: 'tpl/common/directives/global-loading.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.clickLoadingLayer = function(){
+                if(!scope.lockClickHide){
+                    scope.show = false;
+                }
+            }
+        }
+    }
+
+})
+
+myApp.directive('pagination', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            numPages: '=',
+            currentPage: '=',
+            pageSize: '=',
+            goPage: '&'
+        },
+        templateUrl: 'pagination.tpl.html',
+        link: function(scope, element, attrs) {
+
+            scope.isActive = function(page) {
+                return scope.currentPage === page;
+            }
+
+            scope.hasPre = function() {
+                return (scope.currentPage - 1 > 0);
+            }
+
+            scope.hasPre2 = function() {
+                return (scope.currentPage - 2 > 0);
+            }
+            scope.hasNext = function() {
+                return (scope.currentPage + 1 <= cope.numPages);
+            }
+
+            scope.hasNext2 = function() {
+                return (scope.currentPage + 2 <= cope.numPages);
+            }
+        }
+    }
+
+})
+
+myApp.directive('whenScrolled', ['$document', function ($document) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var raw = element[0];
+            $document.bind('scroll', function () {
+                var rectObject = raw.getBoundingClientRect();
+                if (window.innerHeight >= rectObject.bottom) {
+                    scope.$apply(attrs.whenScrolled);
+                }
+            });
+        }
+    };
+}]);
 angular.module('resources.address', ['ngResource']).
     factory('addresses', ['$resource', function($resource) {
         return $resource(basePath+'/houses/:id', {id:'@id'}, {

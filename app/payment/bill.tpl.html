@@ -97,7 +97,7 @@
     计费标准参考：水费-0.35元/m³ 电费-0.50元/°
 </div>
 <div class="weui_cells acc_footer" style="font-size: 16px">
-    <div class="weui_cell" style="padding-top: 0px;padding-bottom: 0px">
+    <div class="weui_cell" style="padding-top: 0px;padding-bottom: 0px" id="pay-bottom-bar">
         <div class="weui_cell_hd">
             <input type="checkbox" ng-model="sel" ng-change="updateAll(sel)" id="sel_all" class="vis_none"
                    ng-disabled="!selected">
@@ -112,7 +112,7 @@
                 ng-if="!payments" style="color: #f23737">0.00</span>
         </div>
         <button class="weui_btn weui_btn_mini weui_btn_primary my_btn btn_press"
-                ui-sref="payment({block:block,unit:unit,room:room})" ng-disabled="selected.length==0||!selected">结算
+                ui-sref="payment({block:block,unit:unit,room:room})" ng-disabled="selected.length==0||!selected" id="pay-button">结算
         </button>
     </div>
 </div>
