@@ -269,6 +269,52 @@ angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addres
     }
 ]);
 
+angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
+    function($scope, $http, $stateParams, $rootScope, $state, $location) {
+
+        var url = $location.url().substring($location.url().indexOf("?"));
+        if (url.indexOf("home") != -1) {
+            url = "";
+        }
+        //1.6获取微信用户openid
+        if (sessionStorage.getItem("openid") == null) {
+            $http({
+                method: "GET",
+                url: basePath + '/getopenid' + url
+            }).success(function(data) {
+                sessionStorage.setItem("openid", data.openid);
+                //添加微信支付
+                sessionStorage.setItem("timestamp", data.timestamp);
+                sessionStorage.setItem("noncestr", data.noncestr);
+                sessionStorage.setItem("sign", data.sign);
+                console.log("获取openid成功");
+            }).error(function(data) {
+                console.log("获取openid失败");
+            });
+        }
+
+        $scope.slides7 = [{
+            id: 10,
+            label: "slide #1",
+            img: "images/banner_01.png"
+        }, {
+            id: 11,
+            label: "slide #2",
+            img: "images/banner_02.png"
+        }, {
+            id: 12,
+            label: "slide #3",
+            img: "images/banner_03.png"
+        }];
+        $scope.carouselIndex7 = 0;
+
+        $rootScope.site = 1;
+        $state.go("home.shop-info", {
+            site: 1
+        });
+    }
+]);
+
 angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$state', 'complains',
     function ($timeout, $state, complains) {
         var vm = this;
@@ -347,52 +393,6 @@ angular.module('app.complain').controller('complainListCtrl', ['complains',
         vm.load(1, vm.pageSize);
     }
 ]);
-angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-    function($scope, $http, $stateParams, $rootScope, $state, $location) {
-
-        var url = $location.url().substring($location.url().indexOf("?"));
-        if (url.indexOf("home") != -1) {
-            url = "";
-        }
-        //1.6获取微信用户openid
-        if (sessionStorage.getItem("openid") == null) {
-            $http({
-                method: "GET",
-                url: basePath + '/getopenid' + url
-            }).success(function(data) {
-                sessionStorage.setItem("openid", data.openid);
-                //添加微信支付
-                sessionStorage.setItem("timestamp", data.timestamp);
-                sessionStorage.setItem("noncestr", data.noncestr);
-                sessionStorage.setItem("sign", data.sign);
-                console.log("获取openid成功");
-            }).error(function(data) {
-                console.log("获取openid失败");
-            });
-        }
-
-        $scope.slides7 = [{
-            id: 10,
-            label: "slide #1",
-            img: "images/banner_01.png"
-        }, {
-            id: 11,
-            label: "slide #2",
-            img: "images/banner_02.png"
-        }, {
-            id: 12,
-            label: "slide #3",
-            img: "images/banner_03.png"
-        }];
-        $scope.carouselIndex7 = 0;
-
-        $rootScope.site = 1;
-        $state.go("home.shop-info", {
-            site: 1
-        });
-    }
-]);
-
 (function() {
     angular.module('app.notice').controller("noticeDetailCtrl", ['$stateParams', 'notices',
         function($stateParams, notices) {
@@ -1318,21 +1318,6 @@ factory('shops', ['$resource', function($resource) {
         }
     })
 }]);
-angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
-    function ($stateParams, addresses) {
-        var vm = this;
-        params={
-            type:'room',
-            block:$stateParams.block,
-            unit:$stateParams.unit
-        }
-        addresses.query(params).$promise.then(function(data){
-            vm.block = $stateParams.block;
-            vm.unit = $stateParams.unit;
-            vm.rooms = data.items;
-        })
-    }
-])
 angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {
@@ -1357,3 +1342,18 @@ angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addr
         console.log("err!");
     });
 }]);
+angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
+    function ($stateParams, addresses) {
+        var vm = this;
+        params={
+            type:'room',
+            block:$stateParams.block,
+            unit:$stateParams.unit
+        }
+        addresses.query(params).$promise.then(function(data){
+            vm.block = $stateParams.block;
+            vm.unit = $stateParams.unit;
+            vm.rooms = data.items;
+        })
+    }
+])
