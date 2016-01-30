@@ -4,7 +4,7 @@ body {
 }
 a:hover {
   text-decoration: none;
-  text-underline: none!important;
+  text-underline: none !important;
 }
 .no-selection {
   -webkit-touch-callout: none;
@@ -16,7 +16,7 @@ a:hover {
 }
 a:active {
   text-decoration: none;
-  text-underline: none!important;
+  text-underline: none !important;
 }
 p {
   margin-top: 5px;
@@ -74,7 +74,7 @@ p {
   left: 15px;
   content: " ";
   position: absolute;
-  border-top: 1px solid #D9D9D9!important;
+  border-top: 1px solid #D9D9D9 !important;
   z-index: 1000;
   margin-top: -15px;
 }
@@ -146,8 +146,8 @@ p {
   height: 60px;
 }
 .account_btn {
-  width: 70px!important;
-  float: right!important;
+  width: 70px !important;
+  float: right !important;
 }
 .label_account {
   background-image: url("../images/select_02.png");
@@ -188,7 +188,7 @@ p {
 }
 /*---------------------------------------支付页面--------------------------------------------*/
 .btn_press:active {
-  background-color: #cc7f1c!important;
+  background-color: #cc7f1c !important;
 }
 .page_pay .weui_cell:nth-of-type(3):before {
   border-top: none;
@@ -356,6 +356,10 @@ p {
   width: 16px;
   height: 16px;
 }
+.payment_date {
+  font-size: 14px;
+  text-align: center;
+}
 
 * {
   margin: 0;
@@ -367,6 +371,12 @@ body {
   height: auto;
   background-color: #eeeeee;
   font-family: arial, sans-serif;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 input {
   font-family: arial, serif;
@@ -399,7 +409,7 @@ a {
   width: 70%;
   height: 48px;
   margin: 0 auto;
-  color: #2f84e6!important;
+  color: #2f84e6 !important;
   border-bottom: 2px solid #3089ef;
 }
 .container-fluid a {
@@ -708,7 +718,7 @@ a {
   border: 1px solid #cccccc;
   border-radius: 5px;
   line-height: 28px;
-  color: #999999!important;
+  color: #999999 !important;
   padding-left: 8px;
   background-color: #ffffff;
   display: block;
@@ -775,12 +785,12 @@ textarea {
   text-align: center;
   padding: 5px 5px;
   background-color: #4996EE;
-  color: #ffffff!important;
+  color: #ffffff !important;
   margin-bottom: 20px;
 }
 button[disabled],
 html input[disabled] {
-  background-color: #ccc!important;
+  background-color: #ccc !important;
 }
 .phone_hidden {
   color: #e95912;
@@ -883,7 +893,7 @@ ul[rn-carousel] {
   top: -2px;
 }
 .disabled {
-  background-color: #bababa!important;
+  background-color: #bababa !important;
 }
 div.rn-carousel-indicator span.active {
   color: #ffffff;

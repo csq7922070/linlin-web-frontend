@@ -1054,66 +1054,6 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     ]);
 })();
 
-myApp.directive('errSrc', function() {
-  return {
-    link: function(scope, element, attrs) {
-      element.bind('error', function() {
-        if (attrs.src != attrs.errSrc) {
-          attrs.$set('src', attrs.errSrc);
-        }
-      });
-    }
-  }
-});
-myApp.directive('pagination', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            numPages: '=',
-            currentPage: '=',
-            pageSize: '=',
-            goPage: '&'
-        },
-        templateUrl: 'pagination.tpl.html',
-        link: function(scope, element, attrs) {
-
-            scope.isActive = function(page) {
-                return scope.currentPage === page;
-            }
-
-            scope.hasPre = function() {
-                return (scope.currentPage - 1 > 0);
-            }
-
-            scope.hasPre2 = function() {
-                return (scope.currentPage - 2 > 0);
-            }
-            scope.hasNext = function() {
-                return (scope.currentPage + 1 <= cope.numPages);
-            }
-
-            scope.hasNext2 = function() {
-                return (scope.currentPage + 2 <= cope.numPages);
-            }
-        }
-    }
-
-})
-
-myApp.directive('whenScrolled', ['$document', function ($document) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var raw = element[0];
-            $document.bind('scroll', function () {
-                var rectObject = raw.getBoundingClientRect();
-                if (window.innerHeight >= rectObject.bottom) {
-                    scope.$apply(attrs.whenScrolled);
-                }
-            });
-        }
-    };
-}]);
 angular.module('myApp').filter('cut', function() {
     return function(value, wordwise, max, tail) {
         if (!value) return '';
@@ -1258,6 +1198,66 @@ angular.module('myApp').filter('payListMerge', function() {
         return result;
     };
 });
+myApp.directive('errSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      element.bind('error', function() {
+        if (attrs.src != attrs.errSrc) {
+          attrs.$set('src', attrs.errSrc);
+        }
+      });
+    }
+  }
+});
+myApp.directive('pagination', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            numPages: '=',
+            currentPage: '=',
+            pageSize: '=',
+            goPage: '&'
+        },
+        templateUrl: 'pagination.tpl.html',
+        link: function(scope, element, attrs) {
+
+            scope.isActive = function(page) {
+                return scope.currentPage === page;
+            }
+
+            scope.hasPre = function() {
+                return (scope.currentPage - 1 > 0);
+            }
+
+            scope.hasPre2 = function() {
+                return (scope.currentPage - 2 > 0);
+            }
+            scope.hasNext = function() {
+                return (scope.currentPage + 1 <= cope.numPages);
+            }
+
+            scope.hasNext2 = function() {
+                return (scope.currentPage + 2 <= cope.numPages);
+            }
+        }
+    }
+
+})
+
+myApp.directive('whenScrolled', ['$document', function ($document) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var raw = element[0];
+            $document.bind('scroll', function () {
+                var rectObject = raw.getBoundingClientRect();
+                if (window.innerHeight >= rectObject.bottom) {
+                    scope.$apply(attrs.whenScrolled);
+                }
+            });
+        }
+    };
+}]);
 angular.module('resources.address', ['ngResource']).
     factory('addresses', ['$resource', function($resource) {
         return $resource(basePath+'/houses/:id', {id:'@id'}, {
@@ -1318,17 +1318,6 @@ factory('shops', ['$resource', function($resource) {
         }
     })
 }]);
-angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type: "block"
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.blocks = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-}])
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
     function ($stateParams, addresses) {
         var vm = this;
@@ -1344,6 +1333,17 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'ad
         })
     }
 ])
+angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type: "block"
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.blocks = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+}])
 angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {
