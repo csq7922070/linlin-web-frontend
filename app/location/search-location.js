@@ -31,7 +31,12 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     			}
     			changePromise = $timeout(function(){
     				console.log("change...");
+    				$scope.showInexistenceTip = false;
     				$scope.searchLocationCommunities = communitySearch.searchCommunity($scope.communityName);
+    				if($scope.communityName && $scope.searchLocationCommunities.length == 0){
+    					$scope.showInexistenceTip = true;
+    				}
+    				//console.log($scope.searchLocationCommunities);
     			}, 700);
     		}
     	});
@@ -42,26 +47,7 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     		$state.go('home');
     	}
 
-    	$scope.searchLocationCommunities = [
-    		// {
-    		// 	city: "北京",
-    		// 	name: "万科金域华府",
-    		// 	address: "京徽高速边500米",
-    		// 	title: "北京, 万科金域华府"
-    		// },
-    		// {
-    		// 	city: "北京",
-    		// 	name: "万科金域华府",
-    		// 	address: "京徽高速边500米",
-    		// 	title: "北京, 万科金域华府"
-    		// },
-    		// {
-    		// 	city: "北京",
-    		// 	name: "万科金域华府",
-    		// 	address: "京徽高速边500米",
-    		// 	title: "北京, 万科金域华府"
-    		// }
-    	];
+    	$scope.searchLocationCommunities = [];
 
     	$scope.clearSearchField = function(){
     		$scope.communityName = "";

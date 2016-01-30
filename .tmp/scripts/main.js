@@ -546,7 +546,12 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     			}
     			changePromise = $timeout(function(){
     				console.log("change...");
+    				$scope.showInexistenceTip = false;
     				$scope.searchLocationCommunities = communitySearch.searchCommunity($scope.communityName);
+    				if($scope.communityName && $scope.searchLocationCommunities.length == 0){
+    					$scope.showInexistenceTip = true;
+    				}
+    				//console.log($scope.searchLocationCommunities);
     			}, 700);
     		}
     	});
@@ -557,26 +562,7 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     		$state.go('home');
     	}
 
-    	$scope.searchLocationCommunities = [
-    		// {
-    		// 	city: "北京",
-    		// 	name: "万科金域华府",
-    		// 	address: "京徽高速边500米",
-    		// 	title: "北京, 万科金域华府"
-    		// },
-    		// {
-    		// 	city: "北京",
-    		// 	name: "万科金域华府",
-    		// 	address: "京徽高速边500米",
-    		// 	title: "北京, 万科金域华府"
-    		// },
-    		// {
-    		// 	city: "北京",
-    		// 	name: "万科金域华府",
-    		// 	address: "京徽高速边500米",
-    		// 	title: "北京, 万科金域华府"
-    		// }
-    	];
+    	$scope.searchLocationCommunities = [];
 
     	$scope.clearSearchField = function(){
     		$scope.communityName = "";
@@ -1263,6 +1249,17 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     ]);
 })();
 
+angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type: "block"
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.blocks = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+}])
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
     function ($stateParams, addresses) {
         var vm = this;
@@ -1278,17 +1275,6 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'ad
         })
     }
 ])
-angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type: "block"
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.blocks = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-}])
 angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {
@@ -1602,7 +1588,7 @@ angular.module('app.location')
 					}).error(function(data){
 						defer.reject(data);
 					});
-				},2000);
+				},1000);
 				promise = defer.promise;
 			}
 			return promise;
@@ -1611,13 +1597,20 @@ angular.module('app.location')
 angular.module('app.location')
 	.service('communitySearch', [function(){
 		this.cmmList = null;
-
+		var max = 10;
 		this.searchCommunity = function(communityName){
 			console.log("searchCommunity...");
 			var result = [];
-			if(this.cmmList){
-				if(communityName){
-					result = this.cmmList;
+			if(this.cmmList && communityName){
+				for(var i = 0;i<this.cmmList.length;i++){
+					var item = this.cmmList[i];
+					if(item.name.indexOf(communityName) >= 0){
+						item.title = item.city + ", " + item.name;
+						result.push(item);
+					}
+					if(result.length >= max){
+						break;
+					}
 				}
 			}
 			return result;

@@ -13,7 +13,7 @@ angular.module('app.location')
 					}).error(function(data){
 						defer.reject(data);
 					});
-				},2000);
+				},1000);
 				promise = defer.promise;
 			}
 			return promise;
