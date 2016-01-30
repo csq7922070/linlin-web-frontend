@@ -581,6 +581,37 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     }
 ]);
 
+(function() {
+    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
+        function($scope, $stateParams, $rootScope, shops) {
+            $rootScope.site = $stateParams.site;
+            $scope.currentPage = 0;
+            $scope.pageSize = 5;
+            $scope.shops = [];
+
+            $scope.load = function(goPage, limit) {
+                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
+                    return;
+                } else if ($rootScope.site != 3) {
+                    $scope.busy = true;
+                    params = {
+                        offset: $scope.pageSize * (goPage - 1),
+                        limit: limit == 8 ? limit : $scope.pageSize,
+                        type: $stateParams.site - 1
+                    }
+                    shops.query(params).$promise.then(function(data) {
+                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                        $scope.currentPage = goPage;
+                        $scope.busy = false;
+                        $scope.shops.push.apply($scope.shops, data.items);
+                    });
+                }
+            }
+            $scope.load(1, 8);
+        }
+    ]);
+})();
+
 angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', 'addresses', 'payments',
     function($scope, $http, $stateParams, $rootScope, $state, addresses, payments) {
         //显示当前页面的业主信息
@@ -1023,37 +1054,6 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
     }
 ]);
 
-(function() {
-    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
-        function($scope, $stateParams, $rootScope, shops) {
-            $rootScope.site = $stateParams.site;
-            $scope.currentPage = 0;
-            $scope.pageSize = 5;
-            $scope.shops = [];
-
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
-                    return;
-                } else if ($rootScope.site != 3) {
-                    $scope.busy = true;
-                    params = {
-                        offset: $scope.pageSize * (goPage - 1),
-                        limit: limit == 8 ? limit : $scope.pageSize,
-                        type: $stateParams.site - 1
-                    }
-                    shops.query(params).$promise.then(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        $scope.shops.push.apply($scope.shops, data.items);
-                    });
-                }
-            }
-            $scope.load(1, 8);
-        }
-    ]);
-})();
-
 myApp.directive('errSrc', function() {
   return {
     link: function(scope, element, attrs) {
@@ -1113,66 +1113,6 @@ myApp.directive('whenScrolled', ['$document', function ($document) {
             });
         }
     };
-}]);
-angular.module('resources.address', ['ngResource']).
-    factory('addresses', ['$resource', function($resource) {
-        return $resource(basePath+'/houses/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.complain', ['ngResource']).
-    factory('complains', ['$resource', function($resource) {
-        return $resource(basePath+'/complains/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.notice', ['ngResource']).
-factory('notices', ['$resource', function($resource) {
-    return $resource(basePath+'/notices/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.payment', ['ngResource']).
-    factory('payments', ['$resource', function($resource) {
-        return $resource(basePath+'/payments/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.repair', ['ngResource']).
-factory('repairs', ['$resource', function($resource) {
-    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.shop', ['ngResource']).
-factory('shops', ['$resource', function($resource) {
-    return $resource(basePath+'/shops/:id', {}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
 }]);
 angular.module('myApp').filter('cut', function() {
     return function(value, wordwise, max, tail) {
@@ -1318,17 +1258,66 @@ angular.module('myApp').filter('payListMerge', function() {
         return result;
     };
 });
-angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type: "block"
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.blocks = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-}])
+angular.module('resources.address', ['ngResource']).
+    factory('addresses', ['$resource', function($resource) {
+        return $resource(basePath+'/houses/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.complain', ['ngResource']).
+    factory('complains', ['$resource', function($resource) {
+        return $resource(basePath+'/complains/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.notice', ['ngResource']).
+factory('notices', ['$resource', function($resource) {
+    return $resource(basePath+'/notices/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.payment', ['ngResource']).
+    factory('payments', ['$resource', function($resource) {
+        return $resource(basePath+'/payments/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.repair', ['ngResource']).
+factory('repairs', ['$resource', function($resource) {
+    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.shop', ['ngResource']).
+factory('shops', ['$resource', function($resource) {
+    return $resource(basePath+'/shops/:id', {}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
     function ($stateParams, addresses) {
         var vm = this;
@@ -1344,6 +1333,17 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'ad
         })
     }
 ])
+angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type: "block"
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.blocks = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+}])
 angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {
