@@ -109,18 +109,18 @@
         <div class="weui_cell_hd">
             <input type="checkbox" ng-model="sel" ng-change="updateAll(sel)" id="sel_all" class="vis_none"
                    ng-disabled="!selected">
-            <label for="sel_all" ng-if="sel" class="label_account" style="margin-top: 2px"></label>
-            <label for="sel_all" ng-if="!sel" class="label_account_click" style="margin-top: 2px"></label>
+            <label for="sel_all" ng-if="sel" class="label_account" style="margin-top: -2px"></label>
+            <label for="sel_all" ng-if="!sel" class="label_account_click" style="margin-top: -2px"></label>
         </div>
-        <div class="weui_cell_bd weui_cell_primary" style="margin-top: 6px;flex: 1">
+        <div class="weui_cell_bd weui_cell_primary" style="margin-top: 2px;flex: 1">
             <p style="display: inline" class="pos_lef color333">本页全选</p>
         </div>
-        <div class="weui_cell_bd weui_cell_primary" style="float:left;margin-top:6px;flex: 1.6;">
+        <div class="weui_cell_bd weui_cell_primary" style="float:left;margin-top:4px;flex: 1.6;">
             <span class="color333">合计:</span><span style="color: #f23737">￥{{total| number:2}}</span><span
                 ng-if="!payments" style="color: #f23737">0.00</span>
         </div>
         <button class="weui_btn weui_btn_mini weui_btn_primary my_btn btn_press account_btn"
-                ui-sref="payment({block:block,unit:unit,room:room})" ng-disabled="selected.length==0||!selected" style="top: 0px">结算
+                ui-sref="payment({block:block,unit:unit,room:room})" ng-disabled="selected.length==0||!selected">结算
         </button>
     </div>
 </div>
