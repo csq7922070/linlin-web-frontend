@@ -204,6 +204,10 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         city: '廊坊',
         address: '顺义区华侨路23号'
     }
+).value(
+    'openId', null
+).constant(
+    'appId', 'wx050cc99d8cec1a73'
 );
 angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stateParams', '$state', 'addresses',
     function ($rootScope,$stateParams, $state, addresses) {
@@ -453,8 +457,8 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		}
     	];
 
-    	// //test
-    	// //-------------------------
+    	//test
+    	//-------------------------
     	// var x=document.getElementById("auto-location-container");
      //      function getLocation()
      //      {
@@ -496,14 +500,37 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
      //      }
 
      //      getLocation();
-    	// // end test
-    	// //---------------------------
+     	//if (sessionStorage.getItem("openid") == null) {
+     		// var url = $location.url().substring($location.url().indexOf("?"));
+	      //   if (url.indexOf("home") != -1) {
+	      //       url = "";
+	      //   }
+	      //   url="";
+            
+     	
+    	// end test
+    	//---------------------------
     }
 ]);
 
 angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'$timeout', 'communityInfo',
-    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo) {
+	'$timeout', 'communityInfo', 'communityList', 'communitySearch',
+    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch) {
+    	$scope.loadingTip = "数据加载中...";
+    	$scope.loadingShow = true;
+    	$scope.lockClickHide = true;
+
+    	var cmmList = null;
+    	communityList.getCommunityList('廊坊')
+    		.then(function(data){
+    			cmmList = data;
+    			communitySearch.cmmList = cmmList;
+    			$scope.loadingShow = false;
+    		},function(reason){
+    			$scope.loadingTip = "数据加载失败"+reason.substr(0,20);
+    			$scope.lockClickHide = false;
+    		});
+
     	console.log(communityInfo);
     	$scope.changeCommunity = function(community){
     		console.log(community);
@@ -519,6 +546,7 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     			}
     			changePromise = $timeout(function(){
     				console.log("change...");
+    				$scope.searchLocationCommunities = communitySearch.searchCommunity($scope.communityName);
     			}, 700);
     		}
     	});
@@ -530,25 +558,29 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	}
 
     	$scope.searchLocationCommunities = [
-    		{
-    			city: "北京",
-    			name: "万科金域华府",
-    			address: "京徽高速边500米",
-    			title: "北京, 万科金域华府"
-    		},
-    		{
-    			city: "北京",
-    			name: "万科金域华府",
-    			address: "京徽高速边500米",
-    			title: "北京, 万科金域华府"
-    		},
-    		{
-    			city: "北京",
-    			name: "万科金域华府",
-    			address: "京徽高速边500米",
-    			title: "北京, 万科金域华府"
-    		}
+    		// {
+    		// 	city: "北京",
+    		// 	name: "万科金域华府",
+    		// 	address: "京徽高速边500米",
+    		// 	title: "北京, 万科金域华府"
+    		// },
+    		// {
+    		// 	city: "北京",
+    		// 	name: "万科金域华府",
+    		// 	address: "京徽高速边500米",
+    		// 	title: "北京, 万科金域华府"
+    		// },
+    		// {
+    		// 	city: "北京",
+    		// 	name: "万科金域华府",
+    		// 	address: "京徽高速边500米",
+    		// 	title: "北京, 万科金域华府"
+    		// }
     	];
+
+    	$scope.clearSearchField = function(){
+    		$scope.communityName = "";
+    	}
     }
 ]);
 
@@ -1231,6 +1263,45 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     ]);
 })();
 
+angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
+    function ($stateParams, addresses) {
+        var vm = this;
+        params={
+            type:'room',
+            block:$stateParams.block,
+            unit:$stateParams.unit
+        }
+        addresses.query(params).$promise.then(function(data){
+            vm.block = $stateParams.block;
+            vm.unit = $stateParams.unit;
+            vm.rooms = data.items;
+        })
+    }
+])
+angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type: "block"
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.blocks = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+}])
+angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type:'unit',
+        block:$stateParams.block
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.units = data.items;
+        vm.block = $stateParams.block;
+    }, function (data) {
+        console.log("err!");
+    });
+}]);
 myApp.directive('errSrc', function() {
   return {
     link: function(scope, element, attrs) {
@@ -1242,6 +1313,27 @@ myApp.directive('errSrc', function() {
     }
   }
 });
+myApp.directive('globalLoading', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            tip: '=',
+            lockClickHide: '='
+        },
+        templateUrl: 'tpl/common/directives/global-loading.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.clickLoadingLayer = function(){
+                if(!scope.lockClickHide){
+                    scope.show = false;
+                }
+            }
+        }
+    }
+
+})
+
 myApp.directive('pagination', function() {
     return {
         restrict: 'E',
@@ -1495,42 +1587,39 @@ factory('shops', ['$resource', function($resource) {
         }
     })
 }]);
-angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type: "block"
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.blocks = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-}])
-angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
-    function ($stateParams, addresses) {
-        var vm = this;
-        params={
-            type:'room',
-            block:$stateParams.block,
-            unit:$stateParams.unit
-        }
-        addresses.query(params).$promise.then(function(data){
-            vm.block = $stateParams.block;
-            vm.unit = $stateParams.unit;
-            vm.rooms = data.items;
-        })
-    }
-])
-angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type:'unit',
-        block:$stateParams.block
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.units = data.items;
-        vm.block = $stateParams.block;
-    }, function (data) {
-        console.log("err!");
-    });
-}]);
+angular.module('app.location')
+	.service('communityList', ['$q','$http','$timeout', function($q,$http,$timeout){
+		var cmmList = null;
+		this.getCommunityList = function(cityName){
+			var promise = null;
+			if(cmmList){
+				promise = $q.when(cmmList);
+			}else{
+				var defer = $q.defer();
+				$timeout(function(){
+					$http.get('data/communityList.json').success(function(data){
+						defer.resolve(data);
+					}).error(function(data){
+						defer.reject(data);
+					});
+				},2000);
+				promise = defer.promise;
+			}
+			return promise;
+		}
+	}]);
+angular.module('app.location')
+	.service('communitySearch', [function(){
+		this.cmmList = null;
+
+		this.searchCommunity = function(communityName){
+			console.log("searchCommunity...");
+			var result = [];
+			if(this.cmmList){
+				if(communityName){
+					result = this.cmmList;
+				}
+			}
+			return result;
+		}
+	}]);

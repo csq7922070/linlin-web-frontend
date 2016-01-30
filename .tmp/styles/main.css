@@ -912,6 +912,55 @@ div.rn-carousel-indicator span {
 #auto-location-container .location-tip-bar .retry-location {
   color: #4996ee;
 }
+@-webkit-keyframes load {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes load {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes load {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes load {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.global-loading {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  background-color: #000;
+  opacity: 0.3;
+}
+.global-loading .tip {
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  font-family: 微软雅黑;
+  margin-top: 55%;
+}
 
 .village:hover {
   color: #fff;

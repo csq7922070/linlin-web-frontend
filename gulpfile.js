@@ -20,6 +20,8 @@ var templateCache = require('gulp-angular-templatecache');
 ///////////
 
 gulp.task('copy', function() {
+  gulp.src('app/data/**/*.json')
+  .pipe(gulp.dest('dist/data'));
   gulp.src('app/*/**/*.html')
   .pipe(gulp.dest('dist/tpl'));
   gulp.src('app/assets/images/**')
@@ -43,7 +45,7 @@ gulp.task('clean:dist', function () {
 });
 
 gulp.task('build:js', [], function(){
-  return gulp.src(['app/app.js', 'app/*/**/*.js', 'app/common/**/*.js'])
+  return gulp.src(['app/app.js', 'app/*/**/*.js'])
         .pipe(concat('main.js'))      //压缩的文件
         .pipe(gulp.dest('.tmp/scripts'));   
 });
@@ -56,7 +58,7 @@ gulp.task('inject', ['build:js', 'less'], function(){
     .pipe($.useref())
     .pipe(jsFilter)
     .pipe($.ngAnnotate())
-    .pipe($.uglify())
+    //.pipe($.uglify())
     .pipe($.rev())
     .pipe(jsFilter.restore())
     .pipe(cssFilter)

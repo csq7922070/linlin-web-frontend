@@ -204,4 +204,8 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         city: '廊坊',
         address: '顺义区华侨路23号'
     }
+).value(
+    'openId', null
+).constant(
+    'appId', 'wx050cc99d8cec1a73'
 );

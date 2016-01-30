@@ -36,8 +36,8 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		}
     	];
 
-    	// //test
-    	// //-------------------------
+    	//test
+    	//-------------------------
     	// var x=document.getElementById("auto-location-container");
      //      function getLocation()
      //      {
@@ -79,7 +79,15 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
      //      }
 
      //      getLocation();
-    	// // end test
-    	// //---------------------------
+     	//if (sessionStorage.getItem("openid") == null) {
+     		// var url = $location.url().substring($location.url().indexOf("?"));
+	      //   if (url.indexOf("home") != -1) {
+	      //       url = "";
+	      //   }
+	      //   url="";
+            
+     	
+    	// end test
+    	//---------------------------
     }
 ]);

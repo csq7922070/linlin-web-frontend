@@ -2,7 +2,7 @@
 	<div class="search-container">
 <!-- 		<img class="search-icon" src="images/search.png"> -->
 		<input class="search-field" type="text" placeholder="请输入小区名称" ng-model="communityName" />
-		<a class="delete" href="javascript:void(0)" ng-show="communityName"></a>
+		<a class="delete" href="javascript:void(0)" ng-show="communityName" ng-click="clearSearchField()"></a>
 	</div>
 	<ul>
 		<li class="list-item community-item" ng-repeat="item in searchLocationCommunities">
@@ -37,3 +37,4 @@
 		暂未开通米饭公社服务
 	</div>
 </div>
+<global-loading tip="loadingTip" show="loadingShow" lock-click-hide="lockClickHide"></global-loading>
