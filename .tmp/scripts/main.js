@@ -1318,21 +1318,6 @@ factory('shops', ['$resource', function($resource) {
         }
     })
 }]);
-angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
-    function ($stateParams, addresses) {
-        var vm = this;
-        params={
-            type:'room',
-            block:$stateParams.block,
-            unit:$stateParams.unit
-        }
-        addresses.query(params).$promise.then(function(data){
-            vm.block = $stateParams.block;
-            vm.unit = $stateParams.unit;
-            vm.rooms = data.items;
-        })
-    }
-])
 angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {
@@ -1357,3 +1342,18 @@ angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addr
         console.log("err!");
     });
 }]);
+angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
+    function ($stateParams, addresses) {
+        var vm = this;
+        params={
+            type:'room',
+            block:$stateParams.block,
+            unit:$stateParams.unit
+        }
+        addresses.query(params).$promise.then(function(data){
+            vm.block = $stateParams.block;
+            vm.unit = $stateParams.unit;
+            vm.rooms = data.items;
+        })
+    }
+])
