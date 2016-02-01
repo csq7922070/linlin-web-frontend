@@ -67,9 +67,9 @@
                 <img ng-if="ele.type==1" src="images/ele.png" alt="icon" class="icon_small" style="margin-top: 2px">
             </div>
             <div class="weui_cell_bd weui_cell_primary">
-                <p ng-if="ele.type==0" style="position: relative;top: 3px" class="color333">水费</p>
+                <p ng-if="ele.type==0" class="color333" style="margin-top: 14px">水费</p>
 
-                <p ng-if="ele.type==1" style="position: relative;top: 3px" class="color333">电费</p>
+                <p ng-if="ele.type==1" class="color333" style="margin-top: 14px">电费</p>
             </div>
             <div class="color333">
                 {{ele.amount}}元
@@ -105,7 +105,7 @@
 </div>
 <div ng-if="!payments" style="text-align: center;margin-top: 20%">暂无待缴费信息</div>
 <div class="weui_cells acc_footer" style="font-size: 16px">
-    <div class="weui_cell" style="padding-top: 0px;padding-bottom: 0px">
+    <div class="weui_cell" style="padding-top: 0;padding-bottom: 0">
         <div class="weui_cell_hd">
             <input type="checkbox" ng-model="sel" ng-change="updateAll(sel)" id="sel_all" class="vis_none"
                    ng-disabled="!selected">
