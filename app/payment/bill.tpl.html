@@ -66,10 +66,10 @@
                 <img ng-if="ele.type==0" src="images/water.png" alt="icon" class="icon_small" style="margin-top: 1px">
                 <img ng-if="ele.type==1" src="images/ele.png" alt="icon" class="icon_small" style="margin-top: 2px">
             </div>
-            <div class="weui_cell_bd weui_cell_primary">
-                <p ng-if="ele.type==0" class="color333" style="margin-top: 14px">水费</p>
+            <div class="weui_cell_bd weui_cell_primary" style="margin-top: 6px">
+                <p ng-if="ele.type==0" class="color333">水费</p>
 
-                <p ng-if="ele.type==1" class="color333" style="margin-top: 14px">电费</p>
+                <p ng-if="ele.type==1" class="color333">电费</p>
             </div>
             <div class="color333">
                 {{ele.amount}}元

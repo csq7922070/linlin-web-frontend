@@ -333,6 +333,10 @@ p {
 .owner_top {
   margin-top: 5px;
 }
+.delete_icon {
+  width: 20px;
+  height: 18px;
+}
 .add_address {
   background-color: #ffffff;
   text-align: center;
@@ -347,13 +351,13 @@ p {
   background: url("../images/flag_02.png") no-repeat;
   background-size: contain;
   width: 16px;
-  height: 16px;
+  height: 18px;
 }
 .dis_active {
   background: url("../images/flag_01.png") no-repeat;
   background-size: contain;
   width: 16px;
-  height: 16px;
+  height: 18px;
 }
 .payment_date {
   font-size: 14px;

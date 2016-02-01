@@ -15,7 +15,7 @@
             {{house.ownerName}}
         </div>
     </a>
-    <div class="weui_cell ofen_address" style="padding-top: 0;padding-bottom: 10px;">
+    <div class="weui_cell ofen_address" style="padding-top: 0;padding-bottom: 0;">
         <div class="weui_cell_hd" ng-click="vm.change_flag(house)"
              ng-class="{'img_active':house.id==vm.activeId,'dis_active':house.id!=vm.activeId}">
         </div>
@@ -23,11 +23,10 @@
             <p class="color_aaa" style="position: relative;top: 2px;left: 14px" ng-if="house.id!=vm.activeId">设为我的常用地址</p>
             <p class="color_aaa" style="position: relative;top: 2px;left: 14px" ng-if="house.id==vm.activeId">我的常用地址</p>
         </div>
-        <div class="owner_name_del" ng-click="vm.deleteAddress(house)" style="margin-top: -4px">删除</div>
+        <div class="owner_name_del" ng-click="vm.deleteAddress(house)" style="margin-top: -2px"><img src="images/delete.png" class="delete_icon"></div>
     </div>
 </div>
 
-<!--<div class="owner_bottom"></div>-->
 <div class="add_address color333"  ui-sref="address-edit"><img src="images/plus.png" style="width: 14px;height: 14px;position: relative;top: -1px;left: -8px">新增地址</div>
 <!--提示框-->
 <div class="weui_dialog_confirm" ng-show="vm.sure_delete">
