@@ -11,7 +11,7 @@ angular.module('app.location')
 			// 	});
 			// },1500);
 			$http({
-				type: 'get',
+				method: 'GET',
 				url: basePath + '/GPS/',
 				params: {
 					openid: openId,
@@ -24,5 +24,32 @@ angular.module('app.location')
 				defer.reject(data);
 			});
 			return defer.promise;
+		}
+
+		this.changeCommunity = function(openId, cmmInfo){
+			var defer = $q.defer();
+			$http({
+				method: 'POST',
+				url: basePath + '/GPS/save',
+				data:{
+					openid: openId,
+					name: cmmInfo.name,
+					city: cmmInfo.city,
+					address: cmmInfo.address
+				}
+			}).success(function(data){
+				defer.resolve(data);
+			}).error(function(data){
+				defer.reject(data);
+			});
+			return defer.promise;
+		}
+
+		this.compareCommunity = function(data){
+			var result = false;
+			if(data.type == "false" && data.name == data.lastName && data.city == data.lastCity && data.address == data.lastAddress){
+				result = true;
+			}
+			return result;
 		}
 	}]);

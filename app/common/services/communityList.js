@@ -7,13 +7,24 @@ angular.module('app.location')
 				promise = $q.when(cmmList);
 			}else{
 				var defer = $q.defer();
-				$timeout(function(){
-					$http.get('data/communityList.json').success(function(data){
-						defer.resolve(data);
-					}).error(function(data){
-						defer.reject(data);
-					});
-				},1000);
+				// $timeout(function(){
+				// 	$http.get('data/communityList.json').success(function(data){
+				// 		defer.resolve(data);
+				// 	}).error(function(data){
+				// 		defer.reject(data);
+				// 	});
+				// },1000);
+				$http({
+					method: "GET",
+					url: basePath + '/findArea',
+					params: {
+						city: cityName
+					}
+				}).success(function(data){
+					defer.resolve(data);
+				}).error(function(data){
+					defer.reject(data);
+				});
 				promise = defer.promise;
 			}
 			return promise;

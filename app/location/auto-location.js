@@ -11,13 +11,15 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		$state.go('search-location');
     	}
 
+    	var openId = null;
+    	//openId = "o-YfcstQPoTDSPuNHZ44cEof8";
+    	//$scope.showModal = true;
     	$scope.retryLocation = function(){
     		//return communityLocation.locationCommunity(124, 11, 133);
     		console.log("retryLocation...");
     		$scope.showLocationError = false;
     		$scope.loadingTip = "定位中...";
     		$scope.loadingShow = true;
-    		var openId = null;
     		userInfo.getOpenId().then(function(data){//openid
     			openId = data;
     			return location.getLocation();
@@ -31,26 +33,40 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		},function(reason){
     			reason = "get location error: "+reason;
     			return $q.reject(reason);
+
     			// openId = "o-YfcstQPoTDSPuNHZ44cEof8";
     			// var longitude = 116.303128;
     			// var latitude = 39.979436;
     			// return communityLocation.locationCommunity(openId, longitude, latitude);
+    			//return $q.when({type:"false",areaName:"金桥一区",city:"廊坊",address:"a1",lastAreaName:"昌平小区",lastCity:"北京",lastAddress:"a2"});
     		}).then(function(data){//community
     			$scope.autoLocationCommunities = [{
-    				name:data.areaName,
-    				city: data.city,
-    				address: data.address,
-    				title: data.city + ', '+data.areaName
+    				name:data.lastAreaName,
+    				city: data.lastCity,
+    				address: data.lastAddress,
+    				title: data.lastCity + ', '+data.lastAreaName
     			}];
-    			// for(var i=0;i<data.length;i++){
-    			// 	$scope.autoLocationCommunities.push({
-    			// 		name : data[i].areaName,
-    			// 		city : data[i].city,
-    			// 		address : data[i].address,
-    			// 		title : data[i].city + ", "+data[i].areaName
-    			// 	});
-    			// }
     			$scope.loadingShow = false;
+    			if(!communityLocation.compareCommunity(data)){//检测2次小区地址是否一致
+    				//需要提示用户是否切换到当前定位地址
+    				$scope.modalTip = "检测到当前登陆位置为"+data.city+data.areaName+", "+
+    					"上次登陆位置为"+data.lastCity+data.lastAreaName+", 是否切换?"
+    				$scope.tipAlign = "left";
+    				$scope.okText = "切换";
+    				$scope.showModal = true;
+    				$scope.onModalClose = function(state){//state is true or false
+    					if(state){
+    						$scope.toNewCommunity = true;//用来判断用户是否切换的标志
+    						$scope.autoLocationCommunities = [{
+			    				name:data.areaName,
+			    				city: data.city,
+			    				address: data.address,
+			    				title: data.city + ', '+data.areaName
+			    			}];
+    					}
+    					$scope.showModal = false;
+    				}
+				}
     		}, function(reason){
     			alert(reason);
     			$scope.loadingShow = false; 
@@ -63,6 +79,13 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		communityInfo.name = community.name;
     		communityInfo.city = community.city;
     		communityInfo.address = community.address;
+    		if($scope.toNewCommunity){
+    			communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
+	    			console.log("communityLocation.changeCommunity(openId, community) success.");
+	    		},function(reason){
+	    			alert("保存用户选择的小区信息到服务器失败："+reason);
+	    		});
+    		}
     		$state.go('home');
     	}
 

@@ -419,6 +419,49 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
     }
 ]);
 
+(function() {
+    angular.module('app.notice').controller("noticeDetailCtrl", ['$stateParams', 'notices',
+        function($stateParams, notices) {
+            var vm = this;
+            notices.get({
+                id: $stateParams.id
+            }).$promise.then(function(data) {
+                vm.notice = data;
+            })
+        }
+    ]);
+})();
+
+(function() {
+    angular.module('app.notice').controller('noticeListCtrl', ['notices',
+        function(notices) {
+            var vm = this;
+            vm.currentPage = 0;
+            vm.pageSize = 10;
+            vm.notices = [];
+            vm.load = function(goPage, limit) {
+                if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
+                    return;
+                } else {
+                    vm.busy = true;
+                    params = {
+                        offset: vm.pageSize * (goPage - 1),
+                        limit: vm.pageSize,
+                        openid: sessionStorage.getItem("openid")
+                    }
+                    notices.query(params).$promise.then(function(data) {
+                        vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
+                        vm.currentPage = goPage;
+                        vm.busy = false;
+                         Array.prototype.push.apply(vm.notices,data.items);
+                    });
+                }
+            }
+            vm.load(1, vm.pageSize);
+        }
+    ]);
+})();
+
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
 	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo',
     function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo) {
@@ -432,13 +475,15 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		$state.go('search-location');
     	}
 
+    	var openId = null;
+    	//openId = "o-YfcstQPoTDSPuNHZ44cEof8";
+    	//$scope.showModal = true;
     	$scope.retryLocation = function(){
     		//return communityLocation.locationCommunity(124, 11, 133);
     		console.log("retryLocation...");
     		$scope.showLocationError = false;
     		$scope.loadingTip = "定位中...";
     		$scope.loadingShow = true;
-    		var openId = null;
     		userInfo.getOpenId().then(function(data){//openid
     			openId = data;
     			return location.getLocation();
@@ -452,26 +497,40 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		},function(reason){
     			reason = "get location error: "+reason;
     			return $q.reject(reason);
+
     			// openId = "o-YfcstQPoTDSPuNHZ44cEof8";
     			// var longitude = 116.303128;
     			// var latitude = 39.979436;
     			// return communityLocation.locationCommunity(openId, longitude, latitude);
+    			//return $q.when({type:"false",areaName:"金桥一区",city:"廊坊",address:"a1",lastAreaName:"昌平小区",lastCity:"北京",lastAddress:"a2"});
     		}).then(function(data){//community
     			$scope.autoLocationCommunities = [{
-    				name:data.areaName,
-    				city: data.city,
-    				address: data.address,
-    				title: data.city + ', '+data.areaName
+    				name:data.lastAreaName,
+    				city: data.lastCity,
+    				address: data.lastAddress,
+    				title: data.lastCity + ', '+data.lastAreaName
     			}];
-    			// for(var i=0;i<data.length;i++){
-    			// 	$scope.autoLocationCommunities.push({
-    			// 		name : data[i].areaName,
-    			// 		city : data[i].city,
-    			// 		address : data[i].address,
-    			// 		title : data[i].city + ", "+data[i].areaName
-    			// 	});
-    			// }
     			$scope.loadingShow = false;
+    			if(!communityLocation.compareCommunity(data)){//检测2次小区地址是否一致
+    				//需要提示用户是否切换到当前定位地址
+    				$scope.modalTip = "检测到当前登陆位置为"+data.city+data.areaName+", "+
+    					"上次登陆位置为"+data.lastCity+data.lastAreaName+", 是否切换?"
+    				$scope.tipAlign = "left";
+    				$scope.okText = "切换";
+    				$scope.showModal = true;
+    				$scope.onModalClose = function(state){//state is true or false
+    					if(state){
+    						$scope.toNewCommunity = true;//用来判断用户是否切换的标志
+    						$scope.autoLocationCommunities = [{
+			    				name:data.areaName,
+			    				city: data.city,
+			    				address: data.address,
+			    				title: data.city + ', '+data.areaName
+			    			}];
+    					}
+    					$scope.showModal = false;
+    				}
+				}
     		}, function(reason){
     			alert(reason);
     			$scope.loadingShow = false; 
@@ -484,6 +543,13 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		communityInfo.name = community.name;
     		communityInfo.city = community.city;
     		communityInfo.address = community.address;
+    		if($scope.toNewCommunity){
+    			communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
+	    			console.log("communityLocation.changeCommunity(openId, community) success.");
+	    		},function(reason){
+	    			alert("保存用户选择的小区信息到服务器失败："+reason);
+	    		});
+    		}
     		$state.go('home');
     	}
 
@@ -642,49 +708,6 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	}
     }
 ]);
-
-(function() {
-    angular.module('app.notice').controller("noticeDetailCtrl", ['$stateParams', 'notices',
-        function($stateParams, notices) {
-            var vm = this;
-            notices.get({
-                id: $stateParams.id
-            }).$promise.then(function(data) {
-                vm.notice = data;
-            })
-        }
-    ]);
-})();
-
-(function() {
-    angular.module('app.notice').controller('noticeListCtrl', ['notices',
-        function(notices) {
-            var vm = this;
-            vm.currentPage = 0;
-            vm.pageSize = 10;
-            vm.notices = [];
-            vm.load = function(goPage, limit) {
-                if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
-                    return;
-                } else {
-                    vm.busy = true;
-                    params = {
-                        offset: vm.pageSize * (goPage - 1),
-                        limit: vm.pageSize,
-                        openid: sessionStorage.getItem("openid")
-                    }
-                    notices.query(params).$promise.then(function(data) {
-                        vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
-                        vm.currentPage = goPage;
-                        vm.busy = false;
-                         Array.prototype.push.apply(vm.notices,data.items);
-                    });
-                }
-            }
-            vm.load(1, vm.pageSize);
-        }
-    ]);
-})();
 
 angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', 'addresses', 'payments',
     function($scope, $http, $stateParams, $rootScope, $state, addresses, payments) {
@@ -1344,6 +1367,45 @@ angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addr
         console.log("err!");
     });
 }]);
+myApp.directive('confirmModal', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            title: '=',
+            tip: '=',
+            tipAlign: '=',
+            okText: '=',
+            cancelText: '=',
+            onlyOkButton: '=',
+            close: '&onClose' 
+        },
+        templateUrl: 'tpl/common/directives/confirm-modal.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.ok = function(){
+                scope.close({state:true});
+            }
+
+            scope.cancel = function(){
+                scope.close({state:false});
+            }
+
+            scope.$watch('cancelText', function(newVal, oldVal){
+                if(!newVal){
+                    scope.cancelText = "取消";
+                }
+            });
+
+            scope.$watch('okText', function(newVal, oldVal){
+                if(!newVal){
+                    scope.okText = "确定";
+                }
+            })
+        }
+    }
+
+})
 myApp.directive('errSrc', function() {
   return {
     link: function(scope, element, attrs) {
@@ -1638,13 +1700,24 @@ angular.module('app.location')
 				promise = $q.when(cmmList);
 			}else{
 				var defer = $q.defer();
-				$timeout(function(){
-					$http.get('data/communityList.json').success(function(data){
-						defer.resolve(data);
-					}).error(function(data){
-						defer.reject(data);
-					});
-				},1000);
+				// $timeout(function(){
+				// 	$http.get('data/communityList.json').success(function(data){
+				// 		defer.resolve(data);
+				// 	}).error(function(data){
+				// 		defer.reject(data);
+				// 	});
+				// },1000);
+				$http({
+					method: "GET",
+					url: basePath + '/findArea',
+					params: {
+						city: cityName
+					}
+				}).success(function(data){
+					defer.resolve(data);
+				}).error(function(data){
+					defer.reject(data);
+				});
 				promise = defer.promise;
 			}
 			return promise;
@@ -1663,7 +1736,7 @@ angular.module('app.location')
 			// 	});
 			// },1500);
 			$http({
-				type: 'get',
+				method: 'GET',
 				url: basePath + '/GPS/',
 				params: {
 					openid: openId,
@@ -1676,6 +1749,33 @@ angular.module('app.location')
 				defer.reject(data);
 			});
 			return defer.promise;
+		}
+
+		this.changeCommunity = function(openId, cmmInfo){
+			var defer = $q.defer();
+			$http({
+				method: 'POST',
+				url: basePath + '/GPS/save',
+				data:{
+					openid: openId,
+					name: cmmInfo.name,
+					city: cmmInfo.city,
+					address: cmmInfo.address
+				}
+			}).success(function(data){
+				defer.resolve(data);
+			}).error(function(data){
+				defer.reject(data);
+			});
+			return defer.promise;
+		}
+
+		this.compareCommunity = function(data){
+			var result = false;
+			if(data.type == "false" && data.name == data.lastName && data.city == data.lastCity && data.address == data.lastAddress){
+				result = true;
+			}
+			return result;
 		}
 	}]);
 angular.module('app.location')

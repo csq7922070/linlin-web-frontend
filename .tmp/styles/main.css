@@ -961,6 +961,72 @@ div.rn-carousel-indicator span {
   }
 }
 
+.confirm-modal {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  font-family: 微软雅黑;
+}
+.confirm-modal .mask {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: 0.3;
+}
+.confirm-modal .c-container {
+  background-color: #fff;
+  position: absolute;
+  left: 50%;
+  top: 0px;
+  width: 70%;
+  border: solid 1px #ddd;
+  margin-top: 45%;
+  margin-left: -35%;
+}
+.confirm-modal .c-container .c-content {
+  padding: 15px 15px;
+}
+.confirm-modal .c-container .c-content .c-title {
+  margin: 0px;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.confirm-modal .c-container .c-content .c-tip {
+  margin: 10px 10px;
+  text-align: center;
+  font-size: 15px;
+}
+.confirm-modal .c-container .c-content .c-tip-left {
+  text-align: left;
+}
+.confirm-modal .c-container .c-content .c-tip-center {
+  text-align: center;
+}
+.confirm-modal .c-container .c-footer {
+  border-top: solid 1px #ddd;
+  font-size: 16px;
+}
+.confirm-modal .c-container .c-footer .c-button {
+  width: 50%;
+  display: block;
+  float: left;
+  text-align: center;
+  padding: 5px 0px;
+}
+.confirm-modal .c-container .c-footer .cancel-button {
+  border-right: solid 1px #ddd;
+}
+.confirm-modal .c-container .only-ok-button .cancel-button {
+  display: none;
+}
+.confirm-modal .c-container .only-ok-button .ok-button {
+  width: 100%;
+}
+
 .global-loading {
   position: fixed;
   left: 0px;
