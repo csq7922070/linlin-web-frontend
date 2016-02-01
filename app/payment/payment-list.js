@@ -11,8 +11,9 @@ angular.module('app.payment').controller('paymentListCtrl', ['$scope', '$http', 
                 houseId: $stateParams.id
             }
         }).success(function (data) {
-            //$scope.records = data.items;
-            $scope.records = $filter("payListMerge")(data.items);
+            if(data.items.length!=0){
+                $scope.records = $filter("payListMerge")(data.items);
+            }
         });
     }
 ]);

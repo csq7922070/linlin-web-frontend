@@ -1,21 +1,21 @@
 ﻿<div class="weui_cells weui_cells_access address_down">
-    <a class="weui_cell" href="javascript:;">
+    <div class="weui_cell" href="javascript:;">
         <div class="weui_cell_bd weui_cell_primary">
             <p style="margin-top: 10px;">城市</p>
         </div>
         <div class="weui_cell_ft">
             廊坊市
         </div>
-    </a>
-    <a class="weui_cell" href="javascript:;">
+    </div>
+    <div class="weui_cell" href="javascript:;">
         <div class="weui_cell_bd weui_cell_primary">
             <p style="margin-top: 10px;">小区</p>
         </div>
         <div class="weui_cell_ft">
             阿尔卡迪亚小区
         </div>
-    </a>
-    <a class="weui_cell" ui-sref="address-block">
+    </div>
+    <div class="weui_cell" ui-sref="address-block">
         <div class="weui_cell_bd weui_cell_primary">
             <p style="margin-top: 10px;">楼号</p>
         </div>
@@ -25,8 +25,8 @@
         <div ng-if="!vm.block" class="weui_cell_ft" name="block">
             请选择
         </div>
-    </a>
-    <a class="weui_cell" ng-disabled="type==0">
+    </div>
+    <div class="weui_cell" ng-disabled="type==0">
         <div class="weui_cell_bd weui_cell_primary">
             <p style="margin-top: 10px;" ng-class="vm.unit?'':'color_ccc'">单元</p>
         </div>
@@ -36,8 +36,8 @@
         <div ng-if="!vm.unit" class="weui_cell_ft color_ccc" name="unit">
             请选择
         </div>
-    </a>
-    <a class="weui_cell" ng-disabled="type==0||type==3">
+    </div>
+    <div class="weui_cell" ng-disabled="type==0||type==3">
         <div class="weui_cell_bd weui_cell_primary">
             <p style="margin-top: 10px;" ng-class="vm.room?'':'color_ccc'">门牌号</p>
         </div>
@@ -47,15 +47,15 @@
         <div ng-if="!vm.room" class="weui_cell_ft color_ccc" name="room">
             请选择
         </div>
-    </a>
-    <a class="weui_cell address_detail" href="javascript:;">
+    </div>
+    <div class="weui_cell address_detail" href="javascript:;">
         <span class="sure_address" style="margin-top: 10px;">
             确认地址
         </span>
-        <span class="sure_address right_detail" style="margin-top: 10px;">
+        <span class="right_detail" style="margin-top: 10px;">
             阿尔卡迪亚小区<span>{{vm.block}}</span><span ng-if="vm.unit">-{{vm.unit}}</span><span ng-if="vm.room">-{{vm.room}}</span>
         </span>
-    </a>
+    </div>
 </div>
 
 <!--下一步按钮-->
