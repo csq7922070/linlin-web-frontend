@@ -12,7 +12,8 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     			communitySearch.cmmList = cmmList;
     			$scope.loadingShow = false;
     		},function(reason){
-    			$scope.loadingTip = "数据加载失败"+reason.substr(0,20);
+    			console.log(reason);
+    			$scope.loadingTip = "数据加载失败";
     			$scope.lockClickHide = false;
     		});
 

@@ -1,6 +1,7 @@
 //var basePath = "http://localhost:8080/skh";
 //var basePath="http://192.168.0.120:8080/skh";
 var basePath = "http://mitest.4zlink.com:8080/mifan";
+//var basePath = "http://192.168.0.136:8080/skh";
 
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
@@ -10,8 +11,9 @@ angular.module('app.complain', ['resources.complain']);
 angular.module('app.address', ['resources.address']);
 angular.module('app.payment', ['resources.address', 'resources.payment']);
 angular.module('app.location', []);
+angular.module('app.user',[]);
 
-var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 'app.complain', 'app.address', 'app.payment', 'app.location']);
+var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -204,8 +206,6 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         city: '廊坊',
         address: '顺义区华侨路23号'
     }
-).value(
-    'openId', null
 ).constant(
     'appId', 'wx050cc99d8cec1a73'
 );

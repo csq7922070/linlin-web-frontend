@@ -1,6 +1,7 @@
 //var basePath = "http://localhost:8080/skh";
 //var basePath="http://192.168.0.120:8080/skh";
 var basePath = "http://mitest.4zlink.com:8080/mifan";
+//var basePath = "http://192.168.0.136:8080/skh";
 
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
@@ -10,8 +11,9 @@ angular.module('app.complain', ['resources.complain']);
 angular.module('app.address', ['resources.address']);
 angular.module('app.payment', ['resources.address', 'resources.payment']);
 angular.module('app.location', []);
+angular.module('app.user',[]);
 
-var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 'app.complain', 'app.address', 'app.payment', 'app.location']);
+var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -204,8 +206,6 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         city: '廊坊',
         address: '顺义区华侨路23号'
     }
-).value(
-    'openId', null
 ).constant(
     'appId', 'wx050cc99d8cec1a73'
 );
@@ -420,42 +420,76 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
 ]);
 
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'communityInfo',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo) {
+	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo) {
+    	$scope.loadingTip = "定位中...";
+    	$scope.loadingShow = true;
+    	$scope.lockClickHide = true;
+
+    	$scope.showLocationError = false;
+
     	$scope.clickSearchField = function(){
     		$state.go('search-location');
     	}
 
     	$scope.retryLocation = function(){
+    		//return communityLocation.locationCommunity(124, 11, 133);
     		console.log("retryLocation...");
+    		$scope.showLocationError = false;
+    		$scope.loadingTip = "定位中...";
+    		$scope.loadingShow = true;
+    		var openId = null;
+    		userInfo.getOpenId().then(function(data){//openid
+    			openId = data;
+    			return location.getLocation();
+    		},function(reason){
+    			reason = "get openid error: " + reason;
+    			return $q.reject(reason);
+    		}).then(function(data){//location
+    			// var s = "openid:"+openId+","+data.longitude+","+data.latitude;
+    			// alert(s);
+    			return communityLocation.locationCommunity(openId, data.longitude, data.latitude);
+    		},function(reason){
+    			reason = "get location error: "+reason;
+    			return $q.reject(reason);
+    			// openId = "o-YfcstQPoTDSPuNHZ44cEof8";
+    			// var longitude = 116.303128;
+    			// var latitude = 39.979436;
+    			// return communityLocation.locationCommunity(openId, longitude, latitude);
+    		}).then(function(data){//community
+    			$scope.autoLocationCommunities = [{
+    				name:data.areaName,
+    				city: data.city,
+    				address: data.address,
+    				title: data.city + ', '+data.areaName
+    			}];
+    			// for(var i=0;i<data.length;i++){
+    			// 	$scope.autoLocationCommunities.push({
+    			// 		name : data[i].areaName,
+    			// 		city : data[i].city,
+    			// 		address : data[i].address,
+    			// 		title : data[i].city + ", "+data[i].areaName
+    			// 	});
+    			// }
+    			$scope.loadingShow = false;
+    		}, function(reason){
+    			alert(reason);
+    			$scope.loadingShow = false; 
+    			$scope.showLocationError = true;
+    		});
     	}
 
     	$scope.changeCommunity = function(community){
     		console.log(community);
     		communityInfo.name = community.name;
+    		communityInfo.city = community.city;
+    		communityInfo.address = community.address;
     		$state.go('home');
     	}
 
-    	$scope.autoLocationCommunities = [
-    		{
-    			city: "北京",
-    			name: "万科金域华府",
-    			address: "京徽高速边500米",
-    			title: "北京, 万科金域华府"
-    		},
-    		{
-    			city: "北京",
-    			name: "万科金域华府",
-    			address: "京徽高速边500米",
-    			title: "北京, 万科金域华府"
-    		},
-    		{
-    			city: "北京",
-    			name: "万科金域华府",
-    			address: "京徽高速边500米",
-    			title: "北京, 万科金域华府"
-    		}
-    	];
+    	$scope.autoLocationCommunities = [];
+
+    	$scope.retryLocation();//自动定位页面加载时便开始自动定位小区
 
     	//test
     	//-------------------------
@@ -506,43 +540,43 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 	      //       url = "";
 	      //   }
 	      //   url="";
-            $http({
-                method: "GET",
-                url: basePath + '/GPS/findSign'
-            }).success(function(data) {
-                sessionStorage.setItem("appid", data.appid);
-                //添加微信支付
-                sessionStorage.setItem("timestamp", data.timestamp);
-                sessionStorage.setItem("noncestr", data.noncestr);
-                sessionStorage.setItem("sign", data.sign);
-                console.log("获取openid成功");
-                wx.config({
-		            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-		            appId: "wx050cc99d8cec1a73", // 必填，公众号的唯一标识
-		            timestamp: sessionStorage.getItem("timestamp"), // 必填，生成签名的时间戳
-		            nonceStr: sessionStorage.getItem("noncestr"), // 必填，生成签名的随机串
-		            signature: sessionStorage.getItem("sign"), // 必填，签名，见附录1
-		            jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-		        });
-			     wx.ready(function(){
-					wx.getLocation({
-					    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-					    success: function (res) {
-					        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-					        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-					        var speed = res.speed; // 速度，以米/每秒计
-					        var accuracy = res.accuracy; // 位置精度
-					        alert("weixin location:" + latitude + ","+longitude+",精度："+accuracy);
-					    }
-					});
-			     });
-			     // wx.error(function(res){
-			     // 	alert("wx.error");
-			     // 	alert(res);
-			     // });
-            }).error(function(data) {
-                console.log("获取openid失败");
-            });
+     //        $http({
+     //            method: "GET",
+     //            url: basePath + '/GPS/findSign'
+     //        }).success(function(data) {
+     //            sessionStorage.setItem("appid", data.appid);
+     //            //添加微信支付
+     //            sessionStorage.setItem("timestamp", data.timestamp);
+     //            sessionStorage.setItem("noncestr", data.noncestr);
+     //            sessionStorage.setItem("sign", data.sign);
+     //            console.log("获取openid成功");
+     //            wx.config({
+		   //          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		   //          appId: "wx050cc99d8cec1a73", // 必填，公众号的唯一标识
+		   //          timestamp: sessionStorage.getItem("timestamp"), // 必填，生成签名的时间戳
+		   //          nonceStr: sessionStorage.getItem("noncestr"), // 必填，生成签名的随机串
+		   //          signature: sessionStorage.getItem("sign"), // 必填，签名，见附录1
+		   //          jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		   //      });
+			  //    wx.ready(function(){
+					// wx.getLocation({
+					//     type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+					//     success: function (res) {
+					//         var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+					//         var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+					//         var speed = res.speed; // 速度，以米/每秒计
+					//         var accuracy = res.accuracy; // 位置精度
+					//         alert("weixin location:" + latitude + ","+longitude+",精度："+accuracy);
+					//     }
+					// });
+			  //    });
+			  //    // wx.error(function(res){
+			  //    // 	alert("wx.error");
+			  //    // 	alert(res);
+			  //    // });
+     //        }).error(function(data) {
+     //            console.log("获取openid失败");
+     //        });
         //}
             
      	
@@ -565,7 +599,8 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     			communitySearch.cmmList = cmmList;
     			$scope.loadingShow = false;
     		},function(reason){
-    			$scope.loadingTip = "数据加载失败"+reason.substr(0,20);
+    			console.log(reason);
+    			$scope.loadingTip = "数据加载失败";
     			$scope.lockClickHide = false;
     		});
 
@@ -1079,7 +1114,7 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
                 .then(function(data) {
                     var deferred = $q.defer();
                     wx.config({
-                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                         appId: data.appid, // 必填，公众号的唯一标识
                         timestamp: sessionStorage.getItem("timestamp"), // 必填，生成签名的时间戳
                         nonceStr: sessionStorage.getItem("noncestr"), // 必填，生成签名的随机串
@@ -1634,6 +1669,34 @@ angular.module('app.location')
 		}
 	}]);
 angular.module('app.location')
+	.service('communityLocation', ['$q', '$timeout', '$http', function($q, $timeout, $http){
+		this.locationCommunity = function(openId, longitude, latitude){// longitude经度，latitude维度
+			console.log("locationCommunity...");
+			var defer = $q.defer();
+			// $timeout(function(){
+			// 	$http.get('data/communityLocation.json').success(function(data){
+			// 		defer.resolve(data);
+			// 	}).error(function(data){
+			// 		defer.reject(data);
+			// 	});
+			// },1500);
+			$http({
+				type: 'get',
+				url: basePath + '/GPS/',
+				params: {
+					openid: openId,
+					lon: longitude,
+					lat: latitude
+				}
+			}).success(function(data){
+				defer.resolve(data);
+			}).error(function(data){
+				defer.reject(data);
+			});
+			return defer.promise;
+		}
+	}]);
+angular.module('app.location')
 	.service('communitySearch', [function(){
 		this.cmmList = null;
 		var max = 10;
@@ -1653,5 +1716,118 @@ angular.module('app.location')
 				}
 			}
 			return result;
+		}
+	}]);
+angular.module('app.location')
+	.service('location', ['$q', function($q){
+        this.getLocation = function()
+        {
+        	var defer = $q.defer();
+	        if (navigator.geolocation)
+	        {
+	        	navigator.geolocation.getCurrentPosition(showPosition, showError);
+	        }
+		    else{
+		        defer.reject("浏览器不支持定位。");
+	        }
+
+	        function showPosition(position)
+	        {
+	        	defer.resolve(position.coords);
+			    console.log(position.coords);
+			 	// coords.latitude	十进制数的纬度
+				// coords.longitude	十进制数的经度
+				// coords.accuracy	位置精度
+				// coords.altitude	海拔，海平面以上以米计
+				// coords.altitudeAccuracy	位置的海拔精度
+				// coords.heading	方向，从正北开始以度计
+				// coords.speed	速度，以米/每秒计
+				// timestamp	响应的日期/时间
+	        }
+
+	        function showError(error)
+	        {
+	        	var errorReason = "";
+	          	switch(error.code)
+	            {
+		            case error.PERMISSION_DENIED:
+		                errorReason="User denied the request for Geolocation."
+		                break;
+		            case error.POSITION_UNAVAILABLE:
+		                errorReason="Location information is unavailable."
+		                break;
+		            case error.TIMEOUT:
+		                errorReason="The request to get user location timed out."
+		                break;
+		            case error.UNKNOWN_ERROR:
+		                errorReason="An unknown error occurred."
+		                break;
+	            }
+	            defer.reject(errorReason);
+			}
+			return defer.promise;
+		}
+	}]);
+angular.module('app.user')
+	.service('userInfo', ['$q','$http','$timeout', '$location', function($q,$http,$timeout, $location){
+		var openId = null;
+		var wxConfigParam = {
+			timestamp : null,
+			noncestr : null,
+			sign : null,
+		};
+
+		this.getOpenId = function(){
+			var defer = $q.defer();
+			if (openId == null ){
+				var url = $location.url().substring($location.url().indexOf("?"));
+				if(url.indexOf("auto-location")>=0){
+					url="";
+				}
+	            $http({
+	                method: "GET",
+	                url: basePath + '/getopenid' + url
+	            }).success(function(data) {
+	            	openId = data.openid;
+	                //微信配置接口所需参数
+	                wxConfigParam.timestamp = data.timestamp;
+	                wxConfigParam.noncestr = data.noncestr;
+	                wxConfigParam.sign = data.sign;
+	                //test
+	                sessionStorage.setItem("openid", data.openid);
+	                //添加微信支付
+	                sessionStorage.setItem("timestamp", data.timestamp);
+	                sessionStorage.setItem("noncestr", data.noncestr);
+	                sessionStorage.setItem("sign", data.sign);
+	                // end test
+	                defer.resolve(openId);
+	            }).error(function(data) {
+	                //alert("获取OpenID失败："+data);
+	                defer.reject(data);
+	            });
+	        }
+	        return defer.promise;
+		}
+
+		this.getWxConfigParam = function(){
+			var defer = $q.defer();
+			if(wxConfigParam.timestamp == null || wxConfigParam.noncestr == null || wxConfigParam.sign == null){
+				var url = $location.url().substring($location.url().indexOf("?"));
+	            $http({
+	                method: "GET",
+	                url: basePath + '/getopenid' + url
+	            }).success(function(data) {
+	            	openId = data.openid;
+	                //微信配置接口所需参数
+	                wxConfigParam.timestamp = data.timestamp;
+	                wxConfigParam.noncestr = data.noncestr;
+	                wxConfigParam.sign = data.sign;
+	                defer.resolve(wxConfigParam);
+	            }).error(function(data) {
+	                //alert("获取微信配置接口参数失败："+data);
+	                defer.reject(data);
+	            });
+			}
+			return defer.promise;
 		}
 	}]);

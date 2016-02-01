@@ -14,8 +14,9 @@
 				<span class="community-address" ng-bind="item.address"></span>
 			</a>
 		</li>
-		<li class="list-item location-tip-bar">
+		<li class="list-item location-tip-bar" ng-show="showLocationError">
 			定位失败，请<a class="retry-location" ng-click="retryLocation()">重试</a>或通过搜索框搜索
 		</li>
 	</ul>
 </div>
+<global-loading tip="loadingTip" show="loadingShow" lock-click-hide="lockClickHide"></global-loading>
