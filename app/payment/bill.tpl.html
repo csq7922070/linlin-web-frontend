@@ -16,7 +16,7 @@
         </div>
         <img src="images/right_arrow.png" style="height: 18px">
     </a>
-    <a class="weui_cell ofen_address" style="padding-top: 0;padding-bottom: 10px">
+    <a class="weui_cell ofen_address" style="padding-top: 0;padding-bottom: 0px">
         <div class="weui_cell_hd" ng-click="change_flag()"
              ng-class="{'img_active':id==activeId,'dis_active':id!=activeId}">
         </div>
@@ -32,14 +32,14 @@
     </a>
 </div>
 <div class="weui_cells_title color333" style="padding-bottom: 4px">待缴费信息
-    <small><span class="account_record" style="float: right;color: #4996ee;position:relative;top: 2px"
+    <small><span class="account_record" style="float: right;color: #4996ee;position:relative;top: 2px;"
                  ui-sref="payment-list({id:2185})">缴费记录</span></small>
 </div>
 
 <div ng-if="payments">
-    <div class="weui_cells address_down account_page" ng-repeat="payment in payments"
+    <div class="weui_cells address_down account_page " ng-repeat="payment in payments"
          ng-class="!$first?'pos_up':''">
-        <div class="weui_cell" href="javascript:;">
+        <div class="weui_cell" style="padding-top: 0;padding-bottom: 0">
             <div class="weui_cell_hd">
                 <input type="checkbox" ng-model="payment.selected" ng-checked="sel"
                        ng-change="updateYearmonth(payment.yearmonth,payment.selected)" id="all_sel{{payment.yearmonth}}"
@@ -54,8 +54,8 @@
                 应缴金额
             </div>
         </div>
-        <div class="weui_cell" href="javascript:;" ng-repeat="ele in payment.eles" ng-class=" $first ? 'border_line':''"
-             style="padding-top: 0;padding-bottom: 0">
+        <div class="weui_cell" ng-repeat="ele in payment.eles" ng-class=" $first ? 'border_line':''"
+             style="padding-top: 0;padding-bottom: 0;height: 40px;">
             <div class="weui_cell_hd">
                 <input ng-checked="payment.selected" ng-model="ele.selected" type="checkbox" id="ele{{ele.id}}"
                        ng-change="update(ele)" class="vis_none">
@@ -84,15 +84,15 @@
                     ng-if="!freeShow" class="color999">详情<img src="images/down_arrow.png"
                                                               style="width: 24px;height: 24px"></span>
             </div>
-            <div ng-show="freeShow" style="padding:0 15px">
+            <div ng-show="freeShow" style="padding:0 15px;font-size: 12px">
                 <div style="text-align: center" class="color_aaa">
-                    <small><span style="float: left;margin-top: 2px">类别</span><span>本月表数-上月表数</span><span
-                            style="float: right;margin-top: 2px">用量</span>
+                    <small><span style="float: left;">类别</span><span>本月表数-上月表数</span><span
+                            style="float: right">用量</span>
                     </small>
                 </div>
                 <div class="color777" style="text-align: center;padding: 4px 0" ng-repeat="detail in payment.eles ">
-                    <span ng-if="detail.type==0" style="float: left">水费</span>
-                    <span style="float: left" ng-if="detail.type==1">电费</span>
+                    <span ng-if="detail.type==0" style="float: left">水表数</span>
+                    <span style="float: left" ng-if="detail.type==1">电表数</span>
                     {{detail.number}}
                     <span style="float: right">{{detail.count}}</span>
                 </div>
@@ -100,7 +100,7 @@
         </div>
     </div>
     <div class="free_info color555" style="text-align: center;font-size: 12px;padding: 10px 15px 4px;">
-        计费标准参考：水费-0.35元/m³ 电费-0.50元/°
+        计费标准参考：水费-0.35元/m³&nbsp; &nbsp;电费-0.50元/°
     </div>
 </div>
 <div ng-if="!payments" style="text-align: center;margin-top: 20%">暂无待缴费信息</div>
