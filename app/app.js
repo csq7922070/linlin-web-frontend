@@ -201,10 +201,11 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
     });
 }]).value(
     'communityInfo',{
-        name: '阿尔卡迪亚',
-        province: '河北',
-        city: '廊坊',
-        address: '顺义区华侨路23号'
+        name: null,
+        province: null,
+        city: null,
+        address: null,
+        auth: null//该字段用来判断小区是否为合作小区，值为true or false
     }
 ).constant(
     'appId', 'wx050cc99d8cec1a73'

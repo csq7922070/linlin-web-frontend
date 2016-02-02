@@ -16,12 +16,12 @@ angular.module('app.location')
 				// },1000);
 				$http({
 					method: "GET",
-					url: basePath + '/findArea',
+					url: basePath + '/GPS/findArea',
 					params: {
 						city: cityName
 					}
 				}).success(function(data){
-					defer.resolve(data);
+					defer.resolve(data.items);
 				}).error(function(data){
 					defer.reject(data);
 				});

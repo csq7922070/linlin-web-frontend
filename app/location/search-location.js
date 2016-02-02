@@ -6,7 +6,7 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	$scope.lockClickHide = true;
 
     	var cmmList = null;
-    	communityList.getCommunityList('廊坊')
+    	communityList.getCommunityList(communityInfo.city)
     		.then(function(data){
     			cmmList = data;
     			communitySearch.cmmList = cmmList;

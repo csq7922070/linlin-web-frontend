@@ -201,10 +201,11 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
     });
 }]).value(
     'communityInfo',{
-        name: '阿尔卡迪亚',
-        province: '河北',
-        city: '廊坊',
-        address: '顺义区华侨路23号'
+        name: null,
+        province: null,
+        city: null,
+        address: null,
+        auth: null//该字段用来判断小区是否为合作小区，值为true or false
     }
 ).constant(
     'appId', 'wx050cc99d8cec1a73'
@@ -419,49 +420,6 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
     }
 ]);
 
-(function() {
-    angular.module('app.notice').controller("noticeDetailCtrl", ['$stateParams', 'notices',
-        function($stateParams, notices) {
-            var vm = this;
-            notices.get({
-                id: $stateParams.id
-            }).$promise.then(function(data) {
-                vm.notice = data;
-            })
-        }
-    ]);
-})();
-
-(function() {
-    angular.module('app.notice').controller('noticeListCtrl', ['notices',
-        function(notices) {
-            var vm = this;
-            vm.currentPage = 0;
-            vm.pageSize = 10;
-            vm.notices = [];
-            vm.load = function(goPage, limit) {
-                if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
-                    return;
-                } else {
-                    vm.busy = true;
-                    params = {
-                        offset: vm.pageSize * (goPage - 1),
-                        limit: vm.pageSize,
-                        openid: sessionStorage.getItem("openid")
-                    }
-                    notices.query(params).$promise.then(function(data) {
-                        vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
-                        vm.currentPage = goPage;
-                        vm.busy = false;
-                         Array.prototype.push.apply(vm.notices,data.items);
-                    });
-                }
-            }
-            vm.load(1, vm.pageSize);
-        }
-    ]);
-})();
-
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
 	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo',
     function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo) {
@@ -504,38 +462,57 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     			// return communityLocation.locationCommunity(openId, longitude, latitude);
     			//return $q.when({type:"false",areaName:"金桥一区",city:"廊坊",address:"a1",lastAreaName:"昌平小区",lastCity:"北京",lastAddress:"a2"});
     		}).then(function(data){//community
-    			$scope.autoLocationCommunities = [{
-    				name:data.lastAreaName,
-    				city: data.lastCity,
-    				address: data.lastAddress,
-    				title: data.lastCity + ', '+data.lastAreaName
-    			}];
-    			$scope.loadingShow = false;
-    			if(!communityLocation.compareCommunity(data)){//检测2次小区地址是否一致
-    				//需要提示用户是否切换到当前定位地址
-    				$scope.modalTip = "检测到当前登陆位置为"+data.city+data.areaName+", "+
-    					"上次登陆位置为"+data.lastCity+data.lastAreaName+", 是否切换?"
-    				$scope.tipAlign = "left";
-    				$scope.okText = "切换";
-    				$scope.showModal = true;
-    				$scope.onModalClose = function(state){//state is true or false
-    					if(state){
-    						$scope.toNewCommunity = true;//用来判断用户是否切换的标志
-    						$scope.autoLocationCommunities = [{
-			    				name:data.areaName,
-			    				city: data.city,
-			    				address: data.address,
-			    				title: data.city + ', '+data.areaName
-			    			}];
-    					}
-    					$scope.showModal = false;
-    				}
-				}
+    			setCommunity(data);
     		}, function(reason){
     			alert(reason);
     			$scope.loadingShow = false; 
     			$scope.showLocationError = true;
     		});
+    	}
+
+    	function setCommunity(data){
+    		var defer = $q.defer();
+			$scope.loadingShow = false;
+			if(!communityLocation.compareCommunity(data)){//检测2次小区地址是否一致
+				//需要提示用户是否切换到当前定位地址
+				$scope.modalTip = "检测到当前登陆位置为"+data.city+data.areaName+", "+
+					"上次登陆位置为"+data.lastCity+data.lastAreaName+", 是否切换?"
+				$scope.tipAlign = "left";
+				$scope.okText = "切换";
+				$scope.showModal = true;
+				$scope.onModalClose = function(state){//state is true or false
+					defer.resolve(state);
+					$scope.showModal = false;
+				}
+			}else{
+				defer.resolve(true);
+			}
+			defer.promise.then(function(selectCurrent){//selectCurrent代表是否选择当前自动定位小区为登陆小区
+				if(selectCurrent){
+					setCurrentCommunity(data);
+				}else{
+					setLastCommunity(data);
+				}
+			});
+    	}
+
+    	function setLastCommunity(data){
+    		$scope.autoLocationCommunities = [{
+				name:data.lastAreaName,
+				city: data.lastCity,
+				address: data.lastAddress,
+				title: data.lastCity + ', '+data.lastAreaName
+			}];
+    	}
+
+    	function setCurrentCommunity(data){
+    		$scope.toNewCommunity = true;//用来判断用户是否切换的标志
+			$scope.autoLocationCommunities = [{
+				name:data.areaName,
+				city: data.city,
+				address: data.address,
+				title: data.city + ', '+data.areaName
+			}];
     	}
 
     	$scope.changeCommunity = function(community){
@@ -547,7 +524,7 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     			communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
 	    			console.log("communityLocation.changeCommunity(openId, community) success.");
 	    		},function(reason){
-	    			alert("保存用户选择的小区信息到服务器失败："+reason);
+	    			alert("communityLocation.changeCommunity: "+reason);
 	    		});
     		}
     		$state.go('home');
@@ -659,7 +636,7 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	$scope.lockClickHide = true;
 
     	var cmmList = null;
-    	communityList.getCommunityList('廊坊')
+    	communityList.getCommunityList(communityInfo.city)
     		.then(function(data){
     			cmmList = data;
     			communitySearch.cmmList = cmmList;
@@ -708,6 +685,49 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	}
     }
 ]);
+
+(function() {
+    angular.module('app.notice').controller("noticeDetailCtrl", ['$stateParams', 'notices',
+        function($stateParams, notices) {
+            var vm = this;
+            notices.get({
+                id: $stateParams.id
+            }).$promise.then(function(data) {
+                vm.notice = data;
+            })
+        }
+    ]);
+})();
+
+(function() {
+    angular.module('app.notice').controller('noticeListCtrl', ['notices',
+        function(notices) {
+            var vm = this;
+            vm.currentPage = 0;
+            vm.pageSize = 10;
+            vm.notices = [];
+            vm.load = function(goPage, limit) {
+                if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
+                    return;
+                } else {
+                    vm.busy = true;
+                    params = {
+                        offset: vm.pageSize * (goPage - 1),
+                        limit: vm.pageSize,
+                        openid: sessionStorage.getItem("openid")
+                    }
+                    notices.query(params).$promise.then(function(data) {
+                        vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
+                        vm.currentPage = goPage;
+                        vm.busy = false;
+                         Array.prototype.push.apply(vm.notices,data.items);
+                    });
+                }
+            }
+            vm.load(1, vm.pageSize);
+        }
+    ]);
+})();
 
 angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', 'addresses', 'payments',
     function($scope, $http, $stateParams, $rootScope, $state, addresses, payments) {
@@ -1328,17 +1348,6 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     ]);
 })();
 
-angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type: "block"
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.blocks = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-}])
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
     function ($stateParams, addresses) {
         var vm = this;
@@ -1354,6 +1363,17 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'ad
         })
     }
 ])
+angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type: "block"
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.blocks = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+}])
 angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {
@@ -1709,12 +1729,12 @@ angular.module('app.location')
 				// },1000);
 				$http({
 					method: "GET",
-					url: basePath + '/findArea',
+					url: basePath + '/GPS/findArea',
 					params: {
 						city: cityName
 					}
 				}).success(function(data){
-					defer.resolve(data);
+					defer.resolve(data.items);
 				}).error(function(data){
 					defer.reject(data);
 				});
