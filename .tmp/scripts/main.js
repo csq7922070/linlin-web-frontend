@@ -102,6 +102,21 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         .state('address-list', {
             url: "/address-list",
             templateUrl: "tpl/address/address-list.tpl.html",
+            resolve: {
+                data: function($state, addresses) {
+                    params = {
+                        type: 'openid',
+                        openid: sessionStorage.getItem("openid")
+                    }
+                    return addresses.query(params).$promise.then(function(data) {
+                        if (data.items.length == 0) {
+                            return $state.go("address-edit");
+                        } else {
+                            return data;
+                        }
+                    })
+                }
+            },
             controller: "addressListCtrl",
             controllerAs: 'vm'
         })
@@ -201,6 +216,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         var url = "/" + to.name.replace(".", "/");
         _hmt.push(['_trackPageview', url]);
     });
+<<<<<<< HEAD
 }]).value(
     'communityInfo',{
         name: null,
@@ -218,20 +234,15 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 );
 angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stateParams', '$state', 'addresses',
     function ($rootScope,$stateParams, $state, addresses) {
+=======
+}]);
+
+angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stateParams', '$state', 'addresses','data',
+    function ($rootScope,$stateParams, $state, addresses,data) {
+>>>>>>> refactorDirNew
         var vm = this;
-        params = {
-            type: 'openid',
-            openid: sessionStorage.getItem("openid")
-        }
-        addresses.query(params).$promise.then(function (data) {
-            if (data.items.length!=0) {
-                vm.houses = data.items;
-                vm.activeId= data.activeId;
-            }else if($rootScope.previousState == "home.shop-info"){
-                $state.go("address-edit");
-            }
-        },function(data){
-        })
+        vm.houses = data.items;
+        vm.activeId = data.activeId;
 
         vm.deleteAddress = function (house) {
             vm.sure_delete = true;

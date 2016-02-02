@@ -1,19 +1,8 @@
-angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stateParams', '$state', 'addresses',
-    function ($rootScope,$stateParams, $state, addresses) {
+angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stateParams', '$state', 'addresses','data',
+    function ($rootScope,$stateParams, $state, addresses,data) {
         var vm = this;
-        params = {
-            type: 'openid',
-            openid: sessionStorage.getItem("openid")
-        }
-        addresses.query(params).$promise.then(function (data) {
-            if (data.items.length!=0) {
-                vm.houses = data.items;
-                vm.activeId= data.activeId;
-            }else if($rootScope.previousState == "home.shop-info"){
-                $state.go("address-edit");
-            }
-        },function(data){
-        })
+        vm.houses = data.items;
+        vm.activeId = data.activeId;
 
         vm.deleteAddress = function (house) {
             vm.sure_delete = true;
