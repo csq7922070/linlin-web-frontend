@@ -24,16 +24,13 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     			openId = data;
     			return location.getLocation();
     		},function(reason){
-    			reason = "get openid error: " + errorLog.getErrorMessage(reason);
     			return $q.reject(reason);
     		}).then(function(data){//location
     			// var s = "openid:"+openId+","+data.longitude+","+data.latitude;
     			// alert(s);
     			return communityLocation.locationCommunity(openId, data.longitude, data.latitude);
     		},function(reason){
-    			reason = "get location error: "+errorLog.getErrorMessage(reason);
     			return $q.reject(reason);
-
     			// openId = "o-YfcstQPoTDSPuNHZ44cEof8";
     			// var longitude = 116.303128;
     			// var latitude = 39.979436;
@@ -43,8 +40,21 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     			//alert("locationCommunity result:"+errorLog.getErrorMessage(data));
     			setCommunity(data);
     		}, function(reason){
-    			reason = "location community error:" + errorLog.getErrorMessage(reason);
-    			alert(reason);
+    			if(reason && reason.errorCode == "PERMISSION_DENIED"){//用户拒绝了定位请求，提示打开定位功能
+    				$scope.modalTitle = "定位服务未开启";
+    				$scope.modalTip = "请在系统设置中开启定位服务";
+    				$scope.tipAlign = "center";
+    				$scope.okText = "确定";
+    				$scope.onlyOkButton = true;
+    				$scope.showModal = true;
+    				$scope.onModalClose = function(state){//state on is true
+    					$scope.modalTitle = "";
+    					$scope.onlyOkButton = false;
+						$scope.showModal = false;
+					}
+    			}else{
+    				alert(reason.errorCode + "," + reason.errorMessage);
+    			}
     			$scope.loadingShow = false; 
     			$scope.showLocationError = true;
     		});

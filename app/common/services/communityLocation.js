@@ -1,5 +1,5 @@
 angular.module('app.location')
-	.service('communityLocation', ['$q', '$timeout', '$http', function($q, $timeout, $http){
+	.service('communityLocation', ['$q', '$timeout', '$http', 'errorLog', function($q, $timeout, $http, errorLog){
 		this.locationCommunity = function(openId, longitude, latitude){// longitude经度，latitude维度
 			console.log("locationCommunity...");
 			var defer = $q.defer();
@@ -14,7 +14,11 @@ angular.module('app.location')
 			}).success(function(data){
 				defer.resolve(data);
 			}).error(function(data){
-				defer.reject(data);
+				var reason = {
+					errorCode: "LOCATION_COMMUNITY_ERROR",
+					errorMessage: errorLog.getErrorMessage(data)
+				};
+				defer.reject(reason);
 			});
 			return defer.promise;
 		}

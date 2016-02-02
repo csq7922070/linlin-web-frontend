@@ -12,6 +12,7 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     			cmmList = data;
     			communitySearch.cmmList = cmmList;
     			$scope.loadingShow = false;
+    			$scope.focus = true;
     		},function(reason){
     			$scope.loadingShow = false;
     			reason = "数据加载失败: "+errorLog.getErrorMessage(reason);

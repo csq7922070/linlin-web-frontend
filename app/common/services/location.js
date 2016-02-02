@@ -8,7 +8,9 @@ angular.module('app.location')
 	        	navigator.geolocation.getCurrentPosition(showPosition, showError);
 	        }
 		    else{
-		        defer.reject("浏览器不支持定位功能.");
+		        defer.reject({
+		        	errorCode: "BROWSER_NOT_SUPPORT",errorMessage: "浏览器不支持定位功能"
+		        });
 	        }
 
 	        function showPosition(position)
@@ -27,23 +29,27 @@ angular.module('app.location')
 
 	        function showError(error)
 	        {
-	        	var errorReason = "";
+	        	var reason = {};
 	          	switch(error.code)
 	            {
 		            case error.PERMISSION_DENIED:
-		                errorReason="用户拒绝定位请求."
+		            	reason.errorCode = "PERMISSION_DENIED";
+		                reason.errorMessage="用户拒绝定位请求";
 		                break;
 		            case error.POSITION_UNAVAILABLE:
-		                errorReason="定位信息不可用."
+		            	reason.errorCode = "POSITION_UNAVAILABLE";
+		                reason.errorMessage="定位信息不可用";
 		                break;
 		            case error.TIMEOUT:
-		                errorReason="定位超时."
+		            	reason.errorCode = "TIMEOUT";
+		                reason.errorMessage="定位超时";
 		                break;
 		            case error.UNKNOWN_ERROR:
-		                errorReason="未知错误."
+		            	reason.errorCode = "UNKNOWN_ERROR";
+		                reason.errorMessage="未知错误";
 		                break;
 	            }
-	            defer.reject(errorReason);
+	            defer.reject(reason);
 			}
 			return defer.promise;
 		}

@@ -1,5 +1,5 @@
 angular.module('app.user')
-	.service('userInfo', ['$q','$http','$timeout', '$location', function($q,$http,$timeout, $location){
+	.service('userInfo', ['$q','$http','$timeout', '$location', 'errorLog', function($q,$http,$timeout, $location, errorLog){
 		var openId = null;
 		var wxConfigParam = {
 			timestamp : null,
@@ -33,7 +33,11 @@ angular.module('app.user')
 	                defer.resolve(openId);
 	            }).error(function(data) {
 	                //alert("获取OpenID失败："+data);
-	                defer.reject(data);
+	                var reason = {
+	    				errorCode: "GET_OPENID_ERROR",
+	    				errorMessage: errorLog.getErrorMessage(data)
+	    			};
+	                defer.reject(reason);
 	            });
 	        }else{
 	        	defer.resolve(openId);
@@ -62,7 +66,11 @@ angular.module('app.user')
 	                defer.resolve(wxConfigParam);
 	            }).error(function(data) {
 	                //alert("获取微信配置接口参数失败："+data);
-	                defer.reject(data);
+	                var reason = {
+	    				errorCode: "GET_WXCP_ERROR",
+	    				errorMessage: errorLog.getErrorMessage(data)
+	    			};
+	                defer.reject(reason);
 	            });
 			}else{
 				defer.resolve(wxConfigParam);
