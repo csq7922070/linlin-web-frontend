@@ -12,8 +12,10 @@ angular.module('app.address', ['resources.address']);
 angular.module('app.payment', ['resources.address', 'resources.payment']);
 angular.module('app.location', []);
 angular.module('app.user',[]);
+angular.module('app.log',[]);
 
-var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user']);
+var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 
+    'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user', 'app.log']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -208,7 +210,9 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         auth: null//该字段用来判断小区是否为合作小区，值为true or false
     }
 ).value(
-    'locationCount', 0
+    'locationInfo', {
+        locationCount: 0
+    }
 ).constant(
     'appId', 'wx050cc99d8cec1a73'
 );

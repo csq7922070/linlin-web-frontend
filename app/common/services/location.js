@@ -8,7 +8,7 @@ angular.module('app.location')
 	        	navigator.geolocation.getCurrentPosition(showPosition, showError);
 	        }
 		    else{
-		        defer.reject("浏览器不支持定位。");
+		        defer.reject("浏览器不支持定位功能.");
 	        }
 
 	        function showPosition(position)
@@ -31,16 +31,16 @@ angular.module('app.location')
 	          	switch(error.code)
 	            {
 		            case error.PERMISSION_DENIED:
-		                errorReason="User denied the request for Geolocation."
+		                errorReason="用户拒绝定位请求."
 		                break;
 		            case error.POSITION_UNAVAILABLE:
-		                errorReason="Location information is unavailable."
+		                errorReason="定位信息不可用."
 		                break;
 		            case error.TIMEOUT:
-		                errorReason="The request to get user location timed out."
+		                errorReason="定位超时."
 		                break;
 		            case error.UNKNOWN_ERROR:
-		                errorReason="An unknown error occurred."
+		                errorReason="未知错误."
 		                break;
 	            }
 	            defer.reject(errorReason);

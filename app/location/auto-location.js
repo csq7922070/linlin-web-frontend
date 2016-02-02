@@ -1,6 +1,6 @@
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationCount',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, locationCount) {
+	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, locationInfo,errorLog) {
     	$scope.loadingTip = "定位中...";
     	$scope.loadingShow = true;
     	$scope.lockClickHide = true;
@@ -24,14 +24,14 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     			openId = data;
     			return location.getLocation();
     		},function(reason){
-    			reason = "get openid error: " + reason;
+    			reason = "get openid error: " + errorLog.getErrorMessage(reason);
     			return $q.reject(reason);
     		}).then(function(data){//location
     			// var s = "openid:"+openId+","+data.longitude+","+data.latitude;
     			// alert(s);
     			return communityLocation.locationCommunity(openId, data.longitude, data.latitude);
     		},function(reason){
-    			reason = "get location error: "+reason;
+    			reason = "get location error: "+errorLog.getErrorMessage(reason);
     			return $q.reject(reason);
 
     			// openId = "o-YfcstQPoTDSPuNHZ44cEof8";
@@ -40,8 +40,10 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     			// return communityLocation.locationCommunity(openId, longitude, latitude);
     			//return $q.when({type:"false",areaName:"金桥一区",city:"廊坊",address:"a1",lastAreaName:"昌平小区",lastCity:"北京",lastAddress:"a2"});
     		}).then(function(data){//community
+    			//alert("locationCommunity result:"+errorLog.getErrorMessage(data));
     			setCommunity(data);
     		}, function(reason){
+    			reason = "location community error:" + errorLog.getErrorMessage(reason);
     			alert(reason);
     			$scope.loadingShow = false; 
     			$scope.showLocationError = true;
@@ -71,8 +73,8 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 				}else{
 					setLastCommunity(data);
 				}
-				locationCount++;
-				if(locationCount == 1 && $scope.autoLocationCommunities.length > 0){
+				locationInfo.locationCount++;
+				if(locationInfo.locationCount == 1 && $scope.autoLocationCommunities.length > 0){
 					$scope.changeCommunity($scope.autoLocationCommunities[0]);
 				}
 			});
@@ -104,9 +106,9 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		communityInfo.address = community.address;
     		if($scope.toNewCommunity){
     			communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
-	    			console.log("communityLocation.changeCommunity(openId, community) success.");
+	    			console.log("communityLocation.changeCommunity success.");
 	    		},function(reason){
-	    			alert("communityLocation.changeCommunity: "+reason);
+	    			alert("communityLocation.changeCommunity error: "+errorLog.getErrorMessage(reason));
 	    		});
     		}
     		$state.go('home');

@@ -35,6 +35,8 @@ angular.module('app.user')
 	                //alert("获取OpenID失败："+data);
 	                defer.reject(data);
 	            });
+	        }else{
+	        	defer.resolve(openId);
 	        }
 	        return defer.promise;
 		}
@@ -52,11 +54,18 @@ angular.module('app.user')
 	                wxConfigParam.timestamp = data.timestamp;
 	                wxConfigParam.noncestr = data.noncestr;
 	                wxConfigParam.sign = data.sign;
+	                //添加微信支付
+	                sessionStorage.setItem("timestamp", data.timestamp);
+	                sessionStorage.setItem("noncestr", data.noncestr);
+	                sessionStorage.setItem("sign", data.sign);
+	                // end test
 	                defer.resolve(wxConfigParam);
 	            }).error(function(data) {
 	                //alert("获取微信配置接口参数失败："+data);
 	                defer.reject(data);
 	            });
+			}else{
+				defer.resolve(wxConfigParam);
 			}
 			return defer.promise;
 		}

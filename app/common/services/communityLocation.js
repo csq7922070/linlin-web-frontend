@@ -3,13 +3,6 @@ angular.module('app.location')
 		this.locationCommunity = function(openId, longitude, latitude){// longitude经度，latitude维度
 			console.log("locationCommunity...");
 			var defer = $q.defer();
-			// $timeout(function(){
-			// 	$http.get('data/communityLocation.json').success(function(data){
-			// 		defer.resolve(data);
-			// 	}).error(function(data){
-			// 		defer.reject(data);
-			// 	});
-			// },1500);
 			$http({
 				method: 'GET',
 				url: basePath + '/GPS/',
@@ -45,10 +38,13 @@ angular.module('app.location')
 			return defer.promise;
 		}
 
+		//判断2次小区定位是否一致，如果上次定位不存在，直接返回true
+		// data:{type,areaName,city,address,lastAreaName,lastCity,lastAddress}
 		this.compareCommunity = function(data){
-			var result = false;
-			if(data.type == "false" && data.name == data.lastName && data.city == data.lastCity && data.address == data.lastAddress){
-				result = true;
+			var result = true;
+			if(data.type == "false" && 
+				(data.areaName != data.lastAreaName || data.city != data.lastCity || data.address != data.lastAddress)){
+				result = false;
 			}
 			return result;
 		}

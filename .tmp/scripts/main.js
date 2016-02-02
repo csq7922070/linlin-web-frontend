@@ -12,8 +12,10 @@ angular.module('app.address', ['resources.address']);
 angular.module('app.payment', ['resources.address', 'resources.payment']);
 angular.module('app.location', []);
 angular.module('app.user',[]);
+angular.module('app.log',[]);
 
-var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user']);
+var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 
+    'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user', 'app.log']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -208,7 +210,9 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         auth: null//该字段用来判断小区是否为合作小区，值为true or false
     }
 ).value(
-    'locationCount', 0
+    'locationInfo', {
+        locationCount: 0
+    }
 ).constant(
     'appId', 'wx050cc99d8cec1a73'
 );
@@ -426,8 +430,8 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
 ]);
 
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationCount',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, locationCount) {
+	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, locationInfo,errorLog) {
     	$scope.loadingTip = "定位中...";
     	$scope.loadingShow = true;
     	$scope.lockClickHide = true;
@@ -451,14 +455,14 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     			openId = data;
     			return location.getLocation();
     		},function(reason){
-    			reason = "get openid error: " + reason;
+    			reason = "get openid error: " + errorLog.getErrorMessage(reason);
     			return $q.reject(reason);
     		}).then(function(data){//location
     			// var s = "openid:"+openId+","+data.longitude+","+data.latitude;
     			// alert(s);
     			return communityLocation.locationCommunity(openId, data.longitude, data.latitude);
     		},function(reason){
-    			reason = "get location error: "+reason;
+    			reason = "get location error: "+errorLog.getErrorMessage(reason);
     			return $q.reject(reason);
 
     			// openId = "o-YfcstQPoTDSPuNHZ44cEof8";
@@ -467,8 +471,10 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     			// return communityLocation.locationCommunity(openId, longitude, latitude);
     			//return $q.when({type:"false",areaName:"金桥一区",city:"廊坊",address:"a1",lastAreaName:"昌平小区",lastCity:"北京",lastAddress:"a2"});
     		}).then(function(data){//community
+    			//alert("locationCommunity result:"+errorLog.getErrorMessage(data));
     			setCommunity(data);
     		}, function(reason){
+    			reason = "location community error:" + errorLog.getErrorMessage(reason);
     			alert(reason);
     			$scope.loadingShow = false; 
     			$scope.showLocationError = true;
@@ -498,8 +504,8 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 				}else{
 					setLastCommunity(data);
 				}
-				locationCount++;
-				if(locationCount == 1 && $scope.autoLocationCommunities.length > 0){
+				locationInfo.locationCount++;
+				if(locationInfo.locationCount == 1 && $scope.autoLocationCommunities.length > 0){
 					$scope.changeCommunity($scope.autoLocationCommunities[0]);
 				}
 			});
@@ -531,9 +537,9 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		communityInfo.address = community.address;
     		if($scope.toNewCommunity){
     			communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
-	    			console.log("communityLocation.changeCommunity(openId, community) success.");
+	    			console.log("communityLocation.changeCommunity success.");
 	    		},function(reason){
-	    			alert("communityLocation.changeCommunity: "+reason);
+	    			alert("communityLocation.changeCommunity error: "+errorLog.getErrorMessage(reason));
 	    		});
     		}
     		$state.go('home');
@@ -638,8 +644,8 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 ]);
 
 angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'locationCount',
-    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch, locationCount) {
+	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'locationInfo', 'errorLog',
+    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch, locationInfo,errorLog) {
     	$scope.loadingTip = "数据加载中...";
     	$scope.loadingShow = true;
     	$scope.lockClickHide = true;
@@ -647,13 +653,14 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	var cmmList = null;
     	communityList.getCommunityList(communityInfo.city)
     		.then(function(data){
+    			//alert("cmmList.length: "+data.length);
     			cmmList = data;
     			communitySearch.cmmList = cmmList;
     			$scope.loadingShow = false;
     		},function(reason){
-    			console.log(reason);
-    			$scope.loadingTip = "数据加载失败";
-    			$scope.lockClickHide = false;
+    			$scope.loadingShow = false;
+    			reason = "数据加载失败: "+errorLog.getErrorMessage(reason);
+    			alert(reason);
     		});
 
     	console.log(communityInfo);
@@ -686,7 +693,7 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     		communityInfo.name = community.name;
     		communityInfo.city = community.city;
     		communityInfo.address = community.address;
-    		locationCount++;
+    		locationInfo.locationCount++;
     		$state.go('home');
     	}
 
@@ -697,49 +704,6 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	}
     }
 ]);
-
-(function() {
-    angular.module('app.notice').controller("noticeDetailCtrl", ['$stateParams', 'notices',
-        function($stateParams, notices) {
-            var vm = this;
-            notices.get({
-                id: $stateParams.id
-            }).$promise.then(function(data) {
-                vm.notice = data;
-            })
-        }
-    ]);
-})();
-
-(function() {
-    angular.module('app.notice').controller('noticeListCtrl', ['notices',
-        function(notices) {
-            var vm = this;
-            vm.currentPage = 0;
-            vm.pageSize = 10;
-            vm.notices = [];
-            vm.load = function(goPage, limit) {
-                if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
-                    return;
-                } else {
-                    vm.busy = true;
-                    params = {
-                        offset: vm.pageSize * (goPage - 1),
-                        limit: vm.pageSize,
-                        openid: sessionStorage.getItem("openid")
-                    }
-                    notices.query(params).$promise.then(function(data) {
-                        vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
-                        vm.currentPage = goPage;
-                        vm.busy = false;
-                         Array.prototype.push.apply(vm.notices,data.items);
-                    });
-                }
-            }
-            vm.load(1, vm.pageSize);
-        }
-    ]);
-})();
 
 angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', 'addresses', 'payments',
     function($scope, $http, $stateParams, $rootScope, $state, addresses, payments) {
@@ -1183,6 +1147,49 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
 
     }
 ]);
+
+(function() {
+    angular.module('app.notice').controller("noticeDetailCtrl", ['$stateParams', 'notices',
+        function($stateParams, notices) {
+            var vm = this;
+            notices.get({
+                id: $stateParams.id
+            }).$promise.then(function(data) {
+                vm.notice = data;
+            })
+        }
+    ]);
+})();
+
+(function() {
+    angular.module('app.notice').controller('noticeListCtrl', ['notices',
+        function(notices) {
+            var vm = this;
+            vm.currentPage = 0;
+            vm.pageSize = 10;
+            vm.notices = [];
+            vm.load = function(goPage, limit) {
+                if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
+                    return;
+                } else {
+                    vm.busy = true;
+                    params = {
+                        offset: vm.pageSize * (goPage - 1),
+                        limit: vm.pageSize,
+                        openid: sessionStorage.getItem("openid")
+                    }
+                    notices.query(params).$promise.then(function(data) {
+                        vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
+                        vm.currentPage = goPage;
+                        vm.busy = false;
+                         Array.prototype.push.apply(vm.notices,data.items);
+                    });
+                }
+            }
+            vm.load(1, vm.pageSize);
+        }
+    ]);
+})();
 
 (function() {
     angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
@@ -1746,7 +1753,8 @@ angular.module('app.location')
 						city: cityName
 					}
 				}).success(function(data){
-					defer.resolve(data.items);
+					cmmList = data.items;
+					defer.resolve(cmmList);
 				}).error(function(data){
 					defer.reject(data);
 				});
@@ -1760,13 +1768,6 @@ angular.module('app.location')
 		this.locationCommunity = function(openId, longitude, latitude){// longitude经度，latitude维度
 			console.log("locationCommunity...");
 			var defer = $q.defer();
-			// $timeout(function(){
-			// 	$http.get('data/communityLocation.json').success(function(data){
-			// 		defer.resolve(data);
-			// 	}).error(function(data){
-			// 		defer.reject(data);
-			// 	});
-			// },1500);
 			$http({
 				method: 'GET',
 				url: basePath + '/GPS/',
@@ -1802,10 +1803,13 @@ angular.module('app.location')
 			return defer.promise;
 		}
 
+		//判断2次小区定位是否一致，如果上次定位不存在，直接返回true
+		// data:{type,areaName,city,address,lastAreaName,lastCity,lastAddress}
 		this.compareCommunity = function(data){
-			var result = false;
-			if(data.type == "false" && data.name == data.lastName && data.city == data.lastCity && data.address == data.lastAddress){
-				result = true;
+			var result = true;
+			if(data.type == "false" && 
+				(data.areaName != data.lastAreaName || data.city != data.lastCity || data.address != data.lastAddress)){
+				result = false;
 			}
 			return result;
 		}
@@ -1832,6 +1836,21 @@ angular.module('app.location')
 			return result;
 		}
 	}]);
+angular.module('app.log')
+	.service('errorLog', ['$q','$http','$timeout', function($q,$http,$timeout){
+		this.getErrorMessage = function(error){
+			var message = "";
+			if(typeof(error) == "object" && error){
+				for(var i in error){
+					message+=error[i]+",";
+				}
+				message = message.substr(0, message.length - 1);
+			}else{
+				message += error;
+			}
+			return message;
+		}
+	}]);
 angular.module('app.location')
 	.service('location', ['$q', function($q){
         this.getLocation = function()
@@ -1842,7 +1861,7 @@ angular.module('app.location')
 	        	navigator.geolocation.getCurrentPosition(showPosition, showError);
 	        }
 		    else{
-		        defer.reject("浏览器不支持定位。");
+		        defer.reject("浏览器不支持定位功能.");
 	        }
 
 	        function showPosition(position)
@@ -1865,16 +1884,16 @@ angular.module('app.location')
 	          	switch(error.code)
 	            {
 		            case error.PERMISSION_DENIED:
-		                errorReason="User denied the request for Geolocation."
+		                errorReason="用户拒绝定位请求."
 		                break;
 		            case error.POSITION_UNAVAILABLE:
-		                errorReason="Location information is unavailable."
+		                errorReason="定位信息不可用."
 		                break;
 		            case error.TIMEOUT:
-		                errorReason="The request to get user location timed out."
+		                errorReason="定位超时."
 		                break;
 		            case error.UNKNOWN_ERROR:
-		                errorReason="An unknown error occurred."
+		                errorReason="未知错误."
 		                break;
 	            }
 	            defer.reject(errorReason);
@@ -1919,6 +1938,8 @@ angular.module('app.user')
 	                //alert("获取OpenID失败："+data);
 	                defer.reject(data);
 	            });
+	        }else{
+	        	defer.resolve(openId);
 	        }
 	        return defer.promise;
 		}
@@ -1936,11 +1957,18 @@ angular.module('app.user')
 	                wxConfigParam.timestamp = data.timestamp;
 	                wxConfigParam.noncestr = data.noncestr;
 	                wxConfigParam.sign = data.sign;
+	                //添加微信支付
+	                sessionStorage.setItem("timestamp", data.timestamp);
+	                sessionStorage.setItem("noncestr", data.noncestr);
+	                sessionStorage.setItem("sign", data.sign);
+	                // end test
 	                defer.resolve(wxConfigParam);
 	            }).error(function(data) {
 	                //alert("获取微信配置接口参数失败："+data);
 	                defer.reject(data);
 	            });
+			}else{
+				defer.resolve(wxConfigParam);
 			}
 			return defer.promise;
 		}

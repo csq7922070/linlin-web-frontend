@@ -21,7 +21,8 @@ angular.module('app.location')
 						city: cityName
 					}
 				}).success(function(data){
-					defer.resolve(data.items);
+					cmmList = data.items;
+					defer.resolve(cmmList);
 				}).error(function(data){
 					defer.reject(data);
 				});

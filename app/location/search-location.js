@@ -1,6 +1,6 @@
 angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'locationCount',
-    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch, locationCount) {
+	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'locationInfo', 'errorLog',
+    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch, locationInfo,errorLog) {
     	$scope.loadingTip = "数据加载中...";
     	$scope.loadingShow = true;
     	$scope.lockClickHide = true;
@@ -8,13 +8,14 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	var cmmList = null;
     	communityList.getCommunityList(communityInfo.city)
     		.then(function(data){
+    			//alert("cmmList.length: "+data.length);
     			cmmList = data;
     			communitySearch.cmmList = cmmList;
     			$scope.loadingShow = false;
     		},function(reason){
-    			console.log(reason);
-    			$scope.loadingTip = "数据加载失败";
-    			$scope.lockClickHide = false;
+    			$scope.loadingShow = false;
+    			reason = "数据加载失败: "+errorLog.getErrorMessage(reason);
+    			alert(reason);
     		});
 
     	console.log(communityInfo);
@@ -47,7 +48,7 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     		communityInfo.name = community.name;
     		communityInfo.city = community.city;
     		communityInfo.address = community.address;
-    		locationCount++;
+    		locationInfo.locationCount++;
     		$state.go('home');
     	}
 
