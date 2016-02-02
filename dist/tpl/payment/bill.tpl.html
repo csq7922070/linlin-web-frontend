@@ -40,16 +40,16 @@
     <div class="weui_cells address_down account_page " ng-repeat="payment in payments"
          ng-class="!$first?'pos_up':''">
         <div class="weui_cell" style="padding-top: 0;padding-bottom: 0">
-            <div class="weui_cell_hd">
+            <label for="all_sel{{payment.yearmonth}}" style="display: block" class="weui_cell_hd">
                 <input type="checkbox" ng-model="payment.selected" ng-checked="sel"
                        ng-change="updateYearmonth(payment.yearmonth,payment.selected)" id="all_sel{{payment.yearmonth}}"
                        class="vis_none">
                 <label for="all_sel{{payment.yearmonth}}" ng-if="payment.selected" class="label_account"></label>
                 <label for="all_sel{{payment.yearmonth}}" ng-if="!payment.selected" class="label_account_click"></label>
-            </div>
-            <div class="weui_cell_bd weui_cell_primary">
+            </label>
+            <label for="all_sel{{payment.yearmonth}}" style="display: block;font-weight: normal" class="weui_cell_bd weui_cell_primary">
                 <p class="pos_lef color777" style="position: relative;top: 4px">{{payment.yearmonth}}</p>
-            </div>
+            </label>
             <div class="should_info color777">
                 应缴金额
             </div>

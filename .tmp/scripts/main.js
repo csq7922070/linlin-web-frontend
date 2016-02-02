@@ -273,52 +273,6 @@ angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addres
     }
 ]);
 
-angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-    function($scope, $http, $stateParams, $rootScope, $state, $location) {
-
-        var url = $location.url().substring($location.url().indexOf("?"));
-        if (url.indexOf("home") != -1) {
-            url = "";
-        }
-        //1.6获取微信用户openid
-        if (sessionStorage.getItem("openid") == null) {
-            $http({
-                method: "GET",
-                url: basePath + '/getopenid' + url
-            }).success(function(data) {
-                sessionStorage.setItem("openid", data.openid);
-                //添加微信支付
-                sessionStorage.setItem("timestamp", data.timestamp);
-                sessionStorage.setItem("noncestr", data.noncestr);
-                sessionStorage.setItem("sign", data.sign);
-                console.log("获取openid成功");
-            }).error(function(data) {
-                console.log("获取openid失败");
-            });
-        }
-
-        $scope.slides7 = [{
-            id: 10,
-            label: "slide #1",
-            img: "images/banner_01.png"
-        }, {
-            id: 11,
-            label: "slide #2",
-            img: "images/banner_02.png"
-        }, {
-            id: 12,
-            label: "slide #3",
-            img: "images/banner_03.png"
-        }];
-        $scope.carouselIndex7 = 0;
-
-        $rootScope.site = 1;
-        $state.go("home.shop-info", {
-            site: 1
-        });
-    }
-]);
-
 angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$state', 'complains',
     function ($timeout, $state, complains) {
         var vm = this;
@@ -397,6 +351,52 @@ angular.module('app.complain').controller('complainListCtrl', ['complains',
         vm.load(1, vm.pageSize);
     }
 ]);
+angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
+    function($scope, $http, $stateParams, $rootScope, $state, $location) {
+
+        var url = $location.url().substring($location.url().indexOf("?"));
+        if (url.indexOf("home") != -1) {
+            url = "";
+        }
+        //1.6获取微信用户openid
+        if (sessionStorage.getItem("openid") == null) {
+            $http({
+                method: "GET",
+                url: basePath + '/getopenid' + url
+            }).success(function(data) {
+                sessionStorage.setItem("openid", data.openid);
+                //添加微信支付
+                sessionStorage.setItem("timestamp", data.timestamp);
+                sessionStorage.setItem("noncestr", data.noncestr);
+                sessionStorage.setItem("sign", data.sign);
+                console.log("获取openid成功");
+            }).error(function(data) {
+                console.log("获取openid失败");
+            });
+        }
+
+        $scope.slides7 = [{
+            id: 10,
+            label: "slide #1",
+            img: "images/banner_01.png"
+        }, {
+            id: 11,
+            label: "slide #2",
+            img: "images/banner_02.png"
+        }, {
+            id: 12,
+            label: "slide #3",
+            img: "images/banner_03.png"
+        }];
+        $scope.carouselIndex7 = 0;
+
+        $rootScope.site = 1;
+        $state.go("home.shop-info", {
+            site: 1
+        });
+    }
+]);
+
 (function() {
     angular.module('app.notice').controller("noticeDetailCtrl", ['$stateParams', 'notices',
         function($stateParams, notices) {
@@ -436,182 +436,6 @@ angular.module('app.complain').controller('complainListCtrl', ['complains',
                 }
             }
             vm.load(1, vm.pageSize);
-        }
-    ]);
-})();
-
-(function() {
-    angular.module('app.repair').controller('repairAddCtrl', ['$timeout', '$state', 'repairs',
-        function($timeout, $state, repairs) {
-            var vm = this;
-
-            vm.mask_close = function() {
-                vm.suc_show = false;
-            }
-            vm.mask_err_close = function() {
-                vm.err_show = false;
-            }
-            vm.submitForm = function() {
-                vm.repair.openid=sessionStorage.getItem("openid");
-                params = vm.repair;
-                repairs.save(params).$promise.then(successcb, errcb);
-            }
-
-            function successcb() {
-                vm.suc_show = true;
-                $timeout(function() {
-                    vm.suc_show = false;
-                    $state.go("repair");
-                }, 3000);
-            }
-
-            function errcb() {
-                vm.err_show = true;
-                $timeout(function() {
-                    vm.err_show = false;
-                }, 3000);
-            }
-        }
-    ]);
-})();
-
-(function() {
-    angular.module('app.repair').controller('repairDetailCtrl', ['$state', '$stateParams', '$timeout', 'repairs',
-        function($state, $stateParams, $timeout, repairs) {
-            var vm = this;
-            vm.suc_show = false;
-            vm.err_show = false;
-
-            params = {
-                'id': $stateParams.id
-            };
-
-            repairs.get(params).$promise.then(function(data) {
-                vm.repair = data;
-            });
-
-            vm.confirm = function(id) {
-                params = {
-                    id: id,
-                    state: 3
-                };
-
-                repairs.save(params).$promise.then(function(data) {
-                    vm.repair = data;
-                    successcb();
-                }, errcb);
-            };
-
-            function successcb() {
-                vm.suc_show = true;
-                $timeout(function() {
-                    vm.suc_show = false;
-                    $state.go("repair");
-                }, 3000);
-            }
-
-            function errcb() {
-                vm.err_show = true;
-                $timeout(function() {
-                    vm.err_show = false;
-                }, 3000);
-            }
-        }
-    ]);
-})();
-
-angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state', 'repairs',
-    function ($timeout, $state, repairs) {
-        var vm = this;
-        vm.currentPage = 0;
-        vm.pageSize = 10;
-        vm.suc_show = false;
-        vm.err_show = false;
-        vm.repairs = [];
-        var params = {};
-
-        vm.load = function (goPage, limit) {
-            if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
-                return;
-            } else {
-                params = {
-                    offset: limit * (goPage - 1),
-                    limit: limit,
-                    openid: sessionStorage.getItem("openid"),
-                    queryType: 'openid'
-                };
-
-                repairs.query(params).$promise.then(function (data) {
-                    vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
-                    vm.currentPage = goPage;
-                    vm.busy = false;
-                    Array.prototype.push.apply(vm.repairs, data.items);
-                }, function (data) {
-                    console.log("err!");
-                });
-            }
-        }
-
-        vm.confirm = function (id) {
-            params = {
-                id: id,
-                state: 3
-            };
-            repairs.save(params).$promise.then(function () {
-                successcb()
-            }, function () {
-                errcb()
-            });
-        }
-
-        function successcb() {
-            vm.suc_show = true;
-            $timeout(function () {
-                vm.suc_show = false;
-                $state.go("repair", {}, {
-                    reload: true
-                });
-            }, 3000);
-        }
-
-        function errcb() {
-            vm.err_show = true;
-            $timeout(function () {
-                vm.err_show = false;
-            }, 3000);
-        }
-
-        vm.load(1, vm.pageSize);
-    }
-]);
-
-(function() {
-    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
-        function($scope, $stateParams, $rootScope, shops) {
-            $rootScope.site = $stateParams.site;
-            $scope.currentPage = 0;
-            $scope.pageSize = 5;
-            $scope.shops = [];
-
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
-                    return;
-                } else if ($rootScope.site != 3) {
-                    $scope.busy = true;
-                    params = {
-                        offset: $scope.pageSize * (goPage - 1),
-                        limit: limit == 8 ? limit : $scope.pageSize,
-                        type: $stateParams.site - 1
-                    }
-                    shops.query(params).$promise.then(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        $scope.shops.push.apply($scope.shops, data.items);
-                    });
-                }
-            }
-            $scope.load(1, 8);
         }
     ]);
 })();
@@ -1058,6 +882,182 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
     }
 ]);
 
+(function() {
+    angular.module('app.repair').controller('repairAddCtrl', ['$timeout', '$state', 'repairs',
+        function($timeout, $state, repairs) {
+            var vm = this;
+
+            vm.mask_close = function() {
+                vm.suc_show = false;
+            }
+            vm.mask_err_close = function() {
+                vm.err_show = false;
+            }
+            vm.submitForm = function() {
+                vm.repair.openid=sessionStorage.getItem("openid");
+                params = vm.repair;
+                repairs.save(params).$promise.then(successcb, errcb);
+            }
+
+            function successcb() {
+                vm.suc_show = true;
+                $timeout(function() {
+                    vm.suc_show = false;
+                    $state.go("repair");
+                }, 3000);
+            }
+
+            function errcb() {
+                vm.err_show = true;
+                $timeout(function() {
+                    vm.err_show = false;
+                }, 3000);
+            }
+        }
+    ]);
+})();
+
+(function() {
+    angular.module('app.repair').controller('repairDetailCtrl', ['$state', '$stateParams', '$timeout', 'repairs',
+        function($state, $stateParams, $timeout, repairs) {
+            var vm = this;
+            vm.suc_show = false;
+            vm.err_show = false;
+
+            params = {
+                'id': $stateParams.id
+            };
+
+            repairs.get(params).$promise.then(function(data) {
+                vm.repair = data;
+            });
+
+            vm.confirm = function(id) {
+                params = {
+                    id: id,
+                    state: 3
+                };
+
+                repairs.save(params).$promise.then(function(data) {
+                    vm.repair = data;
+                    successcb();
+                }, errcb);
+            };
+
+            function successcb() {
+                vm.suc_show = true;
+                $timeout(function() {
+                    vm.suc_show = false;
+                    $state.go("repair");
+                }, 3000);
+            }
+
+            function errcb() {
+                vm.err_show = true;
+                $timeout(function() {
+                    vm.err_show = false;
+                }, 3000);
+            }
+        }
+    ]);
+})();
+
+angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state', 'repairs',
+    function ($timeout, $state, repairs) {
+        var vm = this;
+        vm.currentPage = 0;
+        vm.pageSize = 10;
+        vm.suc_show = false;
+        vm.err_show = false;
+        vm.repairs = [];
+        var params = {};
+
+        vm.load = function (goPage, limit) {
+            if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
+                return;
+            } else {
+                params = {
+                    offset: limit * (goPage - 1),
+                    limit: limit,
+                    openid: sessionStorage.getItem("openid"),
+                    queryType: 'openid'
+                };
+
+                repairs.query(params).$promise.then(function (data) {
+                    vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
+                    vm.currentPage = goPage;
+                    vm.busy = false;
+                    Array.prototype.push.apply(vm.repairs, data.items);
+                }, function (data) {
+                    console.log("err!");
+                });
+            }
+        }
+
+        vm.confirm = function (id) {
+            params = {
+                id: id,
+                state: 3
+            };
+            repairs.save(params).$promise.then(function () {
+                successcb()
+            }, function () {
+                errcb()
+            });
+        }
+
+        function successcb() {
+            vm.suc_show = true;
+            $timeout(function () {
+                vm.suc_show = false;
+                $state.go("repair", {}, {
+                    reload: true
+                });
+            }, 3000);
+        }
+
+        function errcb() {
+            vm.err_show = true;
+            $timeout(function () {
+                vm.err_show = false;
+            }, 3000);
+        }
+
+        vm.load(1, vm.pageSize);
+    }
+]);
+
+(function() {
+    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
+        function($scope, $stateParams, $rootScope, shops) {
+            $rootScope.site = $stateParams.site;
+            $scope.currentPage = 0;
+            $scope.pageSize = 5;
+            $scope.shops = [];
+
+            $scope.load = function(goPage, limit) {
+                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
+                    return;
+                } else if ($rootScope.site != 3) {
+                    $scope.busy = true;
+                    params = {
+                        offset: $scope.pageSize * (goPage - 1),
+                        limit: limit == 8 ? limit : $scope.pageSize,
+                        type: $stateParams.site - 1
+                    }
+                    shops.query(params).$promise.then(function(data) {
+                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                        $scope.currentPage = goPage;
+                        $scope.busy = false;
+                        $scope.shops.push.apply($scope.shops, data.items);
+                    });
+                }
+            }
+            $scope.load(1, 8);
+        }
+    ]);
+})();
+
 myApp.directive('errSrc', function() {
   return {
     link: function(scope, element, attrs) {
@@ -1117,66 +1117,6 @@ myApp.directive('whenScrolled', ['$document', function ($document) {
             });
         }
     };
-}]);
-angular.module('resources.address', ['ngResource']).
-    factory('addresses', ['$resource', function($resource) {
-        return $resource(basePath+'/houses/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.complain', ['ngResource']).
-    factory('complains', ['$resource', function($resource) {
-        return $resource(basePath+'/complains/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.notice', ['ngResource']).
-factory('notices', ['$resource', function($resource) {
-    return $resource(basePath+'/notices/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.payment', ['ngResource']).
-    factory('payments', ['$resource', function($resource) {
-        return $resource(basePath+'/payments/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.repair', ['ngResource']).
-factory('repairs', ['$resource', function($resource) {
-    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.shop', ['ngResource']).
-factory('shops', ['$resource', function($resource) {
-    return $resource(basePath+'/shops/:id', {}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
 }]);
 angular.module('myApp').filter('cut', function() {
     return function(value, wordwise, max, tail) {
@@ -1322,6 +1262,66 @@ angular.module('myApp').filter('payListMerge', function() {
         return result;
     };
 });
+angular.module('resources.address', ['ngResource']).
+    factory('addresses', ['$resource', function($resource) {
+        return $resource(basePath+'/houses/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.complain', ['ngResource']).
+    factory('complains', ['$resource', function($resource) {
+        return $resource(basePath+'/complains/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.notice', ['ngResource']).
+factory('notices', ['$resource', function($resource) {
+    return $resource(basePath+'/notices/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.payment', ['ngResource']).
+    factory('payments', ['$resource', function($resource) {
+        return $resource(basePath+'/payments/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.repair', ['ngResource']).
+factory('repairs', ['$resource', function($resource) {
+    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.shop', ['ngResource']).
+factory('shops', ['$resource', function($resource) {
+    return $resource(basePath+'/shops/:id', {}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
 angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {
