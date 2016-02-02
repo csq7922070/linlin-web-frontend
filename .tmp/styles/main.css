@@ -6,6 +6,10 @@ a:hover {
   text-decoration: none;
   text-underline: none !important;
 }
+button[disabled]:active {
+  background: #ccc!important;
+  color: #fff!important;
+}
 .no-selection {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
