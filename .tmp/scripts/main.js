@@ -658,11 +658,16 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 ]);
 
 angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'locationInfo', 'errorLog',
-    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch, locationInfo,errorLog) {
+	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'locationInfo', 'errorLog','userInfo','communityLocation',
+    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch, locationInfo,errorLog,userInfo,communityLocation) {  	
     	$scope.loadingTip = "数据加载中...";
-    	$scope.loadingShow = true;
+    	$scope.loadingShow = false;
     	$scope.lockClickHide = true;
+
+    	var openId = null;
+		userInfo.getOpenId().then(function(data){
+			openId = data;
+		});
 
     	var cmmList = null;
     	communityList.getCommunityList(communityInfo.city)
@@ -672,6 +677,8 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     			communitySearch.cmmList = cmmList;
     			$scope.loadingShow = false;
     			$scope.focus = true;
+    			//$("#community-search-field").focus();
+    			//$("#community-search-field").trigger("focus");
     		},function(reason){
     			$scope.loadingShow = false;
     			reason = "数据加载失败: "+errorLog.getErrorMessage(reason);
@@ -709,6 +716,11 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     		communityInfo.city = community.city;
     		communityInfo.address = community.address;
     		locationInfo.locationCount++;
+    		communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
+    			console.log("communityLocation.changeCommunity success.");
+    		},function(reason){
+    			alert("communityLocation.changeCommunity error: "+errorLog.getErrorMessage(reason));
+    		});
     		$state.go('home');
     	}
 
@@ -1700,66 +1712,6 @@ angular.module('myApp').filter('payListMerge', function() {
         return result;
     };
 });
-angular.module('resources.address', ['ngResource']).
-    factory('addresses', ['$resource', function($resource) {
-        return $resource(basePath+'/houses/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.complain', ['ngResource']).
-    factory('complains', ['$resource', function($resource) {
-        return $resource(basePath+'/complains/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.notice', ['ngResource']).
-factory('notices', ['$resource', function($resource) {
-    return $resource(basePath+'/notices/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.payment', ['ngResource']).
-    factory('payments', ['$resource', function($resource) {
-        return $resource(basePath+'/payments/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.repair', ['ngResource']).
-factory('repairs', ['$resource', function($resource) {
-    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.shop', ['ngResource']).
-factory('shops', ['$resource', function($resource) {
-    return $resource(basePath+'/shops/:id', {}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
 angular.module('app.location')
 	.service('communityList', ['$q','$http','$timeout', function($q,$http,$timeout){
 		var cmmList = null;
@@ -2021,3 +1973,63 @@ angular.module('app.user')
 			return defer.promise;
 		}
 	}]);
+angular.module('resources.address', ['ngResource']).
+    factory('addresses', ['$resource', function($resource) {
+        return $resource(basePath+'/houses/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.complain', ['ngResource']).
+    factory('complains', ['$resource', function($resource) {
+        return $resource(basePath+'/complains/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.notice', ['ngResource']).
+factory('notices', ['$resource', function($resource) {
+    return $resource(basePath+'/notices/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.payment', ['ngResource']).
+    factory('payments', ['$resource', function($resource) {
+        return $resource(basePath+'/payments/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.repair', ['ngResource']).
+factory('repairs', ['$resource', function($resource) {
+    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.shop', ['ngResource']).
+factory('shops', ['$resource', function($resource) {
+    return $resource(basePath+'/shops/:id', {}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
