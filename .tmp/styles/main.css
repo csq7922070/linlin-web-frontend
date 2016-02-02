@@ -371,6 +371,7 @@ p {
   width: 16px;
   height: 20px;
   z-index: 1;
+  position: relative;
 }
 
 * {
