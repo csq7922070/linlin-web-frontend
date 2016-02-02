@@ -96,6 +96,21 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         .state('address-list', {
             url: "/address-list",
             templateUrl: "tpl/address/address-list.tpl.html",
+            resolve: {
+                data: function($state, addresses) {
+                    params = {
+                        type: 'openid',
+                        openid: sessionStorage.getItem("openid")
+                    }
+                    return addresses.query(params).$promise.then(function(data) {
+                        if (data.items.length == 0) {
+                            return $state.go("address-edit");
+                        } else {
+                            return data;
+                        }
+                    })
+                }
+            },
             controller: "addressListCtrl",
             controllerAs: 'vm'
         })
@@ -185,22 +200,11 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
     });
 }]);
 
-angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stateParams', '$state', 'addresses',
-    function ($rootScope,$stateParams, $state, addresses) {
+angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stateParams', '$state', 'addresses','data',
+    function ($rootScope,$stateParams, $state, addresses,data) {
         var vm = this;
-        params = {
-            type: 'openid',
-            openid: sessionStorage.getItem("openid")
-        }
-        addresses.query(params).$promise.then(function (data) {
-            if (data.items.length!=0) {
-                vm.houses = data.items;
-                vm.activeId= data.activeId;
-            }else if($rootScope.previousState == "home.shop-info"){
-                $state.go("address-edit");
-            }
-        },function(data){
-        })
+        vm.houses = data.items;
+        vm.activeId = data.activeId;
 
         vm.deleteAddress = function (house) {
             vm.sure_delete = true;
@@ -266,6 +270,52 @@ angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addres
         vm.id = $stateParams.id;
         console.log("username:" + vm.username + " id:" + vm.id);
         console.log($stateParams.initial);
+    }
+]);
+
+angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
+    function($scope, $http, $stateParams, $rootScope, $state, $location) {
+
+        var url = $location.url().substring($location.url().indexOf("?"));
+        if (url.indexOf("home") != -1) {
+            url = "";
+        }
+        //1.6获取微信用户openid
+        if (sessionStorage.getItem("openid") == null) {
+            $http({
+                method: "GET",
+                url: basePath + '/getopenid' + url
+            }).success(function(data) {
+                sessionStorage.setItem("openid", data.openid);
+                //添加微信支付
+                sessionStorage.setItem("timestamp", data.timestamp);
+                sessionStorage.setItem("noncestr", data.noncestr);
+                sessionStorage.setItem("sign", data.sign);
+                console.log("获取openid成功");
+            }).error(function(data) {
+                console.log("获取openid失败");
+            });
+        }
+
+        $scope.slides7 = [{
+            id: 10,
+            label: "slide #1",
+            img: "images/banner_01.png"
+        }, {
+            id: 11,
+            label: "slide #2",
+            img: "images/banner_02.png"
+        }, {
+            id: 12,
+            label: "slide #3",
+            img: "images/banner_03.png"
+        }];
+        $scope.carouselIndex7 = 0;
+
+        $rootScope.site = 1;
+        $state.go("home.shop-info", {
+            site: 1
+        });
     }
 ]);
 
@@ -347,52 +397,6 @@ angular.module('app.complain').controller('complainListCtrl', ['complains',
         vm.load(1, vm.pageSize);
     }
 ]);
-angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-    function($scope, $http, $stateParams, $rootScope, $state, $location) {
-
-        var url = $location.url().substring($location.url().indexOf("?"));
-        if (url.indexOf("home") != -1) {
-            url = "";
-        }
-        //1.6获取微信用户openid
-        if (sessionStorage.getItem("openid") == null) {
-            $http({
-                method: "GET",
-                url: basePath + '/getopenid' + url
-            }).success(function(data) {
-                sessionStorage.setItem("openid", data.openid);
-                //添加微信支付
-                sessionStorage.setItem("timestamp", data.timestamp);
-                sessionStorage.setItem("noncestr", data.noncestr);
-                sessionStorage.setItem("sign", data.sign);
-                console.log("获取openid成功");
-            }).error(function(data) {
-                console.log("获取openid失败");
-            });
-        }
-
-        $scope.slides7 = [{
-            id: 10,
-            label: "slide #1",
-            img: "images/banner_01.png"
-        }, {
-            id: 11,
-            label: "slide #2",
-            img: "images/banner_02.png"
-        }, {
-            id: 12,
-            label: "slide #3",
-            img: "images/banner_03.png"
-        }];
-        $scope.carouselIndex7 = 0;
-
-        $rootScope.site = 1;
-        $state.go("home.shop-info", {
-            site: 1
-        });
-    }
-]);
-
 (function() {
     angular.module('app.notice').controller("noticeDetailCtrl", ['$stateParams', 'notices',
         function($stateParams, notices) {
@@ -580,6 +584,37 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
         vm.load(1, vm.pageSize);
     }
 ]);
+
+(function() {
+    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
+        function($scope, $stateParams, $rootScope, shops) {
+            $rootScope.site = $stateParams.site;
+            $scope.currentPage = 0;
+            $scope.pageSize = 5;
+            $scope.shops = [];
+
+            $scope.load = function(goPage, limit) {
+                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
+                    return;
+                } else if ($rootScope.site != 3) {
+                    $scope.busy = true;
+                    params = {
+                        offset: $scope.pageSize * (goPage - 1),
+                        limit: limit == 8 ? limit : $scope.pageSize,
+                        type: $stateParams.site - 1
+                    }
+                    shops.query(params).$promise.then(function(data) {
+                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                        $scope.currentPage = goPage;
+                        $scope.busy = false;
+                        $scope.shops.push.apply($scope.shops, data.items);
+                    });
+                }
+            }
+            $scope.load(1, 8);
+        }
+    ]);
+})();
 
 angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', 'addresses', 'payments',
     function($scope, $http, $stateParams, $rootScope, $state, addresses, payments) {
@@ -1023,37 +1058,126 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
     }
 ]);
 
-(function() {
-    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
-        function($scope, $stateParams, $rootScope, shops) {
-            $rootScope.site = $stateParams.site;
-            $scope.currentPage = 0;
-            $scope.pageSize = 5;
-            $scope.shops = [];
-
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
-                    return;
-                } else if ($rootScope.site != 3) {
-                    $scope.busy = true;
-                    params = {
-                        offset: $scope.pageSize * (goPage - 1),
-                        limit: limit == 8 ? limit : $scope.pageSize,
-                        type: $stateParams.site - 1
-                    }
-                    shops.query(params).$promise.then(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        $scope.shops.push.apply($scope.shops, data.items);
-                    });
-                }
-            }
-            $scope.load(1, 8);
+myApp.directive('errSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      element.bind('error', function() {
+        if (attrs.src != attrs.errSrc) {
+          attrs.$set('src', attrs.errSrc);
         }
-    ]);
-})();
+      });
+    }
+  }
+});
+myApp.directive('pagination', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            numPages: '=',
+            currentPage: '=',
+            pageSize: '=',
+            goPage: '&'
+        },
+        templateUrl: 'pagination.tpl.html',
+        link: function(scope, element, attrs) {
 
+            scope.isActive = function(page) {
+                return scope.currentPage === page;
+            }
+
+            scope.hasPre = function() {
+                return (scope.currentPage - 1 > 0);
+            }
+
+            scope.hasPre2 = function() {
+                return (scope.currentPage - 2 > 0);
+            }
+            scope.hasNext = function() {
+                return (scope.currentPage + 1 <= cope.numPages);
+            }
+
+            scope.hasNext2 = function() {
+                return (scope.currentPage + 2 <= cope.numPages);
+            }
+        }
+    }
+
+})
+
+myApp.directive('whenScrolled', ['$document', function ($document) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var raw = element[0];
+            $document.bind('scroll', function () {
+                var rectObject = raw.getBoundingClientRect();
+                if (window.innerHeight >= rectObject.bottom) {
+                    scope.$apply(attrs.whenScrolled);
+                }
+            });
+        }
+    };
+}]);
+angular.module('resources.address', ['ngResource']).
+    factory('addresses', ['$resource', function($resource) {
+        return $resource(basePath+'/houses/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.complain', ['ngResource']).
+    factory('complains', ['$resource', function($resource) {
+        return $resource(basePath+'/complains/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.notice', ['ngResource']).
+factory('notices', ['$resource', function($resource) {
+    return $resource(basePath+'/notices/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.payment', ['ngResource']).
+    factory('payments', ['$resource', function($resource) {
+        return $resource(basePath+'/payments/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.repair', ['ngResource']).
+factory('repairs', ['$resource', function($resource) {
+    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.shop', ['ngResource']).
+factory('shops', ['$resource', function($resource) {
+    return $resource(basePath+'/shops/:id', {}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
 angular.module('myApp').filter('cut', function() {
     return function(value, wordwise, max, tail) {
         if (!value) return '';
@@ -1198,126 +1322,6 @@ angular.module('myApp').filter('payListMerge', function() {
         return result;
     };
 });
-myApp.directive('errSrc', function() {
-  return {
-    link: function(scope, element, attrs) {
-      element.bind('error', function() {
-        if (attrs.src != attrs.errSrc) {
-          attrs.$set('src', attrs.errSrc);
-        }
-      });
-    }
-  }
-});
-myApp.directive('pagination', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            numPages: '=',
-            currentPage: '=',
-            pageSize: '=',
-            goPage: '&'
-        },
-        templateUrl: 'pagination.tpl.html',
-        link: function(scope, element, attrs) {
-
-            scope.isActive = function(page) {
-                return scope.currentPage === page;
-            }
-
-            scope.hasPre = function() {
-                return (scope.currentPage - 1 > 0);
-            }
-
-            scope.hasPre2 = function() {
-                return (scope.currentPage - 2 > 0);
-            }
-            scope.hasNext = function() {
-                return (scope.currentPage + 1 <= cope.numPages);
-            }
-
-            scope.hasNext2 = function() {
-                return (scope.currentPage + 2 <= cope.numPages);
-            }
-        }
-    }
-
-})
-
-myApp.directive('whenScrolled', ['$document', function ($document) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var raw = element[0];
-            $document.bind('scroll', function () {
-                var rectObject = raw.getBoundingClientRect();
-                if (window.innerHeight >= rectObject.bottom) {
-                    scope.$apply(attrs.whenScrolled);
-                }
-            });
-        }
-    };
-}]);
-angular.module('resources.address', ['ngResource']).
-    factory('addresses', ['$resource', function($resource) {
-        return $resource(basePath+'/houses/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.complain', ['ngResource']).
-    factory('complains', ['$resource', function($resource) {
-        return $resource(basePath+'/complains/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.notice', ['ngResource']).
-factory('notices', ['$resource', function($resource) {
-    return $resource(basePath+'/notices/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.payment', ['ngResource']).
-    factory('payments', ['$resource', function($resource) {
-        return $resource(basePath+'/payments/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.repair', ['ngResource']).
-factory('repairs', ['$resource', function($resource) {
-    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.shop', ['ngResource']).
-factory('shops', ['$resource', function($resource) {
-    return $resource(basePath+'/shops/:id', {}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
 angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {

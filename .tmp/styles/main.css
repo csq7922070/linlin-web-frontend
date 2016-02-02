@@ -108,7 +108,7 @@ p {
 .title_style {
   font-size: 16px;
   color: #000000;
-  margin: 6px 0!important;
+  margin: 6px 0 !important;
 }
 /*------------------------------------------account页---------------------------------------------*/
 .account_page a {
@@ -362,6 +362,11 @@ p {
 .payment_date {
   font-size: 14px;
   text-align: center;
+}
+.owner_name_del {
+  width: 16px;
+  height: 20px;
+  z-index: 1;
 }
 
 * {

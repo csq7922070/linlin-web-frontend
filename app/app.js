@@ -96,6 +96,21 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         .state('address-list', {
             url: "/address-list",
             templateUrl: "tpl/address/address-list.tpl.html",
+            resolve: {
+                data: function($state, addresses) {
+                    params = {
+                        type: 'openid',
+                        openid: sessionStorage.getItem("openid")
+                    }
+                    return addresses.query(params).$promise.then(function(data) {
+                        if (data.items.length == 0) {
+                            return $state.go("address-edit");
+                        } else {
+                            return data;
+                        }
+                    })
+                }
+            },
             controller: "addressListCtrl",
             controllerAs: 'vm'
         })
