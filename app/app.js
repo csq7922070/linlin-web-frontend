@@ -207,6 +207,8 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         address: null,
         auth: null//该字段用来判断小区是否为合作小区，值为true or false
     }
+).value(
+    'locationCount', 0
 ).constant(
     'appId', 'wx050cc99d8cec1a73'
 );

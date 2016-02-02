@@ -207,6 +207,8 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         address: null,
         auth: null//该字段用来判断小区是否为合作小区，值为true or false
     }
+).value(
+    'locationCount', 0
 ).constant(
     'appId', 'wx050cc99d8cec1a73'
 );
@@ -376,6 +378,9 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
     'communityInfo',
     function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo) {
         $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
+        $scope.changeCommunity = function(){
+            $state.go('auto-location');
+        }
 
         var url = $location.url().substring($location.url().indexOf("?"));
         if (url.indexOf("home") != -1) {
@@ -421,8 +426,8 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
 ]);
 
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo) {
+	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationCount',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, locationCount) {
     	$scope.loadingTip = "定位中...";
     	$scope.loadingShow = true;
     	$scope.lockClickHide = true;
@@ -492,6 +497,10 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 					setCurrentCommunity(data);
 				}else{
 					setLastCommunity(data);
+				}
+				locationCount++;
+				if(locationCount == 1 && $scope.autoLocationCommunities.length > 0){
+					$scope.changeCommunity($scope.autoLocationCommunities[0]);
 				}
 			});
     	}
@@ -629,8 +638,8 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 ]);
 
 angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'$timeout', 'communityInfo', 'communityList', 'communitySearch',
-    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch) {
+	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'locationCount',
+    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch, locationCount) {
     	$scope.loadingTip = "数据加载中...";
     	$scope.loadingShow = true;
     	$scope.lockClickHide = true;
@@ -675,6 +684,9 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	$scope.changeCommunity = function(community){
     		console.log(community);
     		communityInfo.name = community.name;
+    		communityInfo.city = community.city;
+    		communityInfo.address = community.address;
+    		locationCount++;
     		$state.go('home');
     	}
 
@@ -1173,6 +1185,37 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
 ]);
 
 (function() {
+    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
+        function($scope, $stateParams, $rootScope, shops) {
+            $rootScope.site = $stateParams.site;
+            $scope.currentPage = 0;
+            $scope.pageSize = 5;
+            $scope.shops = [];
+
+            $scope.load = function(goPage, limit) {
+                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
+                    return;
+                } else if ($rootScope.site != 3) {
+                    $scope.busy = true;
+                    params = {
+                        offset: $scope.pageSize * (goPage - 1),
+                        limit: limit == 8 ? limit : $scope.pageSize,
+                        type: $stateParams.site - 1
+                    }
+                    shops.query(params).$promise.then(function(data) {
+                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                        $scope.currentPage = goPage;
+                        $scope.busy = false;
+                        $scope.shops.push.apply($scope.shops, data.items);
+                    });
+                }
+            }
+            $scope.load(1, 8);
+        }
+    ]);
+})();
+
+(function() {
     angular.module('app.repair').controller('repairAddCtrl', ['$timeout', '$state', 'repairs',
         function($timeout, $state, repairs) {
             var vm = this;
@@ -1317,37 +1360,17 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     }
 ]);
 
-(function() {
-    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
-        function($scope, $stateParams, $rootScope, shops) {
-            $rootScope.site = $stateParams.site;
-            $scope.currentPage = 0;
-            $scope.pageSize = 5;
-            $scope.shops = [];
-
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
-                    return;
-                } else if ($rootScope.site != 3) {
-                    $scope.busy = true;
-                    params = {
-                        offset: $scope.pageSize * (goPage - 1),
-                        limit: limit == 8 ? limit : $scope.pageSize,
-                        type: $stateParams.site - 1
-                    }
-                    shops.query(params).$promise.then(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        $scope.shops.push.apply($scope.shops, data.items);
-                    });
-                }
-            }
-            $scope.load(1, 8);
-        }
-    ]);
-})();
-
+angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type: "block"
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.blocks = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+}])
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
     function ($stateParams, addresses) {
         var vm = this;
@@ -1363,17 +1386,6 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'ad
         })
     }
 ])
-angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type: "block"
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.blocks = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-}])
 angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {

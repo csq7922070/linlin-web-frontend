@@ -1,6 +1,6 @@
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo) {
+	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationCount',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, locationCount) {
     	$scope.loadingTip = "定位中...";
     	$scope.loadingShow = true;
     	$scope.lockClickHide = true;
@@ -70,6 +70,10 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 					setCurrentCommunity(data);
 				}else{
 					setLastCommunity(data);
+				}
+				locationCount++;
+				if(locationCount == 1 && $scope.autoLocationCommunities.length > 0){
+					$scope.changeCommunity($scope.autoLocationCommunities[0]);
 				}
 			});
     	}

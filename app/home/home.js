@@ -2,6 +2,9 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
     'communityInfo',
     function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo) {
         $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
+        $scope.changeCommunity = function(){
+            $state.go('auto-location');
+        }
 
         var url = $location.url().substring($location.url().indexOf("?"));
         if (url.indexOf("home") != -1) {

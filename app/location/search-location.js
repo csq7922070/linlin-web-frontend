@@ -1,6 +1,6 @@
 angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'$timeout', 'communityInfo', 'communityList', 'communitySearch',
-    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch) {
+	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'locationCount',
+    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch, locationCount) {
     	$scope.loadingTip = "数据加载中...";
     	$scope.loadingShow = true;
     	$scope.lockClickHide = true;
@@ -45,6 +45,9 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	$scope.changeCommunity = function(community){
     		console.log(community);
     		communityInfo.name = community.name;
+    		communityInfo.city = community.city;
+    		communityInfo.address = community.address;
+    		locationCount++;
     		$state.go('home');
     	}
 
