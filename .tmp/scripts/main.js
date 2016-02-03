@@ -229,8 +229,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
     'locationInfo', {
         longitude: null,//经度
         latitude: null,//纬度
-        accuracy: null,//位置精度
-        firstLoginLocation: true
+        accuracy: null//位置精度
+    }
+).value(
+    'locationState',{
+        hasLocation: false,
+        autoLocationVisited: false
     }
 ).constant(
     'appId', appId
@@ -387,11 +391,63 @@ angular.module('app.complain').controller('complainListCtrl', ['complains',
     }
 ]);
 angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-    'communityInfo',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo) {
-        $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
+    'communityInfo', 'locationState', 'communityLocation', '$q',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, locationState, communityLocation, $q) {
+        $scope.refreshCommunityInfo = function(){
+            $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
+        }
+        $scope.refreshCommunityInfo();
         $scope.changeCommunity = function(){
             $state.go('auto-location');
+        }
+
+        if(!locationState.hasLocation){
+            communityLocation.autoLocationCommunity().then(function(data){
+                setCommunity(data);
+            },function(reason){
+                //首页自动定位失败暂时不做提示
+            });
+        }
+
+        function setCommunity(data){
+            var defer = $q.defer();
+            if(!communityLocation.compareCommunity(data)){//检测到2次小区地址不一致
+                //需要提示用户是否切换到当前定位地址
+                $scope.modalTip = "检测到当前登陆位置为"+data.city+data.areaName+", "+
+                    "上次登陆位置为"+data.lastCity+data.lastAreaName+", 是否切换?"
+                $scope.tipAlign = "left";
+                $scope.okText = "切换";
+                $scope.showModal = true;
+                $scope.onModalClose = function(state){//state is true or false
+                    defer.resolve(state);
+                    $scope.showModal = false;
+                }
+            }else{
+                defer.resolve(true);
+            }
+            defer.promise.then(function(selectCurrent){//selectCurrent代表是否选择当前自动定位小区为登陆小区
+                if(selectCurrent){
+                    var cmm = {
+                        name:data.areaName,
+                        city: data.city,
+                        address: data.address
+                    };
+                    angular.extend(communityInfo, cmm);
+                    $scope.refreshCommunityInfo();
+                    communityLocation.storageCommunity(communityInfo);
+                    userInfo.getOpenId().then(function(data){
+                        var openId = data;
+                        communityLocation.changeCommunity(openId, cmm).then(function(data){//保存用户选择的小区信息到服务器
+                            console.log("changeCommunity success.");
+                        },function(reason){
+                            alert(reason.errorCode +"," +reason.errorMessage);
+                        });
+                    },function(reason){
+                        alert(reason.errorCode + ","+reason.errorMessage);
+                    });
+                }
+                locationState.hasLocation = true;
+            });
         }
 
         // var url = $location.url().substring($location.url().indexOf("?"));
@@ -438,23 +494,28 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
 ]);
 
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, locationInfo,errorLog) {
+	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog', 'locationState',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, locationInfo,errorLog,locationState) {
     	var openId = null;
     	userInfo.getOpenId().then(function(data){
     		openId = data;
     	},function(reason){
     		alert(reason.errorCode + ","+reason.errorMessage);
     	});
+    	var locInfo = location.getLastLocation();
+    	if(locInfo){
+    		angular.extend(locationInfo, locInfo);
+    	}
     	var cmmInfo = communityLocation.getLastCommunity();
-    	if(locationInfo.firstLoginLocation && cmmInfo){
+    	if(!locationState.autoLocationVisited && cmmInfo){
     		angular.extend(communityInfo, cmmInfo);
-    		locationInfo.firstLoginLocation = false;
+    		locationState.autoLocationVisited = true;
     		$state.go('home');
     		return;
     	}
 
     	$scope.clickSearchField = function(){
+    		locationState.autoLocationVisited = true;
     		$state.go('search-location');
     	}
 
@@ -463,18 +524,9 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		$scope.showLocationError = false;
     		$scope.loadingTip = "定位中...";
     		$scope.loadingShow = true;
-    		userInfo.getOpenId().then(function(data){//openid
-    			openId = data;
-    			return location.getLocation();
-    		},function(reason){
-    			return $q.reject(reason);
-    		}).then(function(data){//location
-    			return communityLocation.locationCommunity(openId, data.longitude, data.latitude);
-    		},function(reason){
-    			return $q.reject(reason);
-    		}).then(function(data){//community
+    		communityLocation.autoLocationCommunity().then(function(data){
     			setCommunity(data);
-    		}, function(reason){
+    		},function(reason){
     			if(reason && reason.errorCode == "PERMISSION_DENIED"){//用户拒绝了定位请求，提示打开定位功能
     				$scope.modalTitle = "定位服务未开启";
     				$scope.modalTip = "请在系统设置中开启定位服务";
@@ -498,7 +550,7 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     	function setCommunity(data){
     		var defer = $q.defer();
 			$scope.loadingShow = false;
-			if(locationInfo.firstLoginLocation && !communityLocation.compareCommunity(data)){//首次登陆定位且检测到2次小区地址不一致
+			if(!locationState.autoLocationVisited && !communityLocation.compareCommunity(data)){//首次登陆定位且检测到2次小区地址不一致
 				//需要提示用户是否切换到当前定位地址
 				$scope.modalTip = "检测到当前登陆位置为"+data.city+data.areaName+", "+
 					"上次登陆位置为"+data.lastCity+data.lastAreaName+", 是否切换?"
@@ -518,7 +570,7 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 				}else{
 					setLastCommunity(data);
 				}
-				if(locationInfo.firstLoginLocation && $scope.autoLocationCommunities.length > 0){
+				if(!locationState.autoLocationVisited && $scope.autoLocationCommunities.length > 0){
 					$scope.changeCommunity($scope.autoLocationCommunities[0]);
 				}
 			});
@@ -543,7 +595,6 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     	}
 
     	$scope.changeCommunity = function(community){
-    		console.log(community);
     		angular.extend(communityInfo, community);
     		communityLocation.storageCommunity(communityInfo);
 			communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
@@ -551,7 +602,8 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		},function(reason){
     			alert(reason.errorCode +"," +reason.errorMessage);
     		});
-    		communityInfo.firstLoginLocation = false;
+    		locationState.hasLocation = true;
+    		locationState.autoLocationVisited = true;
     		$state.go('home');
     	}
 
@@ -562,8 +614,8 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 ]);
 
 angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'locationInfo', 'errorLog','userInfo','communityLocation',
-    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch, locationInfo,errorLog,userInfo,communityLocation) {  	
+	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'locationInfo', 'errorLog','userInfo','communityLocation', 'locationState',
+    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch, locationInfo,errorLog,userInfo,communityLocation, locationState) {  	
     	$scope.loadingTip = "数据加载中...";
     	$scope.loadingShow = false;
     	$scope.lockClickHide = true;
@@ -623,7 +675,7 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     		},function(reason){
     			alert(reason.errorCode +"," +reason.errorMessage);
     		});
-    		communityInfo.firstLoginLocation = false;
+    		locationState.hasLocation = true;
     		$state.go('home');
     	}
 
@@ -1649,9 +1701,10 @@ angular.module('app.location')
 		}
 	}]);
 angular.module('app.location')
-	.service('communityLocation', ['$q', '$timeout', '$http', 'errorLog', function($q, $timeout, $http, errorLog){
-		this.locationCommunity = function(openId, longitude, latitude){// longitude经度，latitude维度
-			console.log("locationCommunity...");
+	.service('communityLocation', ['$q', '$timeout', '$http', 'errorLog', 'userInfo','locationInfo', 'location',
+		function($q, $timeout, $http, errorLog, userInfo, locationInfo, location){
+		//根据经纬度定位小区
+		function locationCommunity(openId, longitude, latitude){// longitude经度，latitude维度
 			var defer = $q.defer();
 			$http({
 				method: 'GET',
@@ -1670,6 +1723,29 @@ angular.module('app.location')
 				};
 				defer.reject(reason);
 			});
+			return defer.promise;
+		}
+
+		//自动定位小区，先定位经纬度，然后调用接口查询小区信息
+		this.autoLocationCommunity = function(){
+			var defer = $q.defer();
+			var openId = null;
+    		userInfo.getOpenId().then(function(data){//openid
+    			openId = data;
+    			return location.getLocation();
+    		},function(reason){
+    			return $q.reject(reason);
+    		}).then(function(data){//location
+    			angular.extend(locationInfo, data);
+    			location.storageLocation(locationInfo);
+    			return locationCommunity(openId, data.longitude, data.latitude);
+    		},function(reason){
+    			return $q.reject(reason);
+    		}).then(function(data){//community
+    			defer.resolve(data);
+    		}, function(reason){
+    			defer.reject(reason);
+    		});
 			return defer.promise;
 		}
 
@@ -1704,6 +1780,7 @@ angular.module('app.location')
 				(data.areaName != data.lastAreaName || data.city != data.lastCity || data.address != data.lastAddress)){
 				result = false;
 			}
+			result = false;
 			return result;
 		}
 
@@ -1816,6 +1893,24 @@ angular.module('app.location')
 	            defer.reject(reason);
 			}
 			return defer.promise;
+		}
+
+		//获取上一次定位信息，此信息通过localStorage持久化存储
+		this.getLastLocation = function(){
+			var loc = null;
+			if(window.localStorage && localStorage.locationInfo){
+				loc = JSON.parse(localStorage.locationInfo);
+			}
+			return loc;
+		}
+
+		this.storageLocation = function(locInfo){
+			var state = false;
+			if(window.localStorage){
+				localStorage.locationInfo = JSON.stringify(locInfo);
+				state = true;
+			}
+			return state;
 		}
 	}]);
 angular.module('app.user')
@@ -1949,10 +2044,14 @@ factory('repairs', ['$resource', function($resource) {
     })
 }]);
 angular.module('resources.shop', ['ngResource']).
-factory('shops', ['$resource', function($resource) {
+factory('shops', ['$resource', 'locationInfo', function($resource, locationInfo) {
     return $resource(basePath+'/shops/:id', {}, {
         query: {
-        	params:{'id':'query'},
+        	params:{
+        		'id':'query',
+        		lon: locationInfo.longitude,
+        		lat: locationInfo.latitude
+        	},
             method: 'GET',
             isArray: false
         }

@@ -1,7 +1,8 @@
 angular.module('app.location')
-	.service('communityLocation', ['$q', '$timeout', '$http', 'errorLog', function($q, $timeout, $http, errorLog){
-		this.locationCommunity = function(openId, longitude, latitude){// longitude经度，latitude维度
-			console.log("locationCommunity...");
+	.service('communityLocation', ['$q', '$timeout', '$http', 'errorLog', 'userInfo','locationInfo', 'location',
+		function($q, $timeout, $http, errorLog, userInfo, locationInfo, location){
+		//根据经纬度定位小区
+		function locationCommunity(openId, longitude, latitude){// longitude经度，latitude维度
 			var defer = $q.defer();
 			$http({
 				method: 'GET',
@@ -20,6 +21,29 @@ angular.module('app.location')
 				};
 				defer.reject(reason);
 			});
+			return defer.promise;
+		}
+
+		//自动定位小区，先定位经纬度，然后调用接口查询小区信息
+		this.autoLocationCommunity = function(){
+			var defer = $q.defer();
+			var openId = null;
+    		userInfo.getOpenId().then(function(data){//openid
+    			openId = data;
+    			return location.getLocation();
+    		},function(reason){
+    			return $q.reject(reason);
+    		}).then(function(data){//location
+    			angular.extend(locationInfo, data);
+    			location.storageLocation(locationInfo);
+    			return locationCommunity(openId, data.longitude, data.latitude);
+    		},function(reason){
+    			return $q.reject(reason);
+    		}).then(function(data){//community
+    			defer.resolve(data);
+    		}, function(reason){
+    			defer.reject(reason);
+    		});
 			return defer.promise;
 		}
 
@@ -54,6 +78,7 @@ angular.module('app.location')
 				(data.areaName != data.lastAreaName || data.city != data.lastCity || data.address != data.lastAddress)){
 				result = false;
 			}
+			result = false;
 			return result;
 		}
 

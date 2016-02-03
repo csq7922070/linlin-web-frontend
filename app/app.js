@@ -229,8 +229,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
     'locationInfo', {
         longitude: null,//经度
         latitude: null,//纬度
-        accuracy: null,//位置精度
-        firstLoginLocation: true
+        accuracy: null//位置精度
+    }
+).value(
+    'locationState',{
+        hasLocation: false,
+        autoLocationVisited: false
     }
 ).constant(
     'appId', appId
