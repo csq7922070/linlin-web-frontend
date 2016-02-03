@@ -2,6 +2,7 @@
 //var basePath="http://192.168.0.120:8080/skh";
 var basePath = "http://mitest.4zlink.com:8080/mifan";
 //var basePath = "http://192.168.0.136:8080/skh";
+var appId = "wx050cc99d8cec1a73";
 
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
@@ -226,8 +227,11 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
     }
 ).value(
     'locationInfo', {
-        locationCount: 0
+        longitude: null,//经度
+        latitude: null,//纬度
+        accuracy: null,//位置精度
+        firstLoginLocation: true
     }
 ).constant(
-    'appId', 'wx050cc99d8cec1a73'
+    'appId', appId
 );

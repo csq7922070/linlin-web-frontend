@@ -37,7 +37,11 @@ angular.module('app.location')
 			}).success(function(data){
 				defer.resolve(data);
 			}).error(function(data){
-				defer.reject(data);
+				var reason = {
+					errorCode: "CHANGE_COMMUNITY_ERROR",
+					errorMessage: errorLog.getErrorMessage(data)
+				};
+				defer.reject(reason);
 			});
 			return defer.promise;
 		}
@@ -51,5 +55,23 @@ angular.module('app.location')
 				result = false;
 			}
 			return result;
+		}
+
+		//获取上一次使用的小区信息，此信息通过localStorage持久化存储
+		this.getLastCommunity = function(){
+			var cmm = null;
+			if(window.localStorage && localStorage.communityInfo){
+				cmm = JSON.parse(localStorage.communityInfo);
+			}
+			return cmm;
+		}
+
+		this.storageCommunity = function(cmmInfo){
+			var state = false;
+			if(window.localStorage){
+				localStorage.communityInfo = JSON.stringify(cmmInfo);
+				state = true;
+			}
+			return state;
 		}
 	}]);

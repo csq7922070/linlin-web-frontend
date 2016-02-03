@@ -53,15 +53,14 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
 
     	$scope.changeCommunity = function(community){
     		console.log(community);
-    		communityInfo.name = community.name;
-    		communityInfo.city = community.city;
-    		communityInfo.address = community.address;
-    		locationInfo.locationCount++;
+    		angular.extend(communityInfo, community);
+    		communityLocation.storageCommunity(communityInfo);
     		communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
-    			console.log("communityLocation.changeCommunity success.");
+    			console.log("changeCommunity success.");
     		},function(reason){
-    			alert("communityLocation.changeCommunity error: "+errorLog.getErrorMessage(reason));
+    			alert(reason.errorCode +"," +reason.errorMessage);
     		});
+    		communityInfo.firstLoginLocation = false;
     		$state.go('home');
     	}
 

@@ -11,7 +11,7 @@ angular.module('app.user')
 			var defer = $q.defer();
 			if (openId == null ){
 				var url = $location.url().substring($location.url().indexOf("?"));
-				if(url.indexOf("auto-location")>=0){
+				if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
 					url="";
 				}
 	            $http({

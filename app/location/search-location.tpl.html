@@ -1,9 +1,10 @@
-<div id="search-location-container">
-	<div class="search-container">
-<!-- 		<img class="search-icon" src="images/search.png"> -->
-		<input id="community-search-field" class="search-field" type="text" placeholder="请输入小区名称" 
-			ng-model="communityName" c-focus focus="focus" />
-		<a class="delete" href="javascript:void(0)" ng-show="communityName" ng-click="clearSearchField()"></a>
+<div id="search-location-container" class="location-container">
+	<div class="l-wrapper">
+		<div class="search-container">
+			<input id="community-search-field" class="search-field" type="text" placeholder="请输入小区名称" 
+				ng-model="communityName" c-focus focus="focus" />
+			<a class="delete" href="javascript:void(0)" ng-show="communityName" ng-click="clearSearchField()"></a>
+		</div>
 	</div>
 	<ul>
 		<li class="list-item community-item" ng-repeat="item in searchLocationCommunities">
