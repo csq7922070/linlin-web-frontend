@@ -1,4 +1,7 @@
-<a class="village" ng-click="changeCommunity()"><span ng-bind="communityName">阿尔卡...</span><img src="images/right_arrow.png" style="height: 14px;position: relative;top: -2px;left: 4px"></a>
+<a class="village" ng-click="changeCommunity()">
+    <span ng-bind="communityName" class="community-name">阿尔卡...</span>
+    <img src="images/right_arrow.png" style="height: 14px;position: relative;top: -1px;left: 4px">
+</a>
 <div class="carousel-demo">
     <ul rn-carousel rn-carousel-index="carouselIndex7"  rn-carousel-auto-slide ="5" class="carousel5">
         <li ng-repeat="slide in slides7 track by slide.id">

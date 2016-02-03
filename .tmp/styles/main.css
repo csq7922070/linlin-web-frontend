@@ -1055,6 +1055,10 @@ div.rn-carousel-indicator span {
   margin-top: 55%;
 }
 
+.village .community-name {
+  font-size: 14px;
+  line-height: 14px;
+}
 .village:hover {
   color: #fff;
 }
@@ -1116,6 +1120,7 @@ div.rn-carousel-indicator span {
   background-image: url('../images/right_arrow.png');
   background-repeat: no-repeat;
   background-position: 97%;
+  background-size: 10px;
 }
 .list-link {
   display: block;
@@ -1127,10 +1132,11 @@ div.rn-carousel-indicator span {
   display: block;
   font-size: 20px;
   color: #333333;
+  font-weight: 600;
 }
 .list-link .community-address {
   display: block;
-  font-size: 19px;
+  font-size: 18px;
   color: #999999;
 }
 
