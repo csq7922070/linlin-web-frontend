@@ -69,6 +69,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             templateUrl: "tpl/address/address-edit.tpl.html"
                 //controllerAs: 'vm'
         })
+        .state('address-village', {
+            url: "/address-village/",
+            templateUrl: "tpl/address/village/village.tpl.html",
+            controller: "addressVillageCtrl",
+            controllerAs: 'vm'
+        })
         .state('address-block', {
             url: "/address-block/",
             templateUrl: "tpl/address/block/block.tpl.html",
@@ -811,6 +817,7 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
             return text;
         }
 
+        $scope.community = $stateParams.community;
         $scope.block = $stateParams.block;
         $scope.unit = $stateParams.unit;
         $scope.room = $stateParams.room;
@@ -1333,6 +1340,19 @@ angular.module('app.address').controller('addressBlockCtrl',['$stateParams','add
         console.log("err!");
     });
 }])
+angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type:'unit',
+        block:$stateParams.block
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.units = data.items;
+        vm.block = $stateParams.block;
+    }, function (data) {
+        console.log("err!");
+    });
+}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
     function ($stateParams, addresses) {
         var vm = this;
@@ -1348,7 +1368,7 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'ad
         })
     }
 ])
-angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
+/*angular.module('app.address').controller('addressVillageCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {
         type:'unit',
@@ -1360,4 +1380,4 @@ angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addr
     }, function (data) {
         console.log("err!");
     });
-}]);
+}]);*/
