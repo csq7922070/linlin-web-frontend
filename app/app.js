@@ -76,6 +76,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             templateUrl: "tpl/address/address-edit.tpl.html"
                 //controllerAs: 'vm'
         })
+        .state('address-city', {
+            url: "/address-city/",
+            templateUrl: "tpl/address/city/city.tpl.html",
+            controller: "addressCityCtrl",
+            controllerAs: 'vm'
+        })
         .state('address-village', {
             url: "/address-village/",
             templateUrl: "tpl/address/village/village.tpl.html",

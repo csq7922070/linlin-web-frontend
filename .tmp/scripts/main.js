@@ -76,6 +76,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             templateUrl: "tpl/address/address-edit.tpl.html"
                 //controllerAs: 'vm'
         })
+        .state('address-city', {
+            url: "/address-city/",
+            templateUrl: "tpl/address/city/city.tpl.html",
+            controller: "addressCityCtrl",
+            controllerAs: 'vm'
+        })
         .state('address-village', {
             url: "/address-village/",
             templateUrl: "tpl/address/village/village.tpl.html",
@@ -281,13 +287,16 @@ angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stat
         }
     }
 ])
-angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addresses',
-    function ($stateParams, addresses) {
+angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addresses','communityInfo',
+    function ($stateParams, addresses,communityInfo) {
         var vm = this;
+        vm.city = communityInfo.name;
+        vm.village = communityInfo.name+1;
         vm.add_newaddress = function () {
             console.log("触发");
             params = {
-                community: "阿尔卡迪亚",
+                // community: "阿尔卡迪亚",
+                community: vm.city,
                 block: $stateParams.block,
                 unit: $stateParams.unit,
                 room: $stateParams.room,
@@ -303,6 +312,8 @@ angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addres
         }
         console.log("block" + $stateParams.block + " unit" + $stateParams.unit + " room" + $stateParams.room);
         console.log("succees");
+        vm.city = communityInfo.name;
+        vm.village = communityInfo.name+1;
         vm.block = $stateParams.block;
         vm.unit = $stateParams.unit;
         vm.room = $stateParams.room;
@@ -310,6 +321,7 @@ angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addres
         vm.username = $stateParams.username;
         vm.id = $stateParams.id;
         console.log("username:" + vm.username + " id:" + vm.id);
+        console.log($stateParams);
         console.log($stateParams.initial);
     }
 ]);
@@ -463,6 +475,9 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     	$scope.clickSearchField = function(){
     		$state.go('search-location');
     	}
+
+
+        console.log(communityInfo.name+ ' 11');
 
     	//openId = "o-YfcstQPoTDSPuNHZ44cEof8";
     	$scope.retryLocation = function(){
@@ -1307,23 +1322,44 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
 angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
     params = {
-        type: "block"
+        type: "block",
+        // city:$stateParams.city,
+        // village:$stateParams.village
     }
     addresses.query(params).$promise.then(function (data) {
         vm.blocks = data.items;
+        // vm.city = $stateParams.city
+        // vm.village = $stateParams.village
     }, function (data) {
         console.log("err!");
     });
 }])
+angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo',function($stateParams,addresses,communityInfo){
+    var vm=this;
+    // params = {
+    //     type:'city',
+    // }
+    // addresses.query(params).$promise.then(function (data) {
+    //     vm.city = data.items;
+    // }, function (data) {
+    //     console.log("err!");
+    // });
+    vm.city = communityInfo.name;
+    console.log(vm.city + '22' + communityInfo.name);
+}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
     function ($stateParams, addresses) {
         var vm = this;
         params={
             type:'room',
+            // city:$stateParams.city,
+            // village:$stateParams.village,
             block:$stateParams.block,
             unit:$stateParams.unit
         }
         addresses.query(params).$promise.then(function(data){
+            // vm.city = $stateParams.city
+            // vm.village = $stateParams.village
             vm.block = $stateParams.block;
             vm.unit = $stateParams.unit;
             vm.rooms = data.items;
@@ -1334,28 +1370,34 @@ angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addr
     var vm=this;
     params = {
         type:'unit',
+        // city:$stateParams.city,
+        // village:$stateParams.village,
         block:$stateParams.block
     }
     addresses.query(params).$promise.then(function (data) {
         vm.units = data.items;
+        // vm.city = $stateParams.city
+        // vm.village = $stateParams.village
         vm.block = $stateParams.block;
     }, function (data) {
         console.log("err!");
     });
 }]);
-/*angular.module('app.address').controller('addressVillageCtrl',['$stateParams','addresses',function($stateParams,addresses){
+angular.module('app.address').controller('addressVillageCtrl',['$stateParams','addresses','communityInfo',function($stateParams,addresses,communityInfo){
     var vm=this;
-    params = {
-        type:'unit',
-        block:$stateParams.block
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.units = data.items;
-        vm.block = $stateParams.block;
-    }, function (data) {
-        console.log("err!");
-    });
-}]);*/
+    // params = {
+    //     type:'village',
+    //     city:$stateParams.city
+    // }
+    // addresses.query(params).$promise.then(function (data) {
+    //     vm.village = data.items;
+    //     vm.city = $stateParams.city
+    // }, function (data) {
+    //     console.log("err!");
+    // });
+    vm.city = communityInfo.name;
+    console.log(vm.city + '22' + communityInfo.name);
+}]);
 myApp.directive('cFocus', function() {
     return {
         restrict: 'A',
