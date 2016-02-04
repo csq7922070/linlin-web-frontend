@@ -1082,23 +1082,26 @@ div.rn-carousel-indicator span {
   background-image: url('../images/search.png');
   background-repeat: no-repeat;
   background-position: 4px 4px;
-  background-size: 22px;
+  background-size: 21px;
   border-radius: 5px;
 }
 .l-wrapper .search-container .search-icon {
   margin-left: 18px;
 }
 .l-wrapper .search-container .search-field {
-  font-size: 19px;
+  height: 30px;
+  padding: 2px 0px;
+  font-size: 16px;
   color: #ccc;
   border: 0;
   background: 0 0;
   left: 30px;
-  position: relative;
+  position: absolute;
   background: green;
-  top: 4px;
   background-color: transparent;
   width: 90%;
+  line-height: 26px;
+  vertical-align: middle;
 }
 .l-wrapper .search-container .delete {
   background-image: url('../images/search-delete.png');

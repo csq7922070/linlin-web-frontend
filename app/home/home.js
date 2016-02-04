@@ -35,10 +35,12 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
             }
             defer.promise.then(function(selectCurrent){//selectCurrent代表是否选择当前自动定位小区为登陆小区
                 if(selectCurrent){
+                    //alert(errorLog.getErrorMessage(data));
                     var cmm = {
                         name:data.areaName,
                         city: data.city,
-                        address: data.address
+                        address: data.address,
+                        auth: data.state
                     };
                     angular.extend(communityInfo, cmm);
                     $scope.refreshCommunityInfo();
