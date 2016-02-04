@@ -1,14 +1,9 @@
 angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'locationInfo', 'errorLog','userInfo','communityLocation',
-    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch, locationInfo,errorLog,userInfo,communityLocation) {  	
+	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'locationInfo', 'errorLog','userInfo','communityLocation', 'locationState',
+    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch, locationInfo,errorLog,userInfo,communityLocation, locationState) {  	
     	$scope.loadingTip = "数据加载中...";
     	$scope.loadingShow = false;
     	$scope.lockClickHide = true;
-
-    	var openId = null;
-		userInfo.getOpenId().then(function(data){
-			openId = data;
-		});
 
     	var cmmList = null;
     	communityList.getCommunityList(communityInfo.city)
@@ -55,12 +50,18 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     		console.log(community);
     		angular.extend(communityInfo, community);
     		communityLocation.storageCommunity(communityInfo);
-    		communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
-    			console.log("changeCommunity success.");
-    		},function(reason){
-    			alert(reason.errorCode +"," +reason.errorMessage);
-    		});
-    		communityInfo.firstLoginLocation = false;
+    		var openId = null;
+			userInfo.getOpenId().then(function(data){
+				openId = data;
+				communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
+	    			console.log("changeCommunity success.");
+	    		},function(reason){
+	    			alert(reason.errorCode +"," +reason.errorMessage);
+	    		});
+			},function(reason){
+				alert(reason.errorCode +"," +reason.errorMessage);
+			});
+    		locationState.hasLocation = true;
     		$state.go('home');
     	}
 

@@ -53,4 +53,22 @@ angular.module('app.location')
 			}
 			return defer.promise;
 		}
+
+		//获取上一次定位信息，此信息通过localStorage持久化存储
+		this.getLastLocation = function(){
+			var loc = null;
+			if(window.localStorage && localStorage.locationInfo){
+				loc = JSON.parse(localStorage.locationInfo);
+			}
+			return loc;
+		}
+
+		this.storageLocation = function(locInfo){
+			var state = false;
+			if(window.localStorage){
+				localStorage.locationInfo = JSON.stringify(locInfo);
+				state = true;
+			}
+			return state;
+		}
 	}]);

@@ -39,3 +39,5 @@
     <div class="col-xs-4"  ui-sref="home.shop-info({site:3})"><span ng-class="{'nav_active':site==3}">在线问诊</span></div>
 </div>
 <div ui-view></div>
+<confirm-modal title="modalTitle" tip="modalTip" tip-align="tipAlign" show="showModal" cancel-text="cancelText" ok-text="okText" 
+    only-ok-button="onlyOkButton" on-close="onModalClose(state)"></confirm-modal>

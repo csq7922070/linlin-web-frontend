@@ -1,21 +1,21 @@
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, locationInfo,errorLog) {
-    	var openId = null;
-    	userInfo.getOpenId().then(function(data){
-    		openId = data;
-    	},function(reason){
-    		alert(reason.errorCode + ","+reason.errorMessage);
-    	});
+	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog', 'locationState',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, locationInfo,errorLog,locationState) {
+    	userInfo.initWxParam();//微信参数只会在公众号登录页传入，目前自动定位页面是公众号登录页
+    	var locInfo = location.getLastLocation();
+    	if(locInfo){
+    		angular.extend(locationInfo, locInfo);
+    	}
     	var cmmInfo = communityLocation.getLastCommunity();
-    	if(locationInfo.firstLoginLocation && cmmInfo){
+    	if(!locationState.autoLocationVisited && cmmInfo){
     		angular.extend(communityInfo, cmmInfo);
-    		locationInfo.firstLoginLocation = false;
+    		locationState.autoLocationVisited = true;
     		$state.go('home');
     		return;
     	}
 
     	$scope.clickSearchField = function(){
+    		locationState.autoLocationVisited = true;
     		$state.go('search-location');
     	}
 
@@ -27,18 +27,9 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		$scope.showLocationError = false;
     		$scope.loadingTip = "定位中...";
     		$scope.loadingShow = true;
-    		userInfo.getOpenId().then(function(data){//openid
-    			openId = data;
-    			return location.getLocation();
-    		},function(reason){
-    			return $q.reject(reason);
-    		}).then(function(data){//location
-    			return communityLocation.locationCommunity(openId, data.longitude, data.latitude);
-    		},function(reason){
-    			return $q.reject(reason);
-    		}).then(function(data){//community
+    		communityLocation.autoLocationCommunity().then(function(data){
     			setCommunity(data);
-    		}, function(reason){
+    		},function(reason){
     			if(reason && reason.errorCode == "PERMISSION_DENIED"){//用户拒绝了定位请求，提示打开定位功能
     				$scope.modalTitle = "定位服务未开启";
     				$scope.modalTip = "请在系统设置中开启定位服务";
@@ -62,7 +53,7 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     	function setCommunity(data){
     		var defer = $q.defer();
 			$scope.loadingShow = false;
-			if(locationInfo.firstLoginLocation && !communityLocation.compareCommunity(data)){//首次登陆定位且检测到2次小区地址不一致
+			if(!locationState.autoLocationVisited && !communityLocation.compareCommunity(data)){//首次登陆定位且检测到2次小区地址不一致
 				//需要提示用户是否切换到当前定位地址
 				$scope.modalTip = "检测到当前登陆位置为"+data.city+data.areaName+", "+
 					"上次登陆位置为"+data.lastCity+data.lastAreaName+", 是否切换?"
@@ -82,7 +73,7 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 				}else{
 					setLastCommunity(data);
 				}
-				if(locationInfo.firstLoginLocation && $scope.autoLocationCommunities.length > 0){
+				if(!locationState.autoLocationVisited && $scope.autoLocationCommunities.length > 0){
 					$scope.changeCommunity($scope.autoLocationCommunities[0]);
 				}
 			});
@@ -107,15 +98,21 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     	}
 
     	$scope.changeCommunity = function(community){
-    		console.log(community);
     		angular.extend(communityInfo, community);
     		communityLocation.storageCommunity(communityInfo);
-			communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
-    			console.log("changeCommunity success.");
-    		},function(reason){
-    			alert(reason.errorCode +"," +reason.errorMessage);
-    		});
-    		communityInfo.firstLoginLocation = false;
+			var openId = null;
+			userInfo.getOpenId().then(function(data){
+				openId = data;
+				communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
+	    			console.log("changeCommunity success.");
+	    		},function(reason){
+	    			alert(reason.errorCode +"," +reason.errorMessage);
+	    		});
+			},function(reason){
+				alert(reason.errorCode +"," +reason.errorMessage);
+			});
+    		locationState.hasLocation = true;
+    		locationState.autoLocationVisited = true;
     		$state.go('home');
     	}
 
