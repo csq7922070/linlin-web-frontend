@@ -93,6 +93,7 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
             return text;
         }
 
+        $scope.community = $stateParams.community;
         $scope.block = $stateParams.block;
         $scope.unit = $stateParams.unit;
         $scope.room = $stateParams.room;

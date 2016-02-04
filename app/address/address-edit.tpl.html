@@ -7,14 +7,22 @@
             廊坊市
         </div>
     </div>
-    <div class="weui_cell" href="javascript:;">
+
+    <div class="weui_cell" ui-sref="address-village">
         <div class="weui_cell_bd weui_cell_primary">
             <p style="margin-top: 10px;">小区</p>
         </div>
+        <!-- <div ng-if="vm.block" class="weui_cell_ft" name="block">
+            {{vm.block}}
+        </div>
+        <div ng-if="!vm.block" class="weui_cell_ft" name="block">
+            请选择
+        </div> -->
         <div class="weui_cell_ft">
             阿尔卡迪亚小区
         </div>
     </div>
+
     <div class="weui_cell" ui-sref="address-block">
         <div class="weui_cell_bd weui_cell_primary">
             <p style="margin-top: 10px;">楼号</p>
@@ -50,10 +58,15 @@
     </div>
     <div class="weui_cell address_detail" href="javascript:;">
         <span class="sure_address" style="margin-top: 10px;">
-            确认地址
+            确认:
         </span>
         <span class="right_detail" style="margin-top: 10px;">
-            阿尔卡迪亚小区<span>{{vm.block}}</span><span ng-if="vm.unit">-{{vm.unit}}</span><span ng-if="vm.room">-{{vm.room}}</span>
+            <div>
+                阿尔卡迪亚小区2{{vm.community}}<span>{{vm.block}}</span><span ng-if="vm.unit">-{{vm.unit}}</span><span ng-if="vm.room">-{{vm.room}}</span>
+            </div>
+            <div>
+                <span>{{vm.username}}</span>                
+            </div>
         </span>
     </div>
 </div>

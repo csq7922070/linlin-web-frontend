@@ -1,7 +1,7 @@
-<div class="weui_cells address_down account_page" style="margin-top: 6px">
+<!-- <div class="weui_cells address_down account_page" style="margin-top: 6px">
     <a class="weui_cell" style="padding-top: 14px;padding-bottom: 0;" ui-sref="address-list({id:id})">
         <div class="weui_cell_bd weui_cell_primary">
-            <p class="color333" style="margin-bottom: 5px">业主信息</p>
+            <p class="color333" style="margin-bottom: 5px">阿尔卡迪亚</p>
         </div>
         <div class="address_section color999" style="position: relative;left: -20px">
             <span>{{block}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>
@@ -30,7 +30,7 @@
             </p>
         </div>
     </a>
-</div>
+</div> -->
 <div class="weui_cells_title color333" style="padding-bottom: 4px">待缴费信息
     <small><span class="account_record" style="float: right;color: #4996ee;position:relative;top: 2px;"
                  ui-sref="payment-list({id:2185})">缴费记录</span></small>
@@ -78,16 +78,13 @@
 
         <div class="detail_free" style="background-color: #ffffff;">
             <div class="top_arrow color_aaa" ng-click="freeShow = !freeShow"
-                 style="height: 30px;text-align: right;padding: 0px 15px;"><span
-                    ng-if="freeShow" class="color999">详情<img src="images/up_arrow.png"
-                                                             style="width: 24px;height: 24px"></span><span
-                    ng-if="!freeShow" class="color999">详情<img src="images/down_arrow.png"
-                                                              style="width: 24px;height: 24px"></span>
+                 style="height: 30px;text-align: right;padding: 0px 15px;"><span ng-if="freeShow" class="color999">详情<img src="images/up_arrow.png" style="width: 24px;height: 24px"></span>
+                 <span ng-if="!freeShow" class="color999">详情<img src="images/down_arrow.png" style="width: 24px;height: 24px"></span>
             </div>
             <div ng-show="freeShow" style="padding:0 15px;font-size: 12px">
                 <div style="text-align: center" class="color_aaa">
-                    <span style="float: left;">类别</span><span>本月-上月</span><span
-                            style="float: right">用量</span>
+                    <span style="float: left;">类别</span><span>本月-上月</span>
+                    <span style="float: right">用量</span>
                 </div>
                 <div class="color777" style="text-align: center;padding: 4px 0" ng-repeat="detail in payment.eles ">
                     <div style="width: 49%;float: left">
@@ -120,8 +117,7 @@
             <p style="display: inline" class="pos_lef color333">本页全选 </p>
         </label>
         <div class="weui_cell_bd weui_cell_primary" style="margin-top:2px;flex: 1.6;">
-            <span class="color333">合计:</span><span style="color: #f23737">￥{{total| number:2}}</span><span
-                ng-if="!payments" style="color: #f23737">0.00</span>
+            <span class="color333">合计:</span><span style="color: #f23737">￥{{total| number:2}}</span><span ng-if="!payments" style="color: #f23737">0.00</span>
         </div>
         <button class="weui_btn weui_btn_mini weui_btn_primary my_btn btn_press account_btn"
                 ui-sref="payment({block:block,unit:unit,room:room})" ng-disabled="selected.length==0||!selected">结算

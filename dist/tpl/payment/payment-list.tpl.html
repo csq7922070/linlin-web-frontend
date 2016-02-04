@@ -1,13 +1,11 @@
 <div ng-if="records">
     <div ng-repeat="record in records">
-        <div class="weui_cells_title title_style body_normal payment_date"><span
-                class="color777">{{record.payDate}}</span>
+        <div class="weui_cells_title title_style body_normal payment_date"><span class="color777">{{record.payDate}}</span>
         </div>
         <div class="weui_cells address_down page_pay">
             <div class="weui_cell" style="padding-top: 15px">
                 <div class="weui_cell_bd weui_cell_primary">
-                    <p class="color777" style="margin-bottom: 5px;">{{record.block}}<span ng-if="record.unit">-{{record.unit}}</span><span
-                            ng-if="record.room">-{{record.room}}</span></p>
+                    <p class="color777" style="margin-bottom: 5px;">{{record.block}}<span ng-if="record.unit">-{{record.unit}}</span><span ng-if="record.room">-{{record.room}}</span></p>
                 </div>
                 <div class="no_img" style="margin-top: 0">
                     {{record.amount}}元
