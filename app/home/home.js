@@ -1,6 +1,6 @@
 angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-    'communityInfo', 'locationState', 'communityLocation', '$q',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, locationState, communityLocation, $q) {
+    'communityInfo', 'locationState', 'communityLocation', '$q', 'userInfo', 'errorLog',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, locationState, communityLocation, $q, userInfo,errorLog) {
         $scope.refreshCommunityInfo = function(){
             $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
         }
@@ -45,8 +45,13 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                     communityLocation.storageCommunity(communityInfo);
                     userInfo.getOpenId().then(function(data){
                         var openId = data;
+                        // //test
+                        // cmm.name = "test";
+                        // alert("changeCommunity,openId:"+openId+",cmm:"+errorLog.getErrorMessage(cmm));
+                        // //end
+
                         communityLocation.changeCommunity(openId, cmm).then(function(data){//保存用户选择的小区信息到服务器
-                            console.log("changeCommunity success.");
+                            //alert("changeCommunity success,openId:"+openId+",cmm:"+errorLog.getErrorMessage(cmm));
                         },function(reason){
                             alert(reason.errorCode +"," +reason.errorMessage);
                         });

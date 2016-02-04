@@ -1,5 +1,6 @@
 angular.module('app.user')
 	.service('userInfo', ['$q','$http','$timeout', '$location', 'errorLog', function($q,$http,$timeout, $location, errorLog){
+		var wxParam = null;//此参数是用户进入公众号页面后微信传入的参数，根据此参数再调API获取用户的OpenId
 		var openId = null;
 		var wxConfigParam = {
 			timestamp : null,
@@ -7,16 +8,29 @@ angular.module('app.user')
 			sign : null,
 		};
 
-		this.getOpenId = function(){
-			var defer = $q.defer();
-			if (openId == null ){
+		this.initWxParam = function(){
+			if(!wxParam){
 				var url = $location.url().substring($location.url().indexOf("?"));
 				if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
 					url="";
 				}
+				wxParam = url;
+			}
+		}
+
+		this.getOpenId = function(){
+			var defer = $q.defer();
+			if (openId == null ){
+				if(!wxParam){
+					var url = $location.url().substring($location.url().indexOf("?"));
+					if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
+						url="";
+					}
+					wxParam = url;
+				}
 	            $http({
 	                method: "GET",
-	                url: basePath + '/getopenid' + url
+	                url: basePath + '/users/getopenid' + wxParam
 	            }).success(function(data) {
 	            	openId = data.openid;
 	                //微信配置接口所需参数
@@ -32,7 +46,6 @@ angular.module('app.user')
 	                // end test
 	                defer.resolve(openId);
 	            }).error(function(data) {
-	                //alert("获取OpenID失败："+data);
 	                var reason = {
 	    				errorCode: "GET_OPENID_ERROR",
 	    				errorMessage: errorLog.getErrorMessage(data)
@@ -48,10 +61,16 @@ angular.module('app.user')
 		this.getWxConfigParam = function(){
 			var defer = $q.defer();
 			if(wxConfigParam.timestamp == null || wxConfigParam.noncestr == null || wxConfigParam.sign == null){
-				var url = $location.url().substring($location.url().indexOf("?"));
+				if(!wxParam){
+					var url = $location.url().substring($location.url().indexOf("?"));
+					if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
+						url="";
+					}
+					wxParam = url;
+				}
 	            $http({
 	                method: "GET",
-	                url: basePath + '/getopenid' + url
+	                url: basePath + '/users/getopenid' + wxParam
 	            }).success(function(data) {
 	            	openId = data.openid;
 	                //微信配置接口所需参数

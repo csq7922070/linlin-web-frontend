@@ -5,11 +5,6 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	$scope.loadingShow = false;
     	$scope.lockClickHide = true;
 
-    	var openId = null;
-		userInfo.getOpenId().then(function(data){
-			openId = data;
-		});
-
     	var cmmList = null;
     	communityList.getCommunityList(communityInfo.city)
     		.then(function(data){
@@ -55,11 +50,17 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     		console.log(community);
     		angular.extend(communityInfo, community);
     		communityLocation.storageCommunity(communityInfo);
-    		communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
-    			console.log("changeCommunity success.");
-    		},function(reason){
-    			alert(reason.errorCode +"," +reason.errorMessage);
-    		});
+    		var openId = null;
+			userInfo.getOpenId().then(function(data){
+				openId = data;
+				communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
+	    			console.log("changeCommunity success.");
+	    		},function(reason){
+	    			alert(reason.errorCode +"," +reason.errorMessage);
+	    		});
+			},function(reason){
+				alert(reason.errorCode +"," +reason.errorMessage);
+			});
     		locationState.hasLocation = true;
     		$state.go('home');
     	}

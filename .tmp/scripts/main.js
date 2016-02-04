@@ -391,8 +391,8 @@ angular.module('app.complain').controller('complainListCtrl', ['complains',
     }
 ]);
 angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-    'communityInfo', 'locationState', 'communityLocation', '$q',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, locationState, communityLocation, $q) {
+    'communityInfo', 'locationState', 'communityLocation', '$q', 'userInfo', 'errorLog',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, locationState, communityLocation, $q, userInfo,errorLog) {
         $scope.refreshCommunityInfo = function(){
             $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
         }
@@ -437,8 +437,13 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                     communityLocation.storageCommunity(communityInfo);
                     userInfo.getOpenId().then(function(data){
                         var openId = data;
+                        // //test
+                        // cmm.name = "test";
+                        // alert("changeCommunity,openId:"+openId+",cmm:"+errorLog.getErrorMessage(cmm));
+                        // //end
+
                         communityLocation.changeCommunity(openId, cmm).then(function(data){//保存用户选择的小区信息到服务器
-                            console.log("changeCommunity success.");
+                            //alert("changeCommunity success,openId:"+openId+",cmm:"+errorLog.getErrorMessage(cmm));
                         },function(reason){
                             alert(reason.errorCode +"," +reason.errorMessage);
                         });
@@ -496,12 +501,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
 	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog', 'locationState',
     function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, locationInfo,errorLog,locationState) {
-    	var openId = null;
-    	userInfo.getOpenId().then(function(data){
-    		openId = data;
-    	},function(reason){
-    		alert(reason.errorCode + ","+reason.errorMessage);
-    	});
+    	userInfo.initWxParam();//微信参数只会在公众号登录页传入，目前自动定位页面是公众号登录页
     	var locInfo = location.getLastLocation();
     	if(locInfo){
     		angular.extend(locationInfo, locInfo);
@@ -597,11 +597,17 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     	$scope.changeCommunity = function(community){
     		angular.extend(communityInfo, community);
     		communityLocation.storageCommunity(communityInfo);
-			communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
-    			console.log("changeCommunity success.");
-    		},function(reason){
-    			alert(reason.errorCode +"," +reason.errorMessage);
-    		});
+			var openId = null;
+			userInfo.getOpenId().then(function(data){
+				openId = data;
+				communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
+	    			console.log("changeCommunity success.");
+	    		},function(reason){
+	    			alert(reason.errorCode +"," +reason.errorMessage);
+	    		});
+			},function(reason){
+				alert(reason.errorCode +"," +reason.errorMessage);
+			});
     		locationState.hasLocation = true;
     		locationState.autoLocationVisited = true;
     		$state.go('home');
@@ -619,11 +625,6 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	$scope.loadingTip = "数据加载中...";
     	$scope.loadingShow = false;
     	$scope.lockClickHide = true;
-
-    	var openId = null;
-		userInfo.getOpenId().then(function(data){
-			openId = data;
-		});
 
     	var cmmList = null;
     	communityList.getCommunityList(communityInfo.city)
@@ -670,11 +671,17 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     		console.log(community);
     		angular.extend(communityInfo, community);
     		communityLocation.storageCommunity(communityInfo);
-    		communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
-    			console.log("changeCommunity success.");
-    		},function(reason){
-    			alert(reason.errorCode +"," +reason.errorMessage);
-    		});
+    		var openId = null;
+			userInfo.getOpenId().then(function(data){
+				openId = data;
+				communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
+	    			console.log("changeCommunity success.");
+	    		},function(reason){
+	    			alert(reason.errorCode +"," +reason.errorMessage);
+	    		});
+			},function(reason){
+				alert(reason.errorCode +"," +reason.errorMessage);
+			});
     		locationState.hasLocation = true;
     		$state.go('home');
     	}
@@ -1174,6 +1181,37 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
 ]);
 
 (function() {
+    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
+        function($scope, $stateParams, $rootScope, shops) {
+            $rootScope.site = $stateParams.site;
+            $scope.currentPage = 0;
+            $scope.pageSize = 5;
+            $scope.shops = [];
+
+            $scope.load = function(goPage, limit) {
+                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
+                    return;
+                } else if ($rootScope.site != 3) {
+                    $scope.busy = true;
+                    params = {
+                        offset: $scope.pageSize * (goPage - 1),
+                        limit: limit == 8 ? limit : $scope.pageSize,
+                        type: $stateParams.site - 1
+                    }
+                    shops.query(params).$promise.then(function(data) {
+                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                        $scope.currentPage = goPage;
+                        $scope.busy = false;
+                        $scope.shops.push.apply($scope.shops, data.items);
+                    });
+                }
+            }
+            $scope.load(1, 8);
+        }
+    ]);
+})();
+
+(function() {
     angular.module('app.repair').controller('repairAddCtrl', ['$timeout', '$state', 'repairs',
         function($timeout, $state, repairs) {
             var vm = this;
@@ -1317,37 +1355,6 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
         vm.load(1, vm.pageSize);
     }
 ]);
-
-(function() {
-    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
-        function($scope, $stateParams, $rootScope, shops) {
-            $rootScope.site = $stateParams.site;
-            $scope.currentPage = 0;
-            $scope.pageSize = 5;
-            $scope.shops = [];
-
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
-                    return;
-                } else if ($rootScope.site != 3) {
-                    $scope.busy = true;
-                    params = {
-                        offset: $scope.pageSize * (goPage - 1),
-                        limit: limit == 8 ? limit : $scope.pageSize,
-                        type: $stateParams.site - 1
-                    }
-                    shops.query(params).$promise.then(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        $scope.shops.push.apply($scope.shops, data.items);
-                    });
-                }
-            }
-            $scope.load(1, 8);
-        }
-    ]);
-})();
 
 angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
     var vm=this;
@@ -1667,6 +1674,70 @@ angular.module('myApp').filter('payListMerge', function() {
         return result;
     };
 });
+angular.module('resources.address', ['ngResource']).
+    factory('addresses', ['$resource', function($resource) {
+        return $resource(basePath+'/houses/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.complain', ['ngResource']).
+    factory('complains', ['$resource', function($resource) {
+        return $resource(basePath+'/complains/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.notice', ['ngResource']).
+factory('notices', ['$resource', function($resource) {
+    return $resource(basePath+'/notices/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.payment', ['ngResource']).
+    factory('payments', ['$resource', function($resource) {
+        return $resource(basePath+'/payments/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.repair', ['ngResource']).
+factory('repairs', ['$resource', function($resource) {
+    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.shop', ['ngResource']).
+factory('shops', ['$resource', 'locationInfo', function($resource, locationInfo) {
+    return $resource(basePath+'/shops/:id', {}, {
+        query: {
+        	params:{
+        		'id':'query',
+        		lon: locationInfo.longitude,
+        		lat: locationInfo.latitude
+        	},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
 angular.module('app.location')
 	.service('communityList', ['$q','$http','$timeout', function($q,$http,$timeout){
 		var cmmList = null;
@@ -1780,7 +1851,7 @@ angular.module('app.location')
 				(data.areaName != data.lastAreaName || data.city != data.lastCity || data.address != data.lastAddress)){
 				result = false;
 			}
-			result = false;
+			//result = false;
 			return result;
 		}
 
@@ -1915,6 +1986,7 @@ angular.module('app.location')
 	}]);
 angular.module('app.user')
 	.service('userInfo', ['$q','$http','$timeout', '$location', 'errorLog', function($q,$http,$timeout, $location, errorLog){
+		var wxParam = null;//此参数是用户进入公众号页面后微信传入的参数，根据此参数再调API获取用户的OpenId
 		var openId = null;
 		var wxConfigParam = {
 			timestamp : null,
@@ -1922,16 +1994,29 @@ angular.module('app.user')
 			sign : null,
 		};
 
-		this.getOpenId = function(){
-			var defer = $q.defer();
-			if (openId == null ){
+		this.initWxParam = function(){
+			if(!wxParam){
 				var url = $location.url().substring($location.url().indexOf("?"));
 				if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
 					url="";
 				}
+				wxParam = url;
+			}
+		}
+
+		this.getOpenId = function(){
+			var defer = $q.defer();
+			if (openId == null ){
+				if(!wxParam){
+					var url = $location.url().substring($location.url().indexOf("?"));
+					if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
+						url="";
+					}
+					wxParam = url;
+				}
 	            $http({
 	                method: "GET",
-	                url: basePath + '/getopenid' + url
+	                url: basePath + '/users/getopenid' + wxParam
 	            }).success(function(data) {
 	            	openId = data.openid;
 	                //微信配置接口所需参数
@@ -1947,7 +2032,6 @@ angular.module('app.user')
 	                // end test
 	                defer.resolve(openId);
 	            }).error(function(data) {
-	                //alert("获取OpenID失败："+data);
 	                var reason = {
 	    				errorCode: "GET_OPENID_ERROR",
 	    				errorMessage: errorLog.getErrorMessage(data)
@@ -1963,10 +2047,16 @@ angular.module('app.user')
 		this.getWxConfigParam = function(){
 			var defer = $q.defer();
 			if(wxConfigParam.timestamp == null || wxConfigParam.noncestr == null || wxConfigParam.sign == null){
-				var url = $location.url().substring($location.url().indexOf("?"));
+				if(!wxParam){
+					var url = $location.url().substring($location.url().indexOf("?"));
+					if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
+						url="";
+					}
+					wxParam = url;
+				}
 	            $http({
 	                method: "GET",
-	                url: basePath + '/getopenid' + url
+	                url: basePath + '/users/getopenid' + wxParam
 	            }).success(function(data) {
 	            	openId = data.openid;
 	                //微信配置接口所需参数
@@ -1993,67 +2083,3 @@ angular.module('app.user')
 			return defer.promise;
 		}
 	}]);
-angular.module('resources.address', ['ngResource']).
-    factory('addresses', ['$resource', function($resource) {
-        return $resource(basePath+'/houses/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.complain', ['ngResource']).
-    factory('complains', ['$resource', function($resource) {
-        return $resource(basePath+'/complains/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.notice', ['ngResource']).
-factory('notices', ['$resource', function($resource) {
-    return $resource(basePath+'/notices/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.payment', ['ngResource']).
-    factory('payments', ['$resource', function($resource) {
-        return $resource(basePath+'/payments/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.repair', ['ngResource']).
-factory('repairs', ['$resource', function($resource) {
-    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.shop', ['ngResource']).
-factory('shops', ['$resource', 'locationInfo', function($resource, locationInfo) {
-    return $resource(basePath+'/shops/:id', {}, {
-        query: {
-        	params:{
-        		'id':'query',
-        		lon: locationInfo.longitude,
-        		lat: locationInfo.latitude
-        	},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);

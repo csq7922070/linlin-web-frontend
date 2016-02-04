@@ -78,7 +78,7 @@ angular.module('app.location')
 				(data.areaName != data.lastAreaName || data.city != data.lastCity || data.address != data.lastAddress)){
 				result = false;
 			}
-			result = false;
+			//result = false;
 			return result;
 		}
 
