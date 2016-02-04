@@ -14,9 +14,10 @@ angular.module('app.payment', ['resources.address', 'resources.payment']);
 angular.module('app.location', []);
 angular.module('app.user',[]);
 angular.module('app.log',[]);
+angular.module('app.auth',[]);
 
 var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 
-    'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user', 'app.log']);
+    'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user', 'app.log', 'app.auth']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -216,7 +217,11 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
-}]).run(['$rootScope', function($rootScope) {
+}]).run(['$rootScope', 'auth', function($rootScope, auth) {
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        //alert("toState:"+toState.name+",toParams:"+toParams.name);
+        auth.startChangeState(event, toState, toParams, fromState, fromParams);
+    });
     $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
         $rootScope.previousState = from.name;
         $rootScope.currentState = to.name;

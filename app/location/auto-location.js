@@ -81,7 +81,8 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 				name:data.lastAreaName,
 				city: data.lastCity,
 				address: data.lastAddress,
-				title: data.lastCity + ', '+data.lastAreaName
+				title: data.lastCity + ', '+data.lastAreaName,
+				auth: data.lastState
 			}];
     	}
 
@@ -90,7 +91,8 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 				name:data.areaName,
 				city: data.city,
 				address: data.address,
-				title: data.city + ', '+data.areaName
+				title: data.city + ', '+data.areaName,
+				auth: data.state
 			}];
     	}
 
