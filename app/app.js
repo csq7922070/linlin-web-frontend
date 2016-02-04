@@ -1,6 +1,9 @@
 //var basePath = "http://localhost:8080/skh";
-//var basePath = "http://mifan.4zlink.com:8080/mifan";
+//var basePath="http://192.168.0.120:8080/skh";
 var basePath = "http://mitest.4zlink.com:8080/mifan";
+//var basePath = "http://192.168.0.136:8080/skh";
+var appId = "wx050cc99d8cec1a73";
+
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
 angular.module('app.repair', ['resources.repair']);
@@ -8,12 +11,16 @@ angular.module('app.shop', ['resources.shop']);
 angular.module('app.complain', ['resources.complain']);
 angular.module('app.address', ['resources.address']);
 angular.module('app.payment', ['resources.address', 'resources.payment']);
+angular.module('app.location', []);
+angular.module('app.user',[]);
+angular.module('app.log',[]);
 
-var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 'app.complain', 'app.address', 'app.payment']);
+var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 
+    'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user', 'app.log']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/home");
+    $urlRouterProvider.otherwise("/auto-location");
 
     $stateProvider
         .state('notice', {
@@ -42,7 +49,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         })
         .state('repair-add', {
             url: "/repair-add",
-            templateUrl: "tpl/repair/repair-add.tpl.html",
+            templateUrl: "tpl/repair/repair-add.tpl.html", 
             controller: 'repairAddCtrl',
             controllerAs: 'vm'
         })
@@ -68,6 +75,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             url: "/address-edit",
             templateUrl: "tpl/address/address-edit.tpl.html"
                 //controllerAs: 'vm'
+        })
+        .state('address-village', {
+            url: "/address-village/",
+            templateUrl: "tpl/address/village/village.tpl.html",
+            controller: "addressVillageCtrl",
+            controllerAs: 'vm'
         })
         .state('address-block', {
             url: "/address-block/",
@@ -146,6 +159,18 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             url: "/html-error",
             templateUrl: "tpl/home/html-error.tpl.html",
             controllerAs: 'vm'
+        })
+        .state('auto-location', {
+            url: "/auto-location",
+            templateUrl: "tpl/location/auto-location.tpl.html",
+            controller: "autoLocationCtrl",
+            controllerAs: 'vm'
+        })
+        .state('search-location', {
+            url: "/search-location",
+            templateUrl: "tpl/location/search-location.tpl.html",
+            controller: "searchLocationCtrl",
+            controllerAs: 'vm'
         });
 }]).config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -198,4 +223,25 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         var url = "/" + to.name.replace(".", "/");
         _hmt.push(['_trackPageview', url]);
     });
-}]);
+}]).value(
+    'communityInfo',{
+        name: null,
+        province: null,
+        city: null,
+        address: null,
+        auth: null//该字段用来判断小区是否为合作小区，值为true or false
+    }
+).value(
+    'locationInfo', {
+        longitude: null,//经度
+        latitude: null,//纬度
+        accuracy: null//位置精度
+    }
+).value(
+    'locationState',{
+        hasLocation: false,
+        autoLocationVisited: false
+    }
+).constant(
+    'appId', appId
+);

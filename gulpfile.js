@@ -20,8 +20,8 @@ var templateCache = require('gulp-angular-templatecache');
 ///////////
 
 gulp.task('copy', function() {
-  // gulp.src('app/index.html')
-  // .pipe(gulp.dest('dist'));
+  gulp.src('app/data/**/*.json')
+  .pipe(gulp.dest('dist/data'));
   gulp.src('app/*/**/*.html')
   .pipe(gulp.dest('dist/tpl'));
   gulp.src('app/assets/images/**')
@@ -32,13 +32,6 @@ gulp.task('copy', function() {
   .pipe(gulp.dest('dist/bower_components'));
 });
 
-// gulp.task('minifycss', function(){
-//   return gulp.src('app/assets/css/*.css')      
-//         .pipe(concat('main.css'))//压缩的文件
-//         //.pipe(rename({suffix: '.min'}))   //输出文件夹
-//         //.pipe(minifycss())
-//         .pipe(gulp.dest('.tmp/styles'));   //执行压缩
-// });
 
 gulp.task('less', function(){
   return gulp.src(['app/assets/styles/**/*.less', 'app/assets/styles/**/*.css'])
@@ -52,18 +45,8 @@ gulp.task('clean:dist', function () {
 });
 
 gulp.task('build:js', [], function(){
-  return gulp.src(['app/app.js', 'app/*/**/*.js', 'app/common/**/*.js'])
+  return gulp.src(['app/app.js', 'app/*/**/*.js'])
         .pipe(concat('main.js'))      //压缩的文件
-        //.pipe(rename({suffix: '.min'}))   //输出文件重命名
-        //.pipe(uglify()) //执行压缩
-        .pipe(gulp.dest('.tmp/scripts'));   
-});
-
-gulp.task('build:minifyjs', [], function(){
-  return gulp.src(['app/app.js', 'app/*/**/*.js', 'app/common/**/*.js'])
-        .pipe(concat('main.js'))      //压缩的文件
-        //.pipe(rename({suffix: '.min'}))   //输出文件重命名
-        //.pipe(uglify()) //执行压缩
         .pipe(gulp.dest('.tmp/scripts'));   
 });
 
@@ -75,7 +58,7 @@ gulp.task('inject', ['build:js', 'less'], function(){
     .pipe($.useref())
     .pipe(jsFilter)
     .pipe($.ngAnnotate())
-    .pipe($.uglify())
+    //.pipe($.uglify())
     .pipe($.rev())
     .pipe(jsFilter.restore())
     .pipe(cssFilter)
@@ -86,16 +69,12 @@ gulp.task('inject', ['build:js', 'less'], function(){
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('build:test', ['clean:dist'], function () {
+gulp.task('build', ['clean:dist'], function () {
   runSequence(['copy', 'inject']);
 });
 
-gulp.task('build:dist', ['clean:dist'], function(){
-  runSequence(['copy', 'build:minifyjs', 'less']);
-});
-
 gulp.task('watch', function(){
-  gulp.watch('app/**', ['build:test']);
+  gulp.watch('app/**', ['build']);
 });
 
-gulp.task('default', ['build:test']);
+gulp.task('default', ['build']);

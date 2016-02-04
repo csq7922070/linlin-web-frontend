@@ -1,0 +1,13 @@
+<div class="confirm-modal" ng-show="show">
+	<div class="mask"></div>
+	<div class="c-container">
+		<div class="c-content">
+			<h1 class="c-title" ng-show="title" ng-bind="title">定位服务未开启</h1>
+			<p class="c-tip c-tip-{{tipAlign}}" ng-bind="tip">请在系统设置中开启定位服务</p>
+		</div>
+		<div class="c-footer" ng-class="{true: 'only-ok-button'}[onlyOkButton]">
+			<a class="cancel-button c-button" ng-bind="cancelText" ng-click="cancel()">取消</a>
+			<a class="ok-button c-button" ng-bind="okText" ng-click="ok()">确定</a>
+		</div>
+	</div>
+</div>

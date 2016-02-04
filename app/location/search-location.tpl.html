@@ -1,0 +1,24 @@
+<div id="search-location-container" class="location-container">
+	<div class="l-wrapper">
+		<div class="search-container">
+			<input id="community-search-field" class="search-field" type="text" placeholder="请输入小区名称" 
+				ng-model="communityName" c-focus focus="focus" />
+			<a class="delete" href="javascript:void(0)" ng-show="communityName" ng-click="clearSearchField()"></a>
+		</div>
+	</div>
+	<ul>
+		<li class="list-item community-item" ng-repeat="item in searchLocationCommunities">
+			<a class="list-link" ng-click="changeCommunity(item)">
+				<span class="community-title" ng-bind="item.title"></span>
+				<span class="community-address" ng-bind="item.address"></span>
+			</a>
+		</li>
+	</ul>
+	<div class="search-error-tip" ng-show="showInexistenceTip">
+		<img class="search-error-icon" src="images/search-error.png">
+		<br/>
+		对不起，您所在的小区<br/>
+		暂未开通米饭公社服务
+	</div>
+</div>
+<global-loading tip="loadingTip" show="loadingShow" lock-click-hide="lockClickHide"></global-loading>

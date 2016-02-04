@@ -916,6 +916,230 @@ div.rn-carousel-indicator span {
   margin-left: 5px;
 }
 
+#auto-location-container .delete {
+  display: none;
+}
+#auto-location-container .list-title {
+  background-color: #eeeeee;
+  margin: 0;
+  height: 30px;
+  display: block;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #999999;
+  padding: 8px 12px;
+}
+#auto-location-container .location-tip-bar {
+  font-size: 16px;
+  color: #333333;
+  padding-top: 28px;
+  text-align: center;
+}
+#auto-location-container .location-tip-bar .retry-location {
+  color: #4996ee;
+}
+@-webkit-keyframes load {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes load {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes load {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes load {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.confirm-modal {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  font-family: 微软雅黑;
+}
+.confirm-modal .mask {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: 0.3;
+}
+.confirm-modal .c-container {
+  background-color: #fff;
+  position: absolute;
+  left: 50%;
+  top: 0px;
+  width: 70%;
+  border: solid 1px #ddd;
+  margin-top: 45%;
+  margin-left: -35%;
+}
+.confirm-modal .c-container .c-content {
+  padding: 15px 15px;
+}
+.confirm-modal .c-container .c-content .c-title {
+  margin: 0px;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.confirm-modal .c-container .c-content .c-tip {
+  margin: 10px 10px;
+  text-align: center;
+  font-size: 15px;
+}
+.confirm-modal .c-container .c-content .c-tip-left {
+  text-align: left;
+}
+.confirm-modal .c-container .c-content .c-tip-center {
+  text-align: center;
+}
+.confirm-modal .c-container .c-footer {
+  border-top: solid 1px #ddd;
+  font-size: 16px;
+}
+.confirm-modal .c-container .c-footer .c-button {
+  width: 50%;
+  display: block;
+  float: left;
+  text-align: center;
+  padding: 5px 0px;
+}
+.confirm-modal .c-container .c-footer .cancel-button {
+  border-right: solid 1px #ddd;
+  color: #827E7E;
+}
+.confirm-modal .c-container .only-ok-button .cancel-button {
+  display: none;
+}
+.confirm-modal .c-container .only-ok-button .ok-button {
+  width: 100%;
+}
+
+.global-loading {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  background-color: #000;
+  opacity: 0.3;
+}
+.global-loading .tip {
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  font-family: 微软雅黑;
+  margin-top: 55%;
+}
+
+.village .community-name {
+  font-size: 14px;
+  line-height: 14px;
+}
+.village:hover {
+  color: #fff;
+}
+
+.location-container {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  background-color: #fff;
+}
+.l-wrapper {
+  padding: 7px 12px;
+  border-bottom: solid 1px #e8e8e8;
+}
+.l-wrapper .search-container {
+  position: relative;
+  height: 30px;
+  border: solid 1px #ddd;
+  background-image: url('../images/search.png');
+  background-repeat: no-repeat;
+  background-position: 4px 4px;
+  background-size: 22px;
+  border-radius: 5px;
+}
+.l-wrapper .search-container .search-icon {
+  margin-left: 18px;
+}
+.l-wrapper .search-container .search-field {
+  font-size: 19px;
+  color: #ccc;
+  border: 0;
+  background: 0 0;
+  left: 30px;
+  position: relative;
+  background: green;
+  top: 4px;
+  background-color: transparent;
+  width: 90%;
+}
+.l-wrapper .search-container .delete {
+  background-image: url('../images/search-delete.png');
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  /* background: red; */
+  display: block;
+  width: 30px;
+  height: 30px;
+  background-size: 28px;
+  background-repeat: no-repeat;
+}
+.list-item {
+  height: 75px;
+  border-bottom: solid 1px #e8e8e8;
+}
+.community-item {
+  background-image: url('../images/right_arrow.png');
+  background-repeat: no-repeat;
+  background-position: 97%;
+  background-size: 10px;
+}
+.list-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 12px 12px;
+}
+.list-link .community-title {
+  display: block;
+  font-size: 20px;
+  color: #333333;
+  font-weight: 600;
+}
+.list-link .community-address {
+  display: block;
+  font-size: 18px;
+  color: #999999;
+}
+
 /*!
  * Sanitize 2.0.0 (http://git.io/sanitize)
  * Licensed under the MIT License.
@@ -1112,4 +1336,17 @@ table {
 }
 th {
   text-align: left;
+}
+
+#search-location-container .search-error-tip {
+  font-size: 15px;
+  color: #333333;
+  padding: 123px 40px 0px;
+  text-align: center;
+  font-family: 微软雅黑;
+}
+#search-location-container .search-error-icon {
+  width: 68px;
+  margin-bottom: 17px;
+  position: relative;
 }
