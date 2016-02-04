@@ -1,6 +1,9 @@
 //var basePath = "http://localhost:8080/skh";
-//var basePath = "http://mifan.4zlink.com:8080/mifan";
+//var basePath="http://192.168.0.120:8080/skh";
 var basePath = "http://mitest.4zlink.com:8080/mifan";
+//var basePath = "http://192.168.0.136:8080/skh";
+var appId = "wx050cc99d8cec1a73";
+
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
 angular.module('app.repair', ['resources.repair']);
@@ -8,12 +11,16 @@ angular.module('app.shop', ['resources.shop']);
 angular.module('app.complain', ['resources.complain']);
 angular.module('app.address', ['resources.address']);
 angular.module('app.payment', ['resources.address', 'resources.payment']);
+angular.module('app.location', []);
+angular.module('app.user',[]);
+angular.module('app.log',[]);
 
-var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 'app.complain', 'app.address', 'app.payment']);
+var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 
+    'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user', 'app.log']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/home");
+    $urlRouterProvider.otherwise("/auto-location");
 
     $stateProvider
         .state('notice', {
@@ -42,7 +49,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         })
         .state('repair-add', {
             url: "/repair-add",
-            templateUrl: "tpl/repair/repair-add.tpl.html",
+            templateUrl: "tpl/repair/repair-add.tpl.html", 
             controller: 'repairAddCtrl',
             controllerAs: 'vm'
         })
@@ -152,6 +159,18 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             url: "/html-error",
             templateUrl: "tpl/home/html-error.tpl.html",
             controllerAs: 'vm'
+        })
+        .state('auto-location', {
+            url: "/auto-location",
+            templateUrl: "tpl/location/auto-location.tpl.html",
+            controller: "autoLocationCtrl",
+            controllerAs: 'vm'
+        })
+        .state('search-location', {
+            url: "/search-location",
+            templateUrl: "tpl/location/search-location.tpl.html",
+            controller: "searchLocationCtrl",
+            controllerAs: 'vm'
         });
 }]).config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -204,8 +223,24 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         var url = "/" + to.name.replace(".", "/");
         _hmt.push(['_trackPageview', url]);
     });
-}]);
-
+}]).value(
+    'communityInfo',{
+        name: null,
+        province: null,
+        city: null,
+        address: null,
+        auth: null//该字段用来判断小区是否为合作小区，值为true or false
+    }
+).value(
+    'locationInfo', {
+        longitude: null,//经度
+        latitude: null,//纬度
+        accuracy: null,//位置精度
+        firstLoginLocation: true
+    }
+).constant(
+    'appId', appId
+);
 angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stateParams', '$state', 'addresses','data',
     function ($rootScope,$stateParams, $state, addresses,data) {
         var vm = this;
@@ -358,28 +393,33 @@ angular.module('app.complain').controller('complainListCtrl', ['complains',
     }
 ]);
 angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-    function($scope, $http, $stateParams, $rootScope, $state, $location) {
+    'communityInfo',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo) {
+        $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
+        $scope.changeCommunity = function(){
+            $state.go('auto-location');
+        }
 
-        var url = $location.url().substring($location.url().indexOf("?"));
-        if (url.indexOf("home") != -1) {
-            url = "";
-        }
-        //1.6获取微信用户openid
-        if (sessionStorage.getItem("openid") == null) {
-            $http({
-                method: "GET",
-                url: basePath + '/getopenid' + url
-            }).success(function(data) {
-                sessionStorage.setItem("openid", data.openid);
-                //添加微信支付
-                sessionStorage.setItem("timestamp", data.timestamp);
-                sessionStorage.setItem("noncestr", data.noncestr);
-                sessionStorage.setItem("sign", data.sign);
-                console.log("获取openid成功");
-            }).error(function(data) {
-                console.log("获取openid失败");
-            });
-        }
+        // var url = $location.url().substring($location.url().indexOf("?"));
+        // if (url.indexOf("home") != -1) {
+        //     url = "";
+        // }
+        // //1.6获取微信用户openid
+        // if (sessionStorage.getItem("openid") == null) {
+        //     $http({
+        //         method: "GET",
+        //         url: basePath + '/getopenid' + url
+        //     }).success(function(data) {
+        //         sessionStorage.setItem("openid", data.openid);
+        //         //添加微信支付
+        //         sessionStorage.setItem("timestamp", data.timestamp);
+        //         sessionStorage.setItem("noncestr", data.noncestr);
+        //         sessionStorage.setItem("sign", data.sign);
+        //         console.log("获取openid成功");
+        //     }).error(function(data) {
+        //         console.log("获取openid失败");
+        //     });
+        // }
 
         $scope.slides7 = [{
             id: 10,
@@ -400,6 +440,204 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
         $state.go("home.shop-info", {
             site: 1
         });
+    }
+]);
+
+angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
+	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, locationInfo,errorLog) {
+    	var openId = null;
+    	userInfo.getOpenId().then(function(data){
+    		openId = data;
+    	},function(reason){
+    		alert(reason.errorCode + ","+reason.errorMessage);
+    	});
+    	var cmmInfo = communityLocation.getLastCommunity();
+    	if(locationInfo.firstLoginLocation && cmmInfo){
+    		angular.extend(communityInfo, cmmInfo);
+    		locationInfo.firstLoginLocation = false;
+    		$state.go('home');
+    		return;
+    	}
+
+    	$scope.clickSearchField = function(){
+    		$state.go('search-location');
+    	}
+
+    	//openId = "o-YfcstQPoTDSPuNHZ44cEof8";
+    	$scope.retryLocation = function(){
+    		$scope.showLocationError = false;
+    		$scope.loadingTip = "定位中...";
+    		$scope.loadingShow = true;
+    		userInfo.getOpenId().then(function(data){//openid
+    			openId = data;
+    			return location.getLocation();
+    		},function(reason){
+    			return $q.reject(reason);
+    		}).then(function(data){//location
+    			return communityLocation.locationCommunity(openId, data.longitude, data.latitude);
+    		},function(reason){
+    			return $q.reject(reason);
+    		}).then(function(data){//community
+    			setCommunity(data);
+    		}, function(reason){
+    			if(reason && reason.errorCode == "PERMISSION_DENIED"){//用户拒绝了定位请求，提示打开定位功能
+    				$scope.modalTitle = "定位服务未开启";
+    				$scope.modalTip = "请在系统设置中开启定位服务";
+    				$scope.tipAlign = "center";
+    				$scope.okText = "确定";
+    				$scope.onlyOkButton = true;
+    				$scope.showModal = true;
+    				$scope.onModalClose = function(state){//state on is true
+    					$scope.modalTitle = "";
+    					$scope.onlyOkButton = false;
+						$scope.showModal = false;
+					}
+    			}else{
+    				alert(reason.errorCode + "," + reason.errorMessage);
+    			}
+    			$scope.loadingShow = false; 
+    			$scope.showLocationError = true;
+    		});
+    	}
+
+    	function setCommunity(data){
+    		var defer = $q.defer();
+			$scope.loadingShow = false;
+			if(locationInfo.firstLoginLocation && !communityLocation.compareCommunity(data)){//首次登陆定位且检测到2次小区地址不一致
+				//需要提示用户是否切换到当前定位地址
+				$scope.modalTip = "检测到当前登陆位置为"+data.city+data.areaName+", "+
+					"上次登陆位置为"+data.lastCity+data.lastAreaName+", 是否切换?"
+				$scope.tipAlign = "left";
+				$scope.okText = "切换";
+				$scope.showModal = true;
+				$scope.onModalClose = function(state){//state is true or false
+					defer.resolve(state);
+					$scope.showModal = false;
+				}
+			}else{
+				defer.resolve(true);
+			}
+			defer.promise.then(function(selectCurrent){//selectCurrent代表是否选择当前自动定位小区为登陆小区
+				if(selectCurrent){
+					setCurrentCommunity(data);
+				}else{
+					setLastCommunity(data);
+				}
+				if(locationInfo.firstLoginLocation && $scope.autoLocationCommunities.length > 0){
+					$scope.changeCommunity($scope.autoLocationCommunities[0]);
+				}
+			});
+    	}
+
+    	function setLastCommunity(data){
+    		$scope.autoLocationCommunities = [{
+				name:data.lastAreaName,
+				city: data.lastCity,
+				address: data.lastAddress,
+				title: data.lastCity + ', '+data.lastAreaName
+			}];
+    	}
+
+    	function setCurrentCommunity(data){
+			$scope.autoLocationCommunities = [{
+				name:data.areaName,
+				city: data.city,
+				address: data.address,
+				title: data.city + ', '+data.areaName
+			}];
+    	}
+
+    	$scope.changeCommunity = function(community){
+    		console.log(community);
+    		angular.extend(communityInfo, community);
+    		communityLocation.storageCommunity(communityInfo);
+			communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
+    			console.log("changeCommunity success.");
+    		},function(reason){
+    			alert(reason.errorCode +"," +reason.errorMessage);
+    		});
+    		communityInfo.firstLoginLocation = false;
+    		$state.go('home');
+    	}
+
+    	$scope.autoLocationCommunities = [];
+
+    	$scope.retryLocation();//自动定位页面加载时便开始自动定位小区
+    }
+]);
+
+angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
+	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'locationInfo', 'errorLog','userInfo','communityLocation',
+    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch, locationInfo,errorLog,userInfo,communityLocation) {  	
+    	$scope.loadingTip = "数据加载中...";
+    	$scope.loadingShow = false;
+    	$scope.lockClickHide = true;
+
+    	var openId = null;
+		userInfo.getOpenId().then(function(data){
+			openId = data;
+		});
+
+    	var cmmList = null;
+    	communityList.getCommunityList(communityInfo.city)
+    		.then(function(data){
+    			//alert("cmmList.length: "+data.length);
+    			cmmList = data;
+    			communitySearch.cmmList = cmmList;
+    			$scope.loadingShow = false;
+    			$scope.focus = true;
+    			//$("#community-search-field").focus();
+    			//$("#community-search-field").trigger("focus");
+    		},function(reason){
+    			$scope.loadingShow = false;
+    			reason = "数据加载失败: "+errorLog.getErrorMessage(reason);
+    			alert(reason);
+    		});
+
+    	console.log(communityInfo);
+    	$scope.changeCommunity = function(community){
+    		console.log(community);
+    	}
+
+    	$scope.showInexistenceTip = false;
+
+    	var changePromise = null;
+    	$scope.$watch("communityName", function(newVal, oldVal){
+    		if(newVal != oldVal){
+    			if(changePromise){
+    				$timeout.cancel(changePromise);
+    			}
+    			changePromise = $timeout(function(){
+    				console.log("change...");
+    				$scope.showInexistenceTip = false;
+    				$scope.searchLocationCommunities = communitySearch.searchCommunity($scope.communityName);
+    				if($scope.communityName && $scope.searchLocationCommunities.length == 0){
+    					$scope.showInexistenceTip = true;
+    				}
+    				//console.log($scope.searchLocationCommunities);
+    			}, 700);
+    		}
+    	});
+
+    	$scope.changeCommunity = function(community){
+    		console.log(community);
+    		angular.extend(communityInfo, community);
+    		communityLocation.storageCommunity(communityInfo);
+    		communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
+    			console.log("changeCommunity success.");
+    		},function(reason){
+    			alert(reason.errorCode +"," +reason.errorMessage);
+    		});
+    		communityInfo.firstLoginLocation = false;
+    		$state.go('home');
+    	}
+
+    	$scope.searchLocationCommunities = [];
+
+    	$scope.clearSearchField = function(){
+    		$scope.communityName = "";
+    	}
     }
 ]);
 
@@ -876,6 +1114,7 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
                             deferred.resolve('success');
                         }
                     });
+
                     return deferred.promise;
                 })
                 .then(function() {
@@ -1065,6 +1304,112 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     ]);
 })();
 
+angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type: "block"
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.blocks = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+}])
+angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
+    function ($stateParams, addresses) {
+        var vm = this;
+        params={
+            type:'room',
+            block:$stateParams.block,
+            unit:$stateParams.unit
+        }
+        addresses.query(params).$promise.then(function(data){
+            vm.block = $stateParams.block;
+            vm.unit = $stateParams.unit;
+            vm.rooms = data.items;
+        })
+    }
+])
+angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type:'unit',
+        block:$stateParams.block
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.units = data.items;
+        vm.block = $stateParams.block;
+    }, function (data) {
+        console.log("err!");
+    });
+}]);
+/*angular.module('app.address').controller('addressVillageCtrl',['$stateParams','addresses',function($stateParams,addresses){
+    var vm=this;
+    params = {
+        type:'unit',
+        block:$stateParams.block
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.units = data.items;
+        vm.block = $stateParams.block;
+    }, function (data) {
+        console.log("err!");
+    });
+}]);*/
+myApp.directive('cFocus', function() {
+    return {
+        restrict: 'A',
+        scope: {
+            focus: '=',
+        },
+        link: function(scope, element, attrs) {
+            scope.$watch('focus', function(newVal, oldVal){
+                if(newVal){
+                    element[0].focus();
+                }
+            });
+        }
+    }
+})
+myApp.directive('confirmModal', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            title: '=',
+            tip: '=',
+            tipAlign: '=',
+            okText: '=',
+            cancelText: '=',
+            onlyOkButton: '=',
+            close: '&onClose' 
+        },
+        templateUrl: 'tpl/common/directives/confirm-modal.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.ok = function(){
+                scope.close({state:true});
+            }
+
+            scope.cancel = function(){
+                scope.close({state:false});
+            }
+
+            scope.$watch('cancelText', function(newVal, oldVal){
+                if(!newVal){
+                    scope.cancelText = "取消";
+                }
+            });
+
+            scope.$watch('okText', function(newVal, oldVal){
+                if(!newVal){
+                    scope.okText = "确定";
+                }
+            })
+        }
+    }
+
+})
 myApp.directive('errSrc', function() {
   return {
     link: function(scope, element, attrs) {
@@ -1076,6 +1421,27 @@ myApp.directive('errSrc', function() {
     }
   }
 });
+myApp.directive('globalLoading', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            tip: '=',
+            lockClickHide: '='
+        },
+        templateUrl: 'tpl/common/directives/global-loading.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.clickLoadingLayer = function(){
+                if(!scope.lockClickHide){
+                    scope.show = false;
+                }
+            }
+        }
+    }
+
+})
+
 myApp.directive('pagination', function() {
     return {
         restrict: 'E',
@@ -1329,55 +1695,286 @@ factory('shops', ['$resource', function($resource) {
         }
     })
 }]);
-angular.module('app.address').controller('addressBlockCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type: "block"
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.blocks = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-}])
-angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type:'unit',
-        block:$stateParams.block
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.units = data.items;
-        vm.block = $stateParams.block;
-    }, function (data) {
-        console.log("err!");
-    });
-}]);
-angular.module('app.address').controller('addressRoomCtrl', ['$stateParams', 'addresses',
-    function ($stateParams, addresses) {
-        var vm = this;
-        params={
-            type:'room',
-            block:$stateParams.block,
-            unit:$stateParams.unit
-        }
-        addresses.query(params).$promise.then(function(data){
-            vm.block = $stateParams.block;
-            vm.unit = $stateParams.unit;
-            vm.rooms = data.items;
-        })
-    }
-])
-/*angular.module('app.address').controller('addressVillageCtrl',['$stateParams','addresses',function($stateParams,addresses){
-    var vm=this;
-    params = {
-        type:'unit',
-        block:$stateParams.block
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.units = data.items;
-        vm.block = $stateParams.block;
-    }, function (data) {
-        console.log("err!");
-    });
-}]);*/
+angular.module('app.location')
+	.service('communityList', ['$q','$http','$timeout', function($q,$http,$timeout){
+		var cmmList = null;
+		this.getCommunityList = function(cityName){
+			var promise = null;
+			if(cmmList){
+				promise = $q.when(cmmList);
+			}else{
+				var defer = $q.defer();
+				// $timeout(function(){
+				// 	$http.get('data/communityList.json').success(function(data){
+				// 		defer.resolve(data);
+				// 	}).error(function(data){
+				// 		defer.reject(data);
+				// 	});
+				// },1000);
+				$http({
+					method: "GET",
+					url: basePath + '/GPS/findArea',
+					params: {
+						city: cityName
+					}
+				}).success(function(data){
+					cmmList = data.items;
+					defer.resolve(cmmList);
+				}).error(function(data){
+					defer.reject(data);
+				});
+				promise = defer.promise;
+			}
+			return promise;
+		}
+	}]);
+angular.module('app.location')
+	.service('communityLocation', ['$q', '$timeout', '$http', 'errorLog', function($q, $timeout, $http, errorLog){
+		this.locationCommunity = function(openId, longitude, latitude){// longitude经度，latitude维度
+			console.log("locationCommunity...");
+			var defer = $q.defer();
+			$http({
+				method: 'GET',
+				url: basePath + '/GPS/',
+				params: {
+					openid: openId,
+					lon: longitude,
+					lat: latitude
+				}
+			}).success(function(data){
+				defer.resolve(data);
+			}).error(function(data){
+				var reason = {
+					errorCode: "LOCATION_COMMUNITY_ERROR",
+					errorMessage: errorLog.getErrorMessage(data)
+				};
+				defer.reject(reason);
+			});
+			return defer.promise;
+		}
+
+		this.changeCommunity = function(openId, cmmInfo){
+			var defer = $q.defer();
+			$http({
+				method: 'POST',
+				url: basePath + '/GPS/save',
+				data:{
+					openid: openId,
+					name: cmmInfo.name,
+					city: cmmInfo.city,
+					address: cmmInfo.address
+				}
+			}).success(function(data){
+				defer.resolve(data);
+			}).error(function(data){
+				var reason = {
+					errorCode: "CHANGE_COMMUNITY_ERROR",
+					errorMessage: errorLog.getErrorMessage(data)
+				};
+				defer.reject(reason);
+			});
+			return defer.promise;
+		}
+
+		//判断2次小区定位是否一致，如果上次定位不存在，直接返回true
+		// data:{type,areaName,city,address,lastAreaName,lastCity,lastAddress}
+		this.compareCommunity = function(data){
+			var result = true;
+			if(data.type == "false" && 
+				(data.areaName != data.lastAreaName || data.city != data.lastCity || data.address != data.lastAddress)){
+				result = false;
+			}
+			return result;
+		}
+
+		//获取上一次使用的小区信息，此信息通过localStorage持久化存储
+		this.getLastCommunity = function(){
+			var cmm = null;
+			if(window.localStorage && localStorage.communityInfo){
+				cmm = JSON.parse(localStorage.communityInfo);
+			}
+			return cmm;
+		}
+
+		this.storageCommunity = function(cmmInfo){
+			var state = false;
+			if(window.localStorage){
+				localStorage.communityInfo = JSON.stringify(cmmInfo);
+				state = true;
+			}
+			return state;
+		}
+	}]);
+angular.module('app.location')
+	.service('communitySearch', [function(){
+		this.cmmList = null;
+		var max = 10;
+		this.searchCommunity = function(communityName){
+			console.log("searchCommunity...");
+			var result = [];
+			if(this.cmmList && communityName){
+				for(var i = 0;i<this.cmmList.length;i++){
+					var item = this.cmmList[i];
+					if(item.name.indexOf(communityName) >= 0){
+						item.title = item.city + ", " + item.name;
+						result.push(item);
+					}
+					if(result.length >= max){
+						break;
+					}
+				}
+			}
+			return result;
+		}
+	}]);
+angular.module('app.log')
+	.service('errorLog', ['$q','$http','$timeout', function($q,$http,$timeout){
+		this.getErrorMessage = function(error){
+			var message = "";
+			if(typeof(error) == "object" && error){
+				for(var i in error){
+					message+=error[i]+",";
+				}
+				message = message.substr(0, message.length - 1);
+			}else{
+				message += error;
+			}
+			return message;
+		}
+	}]);
+angular.module('app.location')
+	.service('location', ['$q', function($q){
+        this.getLocation = function()
+        {
+        	var defer = $q.defer();
+	        if (navigator.geolocation)
+	        {
+	        	navigator.geolocation.getCurrentPosition(showPosition, showError);
+	        }
+		    else{
+		        defer.reject({
+		        	errorCode: "BROWSER_NOT_SUPPORT",errorMessage: "浏览器不支持定位功能"
+		        });
+	        }
+
+	        function showPosition(position)
+	        {
+	        	defer.resolve(position.coords);
+			    console.log(position.coords);
+			 	// coords.latitude	十进制数的纬度
+				// coords.longitude	十进制数的经度
+				// coords.accuracy	位置精度
+				// coords.altitude	海拔，海平面以上以米计
+				// coords.altitudeAccuracy	位置的海拔精度
+				// coords.heading	方向，从正北开始以度计
+				// coords.speed	速度，以米/每秒计
+				// timestamp	响应的日期/时间
+	        }
+
+	        function showError(error)
+	        {
+	        	var reason = {};
+	          	switch(error.code)
+	            {
+		            case error.PERMISSION_DENIED:
+		            	reason.errorCode = "PERMISSION_DENIED";
+		                reason.errorMessage="用户拒绝定位请求";
+		                break;
+		            case error.POSITION_UNAVAILABLE:
+		            	reason.errorCode = "POSITION_UNAVAILABLE";
+		                reason.errorMessage="定位信息不可用";
+		                break;
+		            case error.TIMEOUT:
+		            	reason.errorCode = "TIMEOUT";
+		                reason.errorMessage="定位超时";
+		                break;
+		            case error.UNKNOWN_ERROR:
+		            	reason.errorCode = "UNKNOWN_ERROR";
+		                reason.errorMessage="未知错误";
+		                break;
+	            }
+	            defer.reject(reason);
+			}
+			return defer.promise;
+		}
+	}]);
+angular.module('app.user')
+	.service('userInfo', ['$q','$http','$timeout', '$location', 'errorLog', function($q,$http,$timeout, $location, errorLog){
+		var openId = null;
+		var wxConfigParam = {
+			timestamp : null,
+			noncestr : null,
+			sign : null,
+		};
+
+		this.getOpenId = function(){
+			var defer = $q.defer();
+			if (openId == null ){
+				var url = $location.url().substring($location.url().indexOf("?"));
+				if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
+					url="";
+				}
+	            $http({
+	                method: "GET",
+	                url: basePath + '/getopenid' + url
+	            }).success(function(data) {
+	            	openId = data.openid;
+	                //微信配置接口所需参数
+	                wxConfigParam.timestamp = data.timestamp;
+	                wxConfigParam.noncestr = data.noncestr;
+	                wxConfigParam.sign = data.sign;
+	                //test
+	                sessionStorage.setItem("openid", data.openid);
+	                //添加微信支付
+	                sessionStorage.setItem("timestamp", data.timestamp);
+	                sessionStorage.setItem("noncestr", data.noncestr);
+	                sessionStorage.setItem("sign", data.sign);
+	                // end test
+	                defer.resolve(openId);
+	            }).error(function(data) {
+	                //alert("获取OpenID失败："+data);
+	                var reason = {
+	    				errorCode: "GET_OPENID_ERROR",
+	    				errorMessage: errorLog.getErrorMessage(data)
+	    			};
+	                defer.reject(reason);
+	            });
+	        }else{
+	        	defer.resolve(openId);
+	        }
+	        return defer.promise;
+		}
+
+		this.getWxConfigParam = function(){
+			var defer = $q.defer();
+			if(wxConfigParam.timestamp == null || wxConfigParam.noncestr == null || wxConfigParam.sign == null){
+				var url = $location.url().substring($location.url().indexOf("?"));
+	            $http({
+	                method: "GET",
+	                url: basePath + '/getopenid' + url
+	            }).success(function(data) {
+	            	openId = data.openid;
+	                //微信配置接口所需参数
+	                wxConfigParam.timestamp = data.timestamp;
+	                wxConfigParam.noncestr = data.noncestr;
+	                wxConfigParam.sign = data.sign;
+	                //添加微信支付
+	                sessionStorage.setItem("timestamp", data.timestamp);
+	                sessionStorage.setItem("noncestr", data.noncestr);
+	                sessionStorage.setItem("sign", data.sign);
+	                // end test
+	                defer.resolve(wxConfigParam);
+	            }).error(function(data) {
+	                //alert("获取微信配置接口参数失败："+data);
+	                var reason = {
+	    				errorCode: "GET_WXCP_ERROR",
+	    				errorMessage: errorLog.getErrorMessage(data)
+	    			};
+	                defer.reject(reason);
+	            });
+			}else{
+				defer.resolve(wxConfigParam);
+			}
+			return defer.promise;
+		}
+	}]);

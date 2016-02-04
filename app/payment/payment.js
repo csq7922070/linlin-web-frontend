@@ -152,6 +152,7 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
                             deferred.resolve('success');
                         }
                     });
+
                     return deferred.promise;
                 })
                 .then(function() {
