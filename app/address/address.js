@@ -1,10 +1,14 @@
-angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addresses',
-    function ($stateParams, addresses) {
+angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addresses','communityInfo',
+    function ($stateParams, addresses,communityInfo) {
         var vm = this;
+        vm.city = communityInfo.name;
+        vm.village = communityInfo.name+1;
         vm.add_newaddress = function () {
             console.log("触发");
             params = {
-                community: "阿尔卡迪亚",
+                // community: "阿尔卡迪亚",
+                city: $stateParams.city,
+                community: $stateParams.village,
                 block: $stateParams.block,
                 unit: $stateParams.unit,
                 room: $stateParams.room,
@@ -18,8 +22,10 @@ angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addres
                 console.log("后台添加地址失败");
             });
         }
-        console.log("block" + $stateParams.block + " unit" + $stateParams.unit + " room" + $stateParams.room);
+        console.log("city" + $stateParams.city+ "community" + $stateParams.village + "block" + $stateParams.block + " unit" + $stateParams.unit + " room" + $stateParams.room);
         console.log("succees");
+        vm.city = communityInfo.name;
+        vm.village = communityInfo.name+1;
         vm.block = $stateParams.block;
         vm.unit = $stateParams.unit;
         vm.room = $stateParams.room;
@@ -27,6 +33,7 @@ angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addres
         vm.username = $stateParams.username;
         vm.id = $stateParams.id;
         console.log("username:" + vm.username + " id:" + vm.id);
+        console.log($stateParams);
         console.log($stateParams.initial);
     }
 ]);

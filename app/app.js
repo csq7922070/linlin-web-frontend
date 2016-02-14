@@ -74,35 +74,43 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         })
         .state('address-edit', {
             url: "/address-edit",
-            templateUrl: "tpl/address/address-edit.tpl.html"
+            templateUrl: "tpl/address/address-edit.tpl.html",
+            controller: "addressCtrl2",
+            controllerAs: 'vm'
                 //controllerAs: 'vm'
         })
+        .state('address-city', {
+            url: "/address-city/",
+            templateUrl: "tpl/address/city/city.tpl.html",
+            controller: "addressCityCtrl",
+            controllerAs: 'vm'
+        })
         .state('address-village', {
-            url: "/address-village/",
+            url: "/address-village/:city",
             templateUrl: "tpl/address/village/village.tpl.html",
             controller: "addressVillageCtrl",
             controllerAs: 'vm'
         })
         .state('address-block', {
-            url: "/address-block/",
+            url: "/address-block/:city/:village",
             templateUrl: "tpl/address/block/block.tpl.html",
             controller: "addressBlockCtrl",
             controllerAs: 'vm'
         })
         .state('address-unit', {
-            url: "/address-unit/:block",
+            url: "/address-unit/:city/:village/:block",
             templateUrl: "tpl/address/unit/unit.tpl.html",
             controller: "addressUnitCtrl",
             controllerAs: 'vm'
         })
         .state('address-room', {
-            url: "/address-room/:block/:unit",
+            url: "/address-room/:city/:village/:block/:unit",
             templateUrl: "tpl/address/room/room.tpl.html",
             controller: "addressRoomCtrl",
             controllerAs: 'vm'
         })
         .state('address', {
-            url: "/address/:id/:block/:unit/:room/:username/:initial",
+            url: "/address/:city/:village/:id/:block/:unit/:room/:username/:initial",
             templateUrl: "tpl/address/address-edit.tpl.html",
             controller: "addressCtrl",
             controllerAs: 'vm'
@@ -235,6 +243,14 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         city: null,
         address: null,
         auth: null//该字段用来判断小区是否为合作小区，值为true or false
+    }
+).value(
+    'addressInfo',{
+        city: null,
+        community: null,
+        block: null,
+        unit: null,
+        room: null
     }
 ).value(
     'locationInfo', {

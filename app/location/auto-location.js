@@ -19,6 +19,9 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		$state.go('search-location');
     	}
 
+
+        console.log(communityInfo.name+ ' 11');
+
     	//openId = "o-YfcstQPoTDSPuNHZ44cEof8";
     	$scope.retryLocation = function(){
     		$scope.showLocationError = false;

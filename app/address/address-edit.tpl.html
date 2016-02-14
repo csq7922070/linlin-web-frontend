@@ -1,10 +1,16 @@
 ﻿<div class="weui_cells weui_cells_access address_down">
-    <div class="weui_cell" href="javascript:;">
+    <div class="weui_cell" ui-sref="address-city">
         <div class="weui_cell_bd weui_cell_primary">
             <p style="margin-top: 10px;">城市</p>
         </div>
-        <div class="weui_cell_ft">
+        <!-- <div class="weui_cell_ft">
             廊坊市
+        </div> -->
+        <div ng-if="vm.city" class="weui_cell_ft" name="block">
+            {{vm.city}}
+        </div>
+        <div ng-if="!vm.city" class="weui_cell_ft" name="city">
+            请选择
         </div>
     </div>
 
@@ -12,14 +18,11 @@
         <div class="weui_cell_bd weui_cell_primary">
             <p style="margin-top: 10px;">小区</p>
         </div>
-        <!-- <div ng-if="vm.block" class="weui_cell_ft" name="block">
-            {{vm.block}}
+        <div ng-if="vm.village" class="weui_cell_ft" name="block">
+            {{vm.village}}
         </div>
-        <div ng-if="!vm.block" class="weui_cell_ft" name="block">
+        <div ng-if="!vm.village" class="weui_cell_ft" name="village">
             请选择
-        </div> -->
-        <div class="weui_cell_ft">
-            阿尔卡迪亚小区
         </div>
     </div>
 
@@ -34,7 +37,7 @@
             请选择
         </div>
     </div>
-    <div class="weui_cell" ng-disabled="type==0">
+    <div class="weui_cell" ui-sref="address-unit" ng-if="vm.unit">
         <div class="weui_cell_bd weui_cell_primary">
             <p style="margin-top: 10px;" ng-class="vm.unit?'':'color_ccc'">单元</p>
         </div>
@@ -45,7 +48,7 @@
             请选择
         </div>
     </div>
-    <div class="weui_cell" ng-disabled="type==0||type==3">
+    <div class="weui_cell" ui-sref="address-room" ng-if="vm.room">
         <div class="weui_cell_bd weui_cell_primary">
             <p style="margin-top: 10px;" ng-class="vm.room?'':'color_ccc'">门牌号</p>
         </div>
@@ -62,7 +65,7 @@
         </span>
         <span class="right_detail" style="margin-top: 10px;">
             <div>
-                阿尔卡迪亚小区2{{vm.community}}<span>{{vm.block}}</span><span ng-if="vm.unit">-{{vm.unit}}</span><span ng-if="vm.room">-{{vm.room}}</span>
+                {{vm.village}}<span>{{vm.block}}</span><span ng-if="vm.unit">-{{vm.unit}}</span><span ng-if="vm.room">-{{vm.room}}</span>
             </div>
             <div>
                 <span>{{vm.username}}</span>                
