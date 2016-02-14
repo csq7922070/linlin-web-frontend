@@ -1,5 +1,5 @@
-angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$q',
-    function($scope, $http, $stateParams, $rootScope, $state, $q) {
+angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$q','addressInfo',
+    function($scope, $http, $stateParams, $rootScope, $state, $q, addressInfo) {
         if($rootScope.wmonth!=null&&$rootScope.wmonth!=""){
             $scope.watermonth=$rootScope.wmonth;
         }
@@ -93,7 +93,7 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
             return text;
         }
 
-        $scope.community = $stateParams.community;
+        $scope.community = addressInfo.community;
         $scope.block = $stateParams.block;
         $scope.unit = $stateParams.unit;
         $scope.room = $stateParams.room;

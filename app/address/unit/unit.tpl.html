@@ -1,6 +1,6 @@
 <div class="weui_cells_title title_style" style="margin-top: 6px">#</div>
 <div class="weui_cells weui_cells_access address_down">
-    <a class="weui_cell" ng-repeat="unit in vm.units" ui-sref="address-room({block:vm.block,unit:unit})">
+    <a class="weui_cell" ng-repeat="unit in vm.units" ui-sref="address-room({city:vm.city,village:vm.village,block:vm.block,unit:unit})">
         <div class="weui_cell_bd weui_cell_primary">
             <p>{{unit}}单元</p>
         </div>

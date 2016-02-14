@@ -1,15 +1,21 @@
-angular.module('app.address').controller('addressVillageCtrl',['$stateParams','addresses','communityInfo',function($stateParams,addresses,communityInfo){
+angular.module('app.address').controller('addressVillageCtrl',
+    ['$stateParams','addresses','communityInfo','addressInfo',
+    function($stateParams,addresses,communityInfo, addressInfo){
     var vm=this;
-    // params = {
-    //     type:'village',
-    //     city:$stateParams.city
-    // }
-    // addresses.query(params).$promise.then(function (data) {
-    //     vm.village = data.items;
-    //     vm.city = $stateParams.city
-    // }, function (data) {
-    //     console.log("err!");
-    // });
-    vm.city = communityInfo.name;
-    console.log(vm.city + '22' + communityInfo.name);
+    params = {
+        type:'community',
+        city:addressInfo.city
+    }
+    if($stateParams.city){
+        addressInfo.city = $stateParams.city;
+    }
+    addressInfo.village = $stateParams.village;
+    addresses.query(params).$promise.then(function (data) {
+        vm.villages = data.items;
+        vm.city = $stateParams.city
+    }, function (data) {
+        console.log("err!");
+    });
+    console.log("addressInfo注入");
+    console.log(addressInfo);
 }]);
