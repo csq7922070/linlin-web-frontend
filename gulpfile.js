@@ -22,8 +22,6 @@ var templateCache = require('gulp-angular-templatecache');
 gulp.task('copy', function() {
   gulp.src('app/data/**/*.json')
   .pipe(gulp.dest('dist/data'));
-  gulp.src('app/*/**/*.html')
-  .pipe(gulp.dest('dist/tpl'));
   gulp.src('app/assets/images/**')
   .pipe(gulp.dest('dist/images'));
   gulp.src('bower_components/**/*min.js')
@@ -44,13 +42,40 @@ gulp.task('clean:dist', function () {
   del.sync(['dist/bower_components/*','dist/css/*','dist/images/*','dist/js/*','dist/tpl/*','dist/*.html'], {force: true});
 });
 
-gulp.task('build:js', [], function(){
+gulp.task('templates', function(){
+  return gulp.src('app/*/**/*.html')
+  .pipe(templateCache('templates.js', {
+    root: 'tpl/',
+    module:'myApp'}))
+  .pipe(gulp.dest('.tmp/scripts'));
+});
+
+gulp.task('concat:js', [], function(){
   return gulp.src(['app/app.js', 'app/*/**/*.js'])
         .pipe(concat('main.js'))      //压缩的文件
         .pipe(gulp.dest('.tmp/scripts'));   
 });
 
-gulp.task('inject', ['build:js', 'less'], function(){
+gulp.task('inject:dist', ['concat:js', 'templates','less'], function(){
+  var jsFilter = $.filter('**/*.js');
+  var cssFilter = $.filter('**/*.css');
+
+  return gulp.src('app/index.html')
+    .pipe($.useref())
+    .pipe(jsFilter)
+    .pipe($.ngAnnotate())
+    .pipe($.uglify())
+    .pipe($.rev())
+    .pipe(jsFilter.restore())
+    .pipe(cssFilter)
+    .pipe($.minifyCss({cache: true}))
+    .pipe($.rev())
+    .pipe(cssFilter.restore())
+    .pipe($.revReplace())
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('inject:dev', ['concat:js', 'templates','less'], function(){
   var jsFilter = $.filter('**/*.js');
   var cssFilter = $.filter('**/*.css');
 
@@ -69,12 +94,16 @@ gulp.task('inject', ['build:js', 'less'], function(){
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('build', ['clean:dist'], function () {
-  runSequence(['copy', 'inject']);
+gulp.task('build:dist', ['clean:dist'], function () {
+  runSequence(['copy', 'inject:dist']);
+});
+
+gulp.task('build:dev', ['clean:dist'], function () {
+  runSequence(['copy', 'inject:dev']);
 });
 
 gulp.task('watch', function(){
-  gulp.watch('app/**', ['build']);
+  gulp.watch('app/**', ['build:dev']);
 });
 
-gulp.task('default', ['build']);
+gulp.task('default', ['build:dist']);
