@@ -1,5 +1,5 @@
-angular.module('app.complain').controller('complainListCtrl', ['complains',
-    function (complains) {
+angular.module('app.complain').controller('complainListCtrl', ['complains', 'errorLog',
+    function (complains, errorLog) {
         var vm = this;
         vm.currentPage = 0;
         vm.pageSize = 10;
@@ -21,8 +21,8 @@ angular.module('app.complain').controller('complainListCtrl', ['complains',
                     vm.currentPage = goPage;
                     vm.busy = false;
                      Array.prototype.push.apply(vm.complains,data.items);
-                }, function (data) {
-                    console.log("err!");
+                }, function (reason) {
+                    alert(errorLog.getErrorMessage(reason));
                 })
             }
         }

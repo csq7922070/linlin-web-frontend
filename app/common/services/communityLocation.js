@@ -1,6 +1,8 @@
 angular.module('app.location')
 	.service('communityLocation', ['$q', '$timeout', '$http', 'errorLog', 'userInfo','locationInfo', 'location',
 		function($q, $timeout, $http, errorLog, userInfo, locationInfo, location){
+		this.changeCommunityHand = false;
+		
 		//根据经纬度定位小区
 		function locationCommunity(openId, longitude, latitude){// longitude经度，latitude维度
 			var defer = $q.defer();
@@ -34,7 +36,9 @@ angular.module('app.location')
     		},function(reason){
     			return $q.reject(reason);
     		}).then(function(data){//location
-    			angular.extend(locationInfo, data);
+    			locationInfo.longitude = data.longitude;
+    			locationInfo.latitude = data.latitude;
+    			locationInfo.accuracy = data.accuracy;
     			location.storageLocation(locationInfo);
     			return locationCommunity(openId, data.longitude, data.latitude);
     		},function(reason){

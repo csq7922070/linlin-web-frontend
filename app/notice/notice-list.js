@@ -1,6 +1,6 @@
 (function() {
-    angular.module('app.notice').controller('noticeListCtrl', ['notices',
-        function(notices) {
+    angular.module('app.notice').controller('noticeListCtrl', ['notices', 'errorLog',
+        function(notices, errorLog) {
             var vm = this;
             vm.currentPage = 0;
             vm.pageSize = 10;
@@ -20,6 +20,8 @@
                         vm.currentPage = goPage;
                         vm.busy = false;
                          Array.prototype.push.apply(vm.notices,data.items);
+                    }, function(reason){
+                        alert(errorLog.getErrorMessage(reason));
                     });
                 }
             }

@@ -27,6 +27,9 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                 $scope.okText = "切换";
                 $scope.showModal = true;
                 $scope.onModalClose = function(state){//state is true or false
+                    if(state){
+                        communityLocation.changeCommunityHand = true;
+                    }
                     defer.resolve(state);
                     $scope.showModal = false;
                 }

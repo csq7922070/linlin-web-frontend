@@ -1,6 +1,6 @@
 (function() {
-    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
-        function($scope, $stateParams, $rootScope, shops) {
+    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops', 'errorLog', 'communityLocation',
+        function($scope, $stateParams, $rootScope, shops, errorLog, communityLocation) {
             $rootScope.site = $stateParams.site;
             $scope.currentPage = 0;
             $scope.pageSize = 5;
@@ -21,10 +21,18 @@
                         $scope.currentPage = goPage;
                         $scope.busy = false;
                         $scope.shops.push.apply($scope.shops, data.items);
+                    },function(reason){
+                        alert(errorLog.getErrorMessage(reason));
                     });
                 }
             }
             $scope.load(1, 8);
+
+            $scope.$watch('communityLocation.changeCommunityHand', function(newVal, oldVal){
+                if(newVal){
+                    $scope.load(1, 8);
+                }
+            });
         }
     ]);
 })();
