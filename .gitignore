@@ -9,5 +9,5 @@
 node_modules/
 bower_components/
 .idea/
-dist/*
-.tmp/*
+dist/
+.tmp/
