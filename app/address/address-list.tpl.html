@@ -1,5 +1,5 @@
 <div class="weui_cells address_down account_page owner_top" ng-repeat="house in vm.houses" ng-if="house.rowState==0">
-    <a class="weui_cell" style="padding-top: 10px;padding-bottom: 0;" ui-sref="bill({community:house.community,block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.ownerName,activeId:vm.activeId})">
+    <a class="weui_cell" style="padding-top: 10px;padding-bottom: 0;" ui-sref="bill({village:house.community,block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.ownerName,activeId:vm.activeId})">
         <div class="weui_cell_bd weui_cell_primary">
             <p class="color333" style="margin-bottom: 5px">{{house.community}}</p>
         </div>
@@ -7,7 +7,7 @@
             <span>{{house.block}}</span><span ng-if="house.unit">-{{house.unit}}</span><span ng-if="house.room">-{{house.room}}</span>
         </div>
     </a>
-    <a class="weui_cell" style="padding-top: 6px;padding-bottom: 0;" ui-sref="bill({block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.ownerName,activeId:vm.activeId})">
+    <a class="weui_cell" style="padding-top: 6px;padding-bottom: 0;" ui-sref="bill({village:house.community,block:house.block,unit:house.unit,room:house.room,id:house.id,username:house.ownerName,activeId:vm.activeId})">
         <div class="weui_cell_bd weui_cell_primary">
             <p></p>
         </div>

@@ -3,12 +3,16 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
         //显示当前页面的业主信息
         $scope.ownerName = $stateParams.username;
         $scope.block = $stateParams.block;
+        $scope.village = $stateParams.village;
         $scope.unit = $stateParams.unit;
         $scope.room = $stateParams.room;
         $scope.id = $stateParams.id;
         $scope.activeId = $stateParams.activeId;
 
         var totalCount = 0;
+
+        console.log($stateParams);
+        console.log($stateParams.village);
 
         $scope.change_flag = function() {
             if ($scope.id == $scope.activeId) {

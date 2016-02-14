@@ -34,6 +34,7 @@ angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addres
         vm.id = $stateParams.id;
         console.log("username:" + vm.username + " id:" + vm.id);
         console.log($stateParams);
+        console.log($stateParams.village);
         console.log($stateParams.initial);
     }
 ]);
