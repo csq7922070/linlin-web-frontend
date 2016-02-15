@@ -14,7 +14,11 @@ angular.module('app.user')
 				if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
 					url="";
 				}
+				if(!url){
+					url = localStorage.wxParam;
+				}
 				wxParam = url;
+				localStorage.wxParam = wxParam;
 			}
 		}
 

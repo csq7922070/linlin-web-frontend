@@ -36,6 +36,7 @@ angular.module('app.location')
     		},function(reason){
     			return $q.reject(reason);
     		}).then(function(data){//location
+    			//alert("long:"+data.longitude+",lat:"+data.latitude);
     			locationInfo.longitude = data.longitude;
     			locationInfo.latitude = data.latitude;
     			locationInfo.accuracy = data.accuracy;
