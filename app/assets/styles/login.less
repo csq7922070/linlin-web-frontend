@@ -1,4 +1,9 @@
 #login-container{
+	bottom: 0px;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    position: absolute;
 	background-color: #fff;
 	padding: 60px 23px 0px;
 	font-family: 微软雅黑;
@@ -35,6 +40,18 @@
     		color: #e62f17;
     		float: right;
     	}
+
+    	.send-auth-code-disable{
+    		color: #C5C4C4;
+    	}
+
+    	.resend-time{
+    		float: right;
+    		font-size: 13px;
+    		color: #777;
+    		margin-top: 1px;
+    		margin-right: 1px;
+    	}
     }
 
     .login-button{
@@ -47,9 +64,31 @@
 	    margin-top: 16px;
     }
 
+    .login-button-disable{
+    	background-color: #D2D2D2;
+    }
+
     .tip{
 	    font-size: 12px;
 	    color: #666;
 	    margin-top: 25px;
+	    line-height: 1.5;
+
+	    .user-license-link{
+	    	color: #1656b3;
+	    }
+    }
+
+    .tel-verify-tip{
+	    font-size: 15px;
+	    color: #fff;
+	    border-radius: 6px;
+	    background-color: #555;
+	    width: 180px;
+	    height: 40px;
+	    display: block;
+	    margin: 0 auto;
+        line-height: 40px;
+		text-align: center;
     }
 }

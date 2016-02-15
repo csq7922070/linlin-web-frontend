@@ -1455,15 +1455,57 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     ]);
 })();
 
-angular.module('app.account').controller('loginCtrl', ['$stateParams',
+angular.module('app.account').controller('nicknameCtrl', ['$stateParams',
     function ($stateParams) {
         var vm = this;
     }
 ]);
 
-angular.module('app.account').controller('nicknameCtrl', ['$stateParams',
-    function ($stateParams) {
-        var vm = this;
+angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval',
+    function ($stateParams, $scope, $timeout, $interval) {
+        $scope.tel = "";
+        $scope.authCode = "";
+
+        $scope.sendAuthCode = function(){
+            if($scope.tel.length != 11){
+                return;
+            }
+            if(!verifyTel($scope.tel)){
+                $scope.telVerifyError = true;
+                $timeout(function(){
+                    $scope.telVerifyError = false;
+                    $("#tel").focus();
+                },2000);
+                return;
+            }
+            console.log("sendAuthCode...");
+            $scope.authCodeSending = true;
+        }
+
+        //开始验证码重发60s倒计时
+        var function CountDown(){
+            var remainTime = 60;
+            $scope.resendTime = remainTime + "s";
+            $interval(function(){
+                remainTime--;
+                $scope.resendTime = remainTime + "s";
+            }, 1000, 59);
+        };
+
+        $scope.login = function(){
+            if($scope.authCode.length != 4){
+                return;
+            }
+            console.log("login...");
+        }
+
+        function verifyTel(tel){
+            var result = true;
+            if(!/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/i.test(tel)){
+              result = false;
+            }
+            return result;
+        }
     }
 ]);
 
@@ -1495,6 +1537,21 @@ angular.module('app.address').controller('addressBlockCtrl',
     console.log("addressInfo注入");
     console.log(addressInfo);
 }])
+angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
+    var vm=this;
+    params = {
+        type:'city'
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.cities = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+    vm.city = $stateParams.city;
+    addressInfo.city = $stateParams.city;
+    console.log("addressInfo注入");
+    console.log(addressInfo);
+}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','addresses','addressInfo',function ($stateParams, addresses,addressInfo) {
         var vm = this;
         
@@ -1535,21 +1592,6 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','add
         console.log(addressInfo);
     }
 ])
-angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
-    var vm=this;
-    params = {
-        type:'city'
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.cities = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-    vm.city = $stateParams.city;
-    addressInfo.city = $stateParams.city;
-    console.log("addressInfo注入");
-    console.log(addressInfo);
-}]);
 angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses','addressInfo',function($stateParams,addresses,addressInfo){
     var vm=this;
     if($stateParams.block){
@@ -1734,70 +1776,6 @@ myApp.directive('whenScrolled', ['$document', function ($document) {
             });
         }
     };
-}]);
-angular.module('resources.address', ['ngResource']).
-    factory('addresses', ['$resource', function($resource) {
-        return $resource(basePath+'/houses/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.complain', ['ngResource']).
-    factory('complains', ['$resource', function($resource) {
-        return $resource(basePath+'/complains/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.notice', ['ngResource']).
-factory('notices', ['$resource', function($resource) {
-    return $resource(basePath+'/notices/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.payment', ['ngResource']).
-    factory('payments', ['$resource', function($resource) {
-        return $resource(basePath+'/payments/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.repair', ['ngResource']).
-factory('repairs', ['$resource', function($resource) {
-    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.shop', ['ngResource']).
-factory('shops', ['$resource', 'locationInfo', function($resource, locationInfo) {
-    return $resource(basePath+'/shops/:id', {}, {
-        query: {
-        	params:{
-        		'id':'query',
-        		lon: locationInfo.longitude,
-        		lat: locationInfo.latitude
-        	},
-            method: 'GET',
-            isArray: false
-        }
-    })
 }]);
 angular.module('myApp').filter('cut', function() {
     return function(value, wordwise, max, tail) {
@@ -2293,3 +2271,67 @@ angular.module('app.user')
 			return defer.promise;
 		}
 	}]);
+angular.module('resources.address', ['ngResource']).
+    factory('addresses', ['$resource', function($resource) {
+        return $resource(basePath+'/houses/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.complain', ['ngResource']).
+    factory('complains', ['$resource', function($resource) {
+        return $resource(basePath+'/complains/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.notice', ['ngResource']).
+factory('notices', ['$resource', function($resource) {
+    return $resource(basePath+'/notices/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.payment', ['ngResource']).
+    factory('payments', ['$resource', function($resource) {
+        return $resource(basePath+'/payments/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.repair', ['ngResource']).
+factory('repairs', ['$resource', function($resource) {
+    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.shop', ['ngResource']).
+factory('shops', ['$resource', 'locationInfo', function($resource, locationInfo) {
+    return $resource(basePath+'/shops/:id', {}, {
+        query: {
+        	params:{
+        		'id':'query',
+        		lon: locationInfo.longitude,
+        		lat: locationInfo.latitude
+        	},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);

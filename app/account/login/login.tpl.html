@@ -1,15 +1,20 @@
 <div id="login-container">
 	<div class="code-container tel-container">
 		<span class="tel-prefix">+86</span>
-		<input class="tel code" type="text" placeholder="请输入11位手机号码" />
+		<input id="tel" class="tel code" type="text" placeholder="请输入11位手机号码" 
+			ng-model="tel" maxlength="11" />
 	</div>
 	<div class="code-container auth-code-container">
-		<input class="code" type="text" placeholder="请输入手机验证码" />
-		<a class="send-auth-code" href="javascript:void(0)">发送验证码</a>
+		<input class="code" type="text" placeholder="请输入手机验证码" 
+			ng-model="authCode" maxlength="4" />
+		<a class="send-auth-code" ng-class="{true: 'send-auth-code-disable'}[tel.length!=11]" 
+			href="javascript:void(0)" ng-hide="authCodeSending" ng-click="sendAuthCode()">发送验证码</a>
+		<span class="resend-time" ng-bind="resendTime" ng-show="authCodeSending" ng-init="authCodeSending=false">60s</span>
 	</div>
-	<button class="login-button">验证并登录</button>
+	<button class="login-button" ng-class="{true: 'login-button-disable'}[authCode.length!=4]" ng-click="login()">验证并登录</button>
 	<p class="tip">
-		温馨提示：未注册米饭公社账号的手机号码，登录时将自动注册米饭公社账号，且代表您已经同意
-		<a href="javascript:void(0)"><<米饭公社用户协议>></a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;温馨提示：未注册米饭公社账号的手机号码，登录时将自动注册米饭公社账号，且代表您已经同意
+		<a class="user-license-link" href="javascript:void(0)">《米饭公社用户协议》</a>
 	</p>
+	<span class="tel-verify-tip" ng-show="telVerifyError" ng-init="telVerifyError=false">请输入正确的手机号码</span>
 </div> 
