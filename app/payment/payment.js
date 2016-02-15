@@ -92,8 +92,9 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
             text+="月";
             return text;
         }
-
-        $scope.community = addressInfo.community;
+        console.log($stateParams);
+        
+        $scope.community = $stateParams.village;
         $scope.block = $stateParams.block;
         $scope.unit = $stateParams.unit;
         $scope.room = $stateParams.room;

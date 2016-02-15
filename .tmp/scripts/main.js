@@ -136,12 +136,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controllerAs: 'vm'
         })
         .state('bill', {
-            url: "/bill/:block/:unit/:room/:id/:username/:activeId",
+            url: "/bill/:village/:block/:unit/:room/:id/:username/:activeId",
             templateUrl: "tpl/payment/bill.tpl.html",
             controller: "billCtrl"
         })
         .state('payment', {
-            url: "/payment/:block/:unit/:room/",
+            url: "/payment/:village/:block/:unit/:room/",
             templateUrl: "tpl/payment/payment.tpl.html",
             controller: "paymentCtrl",
             controllerAs: 'vm'
@@ -349,6 +349,7 @@ angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addres
         vm.id = $stateParams.id;
         console.log("username:" + vm.username + " id:" + vm.id);
         console.log($stateParams);
+        console.log($stateParams.village);
         console.log($stateParams.initial);
     }
 ]);
@@ -786,12 +787,16 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
         //显示当前页面的业主信息
         $scope.ownerName = $stateParams.username;
         $scope.block = $stateParams.block;
+        $scope.village = $stateParams.village;
         $scope.unit = $stateParams.unit;
         $scope.room = $stateParams.room;
         $scope.id = $stateParams.id;
         $scope.activeId = $stateParams.activeId;
 
         var totalCount = 0;
+
+        console.log($stateParams);
+        console.log($stateParams.village);
 
         $scope.change_flag = function() {
             if ($scope.id == $scope.activeId) {
@@ -1151,8 +1156,9 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
             text+="月";
             return text;
         }
-
-        $scope.community = addressInfo.community;
+        console.log($stateParams);
+        
+        $scope.community = $stateParams.village;
         $scope.block = $stateParams.block;
         $scope.unit = $stateParams.unit;
         $scope.room = $stateParams.room;
