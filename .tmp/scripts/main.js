@@ -1541,6 +1541,46 @@ angular.module('app.address').controller('addressBlockCtrl',
     console.log("addressInfo注入");
     console.log(addressInfo);
 }])
+angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','addresses','addressInfo',function ($stateParams, addresses,addressInfo) {
+        var vm = this;
+        
+        if($stateParams.unit){
+            addressInfo.unit = $stateParams.unit;
+        }
+        if($stateParams.block){
+            addressInfo.block = $stateParams.block;
+        }
+        if(addressInfo.unit){
+            $stateParams.city = addressInfo.city;
+            $stateParams.village = addressInfo.community;
+            $stateParams.block = addressInfo.block;
+            $stateParams.unit = addressInfo.unit;
+        }
+        if(addressInfo.unit == null){
+            $stateParams.city = addressInfo.city;
+            $stateParams.village = addressInfo.community;
+            $stateParams.block = addressInfo.block;
+        }
+        params={
+            type:'room',
+            city:$stateParams.city,
+            community:$stateParams.village,
+            block:$stateParams.block,
+            unit:$stateParams.unit
+        }
+        addresses.query(params).$promise.then(function(data){
+            vm.city = addressInfo.city
+            vm.village = addressInfo.community;
+            vm.block = addressInfo.block;
+            vm.unit = addressInfo.unit;
+            vm.rooms = data.items;
+        })
+        console.log(22);
+        console.log($stateParams);
+        console.log("addressInfo注入");
+        console.log(addressInfo);
+    }
+])
 angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
     var vm=this;
     params = {
@@ -1585,46 +1625,6 @@ angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addr
     console.log("addressInfo注入");
     console.log(addressInfo);
 }]);
-angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','addresses','addressInfo',function ($stateParams, addresses,addressInfo) {
-        var vm = this;
-        
-        if($stateParams.unit){
-            addressInfo.unit = $stateParams.unit;
-        }
-        if($stateParams.block){
-            addressInfo.block = $stateParams.block;
-        }
-        if(addressInfo.unit){
-            $stateParams.city = addressInfo.city;
-            $stateParams.village = addressInfo.community;
-            $stateParams.block = addressInfo.block;
-            $stateParams.unit = addressInfo.unit;
-        }
-        if(addressInfo.unit == null){
-            $stateParams.city = addressInfo.city;
-            $stateParams.village = addressInfo.community;
-            $stateParams.block = addressInfo.block;
-        }
-        params={
-            type:'room',
-            city:$stateParams.city,
-            community:$stateParams.village,
-            block:$stateParams.block,
-            unit:$stateParams.unit
-        }
-        addresses.query(params).$promise.then(function(data){
-            vm.city = addressInfo.city
-            vm.village = addressInfo.community;
-            vm.block = addressInfo.block;
-            vm.unit = addressInfo.unit;
-            vm.rooms = data.items;
-        })
-        console.log(22);
-        console.log($stateParams);
-        console.log("addressInfo注入");
-        console.log(addressInfo);
-    }
-])
 angular.module('app.address').controller('addressVillageCtrl',
     ['$stateParams','addresses','communityInfo','addressInfo',
     function($stateParams,addresses,communityInfo, addressInfo){
@@ -1925,6 +1925,70 @@ angular.module('myApp').filter('payListMerge', function() {
         return result;
     };
 });
+angular.module('resources.address', ['ngResource']).
+    factory('addresses', ['$resource', function($resource) {
+        return $resource(basePath+'/houses/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.complain', ['ngResource']).
+    factory('complains', ['$resource', function($resource) {
+        return $resource(basePath+'/complains/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.notice', ['ngResource']).
+factory('notices', ['$resource', function($resource) {
+    return $resource(basePath+'/notices/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.payment', ['ngResource']).
+    factory('payments', ['$resource', function($resource) {
+        return $resource(basePath+'/payments/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.repair', ['ngResource']).
+factory('repairs', ['$resource', function($resource) {
+    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.shop', ['ngResource']).
+factory('shops', ['$resource', 'locationInfo', function($resource, locationInfo) {
+    return $resource(basePath+'/shops/:id', {}, {
+        query: {
+        	params:{
+        		'id':'query',
+        		lon: locationInfo.longitude,
+        		lat: locationInfo.latitude
+        	},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
 angular.module('app.auth')
 	.service('auth', ['$q','$http','$timeout', '$location', 'errorLog', 'communityInfo', 'appState', '$state',
 		function($q,$http,$timeout, $location, errorLog, communityInfo, appState, $state){
@@ -2275,67 +2339,3 @@ angular.module('app.user')
 			return defer.promise;
 		}
 	}]);
-angular.module('resources.address', ['ngResource']).
-    factory('addresses', ['$resource', function($resource) {
-        return $resource(basePath+'/houses/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.complain', ['ngResource']).
-    factory('complains', ['$resource', function($resource) {
-        return $resource(basePath+'/complains/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.notice', ['ngResource']).
-factory('notices', ['$resource', function($resource) {
-    return $resource(basePath+'/notices/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.payment', ['ngResource']).
-    factory('payments', ['$resource', function($resource) {
-        return $resource(basePath+'/payments/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.repair', ['ngResource']).
-factory('repairs', ['$resource', function($resource) {
-    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.shop', ['ngResource']).
-factory('shops', ['$resource', 'locationInfo', function($resource, locationInfo) {
-    return $resource(basePath+'/shops/:id', {}, {
-        query: {
-        	params:{
-        		'id':'query',
-        		lon: locationInfo.longitude,
-        		lat: locationInfo.latitude
-        	},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);

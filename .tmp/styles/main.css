@@ -35,13 +35,16 @@
   color: #333;
   height: 51px;
   display: block;
-  border-bottom: solid 1px #e8e8e8;
   line-height: 51px;
   background-image: url('../images/right_arrow.png');
   background-repeat: no-repeat;
-  background-position-x: 97%;
+  background-position-x: 100%;
   background-position-y: 50%;
-  background-size: 10px;
+  background-size: 9px;
+  margin-right: 12px;
+}
+#account-container .bottom-container .under-line {
+  border-bottom: solid 1px #e8e8e8;
 }
 #account-container .bottom-container .care-us {
   border-bottom: 0px;
