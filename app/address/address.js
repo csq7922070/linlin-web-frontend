@@ -1,5 +1,5 @@
-angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addresses','communityInfo',
-    function ($stateParams, addresses,communityInfo) {
+angular.module('app.address').controller('addressCtrl', ['$state','$scope', '$stateParams', 'addresses','communityInfo',
+    function ($state,$scope,$stateParams, addresses,communityInfo) {
         var vm = this;
         vm.city = communityInfo.name;
         vm.village = communityInfo.name+1;
@@ -36,5 +36,19 @@ angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addres
         console.log($stateParams);
         console.log($stateParams.village);
         console.log($stateParams.initial);
+
+
+
+        $scope.GoaddressUnit = function() {
+            if(vm.unit){
+                $state.go('address-unit');
+            }
+        }
+
+        $scope.GoaddressRoom = function() {
+            if(vm.room){
+                $state.go('address-room');
+            }
+        }
     }
 ]);

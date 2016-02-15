@@ -261,15 +261,27 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 ).constant(
     'appId', appId
 );
-angular.module('app.address').controller('addressCtrl2', ['$stateParams', 'addresses','communityInfo','addressInfo',
-    function ($stateParams, addresses,communityInfo,addressInfo) {
+angular.module('app.address').controller('addressCtrl2', ['$state','$scope', '$stateParams', 'addresses','communityInfo','addressInfo',
+    function ($state, $scope, $stateParams, addresses,communityInfo,addressInfo) {
         var vm = this;
         vm.city = communityInfo.city;
         vm.village = communityInfo.name;
         addressInfo.city = communityInfo.city;
         addressInfo.community = communityInfo.name;
         console.log("addressInfo注入city与community");
-        console.log(addressInfo)
+        console.log(addressInfo);
+
+        $scope.GoaddressUnit = function() {
+        	if(vm.unit){
+                $state.go('address-unit');
+            }
+        }
+
+        $scope.GoaddressRoom = function() {
+        	if(vm.room){
+                $state.go('address-room');
+            }
+        }
     }
 ]);
 
@@ -313,8 +325,8 @@ angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stat
         }
     }
 ])
-angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addresses','communityInfo',
-    function ($stateParams, addresses,communityInfo) {
+angular.module('app.address').controller('addressCtrl', ['$state','$scope', '$stateParams', 'addresses','communityInfo',
+    function ($state,$scope,$stateParams, addresses,communityInfo) {
         var vm = this;
         vm.city = communityInfo.name;
         vm.village = communityInfo.name+1;
@@ -351,6 +363,20 @@ angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addres
         console.log($stateParams);
         console.log($stateParams.village);
         console.log($stateParams.initial);
+
+
+
+        $scope.GoaddressUnit = function() {
+            if(vm.unit){
+                $state.go('address-unit');
+            }
+        }
+
+        $scope.GoaddressRoom = function() {
+            if(vm.room){
+                $state.go('address-room');
+            }
+        }
     }
 ]);
 
@@ -1232,6 +1258,37 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
 ]);
 
 (function() {
+    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
+        function($scope, $stateParams, $rootScope, shops) {
+            $rootScope.site = $stateParams.site;
+            $scope.currentPage = 0;
+            $scope.pageSize = 5;
+            $scope.shops = [];
+
+            $scope.load = function(goPage, limit) {
+                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
+                    return;
+                } else if ($rootScope.site != 3) {
+                    $scope.busy = true;
+                    params = {
+                        offset: $scope.pageSize * (goPage - 1),
+                        limit: limit == 8 ? limit : $scope.pageSize,
+                        type: $stateParams.site - 1
+                    }
+                    shops.query(params).$promise.then(function(data) {
+                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                        $scope.currentPage = goPage;
+                        $scope.busy = false;
+                        $scope.shops.push.apply($scope.shops, data.items);
+                    });
+                }
+            }
+            $scope.load(1, 8);
+        }
+    ]);
+})();
+
+(function() {
     angular.module('app.repair').controller('repairAddCtrl', ['$timeout', '$state', 'repairs',
         function($timeout, $state, repairs) {
             var vm = this;
@@ -1376,37 +1433,6 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     }
 ]);
 
-(function() {
-    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
-        function($scope, $stateParams, $rootScope, shops) {
-            $rootScope.site = $stateParams.site;
-            $scope.currentPage = 0;
-            $scope.pageSize = 5;
-            $scope.shops = [];
-
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
-                    return;
-                } else if ($rootScope.site != 3) {
-                    $scope.busy = true;
-                    params = {
-                        offset: $scope.pageSize * (goPage - 1),
-                        limit: limit == 8 ? limit : $scope.pageSize,
-                        type: $stateParams.site - 1
-                    }
-                    shops.query(params).$promise.then(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        $scope.shops.push.apply($scope.shops, data.items);
-                    });
-                }
-            }
-            $scope.load(1, 8);
-        }
-    ]);
-})();
-
 angular.module('app.address').controller('addressBlockCtrl',
     ['$stateParams','addresses', 'addressInfo',function($stateParams,addresses,addressInfo){
     var vm=this;
@@ -1435,21 +1461,6 @@ angular.module('app.address').controller('addressBlockCtrl',
     console.log("addressInfo注入");
     console.log(addressInfo);
 }])
-angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
-    var vm=this;
-    params = {
-        type:'city'
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.cities = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-    vm.city = $stateParams.city;
-    addressInfo.city = $stateParams.city;
-    console.log("addressInfo注入");
-    console.log(addressInfo);
-}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','addresses','addressInfo',function ($stateParams, addresses,addressInfo) {
         var vm = this;
         
@@ -1516,6 +1527,21 @@ angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addr
     });
     console.log("unit");
     console.log($stateParams);
+    console.log("addressInfo注入");
+    console.log(addressInfo);
+}]);
+angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
+    var vm=this;
+    params = {
+        type:'city'
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.cities = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+    vm.city = $stateParams.city;
+    addressInfo.city = $stateParams.city;
     console.log("addressInfo注入");
     console.log(addressInfo);
 }]);
