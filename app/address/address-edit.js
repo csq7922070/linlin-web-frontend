@@ -19,5 +19,15 @@ angular.module('app.address').controller('addressCtrl2', ['$state','$scope', '$s
                 $state.go('address-room');
             }
         }
+        
+        $scope.sss = 'ccc';
+
+        if(!vm.unit){
+            $scope.sss = 'bgclick'
+        }
+
+        if(!vm.room){
+            $scope.ccc = 'bgclick'
+        }
     }
 ]);

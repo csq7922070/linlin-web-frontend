@@ -37,11 +37,13 @@ angular.module('app.address').controller('addressCtrl', ['$state','$scope', '$st
         console.log($stateParams.village);
         console.log($stateParams.initial);
 
-
+        $scope.sss = 'ccc';
 
         $scope.GoaddressUnit = function() {
             if(vm.unit){
                 $state.go('address-unit');
+            }else{
+                // $scope.sss = 'bgclick'
             }
         }
 
@@ -49,6 +51,14 @@ angular.module('app.address').controller('addressCtrl', ['$state','$scope', '$st
             if(vm.room){
                 $state.go('address-room');
             }
+        }
+        
+        if(!vm.unit){
+            $scope.sss = 'bgclick'
+        }
+
+        if(!vm.room){
+            $scope.ccc = 'bgclick'
         }
     }
 ]);
