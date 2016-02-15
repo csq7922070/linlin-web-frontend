@@ -263,6 +263,10 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         hasLocation: false,
         autoLocationVisited: false
     }
+).value(
+    'appState', {
+        visited: false
+    }
 ).constant(
     'appId', appId
 );

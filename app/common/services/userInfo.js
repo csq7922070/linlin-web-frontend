@@ -14,20 +14,17 @@ angular.module('app.user')
 				if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
 					url="";
 				}
+				if(!url && localStorage.wxParam && localStorage.wxParam != "undefined"){
+					url = localStorage.wxParam;
+				}
 				wxParam = url;
+				localStorage.wxParam = wxParam;
 			}
 		}
 
 		this.getOpenId = function(){
 			var defer = $q.defer();
-			if (openId == null ){
-				if(!wxParam){
-					var url = $location.url().substring($location.url().indexOf("?"));
-					if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
-						url="";
-					}
-					wxParam = url;
-				}
+			if (!openId){
 	            $http({
 	                method: "GET",
 	                url: basePath + '/users/getopenid' + wxParam
@@ -60,14 +57,7 @@ angular.module('app.user')
 
 		this.getWxConfigParam = function(){
 			var defer = $q.defer();
-			if(wxConfigParam.timestamp == null || wxConfigParam.noncestr == null || wxConfigParam.sign == null){
-				if(!wxParam){
-					var url = $location.url().substring($location.url().indexOf("?"));
-					if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
-						url="";
-					}
-					wxParam = url;
-				}
+			if(!wxConfigParam.timestamp || !wxConfigParam.noncestr || !wxConfigParam.sign){
 	            $http({
 	                method: "GET",
 	                url: basePath + '/users/getopenid' + wxParam

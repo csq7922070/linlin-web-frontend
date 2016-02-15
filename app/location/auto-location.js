@@ -1,6 +1,9 @@
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog', 'locationState',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, locationInfo,errorLog,locationState) {
+	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog', 'locationState', 'appState',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, 
+    	locationInfo,errorLog,locationState, appState) {
+    	appState.visited = true;
+    	
     	userInfo.initWxParam();//微信参数只会在公众号登录页传入，目前自动定位页面是公众号登录页
     	var locInfo = location.getLastLocation();
     	if(locInfo){
