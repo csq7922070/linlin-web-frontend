@@ -1,3 +1,51 @@
+#account-container {
+  bottom: 0px;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  position: absolute;
+  background-color: #f0eff5;
+  font-family: 微软雅黑;
+}
+#account-container .top-container {
+  background-color: #e62f17;
+  text-align: center;
+  padding: 28px 0px 23px;
+  font-size: 15px;
+}
+#account-container .top-container .head-icon {
+  margin-bottom: 7px;
+  width: 128px;
+}
+#account-container .top-container .account-opt {
+  color: #fff;
+}
+#account-container .top-container .logout {
+  position: absolute;
+  right: 12px;
+  top: 16px;
+}
+#account-container .bottom-container {
+  padding-left: 13px;
+  font-size: 15px;
+  background-color: #fff;
+  margin-top: 8px;
+}
+#account-container .bottom-container .menu-item {
+  color: #333;
+  height: 51px;
+  display: block;
+  border-bottom: solid 1px #e8e8e8;
+  line-height: 51px;
+  background-image: url('../images/right_arrow.png');
+  background-repeat: no-repeat;
+  background-position-x: 97%;
+  background-position-y: 50%;
+  background-size: 10px;
+}
+#account-container .bottom-container .care-us {
+  border-bottom: 0px;
+}
 
 body {
   background-color: #eeeeee;

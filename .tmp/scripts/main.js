@@ -1455,12 +1455,6 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     ]);
 })();
 
-angular.module('app.account').controller('nicknameCtrl', ['$stateParams',
-    function ($stateParams) {
-        var vm = this;
-    }
-]);
-
 angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval',
     function ($stateParams, $scope, $timeout, $interval) {
         $scope.tel = "";
@@ -1480,17 +1474,21 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
             }
             console.log("sendAuthCode...");
             $scope.authCodeSending = true;
+            resendCountDown().then(function(){//倒计时结束
+                $scope.authCodeSending = false;
+            });
         }
 
         //开始验证码重发60s倒计时
-        var function CountDown(){
+        function resendCountDown(){
             var remainTime = 60;
             $scope.resendTime = remainTime + "s";
-            $interval(function(){
+            var timer = $interval(function(){
                 remainTime--;
                 $scope.resendTime = remainTime + "s";
             }, 1000, 59);
-        };
+            return timer;
+        }
 
         $scope.login = function(){
             if($scope.authCode.length != 4){
@@ -1506,6 +1504,12 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
             }
             return result;
         }
+    }
+]);
+
+angular.module('app.account').controller('nicknameCtrl', ['$stateParams',
+    function ($stateParams) {
+        var vm = this;
     }
 ]);
 
@@ -1552,6 +1556,35 @@ angular.module('app.address').controller('addressCityCtrl',['$stateParams','addr
     console.log("addressInfo注入");
     console.log(addressInfo);
 }]);
+angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses','addressInfo',function($stateParams,addresses,addressInfo){
+    var vm=this;
+    if($stateParams.block){
+        addressInfo.block = $stateParams.block;
+    }
+    if(!$stateParams.block){
+        $stateParams.city = addressInfo.city;
+        $stateParams.village = addressInfo.community;
+        $stateParams.block = addressInfo.block;
+    }
+    params = {
+        type:'unit',
+        city:$stateParams.city,
+        community:$stateParams.village,
+        block:$stateParams.block
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.units = data.items;
+        vm.city = addressInfo.city;
+        vm.village = addressInfo.community;
+        vm.block = addressInfo.block;
+    }, function (data) {
+        console.log("err!");
+    });
+    console.log("unit");
+    console.log($stateParams);
+    console.log("addressInfo注入");
+    console.log(addressInfo);
+}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','addresses','addressInfo',function ($stateParams, addresses,addressInfo) {
         var vm = this;
         
@@ -1592,35 +1625,6 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','add
         console.log(addressInfo);
     }
 ])
-angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses','addressInfo',function($stateParams,addresses,addressInfo){
-    var vm=this;
-    if($stateParams.block){
-        addressInfo.block = $stateParams.block;
-    }
-    if(!$stateParams.block){
-        $stateParams.city = addressInfo.city;
-        $stateParams.village = addressInfo.community;
-        $stateParams.block = addressInfo.block;
-    }
-    params = {
-        type:'unit',
-        city:$stateParams.city,
-        community:$stateParams.village,
-        block:$stateParams.block
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.units = data.items;
-        vm.city = addressInfo.city;
-        vm.village = addressInfo.community;
-        vm.block = addressInfo.block;
-    }, function (data) {
-        console.log("err!");
-    });
-    console.log("unit");
-    console.log($stateParams);
-    console.log("addressInfo注入");
-    console.log(addressInfo);
-}]);
 angular.module('app.address').controller('addressVillageCtrl',
     ['$stateParams','addresses','communityInfo','addressInfo',
     function($stateParams,addresses,communityInfo, addressInfo){
