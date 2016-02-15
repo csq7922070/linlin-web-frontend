@@ -136,12 +136,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controllerAs: 'vm'
         })
         .state('bill', {
-            url: "/bill/:city/:village/:block/:unit/:room/:id/:username/:activeId",
+            url: "/bill/:village/:block/:unit/:room/:id/:username/:activeId",
             templateUrl: "tpl/payment/bill.tpl.html",
             controller: "billCtrl"
         })
         .state('payment', {
-            url: "/payment/:city/:village/:block/:unit/:room/",
+            url: "/payment/:village/:block/:unit/:room/",
             templateUrl: "tpl/payment/payment.tpl.html",
             controller: "paymentCtrl",
             controllerAs: 'vm'
@@ -739,6 +739,49 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     }
 ]);
 
+(function() {
+    angular.module('app.notice').controller("noticeDetailCtrl", ['$stateParams', 'notices',
+        function($stateParams, notices) {
+            var vm = this;
+            notices.get({
+                id: $stateParams.id
+            }).$promise.then(function(data) {
+                vm.notice = data;
+            })
+        }
+    ]);
+})();
+
+(function() {
+    angular.module('app.notice').controller('noticeListCtrl', ['notices',
+        function(notices) {
+            var vm = this;
+            vm.currentPage = 0;
+            vm.pageSize = 10;
+            vm.notices = [];
+            vm.load = function(goPage, limit) {
+                if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
+                    return;
+                } else {
+                    vm.busy = true;
+                    params = {
+                        offset: vm.pageSize * (goPage - 1),
+                        limit: vm.pageSize,
+                        openid: sessionStorage.getItem("openid")
+                    }
+                    notices.query(params).$promise.then(function(data) {
+                        vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
+                        vm.currentPage = goPage;
+                        vm.busy = false;
+                         Array.prototype.push.apply(vm.notices,data.items);
+                    });
+                }
+            }
+            vm.load(1, vm.pageSize);
+        }
+    ]);
+})();
+
 angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', 'addresses', 'payments',
     function($scope, $http, $stateParams, $rootScope, $state, addresses, payments) {
         //显示当前页面的业主信息
@@ -1187,49 +1230,6 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
 
     }
 ]);
-
-(function() {
-    angular.module('app.notice').controller("noticeDetailCtrl", ['$stateParams', 'notices',
-        function($stateParams, notices) {
-            var vm = this;
-            notices.get({
-                id: $stateParams.id
-            }).$promise.then(function(data) {
-                vm.notice = data;
-            })
-        }
-    ]);
-})();
-
-(function() {
-    angular.module('app.notice').controller('noticeListCtrl', ['notices',
-        function(notices) {
-            var vm = this;
-            vm.currentPage = 0;
-            vm.pageSize = 10;
-            vm.notices = [];
-            vm.load = function(goPage, limit) {
-                if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
-                    return;
-                } else {
-                    vm.busy = true;
-                    params = {
-                        offset: vm.pageSize * (goPage - 1),
-                        limit: vm.pageSize,
-                        openid: sessionStorage.getItem("openid")
-                    }
-                    notices.query(params).$promise.then(function(data) {
-                        vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
-                        vm.currentPage = goPage;
-                        vm.busy = false;
-                         Array.prototype.push.apply(vm.notices,data.items);
-                    });
-                }
-            }
-            vm.load(1, vm.pageSize);
-        }
-    ]);
-})();
 
 (function() {
     angular.module('app.repair').controller('repairAddCtrl', ['$timeout', '$state', 'repairs',
