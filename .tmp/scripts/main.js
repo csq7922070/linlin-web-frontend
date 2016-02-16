@@ -261,15 +261,37 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 ).constant(
     'appId', appId
 );
-angular.module('app.address').controller('addressCtrl2', ['$stateParams', 'addresses','communityInfo','addressInfo',
-    function ($stateParams, addresses,communityInfo,addressInfo) {
+angular.module('app.address').controller('addressCtrl2', ['$state','$scope', '$stateParams', 'addresses','communityInfo','addressInfo',
+    function ($state, $scope, $stateParams, addresses,communityInfo,addressInfo) {
         var vm = this;
         vm.city = communityInfo.city;
         vm.village = communityInfo.name;
         addressInfo.city = communityInfo.city;
         addressInfo.community = communityInfo.name;
         console.log("addressInfo注入city与community");
-        console.log(addressInfo)
+        console.log(addressInfo);
+
+        $scope.GoaddressUnit = function() {
+        	if(vm.unit){
+                $state.go('address-unit');
+            }
+        }
+
+        $scope.GoaddressRoom = function() {
+        	if(vm.room){
+                $state.go('address-room');
+            }
+        }
+        
+        $scope.sss = 'ccc';
+
+        if(!vm.unit){
+            $scope.sss = 'bgclick'
+        }
+
+        if(!vm.room){
+            $scope.ccc = 'bgclick'
+        }
     }
 ]);
 
@@ -313,8 +335,8 @@ angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stat
         }
     }
 ])
-angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addresses','communityInfo',
-    function ($stateParams, addresses,communityInfo) {
+angular.module('app.address').controller('addressCtrl', ['$state','$scope', '$stateParams', 'addresses','communityInfo',
+    function ($state,$scope,$stateParams, addresses,communityInfo) {
         var vm = this;
         vm.city = communityInfo.name;
         vm.village = communityInfo.name+1;
@@ -339,8 +361,8 @@ angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addres
         }
         console.log("city" + $stateParams.city+ "community" + $stateParams.village + "block" + $stateParams.block + " unit" + $stateParams.unit + " room" + $stateParams.room);
         console.log("succees");
-        vm.city = communityInfo.name;
-        vm.village = communityInfo.name+1;
+        vm.city = $stateParams.city;
+        vm.village = $stateParams.village;
         vm.block = $stateParams.block;
         vm.unit = $stateParams.unit;
         vm.room = $stateParams.room;
@@ -351,6 +373,30 @@ angular.module('app.address').controller('addressCtrl', ['$stateParams', 'addres
         console.log($stateParams);
         console.log($stateParams.village);
         console.log($stateParams.initial);
+
+        $scope.sss = 'ccc';
+
+        $scope.GoaddressUnit = function() {
+            if(vm.unit){
+                $state.go('address-unit');
+            }else{
+                // $scope.sss = 'bgclick'
+            }
+        }
+
+        $scope.GoaddressRoom = function() {
+            if(vm.room){
+                $state.go('address-room');
+            }
+        }
+        
+        if(!vm.unit){
+            $scope.sss = 'bgclick'
+        }
+
+        if(!vm.room){
+            $scope.ccc = 'bgclick'
+        }
     }
 ]);
 

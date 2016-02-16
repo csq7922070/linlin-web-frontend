@@ -6,6 +6,10 @@ a:hover {
   text-decoration: none;
   text-underline: none !important;
 }
+a {
+  overline: none;
+  text-decoration: none;
+}
 button[disabled]:active {
   background: #ccc!important;
   color: #fff!important;
@@ -103,6 +107,15 @@ p {
   min-width: 70px;
   color: #000000;
   min-height: 30px;
+}
+.address_detail {
+  align-items: initial!important;
+}
+.address_detail:active {
+  background: white!important;
+}
+.bgclick:active {
+  background: white!important;
 }
 .right_detail {
   min-height: 30px;
@@ -216,6 +229,9 @@ p {
 .focus_none:focus,
 .focus_none:hover {
   color: white;
+}
+.margintop {
+  margin-top: -10px !important;
 }
 /*---------------------------------------home页面--------------------------------------------------*/
 .village {
