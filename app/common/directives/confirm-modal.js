@@ -35,5 +35,4 @@ myApp.directive('confirmModal', function() {
             })
         }
     }
-
 })

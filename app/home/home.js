@@ -6,10 +6,12 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
         // locationInfo.latitude = 39.979707375431694;
         // location.storageLocation(locationInfo);
         // // end test
-        $scope.refreshCommunityInfo = function(){
-            $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
+        if(!communityInfo.name){
+            $state.go('auto-location');
+            return;
         }
-        $scope.refreshCommunityInfo();
+        $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
+
         $scope.changeCommunity = function(){
             $state.go('auto-location');
         }

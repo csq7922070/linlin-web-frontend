@@ -1,11 +1,9 @@
 angular.module('resources.shop', ['ngResource']).
-factory('shops', ['$resource', 'locationInfo', function($resource, locationInfo) {
+factory('shops', ['$resource', function($resource) {
     return $resource(basePath+'/shops/:id', {}, {
         query: {
         	params:{
-        		'id':'query',
-        		lon: locationInfo.longitude,
-        		lat: locationInfo.latitude
+        		'id':'query'
         	},
             method: 'GET',
             isArray: false
