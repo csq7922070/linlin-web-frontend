@@ -828,182 +828,6 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     ]);
 })();
 
-(function() {
-    angular.module('app.repair').controller('repairAddCtrl', ['$timeout', '$state', 'repairs',
-        function($timeout, $state, repairs) {
-            var vm = this;
-
-            vm.mask_close = function() {
-                vm.suc_show = false;
-            }
-            vm.mask_err_close = function() {
-                vm.err_show = false;
-            }
-            vm.submitForm = function() {
-                vm.repair.openid=sessionStorage.getItem("openid");
-                params = vm.repair;
-                repairs.save(params).$promise.then(successcb, errcb);
-            }
-
-            function successcb() {
-                vm.suc_show = true;
-                $timeout(function() {
-                    vm.suc_show = false;
-                    $state.go("repair");
-                }, 3000);
-            }
-
-            function errcb() {
-                vm.err_show = true;
-                $timeout(function() {
-                    vm.err_show = false;
-                }, 3000);
-            }
-        }
-    ]);
-})();
-
-(function() {
-    angular.module('app.repair').controller('repairDetailCtrl', ['$state', '$stateParams', '$timeout', 'repairs',
-        function($state, $stateParams, $timeout, repairs) {
-            var vm = this;
-            vm.suc_show = false;
-            vm.err_show = false;
-
-            params = {
-                'id': $stateParams.id
-            };
-
-            repairs.get(params).$promise.then(function(data) {
-                vm.repair = data;
-            });
-
-            vm.confirm = function(id) {
-                params = {
-                    id: id,
-                    state: 3
-                };
-
-                repairs.save(params).$promise.then(function(data) {
-                    vm.repair = data;
-                    successcb();
-                }, errcb);
-            };
-
-            function successcb() {
-                vm.suc_show = true;
-                $timeout(function() {
-                    vm.suc_show = false;
-                    $state.go("repair");
-                }, 3000);
-            }
-
-            function errcb() {
-                vm.err_show = true;
-                $timeout(function() {
-                    vm.err_show = false;
-                }, 3000);
-            }
-        }
-    ]);
-})();
-
-angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state', 'repairs',
-    function ($timeout, $state, repairs) {
-        var vm = this;
-        vm.currentPage = 0;
-        vm.pageSize = 10;
-        vm.suc_show = false;
-        vm.err_show = false;
-        vm.repairs = [];
-        var params = {};
-
-        vm.load = function (goPage, limit) {
-            if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
-                return;
-            } else {
-                params = {
-                    offset: limit * (goPage - 1),
-                    limit: limit,
-                    openid: sessionStorage.getItem("openid"),
-                    queryType: 'openid'
-                };
-
-                repairs.query(params).$promise.then(function (data) {
-                    vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
-                    vm.currentPage = goPage;
-                    vm.busy = false;
-                    Array.prototype.push.apply(vm.repairs, data.items);
-                }, function (data) {
-                    console.log("err!");
-                });
-            }
-        }
-
-        vm.confirm = function (id) {
-            params = {
-                id: id,
-                state: 3
-            };
-            repairs.save(params).$promise.then(function () {
-                successcb()
-            }, function () {
-                errcb()
-            });
-        }
-
-        function successcb() {
-            vm.suc_show = true;
-            $timeout(function () {
-                vm.suc_show = false;
-                $state.go("repair", {}, {
-                    reload: true
-                });
-            }, 3000);
-        }
-
-        function errcb() {
-            vm.err_show = true;
-            $timeout(function () {
-                vm.err_show = false;
-            }, 3000);
-        }
-
-        vm.load(1, vm.pageSize);
-    }
-]);
-
-(function() {
-    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
-        function($scope, $stateParams, $rootScope, shops) {
-            $rootScope.site = $stateParams.site;
-            $scope.currentPage = 0;
-            $scope.pageSize = 5;
-            $scope.shops = [];
-
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
-                    return;
-                } else if ($rootScope.site != 3) {
-                    $scope.busy = true;
-                    params = {
-                        offset: $scope.pageSize * (goPage - 1),
-                        limit: limit == 8 ? limit : $scope.pageSize,
-                        type: $stateParams.site - 1
-                    }
-                    shops.query(params).$promise.then(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        $scope.shops.push.apply($scope.shops, data.items);
-                    });
-                }
-            }
-            $scope.load(1, 8);
-        }
-    ]);
-})();
-
 angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', 'addresses', 'payments',
     function($scope, $http, $stateParams, $rootScope, $state, addresses, payments) {
         //显示当前页面的业主信息
@@ -1453,6 +1277,182 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
     }
 ]);
 
+(function() {
+    angular.module('app.repair').controller('repairAddCtrl', ['$timeout', '$state', 'repairs',
+        function($timeout, $state, repairs) {
+            var vm = this;
+
+            vm.mask_close = function() {
+                vm.suc_show = false;
+            }
+            vm.mask_err_close = function() {
+                vm.err_show = false;
+            }
+            vm.submitForm = function() {
+                vm.repair.openid=sessionStorage.getItem("openid");
+                params = vm.repair;
+                repairs.save(params).$promise.then(successcb, errcb);
+            }
+
+            function successcb() {
+                vm.suc_show = true;
+                $timeout(function() {
+                    vm.suc_show = false;
+                    $state.go("repair");
+                }, 3000);
+            }
+
+            function errcb() {
+                vm.err_show = true;
+                $timeout(function() {
+                    vm.err_show = false;
+                }, 3000);
+            }
+        }
+    ]);
+})();
+
+(function() {
+    angular.module('app.repair').controller('repairDetailCtrl', ['$state', '$stateParams', '$timeout', 'repairs',
+        function($state, $stateParams, $timeout, repairs) {
+            var vm = this;
+            vm.suc_show = false;
+            vm.err_show = false;
+
+            params = {
+                'id': $stateParams.id
+            };
+
+            repairs.get(params).$promise.then(function(data) {
+                vm.repair = data;
+            });
+
+            vm.confirm = function(id) {
+                params = {
+                    id: id,
+                    state: 3
+                };
+
+                repairs.save(params).$promise.then(function(data) {
+                    vm.repair = data;
+                    successcb();
+                }, errcb);
+            };
+
+            function successcb() {
+                vm.suc_show = true;
+                $timeout(function() {
+                    vm.suc_show = false;
+                    $state.go("repair");
+                }, 3000);
+            }
+
+            function errcb() {
+                vm.err_show = true;
+                $timeout(function() {
+                    vm.err_show = false;
+                }, 3000);
+            }
+        }
+    ]);
+})();
+
+angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state', 'repairs',
+    function ($timeout, $state, repairs) {
+        var vm = this;
+        vm.currentPage = 0;
+        vm.pageSize = 10;
+        vm.suc_show = false;
+        vm.err_show = false;
+        vm.repairs = [];
+        var params = {};
+
+        vm.load = function (goPage, limit) {
+            if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
+                return;
+            } else {
+                params = {
+                    offset: limit * (goPage - 1),
+                    limit: limit,
+                    openid: sessionStorage.getItem("openid"),
+                    queryType: 'openid'
+                };
+
+                repairs.query(params).$promise.then(function (data) {
+                    vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
+                    vm.currentPage = goPage;
+                    vm.busy = false;
+                    Array.prototype.push.apply(vm.repairs, data.items);
+                }, function (data) {
+                    console.log("err!");
+                });
+            }
+        }
+
+        vm.confirm = function (id) {
+            params = {
+                id: id,
+                state: 3
+            };
+            repairs.save(params).$promise.then(function () {
+                successcb()
+            }, function () {
+                errcb()
+            });
+        }
+
+        function successcb() {
+            vm.suc_show = true;
+            $timeout(function () {
+                vm.suc_show = false;
+                $state.go("repair", {}, {
+                    reload: true
+                });
+            }, 3000);
+        }
+
+        function errcb() {
+            vm.err_show = true;
+            $timeout(function () {
+                vm.err_show = false;
+            }, 3000);
+        }
+
+        vm.load(1, vm.pageSize);
+    }
+]);
+
+(function() {
+    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops',
+        function($scope, $stateParams, $rootScope, shops) {
+            $rootScope.site = $stateParams.site;
+            $scope.currentPage = 0;
+            $scope.pageSize = 5;
+            $scope.shops = [];
+
+            $scope.load = function(goPage, limit) {
+                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
+                    return;
+                } else if ($rootScope.site != 3) {
+                    $scope.busy = true;
+                    params = {
+                        offset: $scope.pageSize * (goPage - 1),
+                        limit: limit == 8 ? limit : $scope.pageSize,
+                        type: $stateParams.site - 1
+                    }
+                    shops.query(params).$promise.then(function(data) {
+                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                        $scope.currentPage = goPage;
+                        $scope.busy = false;
+                        $scope.shops.push.apply($scope.shops, data.items);
+                    });
+                }
+            }
+            $scope.load(1, 8);
+        }
+    ]);
+})();
+
 angular.module('app.address').controller('addressBlockCtrl',
     ['$stateParams','addresses', 'addressInfo',function($stateParams,addresses,addressInfo){
     var vm=this;
@@ -1585,141 +1585,6 @@ angular.module('app.address').controller('addressVillageCtrl',
     });
     console.log("addressInfo注入");
     console.log(addressInfo);
-}]);
-myApp.directive('cFocus', function() {
-    return {
-        restrict: 'A',
-        scope: {
-            focus: '=',
-        },
-        link: function(scope, element, attrs) {
-            scope.$watch('focus', function(newVal, oldVal){
-                if(newVal){
-                    element[0].focus();
-                }
-            });
-        }
-    }
-})
-myApp.directive('confirmModal', function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            show: '=',
-            title: '=',
-            tip: '=',
-            tipAlign: '=',
-            okText: '=',
-            cancelText: '=',
-            onlyOkButton: '=',
-            close: '&onClose' 
-        },
-        templateUrl: 'tpl/common/directives/confirm-modal.tpl.html',
-        link: function(scope, element, attrs) {
-            scope.ok = function(){
-                scope.close({state:true});
-            }
-
-            scope.cancel = function(){
-                scope.close({state:false});
-            }
-
-            scope.$watch('cancelText', function(newVal, oldVal){
-                if(!newVal){
-                    scope.cancelText = "取消";
-                }
-            });
-
-            scope.$watch('okText', function(newVal, oldVal){
-                if(!newVal){
-                    scope.okText = "确定";
-                }
-            })
-        }
-    }
-
-})
-myApp.directive('errSrc', function() {
-  return {
-    link: function(scope, element, attrs) {
-      element.bind('error', function() {
-        if (attrs.src != attrs.errSrc) {
-          attrs.$set('src', attrs.errSrc);
-        }
-      });
-    }
-  }
-});
-myApp.directive('globalLoading', function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            show: '=',
-            tip: '=',
-            lockClickHide: '='
-        },
-        templateUrl: 'tpl/common/directives/global-loading.tpl.html',
-        link: function(scope, element, attrs) {
-            scope.clickLoadingLayer = function(){
-                if(!scope.lockClickHide){
-                    scope.show = false;
-                }
-            }
-        }
-    }
-
-})
-
-myApp.directive('pagination', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            numPages: '=',
-            currentPage: '=',
-            pageSize: '=',
-            goPage: '&'
-        },
-        templateUrl: 'pagination.tpl.html',
-        link: function(scope, element, attrs) {
-
-            scope.isActive = function(page) {
-                return scope.currentPage === page;
-            }
-
-            scope.hasPre = function() {
-                return (scope.currentPage - 1 > 0);
-            }
-
-            scope.hasPre2 = function() {
-                return (scope.currentPage - 2 > 0);
-            }
-            scope.hasNext = function() {
-                return (scope.currentPage + 1 <= cope.numPages);
-            }
-
-            scope.hasNext2 = function() {
-                return (scope.currentPage + 2 <= cope.numPages);
-            }
-        }
-    }
-
-})
-
-myApp.directive('whenScrolled', ['$document', function ($document) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var raw = element[0];
-            $document.bind('scroll', function () {
-                var rectObject = raw.getBoundingClientRect();
-                if (window.innerHeight >= rectObject.bottom) {
-                    scope.$apply(attrs.whenScrolled);
-                }
-            });
-        }
-    };
 }]);
 angular.module('myApp').filter('cut', function() {
     return function(value, wordwise, max, tail) {
@@ -1865,6 +1730,141 @@ angular.module('myApp').filter('payListMerge', function() {
         return result;
     };
 });
+myApp.directive('cFocus', function() {
+    return {
+        restrict: 'A',
+        scope: {
+            focus: '=',
+        },
+        link: function(scope, element, attrs) {
+            scope.$watch('focus', function(newVal, oldVal){
+                if(newVal){
+                    element[0].focus();
+                }
+            });
+        }
+    }
+})
+myApp.directive('confirmModal', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            title: '=',
+            tip: '=',
+            tipAlign: '=',
+            okText: '=',
+            cancelText: '=',
+            onlyOkButton: '=',
+            close: '&onClose' 
+        },
+        templateUrl: 'tpl/common/directives/confirm-modal.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.ok = function(){
+                scope.close({state:true});
+            }
+
+            scope.cancel = function(){
+                scope.close({state:false});
+            }
+
+            scope.$watch('cancelText', function(newVal, oldVal){
+                if(!newVal){
+                    scope.cancelText = "取消";
+                }
+            });
+
+            scope.$watch('okText', function(newVal, oldVal){
+                if(!newVal){
+                    scope.okText = "确定";
+                }
+            })
+        }
+    }
+
+})
+myApp.directive('errSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      element.bind('error', function() {
+        if (attrs.src != attrs.errSrc) {
+          attrs.$set('src', attrs.errSrc);
+        }
+      });
+    }
+  }
+});
+myApp.directive('globalLoading', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            tip: '=',
+            lockClickHide: '='
+        },
+        templateUrl: 'tpl/common/directives/global-loading.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.clickLoadingLayer = function(){
+                if(!scope.lockClickHide){
+                    scope.show = false;
+                }
+            }
+        }
+    }
+
+})
+
+myApp.directive('pagination', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            numPages: '=',
+            currentPage: '=',
+            pageSize: '=',
+            goPage: '&'
+        },
+        templateUrl: 'pagination.tpl.html',
+        link: function(scope, element, attrs) {
+
+            scope.isActive = function(page) {
+                return scope.currentPage === page;
+            }
+
+            scope.hasPre = function() {
+                return (scope.currentPage - 1 > 0);
+            }
+
+            scope.hasPre2 = function() {
+                return (scope.currentPage - 2 > 0);
+            }
+            scope.hasNext = function() {
+                return (scope.currentPage + 1 <= cope.numPages);
+            }
+
+            scope.hasNext2 = function() {
+                return (scope.currentPage + 2 <= cope.numPages);
+            }
+        }
+    }
+
+})
+
+myApp.directive('whenScrolled', ['$document', function ($document) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var raw = element[0];
+            $document.bind('scroll', function () {
+                var rectObject = raw.getBoundingClientRect();
+                if (window.innerHeight >= rectObject.bottom) {
+                    scope.$apply(attrs.whenScrolled);
+                }
+            });
+        }
+    };
+}]);
 angular.module('resources.address', ['ngResource']).
     factory('addresses', ['$resource', function($resource) {
         return $resource(basePath+'/houses/:id', {id:'@id'}, {
