@@ -12,10 +12,10 @@ angular.module('app.user')
 		this.initWxParam = function(){
 			if(!wxParam){
 				var url = $location.url().substring($location.url().indexOf("?"));
-				if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
+				if(url.indexOf("?code")<0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
 					url="";
 				}
-				if(!url && localStorage.wxParam && localStorage.wxParam != "undefined" && localStorage.wxParam != "null"){
+				if(!url && localStorage.wxParam && localStorage.wxParam.indexOf("?code")>=0){
 					url = localStorage.wxParam;
 				}
 				wxParam = url;

@@ -1,6 +1,7 @@
 angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval', 'verify',
     'account', 'errorLog', 'userInfo', '$state', 'appState', '$location',
     function ($stateParams, $scope, $timeout, $interval, verify,account,errorLog,userInfo,$state,appState,$location) {
+        userInfo.initWxParam();//微信参数只会在公众号第一个页面传入
         //alert($location.url());
         $scope.tel = userInfo.getTel();
         $("#tel").focus();
@@ -49,6 +50,7 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
             $scope.verifyTip = "登录中...";
             $scope.verifyError = true;
             account.login($scope.tel, $scope.authCode).then(function(data){
+                $scope.verifyError = false;
                 if(!data){//登录失败，手机号和验证码不匹配
                     $scope.verifyTip = "请输入正确的验证码";
                     $scope.verifyError = true;
@@ -61,6 +63,7 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
                     $state.go('auto-location');
                 }
             }, function(reason){
+                $scope.verifyError = false;
                 alert(reason.errorCode +","+reason.errorMessage);
             });
         }
