@@ -1,6 +1,7 @@
 (function() {
-    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops', 'errorLog', 'communityLocation',
-        function($scope, $stateParams, $rootScope, shops, errorLog, communityLocation) {
+    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops', 'errorLog', 
+        'communityLocation', 'locationInfo',
+        function($scope, $stateParams, $rootScope, shops, errorLog, communityLocation,locationInfo) {
             $rootScope.site = $stateParams.site;
             $scope.currentPage = 0;
             $scope.pageSize = 5;
@@ -14,7 +15,9 @@
                     params = {
                         offset: $scope.pageSize * (goPage - 1),
                         limit: limit == 8 ? limit : $scope.pageSize,
-                        type: $stateParams.site - 1
+                        type: $stateParams.site - 1,
+                        lon: locationInfo.longitude,
+                        lat: locationInfo.latitude
                     }
                     shops.query(params).$promise.then(function(data) {
                         $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);

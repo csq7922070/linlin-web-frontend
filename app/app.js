@@ -23,7 +23,7 @@ var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home'
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/auto-location");
+    $urlRouterProvider.otherwise("/login");
 
     $stateProvider
         .state('notice', {
@@ -254,7 +254,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 }]).run(['$rootScope', 'auth', function($rootScope, auth) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
         //alert("toState:"+toState.name+",toParams:"+toParams.name);
-        //auth.startChangeState(event, toState, toParams, fromState, fromParams);
+        auth.startChangeState(event, toState, toParams, fromState, fromParams);
     });
     $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
         $rootScope.previousState = from.name;

@@ -1,9 +1,9 @@
 angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval', 'verify',
-    'account', 'errorLog',
-    function ($stateParams, $scope, $timeout, $interval, verify,account,errorLog) {
+    'account', 'errorLog', 'userInfo', '$state', 'appState',
+    function ($stateParams, $scope, $timeout, $interval, verify,account,errorLog,userInfo,$state,appState) {
+        appState.visited = true;
         $scope.tel = "";
         $scope.authCode = "";
-        var authCode = "";
 
         $scope.sendAuthCode = function(){
             if($scope.tel.length != 11){
@@ -19,11 +19,10 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
                 return;
             }
             console.log("sendAuthCode...");
-            account.getAuthCode($scope.tel).then(function(data){
-                authCode = data;
-                console.log("authCode: "+data);
+            account.sendAuthCode($scope.tel).then(function(data){
+                console.log("sendAuthCode: " +data);
             },function(reason){
-                alert(errorLog.getErrorMessage(reason));
+                alert(reason.errorCode +","+reason.errorMessage);
             });
             $timeout(function(){
                 $("#auth-code").focus();
@@ -51,15 +50,21 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
                 return;
             }
             console.log("login...");
-            if($scope.authCode != authCode){
-                $scope.verifyTip = "请输入正确的验证码";
-                $scope.verifyError = true;
-                $timeout(function(){
-                    $scope.verifyError = false;
-                    $("#auth-code").focus();
-                },2000);
-                return;
-            }
+            account.login($scope.tel, $scope.authCode).then(function(data){
+                if(!data){//登录失败，手机号和验证码不匹配
+                    $scope.verifyTip = "请输入正确的验证码";
+                    $scope.verifyError = true;
+                    $timeout(function(){
+                        $scope.verifyError = false;
+                        $("#auth-code").focus();
+                    },2000);
+                }else{
+                    userInfo.tel = $scope.tel;//保存用户登录手机号
+                    $state.go('auto-location');
+                }
+            }, function(reason){
+                alert(reason.errorCode +","+reason.errorMessage);
+            });
         }
 
         $scope.onBack = function(){

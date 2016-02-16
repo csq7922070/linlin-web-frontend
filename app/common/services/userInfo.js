@@ -7,6 +7,7 @@ angular.module('app.user')
 			noncestr : null,
 			sign : null,
 		};
+		this.tel = null;//用户的手机号
 
 		this.initWxParam = function(){
 			if(!wxParam){
@@ -14,7 +15,7 @@ angular.module('app.user')
 				if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
 					url="";
 				}
-				if(!url && localStorage.wxParam && localStorage.wxParam != "undefined"){
+				if(!url && localStorage.wxParam && localStorage.wxParam != "undefined" && localStorage.wxParam != "null"){
 					url = localStorage.wxParam;
 				}
 				wxParam = url;
