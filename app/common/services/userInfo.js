@@ -7,7 +7,7 @@ angular.module('app.user')
 			noncestr : null,
 			sign : null,
 		};
-		this.tel = null;//用户的手机号
+		var tel = null;//用户的手机号
 
 		this.initWxParam = function(){
 			if(!wxParam){
@@ -86,5 +86,16 @@ angular.module('app.user')
 				defer.resolve(wxConfigParam);
 			}
 			return defer.promise;
+		}
+
+		this.storageTel = function(tel){
+			localStorage.tel = tel;
+		}
+
+		this.getTel = function(){
+			if(!tel && localStorage.tel){
+				tel = localStorage.tel;
+			}
+			return tel;
 		}
 	}]);

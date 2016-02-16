@@ -21,6 +21,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                 setCommunity(data);
             },function(reason){
                 //首页自动定位失败暂时不做提示
+                alert(reason.errorCode + ","+reason.errorMessage);
             });
         }
 
