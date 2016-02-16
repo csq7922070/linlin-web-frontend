@@ -1312,7 +1312,14 @@ div.rn-carousel-indicator span {
 #login-container .tip .user-license-link {
   color: #1656b3;
 }
-#login-container .verify-tip {
+#login-container .verify-tip-container {
+  top: 0px;
+  bottom: 0px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+}
+#login-container .verify-tip-container .verify-tip {
   font-size: 15px;
   color: #fff;
   border-radius: 6px;
@@ -1320,9 +1327,12 @@ div.rn-carousel-indicator span {
   width: 180px;
   height: 40px;
   display: block;
-  margin: 0 auto;
+  margin-top: 80%;
   line-height: 40px;
   text-align: center;
+  position: relative;
+  left: 50%;
+  margin-left: -90px;
 }
 
 .logout-confirm-container {
