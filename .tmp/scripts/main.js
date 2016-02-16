@@ -1569,14 +1569,14 @@ angular.module('app.address').controller('addressVillageCtrl',
     ['$stateParams','addresses','communityInfo','addressInfo',
     function($stateParams,addresses,communityInfo, addressInfo){
     var vm=this;
-    params = {
-        type:'community',
-        city:addressInfo.city
-    }
     if($stateParams.city){
         addressInfo.city = $stateParams.city;
     }
     addressInfo.village = $stateParams.village;
+    params = {
+        type:'community',
+        city:addressInfo.city
+    }
     addresses.query(params).$promise.then(function (data) {
         vm.villages = data.items;
         vm.city = $stateParams.city
@@ -1585,6 +1585,141 @@ angular.module('app.address').controller('addressVillageCtrl',
     });
     console.log("addressInfo注入");
     console.log(addressInfo);
+}]);
+myApp.directive('cFocus', function() {
+    return {
+        restrict: 'A',
+        scope: {
+            focus: '=',
+        },
+        link: function(scope, element, attrs) {
+            scope.$watch('focus', function(newVal, oldVal){
+                if(newVal){
+                    element[0].focus();
+                }
+            });
+        }
+    }
+})
+myApp.directive('confirmModal', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            title: '=',
+            tip: '=',
+            tipAlign: '=',
+            okText: '=',
+            cancelText: '=',
+            onlyOkButton: '=',
+            close: '&onClose' 
+        },
+        templateUrl: 'tpl/common/directives/confirm-modal.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.ok = function(){
+                scope.close({state:true});
+            }
+
+            scope.cancel = function(){
+                scope.close({state:false});
+            }
+
+            scope.$watch('cancelText', function(newVal, oldVal){
+                if(!newVal){
+                    scope.cancelText = "取消";
+                }
+            });
+
+            scope.$watch('okText', function(newVal, oldVal){
+                if(!newVal){
+                    scope.okText = "确定";
+                }
+            })
+        }
+    }
+
+})
+myApp.directive('errSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      element.bind('error', function() {
+        if (attrs.src != attrs.errSrc) {
+          attrs.$set('src', attrs.errSrc);
+        }
+      });
+    }
+  }
+});
+myApp.directive('globalLoading', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            tip: '=',
+            lockClickHide: '='
+        },
+        templateUrl: 'tpl/common/directives/global-loading.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.clickLoadingLayer = function(){
+                if(!scope.lockClickHide){
+                    scope.show = false;
+                }
+            }
+        }
+    }
+
+})
+
+myApp.directive('pagination', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            numPages: '=',
+            currentPage: '=',
+            pageSize: '=',
+            goPage: '&'
+        },
+        templateUrl: 'pagination.tpl.html',
+        link: function(scope, element, attrs) {
+
+            scope.isActive = function(page) {
+                return scope.currentPage === page;
+            }
+
+            scope.hasPre = function() {
+                return (scope.currentPage - 1 > 0);
+            }
+
+            scope.hasPre2 = function() {
+                return (scope.currentPage - 2 > 0);
+            }
+            scope.hasNext = function() {
+                return (scope.currentPage + 1 <= cope.numPages);
+            }
+
+            scope.hasNext2 = function() {
+                return (scope.currentPage + 2 <= cope.numPages);
+            }
+        }
+    }
+
+})
+
+myApp.directive('whenScrolled', ['$document', function ($document) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var raw = element[0];
+            $document.bind('scroll', function () {
+                var rectObject = raw.getBoundingClientRect();
+                if (window.innerHeight >= rectObject.bottom) {
+                    scope.$apply(attrs.whenScrolled);
+                }
+            });
+        }
+    };
 }]);
 angular.module('myApp').filter('cut', function() {
     return function(value, wordwise, max, tail) {
@@ -1730,205 +1865,6 @@ angular.module('myApp').filter('payListMerge', function() {
         return result;
     };
 });
-myApp.directive('cFocus', function() {
-    return {
-        restrict: 'A',
-        scope: {
-            focus: '=',
-        },
-        link: function(scope, element, attrs) {
-            scope.$watch('focus', function(newVal, oldVal){
-                if(newVal){
-                    element[0].focus();
-                }
-            });
-        }
-    }
-})
-myApp.directive('confirmModal', function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            show: '=',
-            title: '=',
-            tip: '=',
-            tipAlign: '=',
-            okText: '=',
-            cancelText: '=',
-            onlyOkButton: '=',
-            close: '&onClose' 
-        },
-        templateUrl: 'tpl/common/directives/confirm-modal.tpl.html',
-        link: function(scope, element, attrs) {
-            scope.ok = function(){
-                scope.close({state:true});
-            }
-
-            scope.cancel = function(){
-                scope.close({state:false});
-            }
-
-            scope.$watch('cancelText', function(newVal, oldVal){
-                if(!newVal){
-                    scope.cancelText = "取消";
-                }
-            });
-
-            scope.$watch('okText', function(newVal, oldVal){
-                if(!newVal){
-                    scope.okText = "确定";
-                }
-            })
-        }
-    }
-
-})
-myApp.directive('errSrc', function() {
-  return {
-    link: function(scope, element, attrs) {
-      element.bind('error', function() {
-        if (attrs.src != attrs.errSrc) {
-          attrs.$set('src', attrs.errSrc);
-        }
-      });
-    }
-  }
-});
-myApp.directive('globalLoading', function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            show: '=',
-            tip: '=',
-            lockClickHide: '='
-        },
-        templateUrl: 'tpl/common/directives/global-loading.tpl.html',
-        link: function(scope, element, attrs) {
-            scope.clickLoadingLayer = function(){
-                if(!scope.lockClickHide){
-                    scope.show = false;
-                }
-            }
-        }
-    }
-
-})
-
-myApp.directive('pagination', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            numPages: '=',
-            currentPage: '=',
-            pageSize: '=',
-            goPage: '&'
-        },
-        templateUrl: 'pagination.tpl.html',
-        link: function(scope, element, attrs) {
-
-            scope.isActive = function(page) {
-                return scope.currentPage === page;
-            }
-
-            scope.hasPre = function() {
-                return (scope.currentPage - 1 > 0);
-            }
-
-            scope.hasPre2 = function() {
-                return (scope.currentPage - 2 > 0);
-            }
-            scope.hasNext = function() {
-                return (scope.currentPage + 1 <= cope.numPages);
-            }
-
-            scope.hasNext2 = function() {
-                return (scope.currentPage + 2 <= cope.numPages);
-            }
-        }
-    }
-
-})
-
-myApp.directive('whenScrolled', ['$document', function ($document) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var raw = element[0];
-            $document.bind('scroll', function () {
-                var rectObject = raw.getBoundingClientRect();
-                if (window.innerHeight >= rectObject.bottom) {
-                    scope.$apply(attrs.whenScrolled);
-                }
-            });
-        }
-    };
-}]);
-angular.module('resources.address', ['ngResource']).
-    factory('addresses', ['$resource', function($resource) {
-        return $resource(basePath+'/houses/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.complain', ['ngResource']).
-    factory('complains', ['$resource', function($resource) {
-        return $resource(basePath+'/complains/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.notice', ['ngResource']).
-factory('notices', ['$resource', function($resource) {
-    return $resource(basePath+'/notices/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.payment', ['ngResource']).
-    factory('payments', ['$resource', function($resource) {
-        return $resource(basePath+'/payments/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.repair', ['ngResource']).
-factory('repairs', ['$resource', function($resource) {
-    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.shop', ['ngResource']).
-factory('shops', ['$resource', 'locationInfo', function($resource, locationInfo) {
-    return $resource(basePath+'/shops/:id', {}, {
-        query: {
-        	params:{
-        		'id':'query',
-        		lon: locationInfo.longitude,
-        		lat: locationInfo.latitude
-        	},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
 angular.module('app.location')
 	.service('communityList', ['$q','$http','$timeout', function($q,$http,$timeout){
 		var cmmList = null;
@@ -2274,3 +2210,67 @@ angular.module('app.user')
 			return defer.promise;
 		}
 	}]);
+angular.module('resources.address', ['ngResource']).
+    factory('addresses', ['$resource', function($resource) {
+        return $resource(basePath+'/houses/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.complain', ['ngResource']).
+    factory('complains', ['$resource', function($resource) {
+        return $resource(basePath+'/complains/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.notice', ['ngResource']).
+factory('notices', ['$resource', function($resource) {
+    return $resource(basePath+'/notices/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.payment', ['ngResource']).
+    factory('payments', ['$resource', function($resource) {
+        return $resource(basePath+'/payments/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.repair', ['ngResource']).
+factory('repairs', ['$resource', function($resource) {
+    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.shop', ['ngResource']).
+factory('shops', ['$resource', 'locationInfo', function($resource, locationInfo) {
+    return $resource(basePath+'/shops/:id', {}, {
+        query: {
+        	params:{
+        		'id':'query',
+        		lon: locationInfo.longitude,
+        		lat: locationInfo.latitude
+        	},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
