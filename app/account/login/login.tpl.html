@@ -1,3 +1,4 @@
+<head-bar title="登录" on-back="onBack()"></head-bar>
 <div id="login-container">
 	<div class="code-container tel-container">
 		<span class="tel-prefix">+86</span>
@@ -8,7 +9,7 @@
 		<input class="code" type="text" placeholder="请输入手机验证码" 
 			ng-model="authCode" maxlength="4" />
 		<a class="send-auth-code" ng-class="{true: 'send-auth-code-disable'}[tel.length!=11]" 
-			href="javascript:void(0)" ng-hide="authCodeSending" ng-click="sendAuthCode()">发送验证码</a>
+			href="javascript:void(0)" ng-hide="authCodeSending" ng-click="sendAuthCode()" ng-bind="sendText" ng-init="发送验证码">发送验证码</a>
 		<span class="resend-time" ng-bind="resendTime" ng-show="authCodeSending" ng-init="authCodeSending=false">60s</span>
 	</div>
 	<button class="login-button" ng-class="{true: 'login-button-disable'}[authCode.length!=4]" ng-click="login()">验证并登录</button>

@@ -1,5 +1,5 @@
-angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval',
-    function ($stateParams, $scope, $timeout, $interval) {
+angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval', 'verify',
+    function ($stateParams, $scope, $timeout, $interval, verify) {
         $scope.tel = "";
         $scope.authCode = "";
 
@@ -7,7 +7,7 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
             if($scope.tel.length != 11){
                 return;
             }
-            if(!verifyTel($scope.tel)){
+            if(!verify.verifyTel($scope.tel)){
                 $scope.telVerifyError = true;
                 $timeout(function(){
                     $scope.telVerifyError = false;
@@ -18,6 +18,7 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
             console.log("sendAuthCode...");
             $scope.authCodeSending = true;
             resendCountDown().then(function(){//倒计时结束
+                $scope.sendText = "重新发送";
                 $scope.authCodeSending = false;
             });
         }
@@ -40,12 +41,8 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
             console.log("login...");
         }
 
-        function verifyTel(tel){
-            var result = true;
-            if(!/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/i.test(tel)){
-              result = false;
-            }
-            return result;
+        $scope.onBack = function(){
+            console.log("onBack...");
         }
     }
 ]);

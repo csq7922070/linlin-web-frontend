@@ -16,9 +16,10 @@ angular.module('app.user',[]);
 angular.module('app.log',[]);
 angular.module('app.auth',[]);
 angular.module('app.account',[]);
+angular.module('app.verify',[]);
 
 var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 
-    'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user', 'app.log', 'app.auth', 'app.account']);
+    'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user', 'app.log', 'app.auth', 'app.account', 'app.verify']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -1464,8 +1465,8 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     ]);
 })();
 
-angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval',
-    function ($stateParams, $scope, $timeout, $interval) {
+angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval', 'verify',
+    function ($stateParams, $scope, $timeout, $interval, verify) {
         $scope.tel = "";
         $scope.authCode = "";
 
@@ -1473,7 +1474,7 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
             if($scope.tel.length != 11){
                 return;
             }
-            if(!verifyTel($scope.tel)){
+            if(!verify.verifyTel($scope.tel)){
                 $scope.telVerifyError = true;
                 $timeout(function(){
                     $scope.telVerifyError = false;
@@ -1484,6 +1485,7 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
             console.log("sendAuthCode...");
             $scope.authCodeSending = true;
             resendCountDown().then(function(){//倒计时结束
+                $scope.sendText = "重新发送";
                 $scope.authCodeSending = false;
             });
         }
@@ -1506,12 +1508,8 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
             console.log("login...");
         }
 
-        function verifyTel(tel){
-            var result = true;
-            if(!/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/i.test(tel)){
-              result = false;
-            }
-            return result;
+        $scope.onBack = function(){
+            console.log("onBack...");
         }
     }
 ]);
@@ -1605,6 +1603,27 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','add
         console.log(addressInfo);
     }
 ])
+angular.module('app.address').controller('addressVillageCtrl',
+    ['$stateParams','addresses','communityInfo','addressInfo',
+    function($stateParams,addresses,communityInfo, addressInfo){
+    var vm=this;
+    params = {
+        type:'community',
+        city:addressInfo.city
+    }
+    if($stateParams.city){
+        addressInfo.city = $stateParams.city;
+    }
+    addressInfo.village = $stateParams.village;
+    addresses.query(params).$promise.then(function (data) {
+        vm.villages = data.items;
+        vm.city = $stateParams.city
+    }, function (data) {
+        console.log("err!");
+    });
+    console.log("addressInfo注入");
+    console.log(addressInfo);
+}]);
 angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses','addressInfo',function($stateParams,addresses,addressInfo){
     var vm=this;
     if($stateParams.block){
@@ -1634,26 +1653,236 @@ angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addr
     console.log("addressInfo注入");
     console.log(addressInfo);
 }]);
-angular.module('app.address').controller('addressVillageCtrl',
-    ['$stateParams','addresses','communityInfo','addressInfo',
-    function($stateParams,addresses,communityInfo, addressInfo){
-    var vm=this;
-    params = {
-        type:'community',
-        city:addressInfo.city
+myApp.directive('cFocus', function() {
+    return {
+        restrict: 'A',
+        scope: {
+            focus: '=',
+        },
+        link: function(scope, element, attrs) {
+            scope.$watch('focus', function(newVal, oldVal){
+                if(newVal){
+                    element[0].focus();
+                }
+            });
+        }
     }
-    if($stateParams.city){
-        addressInfo.city = $stateParams.city;
+})
+myApp.directive('confirmModal', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            title: '=',
+            tip: '=',
+            tipAlign: '=',
+            okText: '=',
+            cancelText: '=',
+            onlyOkButton: '=',
+            close: '&onClose' 
+        },
+        templateUrl: 'tpl/common/directives/confirm-modal.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.ok = function(){
+                scope.close({state:true});
+            }
+
+            scope.cancel = function(){
+                scope.close({state:false});
+            }
+
+            scope.$watch('cancelText', function(newVal, oldVal){
+                if(!newVal){
+                    scope.cancelText = "取消";
+                }
+            });
+
+            scope.$watch('okText', function(newVal, oldVal){
+                if(!newVal){
+                    scope.okText = "确定";
+                }
+            })
+        }
     }
-    addressInfo.village = $stateParams.village;
-    addresses.query(params).$promise.then(function (data) {
-        vm.villages = data.items;
-        vm.city = $stateParams.city
-    }, function (data) {
-        console.log("err!");
-    });
-    console.log("addressInfo注入");
-    console.log(addressInfo);
+})
+myApp.directive('errSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      element.bind('error', function() {
+        if (attrs.src != attrs.errSrc) {
+          attrs.$set('src', attrs.errSrc);
+        }
+      });
+    }
+  }
+});
+myApp.directive('globalLoading', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            tip: '=',
+            lockClickHide: '='
+        },
+        templateUrl: 'tpl/common/directives/global-loading.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.clickLoadingLayer = function(){
+                if(!scope.lockClickHide){
+                    scope.show = false;
+                }
+            }
+        }
+    }
+
+})
+
+myApp.directive('headBar', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            title: '@',
+            back: '&onBack' 
+        },
+        templateUrl: 'tpl/common/directives/head-bar.tpl.html',
+        link: function(scope, element, attrs) {
+        }
+    }
+})
+myApp.directive('logoutConfirm', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            close: '&onClose' 
+        },
+        templateUrl: 'tpl/common/directives/logout-confirm.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.ok = function(){
+                scope.close({state:true});
+            }
+
+            scope.cancel = function(){
+                scope.close({state:false});
+            }
+        }
+    }
+})
+myApp.directive('pagination', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            numPages: '=',
+            currentPage: '=',
+            pageSize: '=',
+            goPage: '&'
+        },
+        templateUrl: 'pagination.tpl.html',
+        link: function(scope, element, attrs) {
+
+            scope.isActive = function(page) {
+                return scope.currentPage === page;
+            }
+
+            scope.hasPre = function() {
+                return (scope.currentPage - 1 > 0);
+            }
+
+            scope.hasPre2 = function() {
+                return (scope.currentPage - 2 > 0);
+            }
+            scope.hasNext = function() {
+                return (scope.currentPage + 1 <= cope.numPages);
+            }
+
+            scope.hasNext2 = function() {
+                return (scope.currentPage + 2 <= cope.numPages);
+            }
+        }
+    }
+
+})
+
+myApp.directive('whenScrolled', ['$document', function ($document) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var raw = element[0];
+            $document.bind('scroll', function () {
+                var rectObject = raw.getBoundingClientRect();
+                if (window.innerHeight >= rectObject.bottom) {
+                    scope.$apply(attrs.whenScrolled);
+                }
+            });
+        }
+    };
+}]);
+angular.module('resources.address', ['ngResource']).
+    factory('addresses', ['$resource', function($resource) {
+        return $resource(basePath+'/houses/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.complain', ['ngResource']).
+    factory('complains', ['$resource', function($resource) {
+        return $resource(basePath+'/complains/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.notice', ['ngResource']).
+factory('notices', ['$resource', function($resource) {
+    return $resource(basePath+'/notices/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.payment', ['ngResource']).
+    factory('payments', ['$resource', function($resource) {
+        return $resource(basePath+'/payments/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.repair', ['ngResource']).
+factory('repairs', ['$resource', function($resource) {
+    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.shop', ['ngResource']).
+factory('shops', ['$resource', 'locationInfo', function($resource, locationInfo) {
+    return $resource(basePath+'/shops/:id', {}, {
+        query: {
+        	params:{
+        		'id':'query',
+        		lon: locationInfo.longitude,
+        		lat: locationInfo.latitude
+        	},
+            method: 'GET',
+            isArray: false
+        }
+    })
 }]);
 angular.module('myApp').filter('cut', function() {
     return function(value, wordwise, max, tail) {
@@ -1799,239 +2028,21 @@ angular.module('myApp').filter('payListMerge', function() {
         return result;
     };
 });
-myApp.directive('cFocus', function() {
-    return {
-        restrict: 'A',
-        scope: {
-            focus: '=',
-        },
-        link: function(scope, element, attrs) {
-            scope.$watch('focus', function(newVal, oldVal){
-                if(newVal){
-                    element[0].focus();
-                }
-            });
-        }
-    }
-})
-myApp.directive('confirmModal', function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            show: '=',
-            title: '=',
-            tip: '=',
-            tipAlign: '=',
-            okText: '=',
-            cancelText: '=',
-            onlyOkButton: '=',
-            close: '&onClose' 
-        },
-        templateUrl: 'tpl/common/directives/confirm-modal.tpl.html',
-        link: function(scope, element, attrs) {
-            scope.ok = function(){
-                scope.close({state:true});
-            }
-
-            scope.cancel = function(){
-                scope.close({state:false});
-            }
-
-            scope.$watch('cancelText', function(newVal, oldVal){
-                if(!newVal){
-                    scope.cancelText = "取消";
-                }
-            });
-
-            scope.$watch('okText', function(newVal, oldVal){
-                if(!newVal){
-                    scope.okText = "确定";
-                }
-            })
-        }
-    }
-})
-myApp.directive('errSrc', function() {
-  return {
-    link: function(scope, element, attrs) {
-      element.bind('error', function() {
-        if (attrs.src != attrs.errSrc) {
-          attrs.$set('src', attrs.errSrc);
-        }
-      });
-    }
-  }
-});
-myApp.directive('globalLoading', function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            show: '=',
-            tip: '=',
-            lockClickHide: '='
-        },
-        templateUrl: 'tpl/common/directives/global-loading.tpl.html',
-        link: function(scope, element, attrs) {
-            scope.clickLoadingLayer = function(){
-                if(!scope.lockClickHide){
-                    scope.show = false;
-                }
-            }
-        }
-    }
-
-})
-
-myApp.directive('logoutConfirm', function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            show: '=',
-            close: '&onClose' 
-        },
-        templateUrl: 'tpl/common/directives/logout-confirm.tpl.html',
-        link: function(scope, element, attrs) {
-            scope.ok = function(){
-                scope.close({state:true});
-            }
-
-            scope.cancel = function(){
-                scope.close({state:false});
-            }
-        }
-    }
-})
-myApp.directive('pagination', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            numPages: '=',
-            currentPage: '=',
-            pageSize: '=',
-            goPage: '&'
-        },
-        templateUrl: 'pagination.tpl.html',
-        link: function(scope, element, attrs) {
-
-            scope.isActive = function(page) {
-                return scope.currentPage === page;
-            }
-
-            scope.hasPre = function() {
-                return (scope.currentPage - 1 > 0);
-            }
-
-            scope.hasPre2 = function() {
-                return (scope.currentPage - 2 > 0);
-            }
-            scope.hasNext = function() {
-                return (scope.currentPage + 1 <= cope.numPages);
-            }
-
-            scope.hasNext2 = function() {
-                return (scope.currentPage + 2 <= cope.numPages);
-            }
-        }
-    }
-
-})
-
-myApp.directive('whenScrolled', ['$document', function ($document) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var raw = element[0];
-            $document.bind('scroll', function () {
-                var rectObject = raw.getBoundingClientRect();
-                if (window.innerHeight >= rectObject.bottom) {
-                    scope.$apply(attrs.whenScrolled);
-                }
-            });
-        }
-    };
-}]);
-angular.module('resources.address', ['ngResource']).
-    factory('addresses', ['$resource', function($resource) {
-        return $resource(basePath+'/houses/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.complain', ['ngResource']).
-    factory('complains', ['$resource', function($resource) {
-        return $resource(basePath+'/complains/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.notice', ['ngResource']).
-factory('notices', ['$resource', function($resource) {
-    return $resource(basePath+'/notices/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.payment', ['ngResource']).
-    factory('payments', ['$resource', function($resource) {
-        return $resource(basePath+'/payments/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.repair', ['ngResource']).
-factory('repairs', ['$resource', function($resource) {
-    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.shop', ['ngResource']).
-factory('shops', ['$resource', 'locationInfo', function($resource, locationInfo) {
-    return $resource(basePath+'/shops/:id', {}, {
-        query: {
-        	params:{
-        		'id':'query',
-        		lon: locationInfo.longitude,
-        		lat: locationInfo.latitude
-        	},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
 angular.module('app.auth')
 	.service('auth', ['$q','$http','$timeout', '$location', 'errorLog', 'communityInfo', 'appState', '$state',
 		function($q,$http,$timeout, $location, errorLog, communityInfo, appState, $state){
-		this.startChangeState = function(event, toState, toParams, fromState, fromParams){
-			var destStateName = toState.name;
-			if(!appState.visited && destStateName != "auto-location"){
-				event.preventDefault();
-				$state.go('auto-location');
-				return;
+			this.startChangeState = function(event, toState, toParams, fromState, fromParams){
+				var destStateName = toState.name;
+				if(!appState.visited && destStateName != "auto-location"){
+					event.preventDefault();
+					$state.go('auto-location');
+					return;
+				}
+				if(!communityInfo.auth && destStateName == "address-list"){
+					alert("好可惜，您所在的小区还没有开通此项服务哦~");
+					event.preventDefault();
+				}
 			}
-			if(!communityInfo.auth && destStateName == "address-list"){
-				alert("好可惜，您所在的小区还没有开通此项服务哦~");
-				event.preventDefault();
-			}
-		}
 	}]);
 angular.module('app.location')
 	.service('communityList', ['$q','$http','$timeout', function($q,$http,$timeout){
@@ -2366,4 +2377,15 @@ angular.module('app.user')
 			}
 			return defer.promise;
 		}
+	}]);
+angular.module('app.verify')
+	.service('verify', [
+		function(){
+			this.verifyTel = function(tel){//判断手机号是否符合格式要求
+	            var result = true;
+	            if(!/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/i.test(tel)){
+	              result = false;
+	            }
+	            return result;
+	        }
 	}]);

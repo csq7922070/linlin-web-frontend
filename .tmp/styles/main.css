@@ -1114,6 +1114,31 @@ div.rn-carousel-indicator span {
   margin-top: 55%;
 }
 
+.head-bar {
+  background-color: #f7f7f7;
+  height: 44px;
+  text-align: center;
+  line-height: 44px;
+  font-family: 微软雅黑;
+  position: relative;
+}
+.head-bar .back {
+  background-image: url('../images/left_arrow_red.png');
+  display: block;
+  width: 22px;
+  height: 22px;
+  background-repeat: no-repeat;
+  position: absolute;
+  margin-left: 12px;
+  background-size: 22px;
+  top: 50%;
+  margin-top: -11px;
+}
+.head-bar .title {
+  font-size: 17px;
+  color: #000;
+}
+
 .village .community-name {
   font-size: 14px;
   line-height: 14px;
