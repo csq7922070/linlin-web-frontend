@@ -1466,23 +1466,35 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
 })();
 
 angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval', 'verify',
-    function ($stateParams, $scope, $timeout, $interval, verify) {
+    'account', 'errorLog',
+    function ($stateParams, $scope, $timeout, $interval, verify,account,errorLog) {
         $scope.tel = "";
         $scope.authCode = "";
+        var authCode = "";
 
         $scope.sendAuthCode = function(){
             if($scope.tel.length != 11){
                 return;
             }
             if(!verify.verifyTel($scope.tel)){
-                $scope.telVerifyError = true;
+                $scope.verifyTip='请输入正确的手机号码';
+                $scope.verifyError = true;
                 $timeout(function(){
-                    $scope.telVerifyError = false;
+                    $scope.verifyError = false;
                     $("#tel").focus();
                 },2000);
                 return;
             }
             console.log("sendAuthCode...");
+            account.getAuthCode($scope.tel).then(function(data){
+                authCode = data;
+                console.log("authCode: "+data);
+            },function(reason){
+                alert(errorLog.getErrorMessage(reason));
+            });
+            $timeout(function(){
+                $("#auth-code").focus();
+            },300);
             $scope.authCodeSending = true;
             resendCountDown().then(function(){//倒计时结束
                 $scope.sendText = "重新发送";
@@ -1506,6 +1518,15 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
                 return;
             }
             console.log("login...");
+            if($scope.authCode != authCode){
+                $scope.verifyTip = "请输入正确的验证码";
+                $scope.verifyError = true;
+                $timeout(function(){
+                    $scope.verifyError = false;
+                    $("#auth-code").focus();
+                },2000);
+                return;
+            }
         }
 
         $scope.onBack = function(){
@@ -1548,21 +1569,6 @@ angular.module('app.address').controller('addressBlockCtrl',
     console.log("addressInfo注入");
     console.log(addressInfo);
 }])
-angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
-    var vm=this;
-    params = {
-        type:'city'
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.cities = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-    vm.city = $stateParams.city;
-    addressInfo.city = $stateParams.city;
-    console.log("addressInfo注入");
-    console.log(addressInfo);
-}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','addresses','addressInfo',function ($stateParams, addresses,addressInfo) {
         var vm = this;
         
@@ -1603,24 +1609,18 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','add
         console.log(addressInfo);
     }
 ])
-angular.module('app.address').controller('addressVillageCtrl',
-    ['$stateParams','addresses','communityInfo','addressInfo',
-    function($stateParams,addresses,communityInfo, addressInfo){
+angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
     var vm=this;
     params = {
-        type:'community',
-        city:addressInfo.city
+        type:'city'
     }
-    if($stateParams.city){
-        addressInfo.city = $stateParams.city;
-    }
-    addressInfo.village = $stateParams.village;
     addresses.query(params).$promise.then(function (data) {
-        vm.villages = data.items;
-        vm.city = $stateParams.city
+        vm.cities = data.items;
     }, function (data) {
         console.log("err!");
     });
+    vm.city = $stateParams.city;
+    addressInfo.city = $stateParams.city;
     console.log("addressInfo注入");
     console.log(addressInfo);
 }]);
@@ -1650,6 +1650,27 @@ angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addr
     });
     console.log("unit");
     console.log($stateParams);
+    console.log("addressInfo注入");
+    console.log(addressInfo);
+}]);
+angular.module('app.address').controller('addressVillageCtrl',
+    ['$stateParams','addresses','communityInfo','addressInfo',
+    function($stateParams,addresses,communityInfo, addressInfo){
+    var vm=this;
+    params = {
+        type:'community',
+        city:addressInfo.city
+    }
+    if($stateParams.city){
+        addressInfo.city = $stateParams.city;
+    }
+    addressInfo.village = $stateParams.village;
+    addresses.query(params).$promise.then(function (data) {
+        vm.villages = data.items;
+        vm.city = $stateParams.city
+    }, function (data) {
+        console.log("err!");
+    });
     console.log("addressInfo注入");
     console.log(addressInfo);
 }]);
@@ -1820,214 +1841,17 @@ myApp.directive('whenScrolled', ['$document', function ($document) {
         }
     };
 }]);
-angular.module('resources.address', ['ngResource']).
-    factory('addresses', ['$resource', function($resource) {
-        return $resource(basePath+'/houses/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.complain', ['ngResource']).
-    factory('complains', ['$resource', function($resource) {
-        return $resource(basePath+'/complains/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.notice', ['ngResource']).
-factory('notices', ['$resource', function($resource) {
-    return $resource(basePath+'/notices/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.payment', ['ngResource']).
-    factory('payments', ['$resource', function($resource) {
-        return $resource(basePath+'/payments/:id', {id:'@id'}, {
-            query: {
-            	params:{'id':'query'},
-                method: 'GET',
-                isArray: false
-            }
-        })
-    }]);
-angular.module('resources.repair', ['ngResource']).
-factory('repairs', ['$resource', function($resource) {
-    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
-        query: {
-        	params:{'id':'query'},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('resources.shop', ['ngResource']).
-factory('shops', ['$resource', 'locationInfo', function($resource, locationInfo) {
-    return $resource(basePath+'/shops/:id', {}, {
-        query: {
-        	params:{
-        		'id':'query',
-        		lon: locationInfo.longitude,
-        		lat: locationInfo.latitude
-        	},
-            method: 'GET',
-            isArray: false
-        }
-    })
-}]);
-angular.module('myApp').filter('cut', function() {
-    return function(value, wordwise, max, tail) {
-        if (!value) return '';
-
-        max = parseInt(max, 10);
-        if (!max) return value;
-        if (value.length <= max) return value;
-
-        value = value.substr(0, max);
-        if (wordwise) {
-            var lastspace = value.lastIndexOf(' ');
-            if (lastspace != -1) {
-                value = value.substr(0, lastspace);
-            }
-        }
-        return value + (tail || '...');
-    };
-});
-angular.module('myApp').filter('payListMerge', function() {
-    return function(input) {
-        var result = [];//新增属性waterDates,elecDates,waterDateText,elecDateText
-        for(var i = 0;i<input.length;i++){
-            var item = input[i];
-            var find = false;
-            for(var j = 0;j<result.length;j++){
-                var temp = result[j];
-                if(item.payDate == temp.payDate && item.ownerName == temp.ownerName){
-                    find = true;
-                    break;
-                }
-            }
-            if(find){
-                temp.amount+=item.amount;
-                if(item.type == "0"){
-                    temp.waterDates.push({year: parseInt(item.year),month: parseInt(item.month)});
-                }else{// is "1"
-                    temp.elecDates.push({year: parseInt(item.year),month: parseInt(item.month)});
-                }
-            }else{
-                var newItem = angular.copy(item);
-                newItem.waterDates = [];
-                newItem.elecDates = [];
-                if(item.type == "0"){
-                    newItem.waterDates.push({year: parseInt(item.year),month: parseInt(item.month)});
-                }else{// is "1"
-                    newItem.elecDates.push({year: parseInt(item.year),month: parseInt(item.month)});
-                }
-                result.push(newItem);
-            }
-        }
-        //对数组result中每个元素中的水费和电费日期分别进行合并处理，比如2015年2月、2015年3月合并为2015年2-3月
-        //2015年2月，2015年3月，2015年5月合并为2015年2、3月等
-        //2015年12月、2016年1月合并为2015年12月、2016年1月
-        for(var i = 0;i<result.length;i++){
-            var item = result[i];
-            //将item对象的属性waterDates和elecDates2个数组按照年月进行升序排序处理
-            item.waterDates.sort(compareDate);
-            item.elecDates.sort(compareDate);
-
-            item.waterDateText = getDateText(item.waterDates);
-            item.elecDateText = getDateText(item.elecDates);
-        }
-
-        function compareDate(prev, next){
-            if(prev.year < next.year || (prev.year == next.year && prev.month < next.month)){
-                return -1;
-            }else if(prev.year == next.year && prev.month == next.month){
-                return 0;
-            }else{
-                return 1;
-            }
-        }
-
-        function getDateText(dates){
-            var sections = getDateSections(dates);
-            var text = "";
-            if(sections.length > 0){
-                text = sections[0].dateText;
-            }
-            if(sections.length > 1){
-                if(sections[0].length == 1){
-                    if(sections[1].sy == sections[0].ey)
-                        text = text.substr(0, text.length - 1);//同年情况下去掉前一个日期结尾的“月”
-                    text+="、";
-                    if(sections[1].sy == sections[0].ey)
-                        text += sections[1].dateTextWithoutYear;
-                    else{
-                        text += sections[1].dateText;
-                    }
-                    if(sections.length > 2)
-                        text+="等";
-                }else if(sections[0].length > 1){
-                    text+="等";
-                }
-            }
-            
-            return text;
-        }
-
-        function getDateSections(dates){
-            var sections = [];
-            if(dates.length > 0){
-                sections.push({sy:dates[0].year,sm:dates[0].month,ey:dates[0].year,em:dates[0].month,length:1});
-            }
-            var prev = sections.length > 0 ? sections[0] : null;
-            for(var i = 1;i<dates.length;i++){
-                if(prev.ey == dates[i].year && prev.em == dates[i].month - 1){
-                    prev.em = dates[i].month;
-                    prev.length++;
-                }else{
-                    prev = dates[i];
-                    sections.push({sy:prev.year,sm:prev.month,ey:prev.year,em:prev.month,length:1});
-                }
-            }
-            for(var i = 0;i<sections.length;i++){
-                sections[i].dateText = getSectionDateText(sections[i]);
-                sections[i].dateTextWithoutYear = getSectionDateTextWithoutYear(sections[i]);
-            }
-            return sections;
-        }
-
-        function getSectionDateText(section){
-            var text = "";
-            if(section.length == 1){
-                text = section.sy +"年"+section.sm+"月";
-            }else if(section.length > 1){
-                text = section.sy +"年"+section.sm+"-" + section.em + "月";
-            }
-            return text;
-        }
-
-        function getSectionDateTextWithoutYear(section){
-            var text = "";
-            if(section.length == 1){
-                text = section.sm+"月";
-            }else if(section.length > 1){
-                text = section.sm+"-" + section.em + "月";
-            }
-            return text;
-        }
-
-        return result;
-    };
-});
+angular.module('app.account')
+	.service('account', ['$q','$http','$timeout','errorLog',
+		function($q,$http,$timeout, errorLog){
+			this.getAuthCode = function(tel){
+				var defer = $q.defer();
+				$timeout(function(){
+					defer.resolve("1001");
+				},1000);
+				return defer.promise;
+			}
+	}]);
 angular.module('app.auth')
 	.service('auth', ['$q','$http','$timeout', '$location', 'errorLog', 'communityInfo', 'appState', '$state',
 		function($q,$http,$timeout, $location, errorLog, communityInfo, appState, $state){
@@ -2389,3 +2213,211 @@ angular.module('app.verify')
 	            return result;
 	        }
 	}]);
+angular.module('myApp').filter('cut', function() {
+    return function(value, wordwise, max, tail) {
+        if (!value) return '';
+
+        max = parseInt(max, 10);
+        if (!max) return value;
+        if (value.length <= max) return value;
+
+        value = value.substr(0, max);
+        if (wordwise) {
+            var lastspace = value.lastIndexOf(' ');
+            if (lastspace != -1) {
+                value = value.substr(0, lastspace);
+            }
+        }
+        return value + (tail || '...');
+    };
+});
+angular.module('myApp').filter('payListMerge', function() {
+    return function(input) {
+        var result = [];//新增属性waterDates,elecDates,waterDateText,elecDateText
+        for(var i = 0;i<input.length;i++){
+            var item = input[i];
+            var find = false;
+            for(var j = 0;j<result.length;j++){
+                var temp = result[j];
+                if(item.payDate == temp.payDate && item.ownerName == temp.ownerName){
+                    find = true;
+                    break;
+                }
+            }
+            if(find){
+                temp.amount+=item.amount;
+                if(item.type == "0"){
+                    temp.waterDates.push({year: parseInt(item.year),month: parseInt(item.month)});
+                }else{// is "1"
+                    temp.elecDates.push({year: parseInt(item.year),month: parseInt(item.month)});
+                }
+            }else{
+                var newItem = angular.copy(item);
+                newItem.waterDates = [];
+                newItem.elecDates = [];
+                if(item.type == "0"){
+                    newItem.waterDates.push({year: parseInt(item.year),month: parseInt(item.month)});
+                }else{// is "1"
+                    newItem.elecDates.push({year: parseInt(item.year),month: parseInt(item.month)});
+                }
+                result.push(newItem);
+            }
+        }
+        //对数组result中每个元素中的水费和电费日期分别进行合并处理，比如2015年2月、2015年3月合并为2015年2-3月
+        //2015年2月，2015年3月，2015年5月合并为2015年2、3月等
+        //2015年12月、2016年1月合并为2015年12月、2016年1月
+        for(var i = 0;i<result.length;i++){
+            var item = result[i];
+            //将item对象的属性waterDates和elecDates2个数组按照年月进行升序排序处理
+            item.waterDates.sort(compareDate);
+            item.elecDates.sort(compareDate);
+
+            item.waterDateText = getDateText(item.waterDates);
+            item.elecDateText = getDateText(item.elecDates);
+        }
+
+        function compareDate(prev, next){
+            if(prev.year < next.year || (prev.year == next.year && prev.month < next.month)){
+                return -1;
+            }else if(prev.year == next.year && prev.month == next.month){
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+
+        function getDateText(dates){
+            var sections = getDateSections(dates);
+            var text = "";
+            if(sections.length > 0){
+                text = sections[0].dateText;
+            }
+            if(sections.length > 1){
+                if(sections[0].length == 1){
+                    if(sections[1].sy == sections[0].ey)
+                        text = text.substr(0, text.length - 1);//同年情况下去掉前一个日期结尾的“月”
+                    text+="、";
+                    if(sections[1].sy == sections[0].ey)
+                        text += sections[1].dateTextWithoutYear;
+                    else{
+                        text += sections[1].dateText;
+                    }
+                    if(sections.length > 2)
+                        text+="等";
+                }else if(sections[0].length > 1){
+                    text+="等";
+                }
+            }
+            
+            return text;
+        }
+
+        function getDateSections(dates){
+            var sections = [];
+            if(dates.length > 0){
+                sections.push({sy:dates[0].year,sm:dates[0].month,ey:dates[0].year,em:dates[0].month,length:1});
+            }
+            var prev = sections.length > 0 ? sections[0] : null;
+            for(var i = 1;i<dates.length;i++){
+                if(prev.ey == dates[i].year && prev.em == dates[i].month - 1){
+                    prev.em = dates[i].month;
+                    prev.length++;
+                }else{
+                    prev = dates[i];
+                    sections.push({sy:prev.year,sm:prev.month,ey:prev.year,em:prev.month,length:1});
+                }
+            }
+            for(var i = 0;i<sections.length;i++){
+                sections[i].dateText = getSectionDateText(sections[i]);
+                sections[i].dateTextWithoutYear = getSectionDateTextWithoutYear(sections[i]);
+            }
+            return sections;
+        }
+
+        function getSectionDateText(section){
+            var text = "";
+            if(section.length == 1){
+                text = section.sy +"年"+section.sm+"月";
+            }else if(section.length > 1){
+                text = section.sy +"年"+section.sm+"-" + section.em + "月";
+            }
+            return text;
+        }
+
+        function getSectionDateTextWithoutYear(section){
+            var text = "";
+            if(section.length == 1){
+                text = section.sm+"月";
+            }else if(section.length > 1){
+                text = section.sm+"-" + section.em + "月";
+            }
+            return text;
+        }
+
+        return result;
+    };
+});
+angular.module('resources.address', ['ngResource']).
+    factory('addresses', ['$resource', function($resource) {
+        return $resource(basePath+'/houses/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.complain', ['ngResource']).
+    factory('complains', ['$resource', function($resource) {
+        return $resource(basePath+'/complains/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.notice', ['ngResource']).
+factory('notices', ['$resource', function($resource) {
+    return $resource(basePath+'/notices/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.payment', ['ngResource']).
+    factory('payments', ['$resource', function($resource) {
+        return $resource(basePath+'/payments/:id', {id:'@id'}, {
+            query: {
+            	params:{'id':'query'},
+                method: 'GET',
+                isArray: false
+            }
+        })
+    }]);
+angular.module('resources.repair', ['ngResource']).
+factory('repairs', ['$resource', function($resource) {
+    return $resource(basePath+'/repairs/:id', {id:'@id'}, {
+        query: {
+        	params:{'id':'query'},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);
+angular.module('resources.shop', ['ngResource']).
+factory('shops', ['$resource', 'locationInfo', function($resource, locationInfo) {
+    return $resource(basePath+'/shops/:id', {}, {
+        query: {
+        	params:{
+        		'id':'query',
+        		lon: locationInfo.longitude,
+        		lat: locationInfo.latitude
+        	},
+            method: 'GET',
+            isArray: false
+        }
+    })
+}]);

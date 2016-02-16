@@ -1228,7 +1228,7 @@ div.rn-carousel-indicator span {
 
 #login-container {
   bottom: 0px;
-  top: 0px;
+  top: 44px;
   left: 0px;
   right: 0px;
   position: absolute;
@@ -1293,7 +1293,7 @@ div.rn-carousel-indicator span {
 #login-container .tip .user-license-link {
   color: #1656b3;
 }
-#login-container .tel-verify-tip {
+#login-container .verify-tip {
   font-size: 15px;
   color: #fff;
   border-radius: 6px;
