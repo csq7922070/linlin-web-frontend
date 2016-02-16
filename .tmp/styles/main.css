@@ -108,6 +108,9 @@ p {
   color: #000000;
   min-height: 30px;
 }
+.address_detail {
+  align-items: initial!important;
+}
 .address_detail:active {
   background: white!important;
 }
