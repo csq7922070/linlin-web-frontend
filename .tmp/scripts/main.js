@@ -361,8 +361,8 @@ angular.module('app.address').controller('addressCtrl', ['$state','$scope', '$st
         }
         console.log("city" + $stateParams.city+ "community" + $stateParams.village + "block" + $stateParams.block + " unit" + $stateParams.unit + " room" + $stateParams.room);
         console.log("succees");
-        vm.city = communityInfo.name;
-        vm.village = communityInfo.name+1;
+        vm.city = $stateParams.city;
+        vm.village = $stateParams.village;
         vm.block = $stateParams.block;
         vm.unit = $stateParams.unit;
         vm.room = $stateParams.room;
@@ -1481,6 +1481,21 @@ angular.module('app.address').controller('addressBlockCtrl',
     console.log("addressInfo注入");
     console.log(addressInfo);
 }])
+angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
+    var vm=this;
+    params = {
+        type:'city'
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.cities = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+    vm.city = $stateParams.city;
+    addressInfo.city = $stateParams.city;
+    console.log("addressInfo注入");
+    console.log(addressInfo);
+}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','addresses','addressInfo',function ($stateParams, addresses,addressInfo) {
         var vm = this;
         
@@ -1521,21 +1536,6 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','add
         console.log(addressInfo);
     }
 ])
-angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
-    var vm=this;
-    params = {
-        type:'city'
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.cities = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-    vm.city = $stateParams.city;
-    addressInfo.city = $stateParams.city;
-    console.log("addressInfo注入");
-    console.log(addressInfo);
-}]);
 angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses','addressInfo',function($stateParams,addresses,addressInfo){
     var vm=this;
     if($stateParams.block){

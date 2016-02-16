@@ -37,28 +37,6 @@
             请选择
         </div>
     </div>
-    <!-- <div class="weui_cell" ui-sref="address-unit" ng-disabled="!vm.unit">
-        <div class="weui_cell_bd weui_cell_primary">
-            <p style="margin-top: 10px;" ng-class="vm.unit?'':'color_ccc'">单元</p>
-        </div>
-        <div ng-if="vm.unit" class="weui_cell_ft" name="block">
-            {{vm.unit}}
-        </div>
-        <div ng-if="!vm.unit" class="weui_cell_ft color_ccc" name="unit">
-            请选择
-        </div>
-    </div>
-    <div class="weui_cell" ui-sref="address-room" ng-disabled="!vm.room">
-        <div class="weui_cell_bd weui_cell_primary">
-            <p style="margin-top: 10px;" ng-class="vm.room?'':'color_ccc'">门牌号</p>
-        </div>
-        <div ng-if="vm.room" class="weui_cell_ft" name="block">
-            {{vm.room}}
-        </div>
-        <div ng-if="!vm.room" class="weui_cell_ft color_ccc" name="room">
-            请选择
-        </div>
-    </div> -->
 
     <div class="weui_cell {{sss}}" ng-click="GoaddressUnit()">
         <div class="weui_cell_bd weui_cell_primary">
@@ -85,13 +63,12 @@
 
     <div class="weui_cell address_detail" href="javascript:;">
         <span class="sure_address" style="margin-top: 10px;">
-            请确认:
+            请确认
         </span>
         <span class="right_detail" style="margin-top: 10px;">
             <div>
                 {{vm.village}}<span>{{vm.block}}</span><span ng-if="vm.unit">-{{vm.unit}}</span><span ng-if="vm.room">-{{vm.room}}</span>
-            </div>
-            <div>
+            <br>
                 <span>{{vm.username}}</span>                
             </div>
         </span>

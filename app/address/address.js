@@ -24,8 +24,8 @@ angular.module('app.address').controller('addressCtrl', ['$state','$scope', '$st
         }
         console.log("city" + $stateParams.city+ "community" + $stateParams.village + "block" + $stateParams.block + " unit" + $stateParams.unit + " room" + $stateParams.room);
         console.log("succees");
-        vm.city = communityInfo.name;
-        vm.village = communityInfo.name+1;
+        vm.city = $stateParams.city;
+        vm.village = $stateParams.village;
         vm.block = $stateParams.block;
         vm.unit = $stateParams.unit;
         vm.room = $stateParams.room;
