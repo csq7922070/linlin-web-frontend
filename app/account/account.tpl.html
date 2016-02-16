@@ -3,12 +3,14 @@
 		<img class="head-icon" src="images/head-icon.png"/>
 		<br/>
 		<a class="account-opt" href="javascript:void(0)">登陆/注册</a>
-		<a class="account-opt logout" href="javascript:void(0)">退出登录</a>
+		<a class="account-opt logout" href="javascript:void(0)" ng-click="logout()">退出登录</a>
 	</div>
 	<div class="bottom-container">
 		<ul>
 			<li>
-				<a class="menu-item" href="javascript:void(0)">我的房屋</a>
+				<a class="menu-item" href="javascript:void(0)">
+					我的房屋<span class="house-info">已关联1套房屋</span>
+				</a>
 				<div class="under-line"></div>
 			</li>
 			<li>
@@ -16,4 +18,5 @@
 			</li>
 		</ul>
 	</div>
+	<logout-confirm show="showLogoutConfirm" on-close="onLogoutConfirmClose(state)" ng-init="showLogoutConfirm=false"></logout-confirm>
 </div>

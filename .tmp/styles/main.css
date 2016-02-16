@@ -43,6 +43,12 @@
   background-size: 9px;
   margin-right: 12px;
 }
+#account-container .bottom-container .menu-item .house-info {
+  float: right;
+  margin-right: 25px;
+  font-size: 14px;
+  color: #999;
+}
 #account-container .bottom-container .under-line {
   border-bottom: solid 1px #e8e8e8;
 }
@@ -1273,6 +1279,55 @@ div.rn-carousel-indicator span {
   margin: 0 auto;
   line-height: 40px;
   text-align: center;
+}
+
+.logout-confirm-container {
+  position: absolute;
+  width: 100%;
+  top: 0px;
+  bottom: 0px;
+}
+.logout-confirm-container .confirm-mask {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: 0.3;
+}
+.logout-confirm-container .confirm-modal {
+  background-color: #fff;
+  border-radius: 6px;
+  width: 80%;
+  height: 132px;
+  margin-left: -40%;
+  position: absolute;
+  left: 50%;
+  top: 41%;
+  text-align: center;
+}
+.logout-confirm-container .confirm-modal .modal-tip {
+  font-size: 17px;
+  line-height: 89px;
+  color: #555;
+}
+.logout-confirm-container .confirm-modal .modal-bottom {
+  font-size: 18px;
+  height: 43px;
+  border-top: solid 1px #e8e8e8;
+  bottom: 0px;
+  position: absolute;
+  width: 100%;
+  left: 0px;
+  color: #333;
+}
+.logout-confirm-container .confirm-modal .modal-bottom .modal-button {
+  border: 0px;
+  width: 50%;
+  height: 100%;
+  background-color: inherit;
+  float: left;
+}
+.logout-confirm-container .confirm-modal .modal-bottom .modal-cancel {
+  border-right: solid 1px #e8e8e8;
 }
 
 

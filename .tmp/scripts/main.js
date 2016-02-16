@@ -297,9 +297,18 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 ).constant(
     'appType', 'app'//app or weixin
 );
-angular.module('app.account').controller('accountCtrl', ['$stateParams',
-    function ($stateParams) {
-        var vm = this;
+angular.module('app.account').controller('accountCtrl', ['$stateParams', '$scope',
+    function ($stateParams,$scope) {
+        $scope.logout = function(){
+        	$scope.showLogoutConfirm = true;
+        }
+
+        $scope.onLogoutConfirmClose = function(state){
+        	$scope.showLogoutConfirm = false;
+        	if(state){
+        		console.log("logout...");
+        	}
+        }
     }
 ]);
 
@@ -1541,6 +1550,21 @@ angular.module('app.address').controller('addressBlockCtrl',
     console.log("addressInfo注入");
     console.log(addressInfo);
 }])
+angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
+    var vm=this;
+    params = {
+        type:'city'
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.cities = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+    vm.city = $stateParams.city;
+    addressInfo.city = $stateParams.city;
+    console.log("addressInfo注入");
+    console.log(addressInfo);
+}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','addresses','addressInfo',function ($stateParams, addresses,addressInfo) {
         var vm = this;
         
@@ -1581,21 +1605,6 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','add
         console.log(addressInfo);
     }
 ])
-angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
-    var vm=this;
-    params = {
-        type:'city'
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.cities = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-    vm.city = $stateParams.city;
-    addressInfo.city = $stateParams.city;
-    console.log("addressInfo注入");
-    console.log(addressInfo);
-}]);
 angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses','addressInfo',function($stateParams,addresses,addressInfo){
     var vm=this;
     if($stateParams.block){
@@ -1645,141 +1654,6 @@ angular.module('app.address').controller('addressVillageCtrl',
     });
     console.log("addressInfo注入");
     console.log(addressInfo);
-}]);
-myApp.directive('cFocus', function() {
-    return {
-        restrict: 'A',
-        scope: {
-            focus: '=',
-        },
-        link: function(scope, element, attrs) {
-            scope.$watch('focus', function(newVal, oldVal){
-                if(newVal){
-                    element[0].focus();
-                }
-            });
-        }
-    }
-})
-myApp.directive('confirmModal', function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            show: '=',
-            title: '=',
-            tip: '=',
-            tipAlign: '=',
-            okText: '=',
-            cancelText: '=',
-            onlyOkButton: '=',
-            close: '&onClose' 
-        },
-        templateUrl: 'tpl/common/directives/confirm-modal.tpl.html',
-        link: function(scope, element, attrs) {
-            scope.ok = function(){
-                scope.close({state:true});
-            }
-
-            scope.cancel = function(){
-                scope.close({state:false});
-            }
-
-            scope.$watch('cancelText', function(newVal, oldVal){
-                if(!newVal){
-                    scope.cancelText = "取消";
-                }
-            });
-
-            scope.$watch('okText', function(newVal, oldVal){
-                if(!newVal){
-                    scope.okText = "确定";
-                }
-            })
-        }
-    }
-
-})
-myApp.directive('errSrc', function() {
-  return {
-    link: function(scope, element, attrs) {
-      element.bind('error', function() {
-        if (attrs.src != attrs.errSrc) {
-          attrs.$set('src', attrs.errSrc);
-        }
-      });
-    }
-  }
-});
-myApp.directive('globalLoading', function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            show: '=',
-            tip: '=',
-            lockClickHide: '='
-        },
-        templateUrl: 'tpl/common/directives/global-loading.tpl.html',
-        link: function(scope, element, attrs) {
-            scope.clickLoadingLayer = function(){
-                if(!scope.lockClickHide){
-                    scope.show = false;
-                }
-            }
-        }
-    }
-
-})
-
-myApp.directive('pagination', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            numPages: '=',
-            currentPage: '=',
-            pageSize: '=',
-            goPage: '&'
-        },
-        templateUrl: 'pagination.tpl.html',
-        link: function(scope, element, attrs) {
-
-            scope.isActive = function(page) {
-                return scope.currentPage === page;
-            }
-
-            scope.hasPre = function() {
-                return (scope.currentPage - 1 > 0);
-            }
-
-            scope.hasPre2 = function() {
-                return (scope.currentPage - 2 > 0);
-            }
-            scope.hasNext = function() {
-                return (scope.currentPage + 1 <= cope.numPages);
-            }
-
-            scope.hasNext2 = function() {
-                return (scope.currentPage + 2 <= cope.numPages);
-            }
-        }
-    }
-
-})
-
-myApp.directive('whenScrolled', ['$document', function ($document) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var raw = element[0];
-            $document.bind('scroll', function () {
-                var rectObject = raw.getBoundingClientRect();
-                if (window.innerHeight >= rectObject.bottom) {
-                    scope.$apply(attrs.whenScrolled);
-                }
-            });
-        }
-    };
 }]);
 angular.module('myApp').filter('cut', function() {
     return function(value, wordwise, max, tail) {
@@ -1925,6 +1799,160 @@ angular.module('myApp').filter('payListMerge', function() {
         return result;
     };
 });
+myApp.directive('cFocus', function() {
+    return {
+        restrict: 'A',
+        scope: {
+            focus: '=',
+        },
+        link: function(scope, element, attrs) {
+            scope.$watch('focus', function(newVal, oldVal){
+                if(newVal){
+                    element[0].focus();
+                }
+            });
+        }
+    }
+})
+myApp.directive('confirmModal', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            title: '=',
+            tip: '=',
+            tipAlign: '=',
+            okText: '=',
+            cancelText: '=',
+            onlyOkButton: '=',
+            close: '&onClose' 
+        },
+        templateUrl: 'tpl/common/directives/confirm-modal.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.ok = function(){
+                scope.close({state:true});
+            }
+
+            scope.cancel = function(){
+                scope.close({state:false});
+            }
+
+            scope.$watch('cancelText', function(newVal, oldVal){
+                if(!newVal){
+                    scope.cancelText = "取消";
+                }
+            });
+
+            scope.$watch('okText', function(newVal, oldVal){
+                if(!newVal){
+                    scope.okText = "确定";
+                }
+            })
+        }
+    }
+})
+myApp.directive('errSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      element.bind('error', function() {
+        if (attrs.src != attrs.errSrc) {
+          attrs.$set('src', attrs.errSrc);
+        }
+      });
+    }
+  }
+});
+myApp.directive('globalLoading', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            tip: '=',
+            lockClickHide: '='
+        },
+        templateUrl: 'tpl/common/directives/global-loading.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.clickLoadingLayer = function(){
+                if(!scope.lockClickHide){
+                    scope.show = false;
+                }
+            }
+        }
+    }
+
+})
+
+myApp.directive('logoutConfirm', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            show: '=',
+            close: '&onClose' 
+        },
+        templateUrl: 'tpl/common/directives/logout-confirm.tpl.html',
+        link: function(scope, element, attrs) {
+            scope.ok = function(){
+                scope.close({state:true});
+            }
+
+            scope.cancel = function(){
+                scope.close({state:false});
+            }
+        }
+    }
+})
+myApp.directive('pagination', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            numPages: '=',
+            currentPage: '=',
+            pageSize: '=',
+            goPage: '&'
+        },
+        templateUrl: 'pagination.tpl.html',
+        link: function(scope, element, attrs) {
+
+            scope.isActive = function(page) {
+                return scope.currentPage === page;
+            }
+
+            scope.hasPre = function() {
+                return (scope.currentPage - 1 > 0);
+            }
+
+            scope.hasPre2 = function() {
+                return (scope.currentPage - 2 > 0);
+            }
+            scope.hasNext = function() {
+                return (scope.currentPage + 1 <= cope.numPages);
+            }
+
+            scope.hasNext2 = function() {
+                return (scope.currentPage + 2 <= cope.numPages);
+            }
+        }
+    }
+
+})
+
+myApp.directive('whenScrolled', ['$document', function ($document) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var raw = element[0];
+            $document.bind('scroll', function () {
+                var rectObject = raw.getBoundingClientRect();
+                if (window.innerHeight >= rectObject.bottom) {
+                    scope.$apply(attrs.whenScrolled);
+                }
+            });
+        }
+    };
+}]);
 angular.module('resources.address', ['ngResource']).
     factory('addresses', ['$resource', function($resource) {
         return $resource(basePath+'/houses/:id', {id:'@id'}, {
