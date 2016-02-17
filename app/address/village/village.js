@@ -14,7 +14,8 @@ angular.module('app.address').controller('addressVillageCtrl',
         vm.villages = data.items;
         vm.city = $stateParams.city
     }, function (data) {
-        console.log("err!");
+        // console.log("err!");
+        alert(errorLog.getErrorMessage(data));
     });
     console.log("addressInfo注入");
     console.log(addressInfo);
