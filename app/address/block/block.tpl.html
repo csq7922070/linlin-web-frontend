@@ -3,21 +3,21 @@
         {{blocks.initial}}
     </div>
     <div class="weui_cells weui_cells_access address_down" style="margin-top:1px!important" ng-repeat="block in blocks.items|orderBy:'id'">
-        <a class="weui_cell" style="padding:0px 15px!important;margin-top:2px!important" ui-sref="address-unit({city:vm.city,village:vm.village,block:block.block})" ng-if="block.type == 2">
+        <a class="weui_cell" style="padding:0px 15px!important;margin-top:2px!important" ng-click="vm.changeBlock(block)" ng-if="block.type == 2">
             <div class="weui_cell_bd weui_cell_primary" style="margin:10px auto">
                 <p>{{block.block}}</p>
             </div>
             <div class="weui_cell_ft">
             </div>
         </a>
-        <a class="weui_cell" style="padding:0px 15px!important;margin-top:2px!important" ui-sref="address-room({city:vm.city,village:vm.village,block:block.block})" ng-if="block.type == 1">
+        <a class="weui_cell" style="padding:0px 15px!important;margin-top:2px!important" ng-click="vm.changeBlock(block)" ng-if="block.type == 1">
             <div class="weui_cell_bd weui_cell_primary" style="margin:10px auto">
                 <p>{{block.block}}</p>
             </div>
             <div class="weui_cell_ft">
             </div>
         </a>
-        <a class="weui_cell" style="padding:0px 15px!important;margin-top:2px!important" ui-sref="address({city:vm.city,village:vm.village,id:block.id,username:block.ownerName,block:block.block,initial:block.initial})" ng-if="block.type == 0">
+        <a class="weui_cell" style="padding:0px 15px!important;margin-top:2px!important" ng-click="vm.changeBlock(block)" ng-if="block.type == 0">
             <div class="weui_cell_bd weui_cell_primary" style="margin:10px auto">
                 <p>{{block.block}}</p>
             </div>

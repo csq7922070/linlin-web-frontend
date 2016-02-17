@@ -1,22 +1,19 @@
 angular.module('app.address').controller('addressVillageCtrl',
-    ['$stateParams','addresses','communityInfo','addressInfo',
-    function($stateParams,addresses,communityInfo, addressInfo){
+    ['$stateParams','addresses','communityInfo','addressInfo','errorLog','$state',
+    function($stateParams,addresses,communityInfo, addressInfo,errorLog,$state){
     var vm=this;
-    if($stateParams.city){
-        addressInfo.city = $stateParams.city;
-    }
-    addressInfo.village = $stateParams.village;
-    params = {
+    var params = {
         type:'community',
         city:addressInfo.city
     }
     addresses.query(params).$promise.then(function (data) {
         vm.villages = data.items;
-        vm.city = $stateParams.city
     }, function (data) {
         // console.log("err!");
         alert(errorLog.getErrorMessage(data));
     });
-    console.log("addressInfo注入");
-    console.log(addressInfo);
+    vm.changeVillage = function(village){
+        addressInfo.community = village;
+        $state.go("address-block");
+    }
 }]);

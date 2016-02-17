@@ -89,33 +89,27 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controllerAs: 'vm'
         })
         .state('address-village', {
-            url: "/address-village/:city",
+            url: "/address-village/",
             templateUrl: "tpl/address/village/village.tpl.html",
             controller: "addressVillageCtrl",
             controllerAs: 'vm'
         })
         .state('address-block', {
-            url: "/address-block/:city/:village",
+            url: "/address-block/",
             templateUrl: "tpl/address/block/block.tpl.html",
             controller: "addressBlockCtrl",
             controllerAs: 'vm'
         })
         .state('address-unit', {
-            url: "/address-unit/:city/:village/:block",
+            url: "/address-unit/",
             templateUrl: "tpl/address/unit/unit.tpl.html",
             controller: "addressUnitCtrl",
             controllerAs: 'vm'
         })
         .state('address-room', {
-            url: "/address-room/:city/:village/:block/:unit",
+            url: "/address-room/",
             templateUrl: "tpl/address/room/room.tpl.html",
             controller: "addressRoomCtrl",
-            controllerAs: 'vm'
-        })
-        .state('address', {
-            url: "/address/:city/:village/:id/:block/:unit/:room/:username/:initial",
-            templateUrl: "tpl/address/address-edit.tpl.html",
-            controller: "addressCtrl",
             controllerAs: 'vm'
         })
         .state('address-list', {
@@ -280,7 +274,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         community: null,
         block: null,
         unit: null,
-        room: null
+        roomInfo: null// object type
     }
 ).value(
     'locationInfo', {

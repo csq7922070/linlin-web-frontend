@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    <div class="weui_cell {{sss}}" ng-click="GoaddressUnit()">
+    <div class="weui_cell {{sss}}" ng-click="vm.changeUnit()">
         <div class="weui_cell_bd weui_cell_primary">
             <p style="margin-top: 10px;" ng-class="vm.unit?'':'color_ccc'">单元</p>
         </div>
@@ -46,7 +46,7 @@
             请选择
         </div>
     </div>
-    <div class="weui_cell {{ccc}}" ng-click="GoaddressRoom()">
+    <div class="weui_cell {{ccc}}" ng-click="vm.changeRoom()">
         <div class="weui_cell_bd weui_cell_primary">
             <p style="margin-top: 10px;" ng-class="vm.room?'':'color_ccc'">门牌号</p>
         </div>
@@ -66,7 +66,7 @@
             <div>
                 {{vm.village}}<span>{{vm.block}}</span><span ng-if="vm.unit">-{{vm.unit}}</span><span ng-if="vm.room">-{{vm.room}}</span>
             <br>
-                <span>{{vm.username}}</span>          
+                <span>{{vm.owner}}</span>          
             </div>
         </span>
     </div>
@@ -75,7 +75,7 @@
 <!--下一步按钮-->
 <div class="address_btn">
     <button class="weui_btn weui_btn_primary length_btn"
-            ui-sref="bill({city:vm.city,village:vm.village,block:vm.block,unit:vm.unit,room:vm.room,id:vm.id,username:vm.username})"
+            ui-sref="bill({city:vm.city,village:vm.village,block:vm.block,unit:vm.unit,room:vm.room,id:vm.roomId,username:vm.owner})"
             ng-disabled="!vm.block||(!vm.unit&&type==2)||(!vm.room&&type==3)"
             ng-class="{'disabled':!vm.block||(!vm.unit&&type==2)||(!vm.room&&type==3)}" style="font-size: 16px"
             ng-click="vm.add_newaddress()">下一步
