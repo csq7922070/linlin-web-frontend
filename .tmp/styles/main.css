@@ -1413,7 +1413,6 @@ div.rn-carousel-indicator span {
 #native-home-container .flip-container .back {
   transform: rotateY(180deg);
 }
-#native-home-container .flip-container:hover,
 #native-home-container .flip-container.flip {
   transform: rotateY(180deg);
 }
@@ -1439,15 +1438,19 @@ div.rn-carousel-indicator span {
 }
 #native-home-container .bottom-nav-bar .home-nav {
   background-image: url('../images/home.png');
+  color: #B1AFAF;
 }
 #native-home-container .bottom-nav-bar .home-nav-active {
   background-image: url('../images/home-active.png');
+  color: #F16262;
 }
 #native-home-container .bottom-nav-bar .account-nav {
   background-image: url('../images/account.png');
+  color: #B1AFAF;
 }
 #native-home-container .bottom-nav-bar .account-nav-active {
   background-image: url('../images/account-active.png');
+  color: #F16262;
 }
 
 
