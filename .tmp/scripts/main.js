@@ -301,7 +301,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 ).constant(
     'appId', appId
 ).constant(
-    'appType', 'weixin'//app or weixin
+    'appType', 'app'//app or weixin
 );
 angular.module('app.account').controller('accountCtrl', ['$stateParams', '$scope',
     function ($stateParams,$scope) {
@@ -1348,48 +1348,6 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
 ]);
 
 (function() {
-    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops', 'errorLog', 
-        'communityLocation', 'locationInfo',
-        function($scope, $stateParams, $rootScope, shops, errorLog, communityLocation,locationInfo) {
-            $rootScope.site = $stateParams.site;
-            $scope.currentPage = 0;
-            $scope.pageSize = 5;
-            $scope.shops = [];
-
-            $scope.load = function(goPage, limit) {
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
-                    return;
-                } else if ($rootScope.site != 3) {
-                    $scope.busy = true;
-                    params = {
-                        offset: $scope.pageSize * (goPage - 1),
-                        limit: limit == 8 ? limit : $scope.pageSize,
-                        type: $stateParams.site - 1,
-                        lon: locationInfo.longitude,
-                        lat: locationInfo.latitude
-                    }
-                    shops.query(params).$promise.then(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        $scope.shops.push.apply($scope.shops, data.items);
-                    },function(reason){
-                        alert(errorLog.getErrorMessage(reason));
-                    });
-                }
-            }
-            $scope.load(1, 8);
-
-            $scope.$watch('communityLocation.changeCommunityHand', function(newVal, oldVal){
-                if(newVal){
-                    $scope.load(1, 8);
-                }
-            });
-        }
-    ]);
-})();
-
-(function() {
     angular.module('app.repair').controller('repairAddCtrl', ['$timeout', '$state', 'repairs',
         function($timeout, $state, repairs) {
             var vm = this;
@@ -1534,6 +1492,48 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
     }
 ]);
 
+(function() {
+    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops', 'errorLog', 
+        'communityLocation', 'locationInfo',
+        function($scope, $stateParams, $rootScope, shops, errorLog, communityLocation,locationInfo) {
+            $rootScope.site = $stateParams.site;
+            $scope.currentPage = 0;
+            $scope.pageSize = 5;
+            $scope.shops = [];
+
+            $scope.load = function(goPage, limit) {
+                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
+                    return;
+                } else if ($rootScope.site != 3) {
+                    $scope.busy = true;
+                    params = {
+                        offset: $scope.pageSize * (goPage - 1),
+                        limit: limit == 8 ? limit : $scope.pageSize,
+                        type: $stateParams.site - 1,
+                        lon: locationInfo.longitude,
+                        lat: locationInfo.latitude
+                    }
+                    shops.query(params).$promise.then(function(data) {
+                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
+                        $scope.currentPage = goPage;
+                        $scope.busy = false;
+                        $scope.shops.push.apply($scope.shops, data.items);
+                    },function(reason){
+                        alert(errorLog.getErrorMessage(reason));
+                    });
+                }
+            }
+            $scope.load(1, 8);
+
+            $scope.$watch('communityLocation.changeCommunityHand', function(newVal, oldVal){
+                if(newVal){
+                    $scope.load(1, 8);
+                }
+            });
+        }
+    ]);
+})();
+
 angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval', 'verify',
     'account', 'errorLog', 'userInfo', '$state', 'appState', '$location',
     function ($stateParams, $scope, $timeout, $interval, verify,account,errorLog,userInfo,$state,appState,$location) {
@@ -1616,6 +1616,21 @@ angular.module('app.account').controller('nicknameCtrl', ['$stateParams',
     }
 ]);
 
+angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
+    var vm=this;
+    params = {
+        type:'city'
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.cities = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+    vm.city = $stateParams.city;
+    addressInfo.city = $stateParams.city;
+    console.log("addressInfo注入");
+    console.log(addressInfo);
+}]);
 angular.module('app.address').controller('addressBlockCtrl',
     ['$stateParams','addresses', 'addressInfo',function($stateParams,addresses,addressInfo){
     var vm=this;
@@ -1644,21 +1659,6 @@ angular.module('app.address').controller('addressBlockCtrl',
     console.log("addressInfo注入");
     console.log(addressInfo);
 }])
-angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
-    var vm=this;
-    params = {
-        type:'city'
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.cities = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-    vm.city = $stateParams.city;
-    addressInfo.city = $stateParams.city;
-    console.log("addressInfo注入");
-    console.log(addressInfo);
-}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','addresses','addressInfo',function ($stateParams, addresses,addressInfo) {
         var vm = this;
         
