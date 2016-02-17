@@ -301,5 +301,5 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 ).constant(
     'appId', appId
 ).constant(
-    'appType', 'app'//app or weixin
+    'appType', 'weixin'//app or weixin
 );
