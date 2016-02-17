@@ -25,7 +25,7 @@ var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home'
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/login");
+    $urlRouterProvider.otherwise("/auto-location");
 
     $stateProvider
         .state('notice', {
@@ -547,7 +547,9 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
             $state.go('auto-location');
             return;
         }
-        $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
+        $scope.refreshCommunityInfo = function(){
+            $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
+        }
 
         $scope.changeCommunity = function(){
             $state.go('auto-location');
@@ -555,12 +557,15 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
 
         if(!locationState.hasLocation){
             communityLocation.autoLocationCommunity().then(function(data){
+                //alert(errorLog.getErrorMessage(data));
                 setCommunity(data);
             },function(reason){
                 //首页自动定位失败暂时不做提示
                 alert(reason.errorCode + ","+reason.errorMessage);
             });
         }
+        // var data = {areaName:"1",lastAreaName:"2",city:"bj",lastCity:'lf',address:'address1',lastAddress:'address2'};
+        // setCommunity(data);
 
         function setCommunity(data){
             var defer = $q.defer();
@@ -1537,7 +1542,6 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
 angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval', 'verify',
     'account', 'errorLog', 'userInfo', '$state', 'appState', '$location',
     function ($stateParams, $scope, $timeout, $interval, verify,account,errorLog,userInfo,$state,appState,$location) {
-        userInfo.initWxParam();//微信参数只会在公众号第一个页面传入
         //alert($location.url());
         $scope.tel = userInfo.getTel();
         $("#tel").focus();
@@ -1616,6 +1620,21 @@ angular.module('app.account').controller('nicknameCtrl', ['$stateParams',
     }
 ]);
 
+angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
+    var vm=this;
+    params = {
+        type:'city'
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.cities = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+    vm.city = $stateParams.city;
+    addressInfo.city = $stateParams.city;
+    console.log("addressInfo注入");
+    console.log(addressInfo);
+}]);
 angular.module('app.address').controller('addressBlockCtrl',
     ['$stateParams','addresses', 'addressInfo',function($stateParams,addresses,addressInfo){
     var vm=this;
@@ -1644,21 +1663,6 @@ angular.module('app.address').controller('addressBlockCtrl',
     console.log("addressInfo注入");
     console.log(addressInfo);
 }])
-angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
-    var vm=this;
-    params = {
-        type:'city'
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.cities = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-    vm.city = $stateParams.city;
-    addressInfo.city = $stateParams.city;
-    console.log("addressInfo注入");
-    console.log(addressInfo);
-}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','addresses','addressInfo',function ($stateParams, addresses,addressInfo) {
         var vm = this;
         
