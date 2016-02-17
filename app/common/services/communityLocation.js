@@ -79,11 +79,10 @@ angular.module('app.location')
 		// data:{type,areaName,city,address,lastAreaName,lastCity,lastAddress}
 		this.compareCommunity = function(data){
 			var result = true;
-			if(data.type == "false" && 
-				(data.areaName != data.lastAreaName || data.city != data.lastCity || data.address != data.lastAddress)){
+			if(!data.type && (data.areaName != data.lastAreaName 
+				|| data.city != data.lastCity || data.address != data.lastAddress)){
 				result = false;
 			}
-			//result = false;
 			return result;
 		}
 

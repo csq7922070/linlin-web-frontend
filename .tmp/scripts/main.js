@@ -547,9 +547,10 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
             $state.go('auto-location');
             return;
         }
-        $scope.refreshCommunityInfo = function(){
+        function refreshCommunityInfo(){
             $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
         }
+        refreshCommunityInfo();
 
         $scope.changeCommunity = function(){
             $state.go('auto-location');
@@ -564,7 +565,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                 alert(reason.errorCode + ","+reason.errorMessage);
             });
         }
-        // var data = {areaName:"1",lastAreaName:"2",city:"bj",lastCity:'lf',address:'address1',lastAddress:'address2'};
+        // var data = {areaName:"1",lastAreaName:"2",city:"bj",lastCity:'bj',address:'address1',lastAddress:'address2',type:'false'};
         // setCommunity(data);
 
         function setCommunity(data){
@@ -595,7 +596,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                         auth: data.state
                     };
                     angular.extend(communityInfo, cmm);
-                    $scope.refreshCommunityInfo();
+                    refreshCommunityInfo();
                     communityLocation.storageCommunity(communityInfo);
                     userInfo.getOpenId().then(function(data){
                         var openId = data;
@@ -1620,21 +1621,6 @@ angular.module('app.account').controller('nicknameCtrl', ['$stateParams',
     }
 ]);
 
-angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
-    var vm=this;
-    params = {
-        type:'city'
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.cities = data.items;
-    }, function (data) {
-        console.log("err!");
-    });
-    vm.city = $stateParams.city;
-    addressInfo.city = $stateParams.city;
-    console.log("addressInfo注入");
-    console.log(addressInfo);
-}]);
 angular.module('app.address').controller('addressBlockCtrl',
     ['$stateParams','addresses', 'addressInfo',function($stateParams,addresses,addressInfo){
     var vm=this;
@@ -1663,6 +1649,21 @@ angular.module('app.address').controller('addressBlockCtrl',
     console.log("addressInfo注入");
     console.log(addressInfo);
 }])
+angular.module('app.address').controller('addressCityCtrl',['$stateParams','addresses','communityInfo','addressInfo', function($stateParams,addresses,communityInfo, addressInfo){
+    var vm=this;
+    params = {
+        type:'city'
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.cities = data.items;
+    }, function (data) {
+        console.log("err!");
+    });
+    vm.city = $stateParams.city;
+    addressInfo.city = $stateParams.city;
+    console.log("addressInfo注入");
+    console.log(addressInfo);
+}]);
 angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','addresses','addressInfo',function ($stateParams, addresses,addressInfo) {
         var vm = this;
         
@@ -1729,27 +1730,6 @@ angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addr
     });
     console.log("unit");
     console.log($stateParams);
-    console.log("addressInfo注入");
-    console.log(addressInfo);
-}]);
-angular.module('app.address').controller('addressVillageCtrl',
-    ['$stateParams','addresses','communityInfo','addressInfo',
-    function($stateParams,addresses,communityInfo, addressInfo){
-    var vm=this;
-    if($stateParams.city){
-        addressInfo.city = $stateParams.city;
-    }
-    addressInfo.village = $stateParams.village;
-    params = {
-        type:'community',
-        city:addressInfo.city
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.villages = data.items;
-        vm.city = $stateParams.city
-    }, function (data) {
-        console.log("err!");
-    });
     console.log("addressInfo注入");
     console.log(addressInfo);
 }]);
@@ -2426,11 +2406,10 @@ angular.module('app.location')
 		// data:{type,areaName,city,address,lastAreaName,lastCity,lastAddress}
 		this.compareCommunity = function(data){
 			var result = true;
-			if(data.type == "false" && 
-				(data.areaName != data.lastAreaName || data.city != data.lastCity || data.address != data.lastAddress)){
+			if(!data.type && (data.areaName != data.lastAreaName 
+				|| data.city != data.lastCity || data.address != data.lastAddress)){
 				result = false;
 			}
-			//result = false;
 			return result;
 		}
 
@@ -2495,6 +2474,19 @@ angular.module('app.log')
 			if(typeof(error) == "object" && error){
 				for(var i in error){
 					message+=error[i]+",";
+				}
+				message = message.substr(0, message.length - 1);
+			}else{
+				message += error;
+			}
+			return message;
+		}
+
+		this.getFullErrorMessage = function(error){
+			var message = "";
+			if(typeof(error) == "object" && error){
+				for(var i in error){
+					message+=i+"="+error[i]+",";
 				}
 				message = message.substr(0, message.length - 1);
 			}else{
@@ -2689,3 +2681,24 @@ angular.module('app.verify')
 	            return result;
 	        }
 	}]);
+angular.module('app.address').controller('addressVillageCtrl',
+    ['$stateParams','addresses','communityInfo','addressInfo',
+    function($stateParams,addresses,communityInfo, addressInfo){
+    var vm=this;
+    if($stateParams.city){
+        addressInfo.city = $stateParams.city;
+    }
+    addressInfo.village = $stateParams.village;
+    params = {
+        type:'community',
+        city:addressInfo.city
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.villages = data.items;
+        vm.city = $stateParams.city
+    }, function (data) {
+        console.log("err!");
+    });
+    console.log("addressInfo注入");
+    console.log(addressInfo);
+}]);

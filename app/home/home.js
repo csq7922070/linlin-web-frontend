@@ -10,9 +10,10 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
             $state.go('auto-location');
             return;
         }
-        $scope.refreshCommunityInfo = function(){
+        function refreshCommunityInfo(){
             $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
         }
+        refreshCommunityInfo();
 
         $scope.changeCommunity = function(){
             $state.go('auto-location');
@@ -27,7 +28,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                 alert(reason.errorCode + ","+reason.errorMessage);
             });
         }
-        // var data = {areaName:"1",lastAreaName:"2",city:"bj",lastCity:'lf',address:'address1',lastAddress:'address2'};
+        // var data = {areaName:"1",lastAreaName:"2",city:"bj",lastCity:'bj',address:'address1',lastAddress:'address2',type:'false'};
         // setCommunity(data);
 
         function setCommunity(data){
@@ -58,7 +59,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                         auth: data.state
                     };
                     angular.extend(communityInfo, cmm);
-                    $scope.refreshCommunityInfo();
+                    refreshCommunityInfo();
                     communityLocation.storageCommunity(communityInfo);
                     userInfo.getOpenId().then(function(data){
                         var openId = data;
