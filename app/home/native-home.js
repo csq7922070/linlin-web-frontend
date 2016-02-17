@@ -1,14 +1,18 @@
 angular.module('app.home').controller('nativeHomeCtrl', ['$stateParams','$scope',
     function ($stateParams, $scope) {
-    	var currentNav = 'home';
+        // -------------------------------------------------------------------------------
+        // 导航控制
+    	$scope.currentNav = 'home';
         $scope.nav = function(name){
-        	if(name=='account' && currentNav == 'home'){
+        	if(name=='account' && $scope.currentNav == 'home'){
         		document.querySelector("#flip-container").classList.toggle("flip");
-        		currentNav = 'account';
-        	}else if(name == 'home' && currentNav == 'account'){
+        		$scope.currentNav = 'account';
+        	}else if(name == 'home' && $scope.currentNav == 'account'){
         		document.querySelector("#flip-container").classList.toggle("flip");
-        		currentNav = 'home';
+        		$scope.currentNav = 'home';
         	}
         }
+        // end 导航控制
+        // ----------------------------------------------------------------------------------
     }
 ]);

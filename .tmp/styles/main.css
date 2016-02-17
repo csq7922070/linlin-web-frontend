@@ -1430,7 +1430,22 @@ div.rn-carousel-indicator span {
   float: left;
   height: 100%;
   text-align: center;
-  line-height: 51px;
+  line-height: 82px;
+  background-repeat: no-repeat;
+  background-size: 32px;
+  background-position: 50% 12%;
+}
+#native-home-container .bottom-nav-bar .home-nav {
+  background-image: url('../images/home.png');
+}
+#native-home-container .bottom-nav-bar .home-nav-active {
+  background-image: url('../images/home-active.png');
+}
+#native-home-container .bottom-nav-bar .account-nav {
+  background-image: url('../images/account.png');
+}
+#native-home-container .bottom-nav-bar .account-nav-active {
+  background-image: url('../images/account-active.png');
 }
 
 
