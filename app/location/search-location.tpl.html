@@ -10,7 +10,7 @@
 		<li class="list-item community-item" ng-repeat="item in searchLocationCommunities">
 			<a class="list-link" ng-click="changeCommunity(item)">
 				<span class="community-title" ng-bind="item.title"></span>
-				<span class="community-address" ng-bind="item.address"></span>
+				<span class="community-address" ng-bind="item.addressWithoutCity"></span>
 			</a>
 		</li>
 	</ul>

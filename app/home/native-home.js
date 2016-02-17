@@ -1,4 +1,4 @@
-angular.module('app.home').controller('appHomeCtrl', ['$stateParams','$scope',
+angular.module('app.home').controller('nativeHomeCtrl', ['$stateParams','$scope',
     function ($stateParams, $scope) {
     	var currentNav = 'home';
         $scope.nav = function(name){

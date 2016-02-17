@@ -201,10 +201,10 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "accountCtrl",
             controllerAs: "vm"
         })
-        .state('app-home',{
-            url: "/app-home",
-            templateUrl: "tpl/home/app-home.tpl.html",
-            controller: "appHomeCtrl",
+        .state('native-home',{
+            url: "/native-home",
+            templateUrl: "tpl/home/native-home.tpl.html",
+            controller: "nativeHomeCtrl",
             controllerAs: "vm"
         });
 }]).config(['$httpProvider', function($httpProvider) {
@@ -267,7 +267,10 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         name: null,
         province: null,
         city: null,
-        address: null,
+        district: null,
+        street: null,
+        steetNumber: null,
+        address: null,//这是完整的地址
         auth: null//该字段用来判断小区是否为合作小区，值为true or false
     }
 ).value(
