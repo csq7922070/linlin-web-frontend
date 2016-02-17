@@ -301,7 +301,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 ).constant(
     'appId', appId
 ).constant(
-    'appType', 'app'//weixin or weixin
+    'appType', 'weixin'//app or weixin
 );
 angular.module('app.account').controller('accountCtrl', ['$stateParams', '$scope',
     function ($stateParams,$scope) {
@@ -1699,6 +1699,27 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','add
         console.log(addressInfo);
     }
 ])
+angular.module('app.address').controller('addressVillageCtrl',
+    ['$stateParams','addresses','communityInfo','addressInfo',
+    function($stateParams,addresses,communityInfo, addressInfo){
+    var vm=this;
+    if($stateParams.city){
+        addressInfo.city = $stateParams.city;
+    }
+    addressInfo.village = $stateParams.village;
+    params = {
+        type:'community',
+        city:addressInfo.city
+    }
+    addresses.query(params).$promise.then(function (data) {
+        vm.villages = data.items;
+        vm.city = $stateParams.city
+    }, function (data) {
+        console.log("err!");
+    });
+    console.log("addressInfo注入");
+    console.log(addressInfo);
+}]);
 angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addresses','addressInfo',function($stateParams,addresses,addressInfo){
     var vm=this;
     if($stateParams.block){
@@ -1725,27 +1746,6 @@ angular.module('app.address').controller('addressUnitCtrl',['$stateParams','addr
     });
     console.log("unit");
     console.log($stateParams);
-    console.log("addressInfo注入");
-    console.log(addressInfo);
-}]);
-angular.module('app.address').controller('addressVillageCtrl',
-    ['$stateParams','addresses','communityInfo','addressInfo',
-    function($stateParams,addresses,communityInfo, addressInfo){
-    var vm=this;
-    if($stateParams.city){
-        addressInfo.city = $stateParams.city;
-    }
-    addressInfo.village = $stateParams.village;
-    params = {
-        type:'community',
-        city:addressInfo.city
-    }
-    addresses.query(params).$promise.then(function (data) {
-        vm.villages = data.items;
-        vm.city = $stateParams.city
-    }, function (data) {
-        console.log("err!");
-    });
     console.log("addressInfo注入");
     console.log(addressInfo);
 }]);
