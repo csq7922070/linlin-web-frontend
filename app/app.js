@@ -25,7 +25,7 @@ var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home'
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/login");
+    $urlRouterProvider.otherwise("/auto-location");
 
     $stateProvider
         .state('notice', {

@@ -12,4 +12,17 @@ angular.module('app.log')
 			}
 			return message;
 		}
+
+		this.getFullErrorMessage = function(error){
+			var message = "";
+			if(typeof(error) == "object" && error){
+				for(var i in error){
+					message+=i+"="+error[i]+",";
+				}
+				message = message.substr(0, message.length - 1);
+			}else{
+				message += error;
+			}
+			return message;
+		}
 	}]);

@@ -10,7 +10,10 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
             $state.go('auto-location');
             return;
         }
-        $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
+        function refreshCommunityInfo(){
+            $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
+        }
+        refreshCommunityInfo();
 
         $scope.changeCommunity = function(){
             $state.go('auto-location');
@@ -18,12 +21,15 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
 
         if(!locationState.hasLocation){
             communityLocation.autoLocationCommunity().then(function(data){
+                //alert(errorLog.getErrorMessage(data));
                 setCommunity(data);
             },function(reason){
                 //首页自动定位失败暂时不做提示
                 alert(reason.errorCode + ","+reason.errorMessage);
             });
         }
+        // var data = {areaName:"1",lastAreaName:"2",city:"bj",lastCity:'bj',address:'address1',lastAddress:'address2',type:'false'};
+        // setCommunity(data);
 
         function setCommunity(data){
             var defer = $q.defer();
@@ -53,7 +59,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                         auth: data.state
                     };
                     angular.extend(communityInfo, cmm);
-                    $scope.refreshCommunityInfo();
+                    refreshCommunityInfo();
                     communityLocation.storageCommunity(communityInfo);
                     userInfo.getOpenId().then(function(data){
                         var openId = data;

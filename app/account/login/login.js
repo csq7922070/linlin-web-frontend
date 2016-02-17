@@ -1,7 +1,6 @@
 angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval', 'verify',
     'account', 'errorLog', 'userInfo', '$state', 'appState', '$location',
     function ($stateParams, $scope, $timeout, $interval, verify,account,errorLog,userInfo,$state,appState,$location) {
-        userInfo.initWxParam();//微信参数只会在公众号第一个页面传入
         //alert($location.url());
         $scope.tel = userInfo.getTel();
         $("#tel").focus();
