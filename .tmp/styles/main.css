@@ -990,7 +990,6 @@ div.rn-carousel-indicator span {
   margin-left: 5px;
 }
 
-
 #auto-location-container .delete {
   display: none;
 }
@@ -1382,6 +1381,71 @@ div.rn-carousel-indicator span {
 }
 .logout-confirm-container .confirm-modal .modal-bottom .modal-cancel {
   border-right: solid 1px #e8e8e8;
+}
+
+#native-home-container {
+  font-family: 微软雅黑;
+}
+#native-home-container .flip-container {
+  width: 100%;
+  top: 0px;
+  bottom: 51px;
+  left: 0px;
+  position: absolute;
+  perspective: 1000;
+  transition: 0.6s;
+  transform-style: preserve-3d;
+}
+#native-home-container .flip-container .front,
+#native-home-container .flip-container .back {
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+#native-home-container .flip-container .front {
+  z-index: 1;
+}
+#native-home-container .flip-container .back {
+  transform: rotateY(180deg);
+}
+#native-home-container .flip-container:hover,
+#native-home-container .flip-container.flip {
+  transform: rotateY(180deg);
+}
+#native-home-container .bottom-nav-bar {
+  height: 51px;
+  border-top: solid 1px #e8e8e8;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  left: 0px;
+  font-size: 13px;
+}
+#native-home-container .bottom-nav-bar .nav-link {
+  width: 50%;
+  display: block;
+  float: left;
+  height: 100%;
+  text-align: center;
+  line-height: 82px;
+  background-repeat: no-repeat;
+  background-size: 32px;
+  background-position: 50% 12%;
+}
+#native-home-container .bottom-nav-bar .home-nav {
+  background-image: url('../images/home.png');
+}
+#native-home-container .bottom-nav-bar .home-nav-active {
+  background-image: url('../images/home-active.png');
+}
+#native-home-container .bottom-nav-bar .account-nav {
+  background-image: url('../images/account.png');
+}
+#native-home-container .bottom-nav-bar .account-nav-active {
+  background-image: url('../images/account-active.png');
 }
 
 

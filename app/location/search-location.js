@@ -30,7 +30,7 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	var changePromise = null;
     	$scope.$watch("communityName", function(newVal, oldVal){
     		if(newVal != oldVal){
-    			if(changePromise){
+    			if(changePromise){ 
     				$timeout.cancel(changePromise);
     			}
     			changePromise = $timeout(function(){

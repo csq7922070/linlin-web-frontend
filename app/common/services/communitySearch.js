@@ -10,6 +10,7 @@ angular.module('app.location')
 					var item = this.cmmList[i];
 					if(item.name.indexOf(communityName) >= 0){
 						item.title = item.city + ", " + item.name;
+						item.addressWithoutCity = item.district+item.street+ (item.streetNumber?item.streetNumber:"");
 						item.auth = item.state;
 						result.push(item);
 					}

@@ -17,9 +17,11 @@ angular.module('app.log',[]);
 angular.module('app.auth',[]);
 angular.module('app.account',[]);
 angular.module('app.verify',[]);
+angular.module('app.control',[]);
 
 var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 
-    'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user', 'app.log', 'app.auth', 'app.account', 'app.verify']);
+    'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user', 'app.log', 'app.auth', 'app.account', 'app.verify',
+    'app.control']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -201,10 +203,10 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "accountCtrl",
             controllerAs: "vm"
         })
-        .state('app-home',{
-            url: "/app-home",
-            templateUrl: "tpl/home/app-home.tpl.html",
-            controller: "appHomeCtrl",
+        .state('native-home',{
+            url: "/native-home",
+            templateUrl: "tpl/home/native-home.tpl.html",
+            controller: "nativeHomeCtrl",
             controllerAs: "vm"
         });
 }]).config(['$httpProvider', function($httpProvider) {
@@ -251,9 +253,9 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
-}]).run(['$rootScope', 'auth', function($rootScope, auth) {
+}]).run(['$rootScope', 'auth', 'control', function($rootScope, auth, control) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        //alert("toState:"+toState.name+",toParams:"+toParams.name);
+        control.startChangeState(event, toState, toParams, fromState, fromParams);//为了兼容app和微信公众号的首页不一致问题
         auth.startChangeState(event, toState, toParams, fromState, fromParams);
     });
     $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
@@ -267,7 +269,10 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         name: null,
         province: null,
         city: null,
-        address: null,
+        district: null,
+        street: null,
+        steetNumber: null,
+        address: null,//这是完整的地址
         auth: null//该字段用来判断小区是否为合作小区，值为true or false
     }
 ).value(
@@ -296,5 +301,5 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 ).constant(
     'appId', appId
 ).constant(
-    'appType', 'app'//app or weixin
+    'appType', 'weixin'//app or weixin
 );
