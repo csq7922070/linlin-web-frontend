@@ -7,27 +7,25 @@ angular.module('app.user')
 			noncestr : null,
 			sign : null,
 		};
+		var tel = null;//用户的手机号
 
 		this.initWxParam = function(){
 			if(!wxParam){
 				var url = $location.url().substring($location.url().indexOf("?"));
-				if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
+				if(url.indexOf("?code")<0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
 					url="";
 				}
+				if(!url && localStorage.wxParam && localStorage.wxParam.indexOf("?code")>=0){
+					url = localStorage.wxParam;
+				}
 				wxParam = url;
+				localStorage.wxParam = wxParam;
 			}
 		}
 
 		this.getOpenId = function(){
 			var defer = $q.defer();
-			if (openId == null ){
-				if(!wxParam){
-					var url = $location.url().substring($location.url().indexOf("?"));
-					if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
-						url="";
-					}
-					wxParam = url;
-				}
+			if (!openId){
 	            $http({
 	                method: "GET",
 	                url: basePath + '/users/getopenid' + wxParam
@@ -60,14 +58,7 @@ angular.module('app.user')
 
 		this.getWxConfigParam = function(){
 			var defer = $q.defer();
-			if(wxConfigParam.timestamp == null || wxConfigParam.noncestr == null || wxConfigParam.sign == null){
-				if(!wxParam){
-					var url = $location.url().substring($location.url().indexOf("?"));
-					if(url.indexOf("auto-location")>=0 || url.indexOf("home") >= 0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
-						url="";
-					}
-					wxParam = url;
-				}
+			if(!wxConfigParam.timestamp || !wxConfigParam.noncestr || !wxConfigParam.sign){
 	            $http({
 	                method: "GET",
 	                url: basePath + '/users/getopenid' + wxParam
@@ -95,5 +86,16 @@ angular.module('app.user')
 				defer.resolve(wxConfigParam);
 			}
 			return defer.promise;
+		}
+
+		this.storageTel = function(tel){
+			localStorage.tel = tel;
+		}
+
+		this.getTel = function(){
+			if(!tel && localStorage.tel){
+				tel = localStorage.tel;
+			}
+			return tel;
 		}
 	}]);

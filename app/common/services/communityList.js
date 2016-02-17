@@ -1,5 +1,6 @@
 angular.module('app.location')
-	.service('communityList', ['$q','$http','$timeout', function($q,$http,$timeout){
+	.service('communityList', ['$q','$http','$timeout', 'errorLog',
+		function($q,$http,$timeout, errorLog){
 		var cmmList = null;
 		this.getCommunityList = function(cityName){
 			var promise = null;
@@ -7,13 +8,6 @@ angular.module('app.location')
 				promise = $q.when(cmmList);
 			}else{
 				var defer = $q.defer();
-				// $timeout(function(){
-				// 	$http.get('data/communityList.json').success(function(data){
-				// 		defer.resolve(data);
-				// 	}).error(function(data){
-				// 		defer.reject(data);
-				// 	});
-				// },1000);
 				$http({
 					method: "GET",
 					url: basePath + '/GPS/findArea',
@@ -24,7 +18,11 @@ angular.module('app.location')
 					cmmList = data.items;
 					defer.resolve(cmmList);
 				}).error(function(data){
-					defer.reject(data);
+					var reason = {
+						errorCode: "GET_COMMUNITY_LIST_ERROR",
+						errorMessage: errorLog.getErrorMessage(data)
+					};
+					defer.reject(reason);
 				});
 				promise = defer.promise;
 			}

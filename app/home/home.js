@@ -1,10 +1,17 @@
 angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-    'communityInfo', 'locationState', 'communityLocation', '$q', 'userInfo', 'errorLog',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, locationState, communityLocation, $q, userInfo,errorLog) {
-        $scope.refreshCommunityInfo = function(){
-            $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
+    'communityInfo', 'locationState', 'communityLocation', '$q', 'userInfo', 'errorLog', 'locationInfo', 'location',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, locationState, communityLocation, $q, userInfo,errorLog, locationInfo, location) {
+        // // test
+        // locationInfo.longitude = 116.30286359442356;
+        // locationInfo.latitude = 39.979707375431694;
+        // location.storageLocation(locationInfo);
+        // // end test
+        if(!communityInfo.name){
+            $state.go('auto-location');
+            return;
         }
-        $scope.refreshCommunityInfo();
+        $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
+
         $scope.changeCommunity = function(){
             $state.go('auto-location');
         }
@@ -14,6 +21,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                 setCommunity(data);
             },function(reason){
                 //首页自动定位失败暂时不做提示
+                alert(reason.errorCode + ","+reason.errorMessage);
             });
         }
 
@@ -27,6 +35,9 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                 $scope.okText = "切换";
                 $scope.showModal = true;
                 $scope.onModalClose = function(state){//state is true or false
+                    if(state){
+                        communityLocation.changeCommunityHand = true;
+                    }
                     defer.resolve(state);
                     $scope.showModal = false;
                 }
@@ -38,18 +49,14 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                     var cmm = {
                         name:data.areaName,
                         city: data.city,
-                        address: data.address
+                        address: data.address,
+                        auth: data.state
                     };
                     angular.extend(communityInfo, cmm);
                     $scope.refreshCommunityInfo();
                     communityLocation.storageCommunity(communityInfo);
                     userInfo.getOpenId().then(function(data){
                         var openId = data;
-                        // //test
-                        // cmm.name = "test";
-                        // alert("changeCommunity,openId:"+openId+",cmm:"+errorLog.getErrorMessage(cmm));
-                        // //end
-
                         communityLocation.changeCommunity(openId, cmm).then(function(data){//保存用户选择的小区信息到服务器
                             //alert("changeCommunity success,openId:"+openId+",cmm:"+errorLog.getErrorMessage(cmm));
                         },function(reason){
@@ -62,27 +69,6 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                 locationState.hasLocation = true;
             });
         }
-
-        // var url = $location.url().substring($location.url().indexOf("?"));
-        // if (url.indexOf("home") != -1) {
-        //     url = "";
-        // }
-        // //1.6获取微信用户openid
-        // if (sessionStorage.getItem("openid") == null) {
-        //     $http({
-        //         method: "GET",
-        //         url: basePath + '/getopenid' + url
-        //     }).success(function(data) {
-        //         sessionStorage.setItem("openid", data.openid);
-        //         //添加微信支付
-        //         sessionStorage.setItem("timestamp", data.timestamp);
-        //         sessionStorage.setItem("noncestr", data.noncestr);
-        //         sessionStorage.setItem("sign", data.sign);
-        //         console.log("获取openid成功");
-        //     }).error(function(data) {
-        //         console.log("获取openid失败");
-        //     });
-        // }
 
         $scope.slides7 = [{
             id: 10,

@@ -17,8 +17,7 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     			//$("#community-search-field").trigger("focus");
     		},function(reason){
     			$scope.loadingShow = false;
-    			reason = "数据加载失败: "+errorLog.getErrorMessage(reason);
-    			alert(reason);
+    			alert(reason.errorCode +"," +reason.errorMessage);
     		});
 
     	console.log(communityInfo);

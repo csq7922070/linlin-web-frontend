@@ -14,13 +14,16 @@ angular.module('app.payment', ['resources.address', 'resources.payment']);
 angular.module('app.location', []);
 angular.module('app.user',[]);
 angular.module('app.log',[]);
+angular.module('app.auth',[]);
+angular.module('app.account',[]);
+angular.module('app.verify',[]);
 
 var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 
-    'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user', 'app.log']);
+    'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user', 'app.log', 'app.auth', 'app.account', 'app.verify']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/auto-location");
+    $urlRouterProvider.otherwise("/login");
 
     $stateProvider
         .state('notice', {
@@ -179,6 +182,30 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             templateUrl: "tpl/location/search-location.tpl.html",
             controller: "searchLocationCtrl",
             controllerAs: 'vm'
+        })
+        .state('login',{
+            url: "/login",
+            templateUrl: "tpl/account/login/login.tpl.html",
+            controller: "loginCtrl",
+            controllerAs: "vm"
+        })
+        .state('nickname',{
+            url: "/nickname",
+            templateUrl: "tpl/account/nickname/nickname.tpl.html",
+            controller: "nicknameCtrl",
+            controllerAs: "vm"
+        })
+        .state('account',{
+            url: "/account",
+            templateUrl: "tpl/account/account.tpl.html",
+            controller: "accountCtrl",
+            controllerAs: "vm"
+        })
+        .state('app-home',{
+            url: "/app-home",
+            templateUrl: "tpl/home/app-home.tpl.html",
+            controller: "appHomeCtrl",
+            controllerAs: "vm"
         });
 }]).config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -224,7 +251,11 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
-}]).run(['$rootScope', function($rootScope) {
+}]).run(['$rootScope', 'auth', function($rootScope, auth) {
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        //alert("toState:"+toState.name+",toParams:"+toParams.name);
+        auth.startChangeState(event, toState, toParams, fromState, fromParams);
+    });
     $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
         $rootScope.previousState = from.name;
         $rootScope.currentState = to.name;
@@ -258,6 +289,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         hasLocation: false,
         autoLocationVisited: false
     }
+).value(
+    'appState', {
+        visited: false
+    }
 ).constant(
     'appId', appId
+).constant(
+    'appType', 'app'//app or weixin
 );

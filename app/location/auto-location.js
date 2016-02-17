@@ -1,7 +1,9 @@
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog', 'locationState',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, locationInfo,errorLog,locationState) {
-    	userInfo.initWxParam();//微信参数只会在公众号登录页传入，目前自动定位页面是公众号登录页
+	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog', 'locationState', 'appState',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, 
+    	locationInfo,errorLog,locationState, appState) {
+        userInfo.initWxParam();//微信参数只会在公众号第一个页面传入
+        //alert($location.url());
     	var locInfo = location.getLastLocation();
     	if(locInfo){
     		angular.extend(locationInfo, locInfo);
@@ -84,7 +86,8 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 				name:data.lastAreaName,
 				city: data.lastCity,
 				address: data.lastAddress,
-				title: data.lastCity + ', '+data.lastAreaName
+				title: data.lastCity + ', '+data.lastAreaName,
+				auth: data.lastState
 			}];
     	}
 
@@ -93,7 +96,8 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 				name:data.areaName,
 				city: data.city,
 				address: data.address,
-				title: data.city + ', '+data.areaName
+				title: data.city + ', '+data.areaName,
+				auth: data.state
 			}];
     	}
 
