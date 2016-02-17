@@ -1,4 +1,4 @@
-angular.module('app.address').controller('addressCtrl2', ['$state','$scope', '$stateParams', 'addresses','communityInfo','addressInfo',
+angular.module('app.address').controller('addressEditCtrl', ['$state','$scope', '$stateParams', 'addresses','communityInfo','addressInfo',
     function ($state, $scope, $stateParams, addresses,communityInfo,addressInfo) {
         var vm = this;
         vm.city = communityInfo.city;
