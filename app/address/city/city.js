@@ -6,7 +6,8 @@ angular.module('app.address').controller('addressCityCtrl',['$stateParams','addr
     addresses.query(params).$promise.then(function (data) {
         vm.cities = data.items;
     }, function (data) {
-        console.log("err!");
+        // console.log("err!");
+        alert(errorLog.getErrorMessage(data));
     });
     vm.city = $stateParams.city;
     addressInfo.city = $stateParams.city;

@@ -203,10 +203,17 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "accountCtrl",
             controllerAs: "vm"
         })
+<<<<<<< HEAD
         .state('native-home',{
             url: "/native-home",
             templateUrl: "tpl/home/native-home.tpl.html",
             controller: "nativeHomeCtrl",
+=======
+        .state('app-home',{
+            url: "/app-home",
+            templateUrl: "tpl/home/app-home.tpl.html",
+            controller: "appHomeCtrl",
+>>>>>>> refactorDirNew
             controllerAs: "vm"
         });
 }]).config(['$httpProvider', function($httpProvider) {
@@ -253,9 +260,15 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
+<<<<<<< HEAD
 }]).run(['$rootScope', 'auth', 'control', function($rootScope, auth, control) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
         control.startChangeState(event, toState, toParams, fromState, fromParams);//为了兼容app和微信公众号的首页不一致问题
+=======
+}]).run(['$rootScope', 'auth', function($rootScope, auth) {
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        //alert("toState:"+toState.name+",toParams:"+toParams.name);
+>>>>>>> refactorDirNew
         auth.startChangeState(event, toState, toParams, fromState, fromParams);
     });
     $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
@@ -301,6 +314,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 ).constant(
     'appId', appId
 ).constant(
+<<<<<<< HEAD
     'appType', 'weixin'//app or weixin
 );
 angular.module('app.account').controller('accountCtrl', ['$stateParams', '$scope',
@@ -315,6 +329,22 @@ angular.module('app.account').controller('accountCtrl', ['$stateParams', '$scope
         // 		console.log("logout...");
         // 	}
         // }
+=======
+    'appType', 'app'//app or weixin
+);
+angular.module('app.account').controller('accountCtrl', ['$stateParams', '$scope',
+    function ($stateParams,$scope) {
+        $scope.logout = function(){
+        	$scope.showLogoutConfirm = true;
+        }
+
+        $scope.onLogoutConfirmClose = function(state){
+        	$scope.showLogoutConfirm = false;
+        	if(state){
+        		console.log("logout...");
+        	}
+        }
+>>>>>>> refactorDirNew
     }
 ]);
 
@@ -535,6 +565,12 @@ angular.module('app.complain').controller('complainListCtrl', ['complains', 'err
         vm.load(1, vm.pageSize);
     }
 ]);
+angular.module('app.home').controller('appHomeCtrl', ['$stateParams',
+    function ($stateParams) {
+        var vm = this;
+    }
+]);
+
 angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
     'communityInfo', 'locationState', 'communityLocation', '$q', 'userInfo', 'errorLog', 'locationInfo', 'location',
     function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, locationState, communityLocation, $q, userInfo,errorLog, locationInfo, location) {
@@ -650,9 +686,14 @@ angular.module('app.home').controller('nativeHomeCtrl', ['$stateParams','$scope'
 
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
 	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog', 'locationState', 'appState',
+<<<<<<< HEAD
     'appType',
     function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, 
     	locationInfo,errorLog,locationState, appState,appType) {
+=======
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, 
+    	locationInfo,errorLog,locationState, appState) {
+>>>>>>> refactorDirNew
         userInfo.initWxParam();//微信参数只会在公众号第一个页面传入
         //alert($location.url());
     	var locInfo = location.getLastLocation();
@@ -1652,7 +1693,8 @@ angular.module('app.address').controller('addressCityCtrl',['$stateParams','addr
     addresses.query(params).$promise.then(function (data) {
         vm.cities = data.items;
     }, function (data) {
-        console.log("err!");
+        // console.log("err!");
+        alert(errorLog.getErrorMessage(data));
     });
     vm.city = $stateParams.city;
     addressInfo.city = $stateParams.city;
@@ -1744,7 +1786,8 @@ angular.module('app.address').controller('addressVillageCtrl',
         vm.villages = data.items;
         vm.city = $stateParams.city
     }, function (data) {
-        console.log("err!");
+        // console.log("err!");
+        alert(errorLog.getErrorMessage(data));
     });
     console.log("addressInfo注入");
     console.log(addressInfo);
@@ -2460,7 +2503,10 @@ angular.module('app.location')
 					var item = this.cmmList[i];
 					if(item.name.indexOf(communityName) >= 0){
 						item.title = item.city + ", " + item.name;
+<<<<<<< HEAD
 						item.addressWithoutCity = item.district+item.street+ (item.streetNumber?item.streetNumber:"");
+=======
+>>>>>>> refactorDirNew
 						item.auth = item.state;
 						result.push(item);
 					}
