@@ -12,6 +12,7 @@ myApp.directive('cBlockList', function() {
         },
         controller: function ($stateParams,$scope,addresses,addressInfo,address) {
             $scope.changeBlock = function(block){
+                console.log("changeBlock...");
                 addressInfo.block = block.block;
                 if(block.type == 2){
                     $scope.showUnitList = true;
@@ -32,16 +33,23 @@ myApp.directive('cBlockList', function() {
                     });
                 }else if(block.type == 0){
                     addressInfo.unit = "";
-                    addressInfo.room = null;
-                    $scope.onComplete();
+                    addressInfo.roomInfo = null;
+                    close();
                 }
             }
 
             $scope.onSelectUnitComplete = function(){
-                $scope.onComplete();
+                console.log("onSelectUnitComplete");
+                close();
             }
 
             $scope.onSelectRoomComplete = function(){
+                console.log("onSelectRoomComplete");
+                close();
+            }
+
+            function close(){
+                $scope.show = false;
                 $scope.onComplete();
             }
         }

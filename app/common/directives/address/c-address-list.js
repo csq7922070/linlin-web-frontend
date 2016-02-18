@@ -5,7 +5,8 @@ myApp.directive('cAddressList', function() {
         scope: {
             show: '=',
             onComplete: '&',
-            addressList: '='
+            addressList: '=',
+            mode:'='//browse or select mode
         },
         templateUrl: 'tpl/common/directives/address/c-address-list.tpl.html',
         link: function($scope, element, attrs) {
@@ -53,6 +54,9 @@ myApp.directive('cAddressList', function() {
             }
 
             $scope.selectAddress = function(house){
+                if($scope.mode != "select"){
+                    return;
+                }
                 addressInfo.city = house.city;
                 addressInfo.community = house.community;
                 addressInfo.block = house.block;
@@ -73,6 +77,10 @@ myApp.directive('cAddressList', function() {
 
             $scope.onEditAddressComplete = function(){
                 console.log("onEditAddressComplete");
+                if($scope.mode == "select"){
+                    $scope.show = false;
+                    $scope.onComplete();
+                }
             }
         }
     }
