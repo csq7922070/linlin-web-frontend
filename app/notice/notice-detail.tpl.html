@@ -1,6 +1,13 @@
-<div class="container-fluid" style="background:white">
+<div class="container-fluid" >
     <div class='detail_notice'>
-        <span class='detail_date'>{{vm.notice.createDate.substring(5,10)}}</span>{{vm.notice.title}}
+        <!-- <span class='detail_date'>{{vm.notice.createDate.substring(5,10)}}</span>{{vm.notice.title}} -->
+        [温馨提示]{{vm.notice.title}}
     </div>
-    <div class='notice_message'>{{vm.notice.content }}</div>
+    <!-- <div class='notice_message'>{{vm.notice.content}}</div> -->
+    <div class='detail_notice_time'>
+    	<span>{{vm.notice.createDate}}</span>
+    </div>
+    <div class='detail_notice_message' style="background:white">
+    	<textarea calss="notice_content" value="vm.notice.content" disabled="disabled" contenteditable="true">{{vm.notice.content}}</textarea>
+    </div>
 </div>
