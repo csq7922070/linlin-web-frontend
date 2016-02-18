@@ -1,35 +1,23 @@
-angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', 'addresses', 'payments',
-    function($scope, $http, $stateParams, $rootScope, $state, addresses, payments) {
+angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', 
+    '$state', 'addresses', 'payments','addressInfo',
+    function($scope, $http, $stateParams, $rootScope, $state, addresses, payments,addressInfo) {
         //显示当前页面的业主信息
-        $scope.ownerName = $stateParams.username;
-        $scope.block = $stateParams.block;
-        $scope.village = $stateParams.village;
-        $scope.unit = $stateParams.unit;
-        $scope.room = $stateParams.room;
-        $scope.id = $stateParams.id;
-        $scope.activeId = $stateParams.activeId;
+        $scope.block = addressInfo.block;
+        $scope.village = addressInfo.community;
+        $scope.unit = addressInfo.unit;
+        $scope.room = addressInfo.roomInfo.room;
+        $scope.id = addressInfo.roomInfo.id;
 
         var totalCount = 0;
 
         console.log($stateParams);
         console.log($stateParams.village);
 
-        $scope.change_flag = function() {
-            if ($scope.id == $scope.activeId) {
-                return;
-            }
-            addresses.save({
-                id: $stateParams.id,
-                openid: sessionStorage.getItem("openid")
-            }).$promise.then(function() {
-                $scope.activeId = $stateParams.id;
-            });
-        }
-        params = {
+        var params = {
             id: 'query',
             paymentState: 0,
             queryType: 'houseId',
-            houseId: $stateParams.id
+            houseId: addressInfo.roomInfo.id
         };
 
         payments.query(params).$promise.then(function(data) {

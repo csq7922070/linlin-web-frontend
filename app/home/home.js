@@ -1,6 +1,8 @@
 angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
     'communityInfo', 'locationState', 'communityLocation', '$q', 'userInfo', 'errorLog', 'locationInfo', 'location',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, locationState, communityLocation, $q, userInfo,errorLog, locationInfo, location) {
+    'address',
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, locationState, communityLocation, $q, 
+        userInfo,errorLog, locationInfo, location,address) {
         // // test
         // locationInfo.longitude = 116.30286359442356;
         // locationInfo.latitude = 39.979707375431694;
@@ -95,5 +97,21 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
         $state.go("home.shop-info", {
             site: 1
         });
+
+        $scope.pay = function(){
+            $scope.show = false;
+            $scope.showAddressList = true;
+            address.getAddressList().then(function(data){
+                $scope.addressList = data;
+            },function(reason){
+                $scope.showAddressList = false;
+                alert(reason.errorCode+","+reason.errorMessage);
+            });
+        }
+
+        $scope.onSelectAddressComplete = function(){
+            $state.go("bill");
+            console.log("onSelectAddressComplte");
+        }
     }
 ]);
