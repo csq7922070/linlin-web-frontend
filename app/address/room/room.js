@@ -13,7 +13,7 @@ angular.module('app.address').controller('addressRoomCtrl', ['$stateParams','add
             vm.rooms = data.items;
         })
         vm.changeRoom = function(room){
-            addressInfo.room = room;
+            addressInfo.roomInfo = room;
             $state.go("address-edit");
         }
     }

@@ -6,7 +6,8 @@ angular.module('app.address')
 				community: null,
 				block: null,
 				unit: null,
-				roomInfo: null
+				room: null,
+				owner: null
 			};
 			var addressList = [];
 

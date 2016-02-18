@@ -9,9 +9,9 @@ angular.module('app.address').controller('addressEditCtrl', ['$state','$scope', 
         vm.village = addressInfo.community;
         vm.block = addressInfo.block;
         vm.unit = addressInfo.unit;
-        vm.room = addressInfo.room ? addressInfo.room.room : "";
-        vm.owner = addressInfo.room ? addressInfo.room.ownerName:"";
-        vm.roomId = addressInfo.room ? addressInfo.room.id:"";
+        vm.room = addressInfo.roomInfo ? addressInfo.roomInfo.room : "";
+        vm.owner = addressInfo.roomInfo ? addressInfo.roomInfo.ownerName:"";
+        vm.roomId = addressInfo.roomInfo ? addressInfo.roomInfo.id:"";
 
         vm.changeUnit = function() {
         	if(vm.unit){
@@ -42,9 +42,9 @@ angular.module('app.address').controller('addressEditCtrl', ['$state','$scope', 
                 community: addressInfo.community,
                 block: addressInfo.block,
                 unit: addressInfo.unit,
-                room: addressInfo.room.room,
-                houseId: addressInfo.room.id,
-                initial: addressInfo.room.initial,
+                room: addressInfo.roomInfo.room,
+                houseId: addressInfo.roomInfo.id,
+                initial: addressInfo.roomInfo.initial,
                 openid: sessionStorage.getItem("openid")
             }
             addresses.save(params).$promise.then(function (data) {
