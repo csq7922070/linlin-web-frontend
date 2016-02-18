@@ -7,7 +7,8 @@ angular.module('app.address')
 				block: null,
 				unit: null,
 				room: null,
-				owner: null
+				owner: null,//房屋所有者姓名
+				ownerStar: null//所有者姓名加*处理
 			};
 			var addressList = [];
 
