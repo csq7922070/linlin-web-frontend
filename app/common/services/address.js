@@ -1,6 +1,6 @@
 angular.module('app.address')
-	.service('address', ['$q','$http','$timeout','errorLog',
-		function($q,$http,$timeout, errorLog){
+	.service('address', ['$q','$http','$timeout','errorLog', 'addresses',
+		function($q,$http,$timeout, errorLog,addresses){
 			var defaultAddress = {
 				city: null,
 				community: null,
@@ -10,14 +10,34 @@ angular.module('app.address')
 				owner: null,//房屋所有者姓名
 				ownerStar: null//所有者姓名加*处理
 			};
-			var addressList = [];
+			var addressList = null;
 
 			this.getDefaultAddress = function(){
 				return defaultAddress;
 			}
 
 			this.getAddressList = function(){
-				return addressList;
+				var defer = $q.defer();
+				if(!addressList){
+					addressList = [];
+					var params = {
+		                type: 'openid',
+		                openid: sessionStorage.getItem("openid")
+		            }
+		            addresses.query(params).$promise.then(function(data) {
+		            	addressList = data.items;
+		            	defer.resolve(addressList);
+		            },function(reason){
+		            	reason = {
+		            		errorCode: "GET_ADDRESS_LIST_ERROR",
+		            		errorMessage: errorLog.getErrorMessage(reason)
+		            	};
+		                defer.reject(reason);
+		            });
+				}else{
+					defer.resolve(addressList);
+				}
+				return defer.promise;
 			}
 			// this.sendAuthCode = function(tel){
 			// 	var defer = $q.defer();

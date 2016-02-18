@@ -17,7 +17,7 @@
         <div rn-carousel-indicators ng-if="slides7.length > 1" slides="slides7" rn-carousel-index="carouselIndex7"></div>
     </div>
     <div class="home_nav">
-        <a ui-sref="address-list">
+        <a ng-click="pay()">
             <img src="images/water_free.png">
             <p>水电缴费</p>
         </a>
@@ -42,4 +42,5 @@
     <div ui-view></div>
     <confirm-modal title="modalTitle" tip="modalTip" tip-align="tipAlign" show="showModal" cancel-text="cancelText" ok-text="okText" 
         only-ok-button="onlyOkButton" on-close="onModalClose(state)"></confirm-modal>
+    <c-address-list show="showAddressList" on-complete="onSelectAddressComplete()" address-list="addressList"></c-address-list>
 </div>

@@ -1,31 +1,29 @@
 angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', 'addresses', 'payments',
     function($scope, $http, $stateParams, $rootScope, $state, addresses, payments) {
         //显示当前页面的业主信息
-        $scope.ownerName = $stateParams.username;
         $scope.block = $stateParams.block;
         $scope.village = $stateParams.village;
         $scope.unit = $stateParams.unit;
         $scope.room = $stateParams.room;
         $scope.id = $stateParams.id;
-        $scope.activeId = $stateParams.activeId;
 
         var totalCount = 0;
 
         console.log($stateParams);
         console.log($stateParams.village);
 
-        $scope.change_flag = function() {
-            if ($scope.id == $scope.activeId) {
-                return;
-            }
-            addresses.save({
-                id: $stateParams.id,
-                openid: sessionStorage.getItem("openid")
-            }).$promise.then(function() {
-                $scope.activeId = $stateParams.id;
-            });
-        }
-        params = {
+        // $scope.change_flag = function() {
+        //     if ($scope.id == $scope.activeId) {
+        //         return;
+        //     }
+        //     addresses.save({
+        //         id: $stateParams.id,
+        //         openid: sessionStorage.getItem("openid")
+        //     }).$promise.then(function() {
+        //         $scope.activeId = $stateParams.id;
+        //     });
+        // }
+        var params = {
             id: 'query',
             paymentState: 0,
             queryType: 'houseId',
