@@ -99,6 +99,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
         });
 
         $scope.pay = function(){
+            $scope.show = false;
             $scope.showAddressList = true;
             address.getAddressList().then(function(data){
                 $scope.addressList = data;
