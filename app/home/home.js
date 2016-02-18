@@ -109,6 +109,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
         }
 
         $scope.onSelectAddressComplete = function(){
+            $state.go("bill");
             console.log("onSelectAddressComplte");
         }
     }
