@@ -1,4 +1,4 @@
-<div id="home-container">
+<div id="home-container" ng-show="show" ng-init="show=true">
     <a class="village" ng-click="changeCommunity()">
         <span ng-bind="communityName" class="community-name">阿尔卡...</span>
         <img src="images/right_arrow.png" style="height: 14px;position: relative;top: -1px;left: 4px">
@@ -17,7 +17,7 @@
         <div rn-carousel-indicators ng-if="slides7.length > 1" slides="slides7" rn-carousel-index="carouselIndex7"></div>
     </div>
     <div class="home_nav">
-        <a ui-sref="address-list">
+        <a ng-click="pay()">
             <img src="images/water_free.png">
             <p>水电缴费</p>
         </a>
@@ -43,3 +43,5 @@
     <confirm-modal title="modalTitle" tip="modalTip" tip-align="tipAlign" show="showModal" cancel-text="cancelText" ok-text="okText" 
         only-ok-button="onlyOkButton" on-close="onModalClose(state)"></confirm-modal>
 </div>
+<c-address-list show="showAddressList" on-complete="onSelectAddressComplete()" address-list="addressList" mode="addressListMode"
+    ng-init="addressListMode='select'"></c-address-list>

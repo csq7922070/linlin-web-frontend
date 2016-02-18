@@ -134,18 +134,18 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controllerAs: 'vm'
         })
         .state('bill', {
-            url: "/bill/:village/:block/:unit/:room/:id/:username/:activeId",
+            url: "/bill/",
             templateUrl: "tpl/payment/bill.tpl.html",
             controller: "billCtrl"
         })
         .state('payment', {
-            url: "/payment/:village/:block/:unit/:room/",
+            url: "/payment/",
             templateUrl: "tpl/payment/payment.tpl.html",
             controller: "paymentCtrl",
             controllerAs: 'vm'
         })
         .state('payment-list', {
-            url: "/payment-list/:id",
+            url: "/payment-list",
             templateUrl: "tpl/payment/payment-list.tpl.html",
             controller: "paymentListCtrl"
         })

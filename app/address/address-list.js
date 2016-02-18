@@ -8,7 +8,7 @@ angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stat
             vm.sure_delete = true;
             vm.sure = function () {
                 vm.sure_delete = false;
-                params = {
+                var params = {
                     id: house.id,
                     openid:sessionStorage.getItem("openid")
                 }
@@ -27,7 +27,7 @@ angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stat
             if (house.active == 0) {
                 return;
             }
-            params = {
+            var params = {
                 id: house.id,
                 openid: sessionStorage.getItem("openid")
             }

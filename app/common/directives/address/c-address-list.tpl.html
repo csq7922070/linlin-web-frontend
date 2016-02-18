@@ -1,0 +1,44 @@
+<div id="c-address-list-container" class="absolute-full-container address-common-container" ng-show="show">
+    <div class="weui_cells address_down account_page owner_top" ng-repeat="house in addressList" ng-if="house.rowState==0">
+        <a class="weui_cell" style="padding-top: 10px;padding-bottom: 0;" ng-click="selectAddress(house)">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p class="color333" style="margin-bottom: 5px">{{house.community}}</p>
+            </div>
+            <div class="address_section color999">
+                <span>{{house.block}}</span><span ng-if="house.unit">-{{house.unit}}</span><span ng-if="house.room">-{{house.room}}</span>
+            </div>
+        </a>
+        <a class="weui_cell" style="padding-top: 6px;padding-bottom: 0;" ng-click="selectAddress(house)">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p></p>
+            </div>
+            <div class="people_name color999">
+                {{house.ownerName}}
+            </div>
+        </a>
+        <div class="weui_cell ofen_address" style="padding-top: 0;padding-bottom: 0;">
+            <div class="weui_cell_hd" ng-click="setDefaultAddress(house)"
+                 ng-class="{'img_active':house.active==0,'dis_active':house.active!=0}">
+            </div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <p class="color_aaa" style="position: relative;top: 2px;left: 14px" ng-if="house.active!=0">设为我的常用地址</p>
+                <p class="color_aaa" style="position: relative;top: 2px;left: 14px" ng-if="house.active==0">我的常用地址</p>
+            </div>
+            <div class="owner_name_del" ng-click="deleteAddress(house)"><img src="images/delete.png" class="delete_icon"></div>
+        </div>
+    </div>
+
+    <div class="add_address color333"  ng-click="addAddress()"><img src="images/plus.png" style="width: 14px;height: 14px;position: relative;top: -1px;left: -8px">新增地址</div>
+    <!--提示框-->
+    <div class="weui_dialog_confirm" ng-show="sure_delete">
+        <div class="weui_mask"></div>
+        <div class="weui_dialog">
+            <div class="weui_dialog_hd"><strong class="weui_dialog_title">确定要删除吗?</strong></div>
+            <div class="weui_dialog_ft">
+                <a href="javascript:;" class="weui_btn_dialog default small_color" ng-click="cancel()">取消</a>
+                <a href="javascript:;" class="weui_btn_dialog primary small_color" ng-click="sure()">确定</a>
+            </div>
+        </div>
+    </div>
+    <c-address-edit show="showAddressEdit" on-complete="onEditAddressComplete()"></c-address-edit>
+</div>

@@ -94,10 +94,10 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
         }
         console.log($stateParams);
         
-        $scope.community = $stateParams.village;
-        $scope.block = $stateParams.block;
-        $scope.unit = $stateParams.unit;
-        $scope.room = $stateParams.room;
+        $scope.community = addressInfo.community;
+        $scope.block = addressInfo.block;
+        $scope.unit = addressInfo.unit;
+        $scope.room = addressInfo.roomInfo.room;
 
         $scope.waterFr = $rootScope.waterFree;
         $scope.eleFr = $rootScope.eleFree;
