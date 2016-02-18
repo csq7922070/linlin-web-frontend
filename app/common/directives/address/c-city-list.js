@@ -3,24 +3,28 @@ myApp.directive('cCityList', function() {
         restrict: 'E',
         replace: true,
         scope: {
+            show: '=',
+            onComplete: '&',
+            cityList: '='
         },
         templateUrl: 'tpl/common/directives/address/c-city-list.tpl.html',
         link: function($scope, element, attrs) {
         },
-        controller: function ($stateParams,$scope) {
-            var vm=this;
-            var params = {
-                type:'city'
-            }
-            addresses.query(params).$promise.then(function (data) {
-                vm.cities = data.items;
-            }, function (data) {
-                // console.log("err!");
-                alert(errorLog.getErrorMessage(data));
-            });
-            vm.changeCity = function(city){
+        controller: function ($stateParams,$scope,addresses,addressInfo,address) {
+            $scope.changeCity = function(city){
                 addressInfo.city = city;
-                $state.go("address-village");
+                $scope.showCommunityList = true;
+                address.getCommunityList(city).then(function(data){
+                    $scope.communityList = data;
+                },function(reason){
+                    $scope.showCommunityList = false;
+                    alert(reason.errorCode+","+reason.errorMessage);
+                });
+            }
+
+            $scope.onSelectCommunityComplete = function(){
+                $scope.show = false;
+                $scope.onComplete();
             }
         }
     }

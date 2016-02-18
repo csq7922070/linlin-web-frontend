@@ -1,60 +1,60 @@
-<div id="c-address-edit-container">
+<div id="c-address-edit-container" class="fixed-full-container address-common-container" ng-show="show">
     <div class="weui_cells weui_cells_access address_down">
-        <div class="weui_cell" ui-sref="address-city">
+        <div class="weui_cell" ng-click="changeCity()">
             <div class="weui_cell_bd weui_cell_primary">
                 <p style="margin-top: 10px;">城市</p>
             </div>
-            <div ng-if="vm.city" class="weui_cell_ft" name="block">
-                {{vm.city}}
+            <div ng-if="city" class="weui_cell_ft" name="block">
+                {{city}}
             </div>
-            <div ng-if="!vm.city" class="weui_cell_ft" name="city">
+            <div ng-if="!city" class="weui_cell_ft" name="city">
                 请选择
             </div>
         </div>
 
-        <div class="weui_cell" ui-sref="address-village">
+        <div class="weui_cell" ng-click="changeCommunity()">
             <div class="weui_cell_bd weui_cell_primary">
                 <p style="margin-top: 10px;">小区</p>
             </div>
-            <div ng-if="vm.village" class="weui_cell_ft" name="block">
-                {{vm.village}}
+            <div ng-if="village" class="weui_cell_ft" name="block">
+                {{village}}
             </div>
-            <div ng-if="!vm.village" class="weui_cell_ft" name="village">
+            <div ng-if="!village" class="weui_cell_ft" name="village">
                 请选择
             </div>
         </div>
 
-        <div class="weui_cell" ui-sref="address-block">
+        <div class="weui_cell" ng-click="changeBlock()">
             <div class="weui_cell_bd weui_cell_primary">
                 <p style="margin-top: 10px;">楼号</p>
             </div>
-            <div ng-if="vm.block" class="weui_cell_ft" name="block">
-                {{vm.block}}
+            <div ng-if="block" class="weui_cell_ft" name="block">
+                {{block}}
             </div>
-            <div ng-if="!vm.block" class="weui_cell_ft" name="block">
+            <div ng-if="!block" class="weui_cell_ft" name="block">
                 请选择
             </div>
         </div>
 
-        <div class="weui_cell {{sss}}" ng-click="vm.changeUnit()">
+        <div class="weui_cell {{sss}}" ng-click="changeUnit()">
             <div class="weui_cell_bd weui_cell_primary">
-                <p style="margin-top: 10px;" ng-class="vm.unit?'':'color_ccc'">单元</p>
+                <p style="margin-top: 10px;" ng-class="unit?'':'color_ccc'">单元</p>
             </div>
-            <div ng-if="vm.unit" class="weui_cell_ft" name="block">
-                {{vm.unit}}
+            <div ng-if="unit" class="weui_cell_ft" name="block">
+                {{unit}}
             </div>
-            <div ng-if="!vm.unit" class="weui_cell_ft color_ccc" name="unit">
+            <div ng-if="!unit" class="weui_cell_ft color_ccc" name="unit">
                 请选择
             </div>
         </div>
-        <div class="weui_cell {{ccc}}" ng-click="vm.changeRoom()">
+        <div class="weui_cell {{ccc}}" ng-click="changeRoom()">
             <div class="weui_cell_bd weui_cell_primary">
-                <p style="margin-top: 10px;" ng-class="vm.room?'':'color_ccc'">门牌号</p>
+                <p style="margin-top: 10px;" ng-class="room?'':'color_ccc'">门牌号</p>
             </div>
-            <div ng-if="vm.room" class="weui_cell_ft" name="block">
-                {{vm.room}}
+            <div ng-if="room" class="weui_cell_ft" name="block">
+                {{room}}
             </div>
-            <div ng-if="!vm.room" class="weui_cell_ft color_ccc" name="room">
+            <div ng-if="!room" class="weui_cell_ft color_ccc" name="room">
                 请选择
             </div>
         </div>
@@ -65,9 +65,9 @@
             </span>
             <span class="right_detail" style="margin-top: 10px;">
                 <div>
-                    {{vm.village}}<span>{{vm.block}}</span><span ng-if="vm.unit">-{{vm.unit}}</span><span ng-if="vm.room">-{{vm.room}}</span>
+                    {{village}}&nbsp;<span>{{block}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>
                 <br>
-                    <span>{{vm.owner}}</span>          
+                    <span>{{owner}}</span>          
                 </div>
             </span>
         </div>
@@ -76,10 +76,9 @@
     <!--下一步按钮-->
     <div class="address_btn">
         <button class="weui_btn weui_btn_primary length_btn"
-                ui-sref="bill({city:vm.city,village:vm.village,block:vm.block,unit:vm.unit,room:vm.room,id:vm.roomId,username:vm.owner})"
-                ng-disabled="!vm.block||(!vm.unit&&type==2)||(!vm.room&&type==3)"
-                ng-class="{'disabled':!vm.block||(!vm.unit&&type==2)||(!vm.room&&type==3)}" style="font-size: 16px"
-                ng-click="vm.add_newaddress()">下一步
+                ng-disabled="!block||(!unit&&type==2)||(!room&&type==3)"
+                ng-class="{'disabled':!block||(!unit&&type==2)||(!room&&type==3)}" style="font-size: 16px"
+                ng-click="addAddress()">下一步
         </button>
     </div>
     <!--提示框-->
@@ -93,6 +92,11 @@
             </div>
         </div>
     </div>
+    <c-city-list show="showCityList" on-complete="onSelectCityComplete()" city-list="cityList"></c-city-list>
+    <c-community-list show="showCommunityList" on-complete="onSelectCommunityComplete()" community-list="communityList"></c-community-list>
+    <c-block-list show="showBlockList" on-complete="onSelectBlockComplete()" block-list="blockList"></c-block-list>
+    <c-unit-list show="showUnitList" on-complete="onSelectUnitComplete()" unit-list="unitList"></c-unit-list>
+    <c-room-list show="showRoomList" on-complete="onSelectRoomComplete()" room-list="roomList"></c-room-list>
     <style>
         a {
             text-decoration:none;

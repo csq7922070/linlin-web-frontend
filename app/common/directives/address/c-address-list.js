@@ -66,6 +66,14 @@ myApp.directive('cAddressList', function() {
                 $scope.show = false;
                 $scope.onComplete();
             }
+
+            $scope.addAddress = function(){
+                $scope.showAddressEdit = true;
+            }
+
+            $scope.onEditAddressComplete = function(){
+                console.log("onEditAddressComplete");
+            }
         }
     }
 });

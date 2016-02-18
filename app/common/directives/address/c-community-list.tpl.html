@@ -1,12 +1,13 @@
-<div id="c-community-list-container">
+<div id="c-community-list-container" class="fixed-full-container address-common-container" ng-show="show">
 	<div class="weui_cells_title title_style" style="margin-top: 6px">#</div>
 	<div class="weui_cells weui_cells_access address_down">
-	    <a class="weui_cell" ng-repeat="village in vm.villages" ng-click="vm.changeVillage(village)">
+	    <a class="weui_cell" ng-repeat="community in communityList" ng-click="changeCommunity(community)">
 	        <div class="weui_cell_bd weui_cell_primary">
-	            <p>{{village}}</p>
+	            <p>{{community}}</p>
 	        </div>
 	        <div class="weui_cell_ft">
 	        </div>
 	    </a>
 	</div>
+    <c-block-list show="showBlockList" on-complete="onSelectBlockComplete()" block-list="blockList"></c-block-list>
 </div>

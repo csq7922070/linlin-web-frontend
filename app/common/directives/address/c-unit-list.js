@@ -3,26 +3,28 @@ myApp.directive('cUnitList', function() {
         restrict: 'E',
         replace: true,
         scope: {
+            show: '=',
+            onComplete: '&',
+            unitList: '='
         },
         templateUrl: 'tpl/common/directives/address/c-unit-list.tpl.html',
         link: function($scope, element, attrs) {
         },
-        controller: function ($stateParams,$scope) {
-            var vm=this;
-            var params = {
-                type:'unit',
-                city:addressInfo.city,
-                community:addressInfo.community,
-                block:addressInfo.block
-            }
-            addresses.query(params).$promise.then(function (data) {
-                vm.units = data.items;
-            }, function (data) {
-                console.log("err!");
-            });
-            vm.changeUnit = function(unit){
+        controller: function ($stateParams,$scope,addresses,addressInfo,address) {
+            $scope.changeUnit = function(unit){
                 addressInfo.unit = unit;
-                $state.go("address-room");
+                $scope.showRoomList = true;
+                address.getRoomList(addressInfo.city, addressInfo.community, addressInfo.block, unit).then(function(data){
+                    $scope.roomList = data;
+                },function(reason){
+                    $scope.showRoomList = false;
+                    alert(reason.errorCode+","+reason.errorMessage);
+                });
+            }
+
+            $scope.onSelectRoomComplete = function(){
+                $scope.show = false;
+                $scope.onComplete();
             }
         }
     }
