@@ -36,7 +36,6 @@ myApp.directive('cAddressEdit', function() {
                 if(!$scope.room){
                     $scope.ccc = 'bgclick'
                 }
-                console.log('ccc');
             }
             changebgstate();
 

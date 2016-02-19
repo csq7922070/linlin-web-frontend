@@ -71,12 +71,6 @@ myApp.directive('cAddressList', function() {
                 $scope.onComplete();
             }
 
-            $scope.$watch("addressList", function(newVal,oldVal){
-                if(newVal && newVal.length == 0){
-                    $scope.addAddress();
-                }
-            });
-
             $scope.addAddress = function(){
                 $scope.showContent = false;
                 $scope.showAddressEdit = true;

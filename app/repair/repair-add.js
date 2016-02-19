@@ -34,24 +34,19 @@
                 }, 3000);
             }
 
-            address.getDefaultAddress().then(function(data){
-                console.log(data);
-                // $scope.addressList = data;
-            },function(reason){
-                // $scope.showAddressList = false;
-                alert(reason.errorCode+","+reason.errorMessage);
-            });
-
             $scope.decives=[{name:'开/换锁'},{name:'供电照明'},{name:'抽水马桶'},{name:'上/下水管道'},{name:'门窗维修'},{name:'房屋主体'},{name:'电梯/门禁'},{name:'供暖设施'},{name:'其他'}];
             $scope.decives.push();
             $scope.currentDevice = $scope.decives[0];
 
-            console.log(address.getDefaultAddress());
-            $scope.defaultcommunity = address.getDefaultAddress().community;
-            $scope.defaultblock = address.getDefaultAddress().block;
-            $scope.defaultunit = address.getDefaultAddress().unit;
-            $scope.defaultroom = address.getDefaultAddress().room;
-
+            address.getDefaultAddress().then(function(data){
+                console.log(data);
+                $scope.defaultcommunity = data.community;
+                $scope.defaultblock = data.block;
+                $scope.defaultunit = data.unit;
+                $scope.defaultroom = data.room;
+            },function(reason){
+                alert(reason.errorCode+","+reason.errorMessage);
+            });
             $scope.changeaddress = function(){
                 $scope.show = false;
                 $scope.showAddressList = true;
