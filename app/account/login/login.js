@@ -22,6 +22,9 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
             $scope.disableAuthCode = false;
             account.sendAuthCode($scope.tel).then(function(data){
                 console.log("sendAuthCode: " +data);
+                if(!data){
+                    alert("验证码发送失败");
+                }
             },function(reason){
                 alert(reason.errorCode +","+reason.errorMessage);
             });
@@ -52,7 +55,7 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
             $scope.verifyError = true;
             account.login($scope.tel, $scope.authCode).then(function(data){
                 $scope.verifyError = false;
-                if(!data){//登录失败，手机号和验证码不匹配
+                if(!data.flag){//登录失败，手机号和验证码不匹配
                     $scope.verifyTip = "请输入正确的验证码";
                     $scope.verifyError = true;
                     $timeout(function(){
@@ -60,7 +63,7 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
                         $("#auth-code").focus();
                     },2000);
                 }else{
-                    userInfo.storageLoginInfo($scope.tel);//保存用户登录手机号
+                    userInfo.storageLoginInfo($scope.tel,data.commonUser.nickName,data.commonUser.headImgUrl);//保存用户登录信息
                     var routeState = auth.getRouteState();
                     console.log("login go:");
                     console.log(routeState.toState);

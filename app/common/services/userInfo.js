@@ -88,10 +88,12 @@ angular.module('app.user')
 			return defer.promise;
 		}
 
-		this.storageLoginInfo = function(tel){
+		this.storageLoginInfo = function(tel,nickname,headImgUrl){
 			var loginInfo = {
-				openId: null,
+				openId: openId,
 				tel: tel,
+				nickname: nickname,
+				headImgUrl: headImgUrl,
 				date: new Date()
 			};
 			localStorage.loginInfo = JSON.stringify(loginInfo);

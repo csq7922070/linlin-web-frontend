@@ -7,13 +7,14 @@ angular.module('app.account')
 					defer.resolve(true);
 				},1000);
 				// $http({
-				// 	method: "POST",
-				// 	url: basePath + '/GPS/findArea',
-				// 	data: {
-				// 		tel: tel
+				// 	method: "GET",
+				// 	url: basePath + '/sendCode',
+				// 	param: {
+				// 		phone: tel,
+				// 		type: "send"
 				// 	}
 				// }).success(function(data){
-				// 	defer.resolve(data);
+				// 	defer.resolve(data.flag);
 				// }).error(function(data){
 				// 	var reason = {
 				// 		errorCode: "SEND_AUTH_CODE_ERROR",
@@ -32,22 +33,28 @@ angular.module('app.account')
 					else
 						defer.resolve(false);
 				},1000);
-				// $http({
-				// 	method: "POST",
-				// 	url: basePath + '/GPS/findArea',
-				// 	data: {
-				// 		tel: tel,
-				//      authCode: authCode
-				// 	}
-				// }).success(function(data){
-				// 	defer.resolve(data);
-				// }).error(function(data){
-				// 	var reason = {
-				// 		errorCode: "LOGIN_ERROR",
-				// 		errorMessage: errorLog.getErrorMessage(data)
-				// 	};
-				// 	defer.reject(reason);
-				// });
+				userInfo.getOpenId().then(function(data){
+					$http({
+						method: "GET",
+						url: basePath + '/sendCode',
+						param: {
+							phone: tel,
+					     	code: authCode,
+					     	type: "login",
+					     	openid: data
+						}
+					}).success(function(data){
+						defer.resolve(data);
+					}).error(function(data){
+						var reason = {
+							errorCode: "LOGIN_ERROR",
+							errorMessage: errorLog.getErrorMessage(data)
+						};
+						defer.reject(reason);
+					});
+				},function(reason){
+					defer.reject(reason);
+				});
 				return defer.promise;
 			}
 
