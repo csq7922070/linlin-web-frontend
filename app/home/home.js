@@ -108,6 +108,11 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                 $scope.show = true;
                 alert(reason.errorCode+","+reason.errorMessage);
             });
+            address.getDefaultAddress().then(function(data){
+                console.log(data);
+            },function(reason){
+                alert(reason.errorCode+","+reason.errorMessage);
+            });
         }
 
         $scope.onSelectAddressComplete = function(){

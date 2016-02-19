@@ -1,44 +1,97 @@
 angular.module('app.address')
 	.service('address', ['$q','$http','$timeout','errorLog', 'addresses',
 		function($q,$http,$timeout, errorLog,addresses){
-			var defaultAddress = {
-				city: null,
-				community: null,
-				block: null,
-				unit: null,
-				room: null,
-				owner: null,//房屋所有者姓名
-				ownerStar: null//所有者姓名加*处理
-			};
+			// var defaultAddress = {
+			// 	city: null,
+			// 	community: null,
+			// 	block: null,
+			// 	unit: null,
+			// 	room: null,
+			//  roomId: null,
+			// 	owner: null,//房屋所有者姓名
+			// 	ownerStar: null//所有者姓名加*处理
+			// };
+			var defaultAddress = null;
 			var addressList = null;
 			var cityList = null;
+			var getAddressListing = false;
+			var addressListDefer = null;
 
 			this.getDefaultAddress = function(){
+				var defer = $q.defer();
+				if(!defaultAddress){
+					this.getAddressList().then(function(data){
+						defaultAddress = getDefaultAddressFromList(data);
+						if(defaultAddress){
+							defer.resolve(defaultAddress);
+						}else{
+							reason = {
+			            		errorCode: "GET_DEFAULT_ADDRESS_ERROR",
+			            		errorMessage: "暂无地址或未设置默认地址"
+			            	};
+							defer.reject(reason);
+						}
+					},function(reason){
+						reason = {
+		            		errorCode: "GET_DEFAULT_ADDRESS_ERROR",
+		            		errorMessage: errorLog.getErrorMessage(reason)
+		            	};
+						defer.reject(reason);
+					});
+				}else{
+					defer.resolve(defaultAddress);
+				}
+				return defer.promise;
+			}
+
+			function getDefaultAddressFromList(addressList){
+				var defaultAddress = null;
+				for(var i = 0;i<addressList.length;i++){
+					var item = addressList[i];
+					if(item.active == 0){
+						defaultAddress = {
+							city: item.city,
+							community: item.community,
+							block: item.block,
+							unit: item.unit,
+							room: item.room,
+							roomId: item.id,
+							ownerStar: item.ownerName
+						};
+						break;
+					}
+				}
 				return defaultAddress;
 			}
 
 			this.getAddressList = function(){
-				var defer = $q.defer();
-				if(!addressList){
-					addressList = [];
-					var params = {
-		                type: 'openid',
-		                openid: sessionStorage.getItem("openid")
-		            }
-		            addresses.query(params).$promise.then(function(data) {
-		            	addressList = data.items;
-		            	defer.resolve(addressList);
-		            },function(reason){
-		            	reason = {
-		            		errorCode: "GET_ADDRESS_LIST_ERROR",
-		            		errorMessage: errorLog.getErrorMessage(reason)
-		            	};
-		                defer.reject(reason);
-		            });
-				}else{
-					defer.resolve(addressList);
+				if(!getAddressListing){
+					getAddressListing = true;
+					addressListDefer = $q.defer();
+					if(!addressList){
+						addressList = [];
+						var params = {
+			                type: 'openid',
+			                openid: sessionStorage.getItem("openid")
+			            }
+			            addresses.query(params).$promise.then(function(data) {
+			            	addressList = data.items;
+			            	addressListDefer.resolve(addressList);
+			            	getAddressListing = false;
+			            },function(reason){
+			            	reason = {
+			            		errorCode: "GET_ADDRESS_LIST_ERROR",
+			            		errorMessage: errorLog.getErrorMessage(reason)
+			            	};
+			                addressListDefer.reject(reason);
+			                getAddressListing = false;
+			            });
+					}else{
+						addressListDefer.resolve(addressList);
+						getAddressListing = false;
+					}
 				}
-				return defer.promise;
+				return addressListDefer.promise;
 			}
 
 			this.getCityList = function(){
