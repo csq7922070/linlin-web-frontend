@@ -88,14 +88,20 @@ angular.module('app.user')
 			return defer.promise;
 		}
 
-		this.storageTel = function(tel){
-			localStorage.tel = tel;
+		this.storageLoginInfo = function(tel){
+			var loginInfo = {
+				openId: null,
+				tel: tel,
+				date: new Date()
+			};
+			localStorage.loginInfo = JSON.stringify(loginInfo);
 		}
 
-		this.getTel = function(){
-			if(!tel && localStorage.tel){
-				tel = localStorage.tel;
+		this.getLastLoginInfo = function(){
+			var loginInfo = null;
+			if(localStorage.loginInfo){
+				loginInfo = JSON.parse(localStorage.loginInfo);
 			}
-			return tel;
+			return loginInfo;
 		}
 	}]);

@@ -1,6 +1,6 @@
 angular.module('app.account')
-	.service('account', ['$q','$http','$timeout','errorLog',
-		function($q,$http,$timeout, errorLog){
+	.service('account', ['$q','$http','$timeout','errorLog','userInfo',
+		function($q,$http,$timeout, errorLog,userInfo){
 			this.sendAuthCode = function(tel){
 				var defer = $q.defer();
 				$timeout(function(){
@@ -49,5 +49,16 @@ angular.module('app.account')
 				// 	defer.reject(reason);
 				// });
 				return defer.promise;
+			}
+
+			this.hasLogin = function(){
+				var has = false;
+				var lastLoginInfo = userInfo.getLastLoginInfo();
+				if(lastLoginInfo){
+					console.log("lastLoginInfo:");
+					console.log(lastLoginInfo);
+					has = true;
+				}
+				return has;
 			}
 	}]);

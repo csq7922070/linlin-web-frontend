@@ -1,40 +1,15 @@
-angular.module('app.address').controller('addressListCtrl', ['$rootScope','$stateParams', '$state', 'addresses','data',
-    function ($rootScope,$stateParams, $state, addresses,data) {
-        var vm = this;
-        vm.houses = data.items;
-        vm.activeId = data.activeId;
+angular.module('app.address').controller('addressListCtrl', ['$stateParams', '$state','auth','$scope',
+    'address',
+    function ($stateParams, $state,auth,$scope,address) {
+        address.getAddressList().then(function(data){
+            $scope.addressList = data;
+        },function(reason){
+            alert(reason.errorCode+","+reason.errorMessage);
+        });
 
-        vm.deleteAddress = function (house) {
-            vm.sure_delete = true;
-            vm.sure = function () {
-                vm.sure_delete = false;
-                var params = {
-                    id: house.id,
-                    openid:sessionStorage.getItem("openid")
-                }
-                addresses.delete(params).$promise.then(function (data) {
-                    house.rowState=1;
-                }, function (data) {
-                })
-            }
-        };
-
-        vm.cancel = function () {
-            vm.sure_delete = false;
-        }
-
-        vm.change_flag = function (house) {
-            if (house.active == 0) {
-                return;
-            }
-            var params = {
-                id: house.id,
-                openid: sessionStorage.getItem("openid")
-            }
-            addresses.save(params).$promise.then(function () {
-                vm.activeId = house.id;
-            }, function (data) {
-            })
+        $scope.onSelectAddressComplete = function(){
+            $state.go($stateParams.toStateName);
+            console.log("onSelectAddressComplte");
         }
     }
 ])
