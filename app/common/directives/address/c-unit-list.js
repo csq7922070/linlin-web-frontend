@@ -19,6 +19,7 @@ myApp.directive('cUnitList', function() {
                     $scope.roomList = data;
                 },function(reason){
                     $scope.showRoomList = false;
+                    $scope.showContent = true;
                     alert(reason.errorCode+","+reason.errorMessage);
                 });
             }

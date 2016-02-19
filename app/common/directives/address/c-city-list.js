@@ -19,6 +19,7 @@ myApp.directive('cCityList', function() {
                     $scope.communityList = data;
                 },function(reason){
                     $scope.showCommunityList = false;
+                    $scope.showContent = true;
                     alert(reason.errorCode+","+reason.errorMessage);
                 });
             }
