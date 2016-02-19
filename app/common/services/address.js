@@ -64,6 +64,25 @@ angular.module('app.address')
 				return defaultAddress;
 			}
 
+			this.addAddress = function(addressInfo){
+				if(!addressList){
+					addressList = [];
+				}
+				var newAddress = {
+					city:addressInfo.city,
+					community:addressInfo.community,
+					block:addressInfo.block,
+					unit:addressInfo.unit,
+					room: addressInfo.roomInfo.room,
+					roomId: addressInfo.roomInfo.id,
+					ownerStar: addressInfo.roomInfo.ownerName};
+				if(addressList.length == 0){
+					newAddress.active = 0;
+				}
+				addressList.push(newAddress);
+				localStorage.hasAddress = true;
+			}
+
 			this.getAddressList = function(){
 				if(!getAddressListing){
 					getAddressListing = true;
@@ -76,6 +95,11 @@ angular.module('app.address')
 			            }
 			            addresses.query(params).$promise.then(function(data) {
 			            	addressList = data.items;
+			            	if(addressList && addressList.length > 0){
+			                	localStorage.hasAddress = true;
+			                }else{
+			                	localStorage.hasAddress = false;
+	                		}
 			            	addressListDefer.resolve(addressList);
 			            	getAddressListing = false;
 			            },function(reason){
@@ -200,6 +224,14 @@ angular.module('app.address')
 	                defer.reject(reason);
 	            });
 				return defer.promise;
+			}
+
+			this.hasAddress = function(){
+				var has = false;
+				if((addressList && addressList.length > 0) || localStorage.hasAddress){
+					has = true;
+				}
+				return has;
 			}
 		}
 	]);

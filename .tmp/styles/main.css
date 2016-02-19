@@ -1742,6 +1742,12 @@ th {
 #c-address-list-container {
   z-index: 101;
 }
+#c-address-list-container .add-address-icon {
+  left: -2px;
+}
+#c-address-list-container .add-address-text {
+  vertical-align: middle;
+}
 
 #c-block-list-container {
   z-index: 105;

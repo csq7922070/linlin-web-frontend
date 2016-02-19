@@ -157,10 +157,14 @@ myApp.directive('cAddressEdit', function() {
                     openid: sessionStorage.getItem("openid")
                 }
                 addresses.save(params).$promise.then(function (data) {
-                    console.log("后台添加地址成功");
+                    address.addAddress(addressInfo);
                     close();
-                }, function (data) {
-                    console.log("后台添加地址失败");
+                }, function (reason) {
+                    reason = {
+                        errorCode: "ADD_ADDRESS_ERROR",
+                        errorMessage: errorLog.getErrorMessage(reason)
+                    };
+                    alert(errorLog.getErrorMessage(reason));
                     close();
                 });
             }

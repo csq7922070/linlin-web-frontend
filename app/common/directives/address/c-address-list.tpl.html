@@ -28,7 +28,10 @@
             </div>
         </div>
 
-        <div class="add_address color333"  ng-click="addAddress()"><img src="images/plus.png" style="width: 14px;height: 14px;position: relative;top: -1px;left: -8px">新增地址</div>
+        <div class="add_address color333"  ng-click="addAddress()">
+            <img class="add-address-icon" src="images/plus.png" style="width: 14px;height: 14px;position: relative;">
+            <span class="add-address-text">新增地址</span>
+        </div>
         <!--提示框-->
         <div class="weui_dialog_confirm" ng-show="sure_delete">
             <div class="weui_mask"></div>

@@ -12,6 +12,11 @@ myApp.directive('cAddressList', function() {
         link: function($scope, element, attrs) {
         },
         controller: function ($scope, $rootScope,$stateParams, $state, addresses,errorLog,addressInfo) {
+            $scope.$watch("addressList", function(newVal,oldVal){
+                console.log("directive addressList update:");
+                console.log($scope.addressList);
+            });
+
             $scope.deleteAddress = function (house) {
                 $scope.sure_delete = true;
                 $scope.sure = function () {
