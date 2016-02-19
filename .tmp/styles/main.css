@@ -337,8 +337,8 @@ p {
   color: #777777;
 }
 .nav_active {
-  color: #4996ee;
-  border-bottom: 1px solid #4996ee;
+  color: #e72f17 ;
+  border-bottom: 1px solid #ff6b5c;
   display: inline-block;
   height: 50px;
   padding: 0 4px;
@@ -439,8 +439,8 @@ a {
   width: 70%;
   height: 48px;
   margin: 0 auto;
-  color: #2f84e6 !important;
-  border-bottom: 2px solid #3089ef;
+  color: #e72f17 !important;
+  border-bottom: 2px solid #ff6b5c;
 }
 .container-fluid a {
   text-decoration: none;
@@ -685,7 +685,7 @@ a {
   border-radius: 10px;
 }
 .contain_down {
-  background-color: #ffffff;
+  /*background-color: #ffffff;*/
 }
 .item_service {
   padding-left: 5px;
@@ -694,7 +694,7 @@ a {
 .item_service li {
   clear: both;
   min-height: 80px;
-  background-color: #ffffff;
+  /*background-color: #ffffff;*/
   border-bottom: 1px solid #e8e8e8;
   padding: 0 12px;
 }
@@ -1065,6 +1065,13 @@ div.rn-carousel-indicator span {
 }
 
 
+#complain_list .item_service {
+  margin-top: 5px;
+  background: white;
+}
+#complain_list .repliedstate {
+  color: #deb515;
+}
 
 .confirm-modal {
   position: fixed;
