@@ -32,6 +32,7 @@ myApp.directive('cAddressEdit', function() {
                     $scope.cityList = data;
                 },function(reason){
                     $scope.showCityList = false;
+                    $scope.showContent = true;
                     alert(reason.errorCode+","+reason.errorMessage);
                 });
             }
@@ -50,6 +51,7 @@ myApp.directive('cAddressEdit', function() {
                     $scope.communityList = data;
                 },function(reason){
                     $scope.showCommunityList = false;
+                    $scope.showContent = true;
                     alert(reason.errorCode+","+reason.errorMessage);
                 });
             }
@@ -68,6 +70,7 @@ myApp.directive('cAddressEdit', function() {
                     $scope.blockList = data;
                 },function(reason){
                     $scope.showBlockList = false;
+                    $scope.showContent = true;
                     alert(reason.errorCode+","+reason.errorMessage);
                 });
             }
@@ -87,6 +90,7 @@ myApp.directive('cAddressEdit', function() {
                         $scope.unitList = data;
                     },function(reason){
                         $scope.showUnitList = false;
+                        $scope.showContent = true;
                         alert(reason.errorCode+","+reason.errorMessage);
                     });
                 }
@@ -107,6 +111,7 @@ myApp.directive('cAddressEdit', function() {
                         $scope.roomList = data;
                     },function(reason){
                         $scope.showRoomList = false;
+                        $scope.showContent = true;
                         alert(reason.errorCode+","+reason.errorMessage);
                     });
                 }

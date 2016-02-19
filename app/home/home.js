@@ -105,6 +105,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                 $scope.addressList = data;
             },function(reason){
                 $scope.showAddressList = false;
+                $scope.show = true;
                 alert(reason.errorCode+","+reason.errorMessage);
             });
         }

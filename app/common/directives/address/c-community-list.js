@@ -19,6 +19,7 @@ myApp.directive('cCommunityList', function() {
                     $scope.blockList = data;
                 },function(reason){
                     $scope.showBlockList = false;
+                    $scope.showContent = true;
                     alert(reason.errorCode+","+reason.errorMessage);
                 });
             }
