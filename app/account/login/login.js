@@ -1,8 +1,10 @@
 angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval', 'verify',
-    'account', 'errorLog', 'userInfo', '$state', 'appState', '$location',
-    function ($stateParams, $scope, $timeout, $interval, verify,account,errorLog,userInfo,$state,appState,$location) {
+    'account', 'errorLog', 'userInfo', '$state', 'appState', '$location','auth',
+    function ($stateParams, $scope, $timeout, $interval, verify,account,errorLog,userInfo,$state,appState,$location,
+        auth) {
         //alert($location.url());
-        $scope.tel = userInfo.getTel();
+        var lastLoginInfo = userInfo.getLastLoginInfo();
+        $scope.tel = lastLoginInfo ? lastLoginInfo.tel: "";
         $("#tel").focus();
         $scope.authCode = "";
 
@@ -58,8 +60,11 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
                         $("#auth-code").focus();
                     },2000);
                 }else{
-                    userInfo.storageTel($scope.tel);//保存用户登录手机号
-                    $state.go('auto-location');
+                    userInfo.storageLoginInfo($scope.tel);//保存用户登录手机号
+                    var routeState = auth.getRouteState();
+                    console.log("login go:");
+                    console.log(routeState.toState);
+                    $state.go(routeState.toState.name, routeState.toParams);
                 }
             }, function(reason){
                 $scope.verifyError = false;

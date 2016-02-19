@@ -76,6 +76,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "complainAddCtrl",
             controllerAs: 'vm'
         })
+        .state('address-list', {
+            url: "/address-list/:toStateName",
+            templateUrl: "tpl/address/address-list.tpl.html",
+            controller: "addressListCtrl",
+            controllerAs: 'vm'
+        })
         .state('address-edit', {
             url: "/address-edit",
             templateUrl: "tpl/address/address-edit.tpl.html",
@@ -110,27 +116,6 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             url: "/address-room/",
             templateUrl: "tpl/address/room/room.tpl.html",
             controller: "addressRoomCtrl",
-            controllerAs: 'vm'
-        })
-        .state('address-list', {
-            url: "/address-list",
-            templateUrl: "tpl/address/address-list.tpl.html",
-            resolve: {
-                data: function($state, addresses) {
-                    params = {
-                        type: 'openid',
-                        openid: sessionStorage.getItem("openid")
-                    }
-                    return addresses.query(params).$promise.then(function(data) {
-                        if (data.items.length == 0) {
-                            return $state.go("address-edit");
-                        } else {
-                            return data;
-                        }
-                    })
-                }
-            },
-            controller: "addressListCtrl",
             controllerAs: 'vm'
         })
         .state('bill', {
@@ -179,7 +164,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controllerAs: 'vm'
         })
         .state('login',{
-            url: "/login",
+            url: "/login/:toState",
             templateUrl: "tpl/account/login/login.tpl.html",
             controller: "loginCtrl",
             controllerAs: "vm"
