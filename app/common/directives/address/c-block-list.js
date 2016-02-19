@@ -14,6 +14,7 @@ myApp.directive('cBlockList', function() {
             $scope.changeBlock = function(block){
                 console.log("changeBlock...");
                 addressInfo.block = block.block;
+                $scope.showContent = false;
                 if(block.type == 2){
                     $scope.showUnitList = true;
                     address.getUnitList(addressInfo.city, addressInfo.community, block.block).then(function(data){
@@ -49,6 +50,7 @@ myApp.directive('cBlockList', function() {
             }
 
             function close(){
+                $scope.showContent = true;
                 $scope.show = false;
                 $scope.onComplete();
             }

@@ -26,6 +26,7 @@ myApp.directive('cAddressEdit', function() {
             refreshAddressInfo();
 
             $scope.changeCity = function(){
+                $scope.showContent = false;
                 $scope.showCityList = true;
                 address.getCityList().then(function(data){
                     $scope.cityList = data;
@@ -38,10 +39,12 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectCityComplete = function(){
                 console.log("onSelectCityComplete");
                 console.log(addressInfo);
+                $scope.showContent = true;
                 refreshAddressInfo();
             }
 
             $scope.changeCommunity = function(){
+                $scope.showContent = false;
                 $scope.showCommunityList = true;
                 address.getCommunityList(addressInfo.city).then(function(data){
                     $scope.communityList = data;
@@ -54,10 +57,12 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectCommunityComplete = function(){
                 console.log("onSelectCommunityComplete");
                 console.log(addressInfo);
+                $scope.showContent = true;
                 refreshAddressInfo();
             }
 
             $scope.changeBlock = function(){
+                $scope.showContent = false;
                 $scope.showBlockList = true;
                 address.getBlockList(addressInfo.city, addressInfo.community).then(function(data){
                     $scope.blockList = data;
@@ -70,11 +75,13 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectBlockComplete = function(){
                 console.log("onSelectBlockComplete");
                 console.log(addressInfo);
+                $scope.showContent = true;
                 refreshAddressInfo();
             }
 
             $scope.changeUnit = function() {
                 if($scope.unit){
+                    $scope.showContent = false;
                     $scope.showUnitList = true;
                     address.getUnitList(addressInfo.city, addressInfo.community, addressInfo.block).then(function(data){
                         $scope.unitList = data;
@@ -88,11 +95,13 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectUnitComplete = function(){
                 console.log("onSelectUnitComplete");
                 console.log(addressInfo);
+                $scope.showContent = true;
                 refreshAddressInfo();
             }
 
             $scope.changeRoom = function() {
                 if($scope.room){
+                    $scope.showContent = false;
                     $scope.showRoomList = true;
                     address.getRoomList(addressInfo.city, addressInfo.community, addressInfo.block, addressInfo.unit).then(function(data){
                         $scope.roomList = data;
@@ -106,6 +115,7 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectRoomComplete = function(){
                 console.log("onSelectRoomComplete");
                 console.log(addressInfo);
+                $scope.showContent = true;
                 refreshAddressInfo();
             }
             

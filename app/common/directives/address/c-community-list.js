@@ -13,6 +13,7 @@ myApp.directive('cCommunityList', function() {
         controller: function ($stateParams,$scope,addresses,addressInfo,address) {
             $scope.changeCommunity = function(community){
                 addressInfo.community = community;
+                $scope.showContent = false;
                 $scope.showBlockList = true;
                 address.getBlockList(addressInfo.city, community).then(function(data){
                     $scope.blockList = data;
@@ -23,6 +24,7 @@ myApp.directive('cCommunityList', function() {
             }
 
             $scope.onSelectBlockComplete = function(){
+                $scope.showContent = true;
                 $scope.show = false;
                 $scope.onComplete();
             }

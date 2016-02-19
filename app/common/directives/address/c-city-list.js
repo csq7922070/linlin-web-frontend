@@ -13,6 +13,7 @@ myApp.directive('cCityList', function() {
         controller: function ($stateParams,$scope,addresses,addressInfo,address) {
             $scope.changeCity = function(city){
                 addressInfo.city = city;
+                $scope.showContent = false;
                 $scope.showCommunityList = true;
                 address.getCommunityList(city).then(function(data){
                     $scope.communityList = data;
@@ -23,6 +24,7 @@ myApp.directive('cCityList', function() {
             }
 
             $scope.onSelectCommunityComplete = function(){
+                $scope.showContent = true;
                 $scope.show = false;
                 $scope.onComplete();
             }
