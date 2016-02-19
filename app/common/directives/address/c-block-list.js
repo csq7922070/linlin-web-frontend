@@ -21,6 +21,7 @@ myApp.directive('cBlockList', function() {
                         $scope.unitList = data;
                     },function(reason){
                         $scope.showUnitList = false;
+                        $scope.showContent = true;
                         alert(reason.errorCode+","+reason.errorMessage);
                     });
                 }else if(block.type == 1){
@@ -30,6 +31,7 @@ myApp.directive('cBlockList', function() {
                         $scope.roomList = data;
                     },function(reason){
                         $scope.showRoomList = false;
+                        $scope.showContent = true;
                         alert(reason.errorCode+","+reason.errorMessage);
                     });
                 }else if(block.type == 0){
