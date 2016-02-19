@@ -25,6 +25,21 @@ myApp.directive('cAddressEdit', function() {
             }
             refreshAddressInfo();
 
+            function changebgstate() {
+                $scope.ccc = 'ccc';
+                $scope.sss = 'ccc'; 
+
+                if(!$scope.unit){
+                    $scope.sss = 'bgclick'
+                }
+
+                if(!$scope.room){
+                    $scope.ccc = 'bgclick'
+                }
+                console.log('ccc');
+            }
+            changebgstate();
+
             $scope.changeCity = function(){
                 $scope.showContent = false;
                 $scope.showCityList = true;
@@ -41,6 +56,7 @@ myApp.directive('cAddressEdit', function() {
                 console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
+                changebgstate();
             }
 
             $scope.changeCommunity = function(){
@@ -59,6 +75,7 @@ myApp.directive('cAddressEdit', function() {
                 console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
+                changebgstate();
             }
 
             $scope.changeBlock = function(){
@@ -77,6 +94,7 @@ myApp.directive('cAddressEdit', function() {
                 console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
+                changebgstate();
             }
 
             $scope.changeUnit = function() {
@@ -97,6 +115,7 @@ myApp.directive('cAddressEdit', function() {
                 console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
+                changebgstate();
             }
 
             $scope.changeRoom = function() {
@@ -117,17 +136,9 @@ myApp.directive('cAddressEdit', function() {
                 console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
+                changebgstate();
             }
             
-            $scope.sss = 'ccc'; 
-
-            if(!$scope.unit){
-                $scope.sss = 'bgclick'
-            }
-
-            if(!$scope.room){
-                $scope.ccc = 'bgclick'
-            }
 
             $scope.addAddress = function () {
                 console.log("触发");
