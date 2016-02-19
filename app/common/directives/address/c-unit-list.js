@@ -13,6 +13,7 @@ myApp.directive('cUnitList', function() {
         controller: function ($stateParams,$scope,addresses,addressInfo,address) {
             $scope.changeUnit = function(unit){
                 addressInfo.unit = unit;
+                $scope.showContent = false;
                 $scope.showRoomList = true;
                 address.getRoomList(addressInfo.city, addressInfo.community, addressInfo.block, unit).then(function(data){
                     $scope.roomList = data;
@@ -23,6 +24,7 @@ myApp.directive('cUnitList', function() {
             }
 
             $scope.onSelectRoomComplete = function(){
+                $scope.showContent = true;
                 $scope.show = false;
                 $scope.onComplete();
             }

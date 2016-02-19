@@ -110,6 +110,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
         }
 
         $scope.onSelectAddressComplete = function(){
+            $scope.show = true;
             $state.go("bill");
             console.log("onSelectAddressComplte");
         }
