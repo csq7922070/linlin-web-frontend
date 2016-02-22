@@ -76,12 +76,6 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "complainAddCtrl",
             controllerAs: 'vm'
         })
-        .state('address-list', {
-            url: "/address-list/:toStateName",
-            templateUrl: "tpl/address/address-list.tpl.html",
-            controller: "addressListCtrl",
-            controllerAs: 'vm'
-        })
         .state('address-edit', {
             url: "/address-edit",
             templateUrl: "tpl/address/address-edit.tpl.html",
@@ -181,11 +175,23 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "accountCtrl",
             controllerAs: "vm"
         })
-        .state('native-home',{
-            url: "/native-home",
-            templateUrl: "tpl/home/native-home.tpl.html",
-            controller: "nativeHomeCtrl",
-            controllerAs: "vm"
+        .state('home-nav',{
+            url: "/home-nav",
+            templateUrl: "tpl/home/home-nav.tpl.html",
+            controller: "homeNavCtrl",
+            controllerAs: "vm"//,
+            // views:{
+            //     "home":{
+            //         templateUrl:"tpl/home/native-home.tpl.html",
+            //         controller: "nativeHomeCtrl",
+            //         controllerAs: "vm"
+            //     },
+            //     "account":{
+            //         templateUrl:"tpl/account/account.tpl.html",
+            //         controller: "accountCtrl",
+            //         controllerAs: "vm"
+            //     }
+            // }
         });
 }]).config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -279,5 +285,5 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 ).constant(
     'appId', appId
 ).constant(
-    'appType', 'weixin'//app or weixin
+    'appType', 'app'//app or weixin
 );

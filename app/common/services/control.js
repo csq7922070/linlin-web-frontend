@@ -6,7 +6,7 @@ angular.module('app.control')
 				var destStateName = toState.name;
 				if(appType == "app" && destStateName == "home"){
 					event.preventDefault();
-					$state.go("native-home");
+					$state.go("home-nav");
 				}
 			}
 	}]);

@@ -1,0 +1,14 @@
+<div id="home-nav-container">
+	<div id="flip-container" class="flip-container">
+		<div class="front" ui-view="home">
+		</div>
+		<div class="back" ui-view="account">
+		</div>
+	</div>
+	<div class="bottom-nav-bar">
+		<a class="nav-link" ng-class="{true:'home-nav-active',false:'home-nav'}[currentNav=='home']" 
+			href="javascript:void(0)" ng-click="nav('home')">首页</a>
+		<a class="nav-link" ng-class="{true:'account-nav-active',false:'account-nav'}[currentNav=='account']" 
+			href="javascript:void(0)" ng-click="nav('account')">我的</a>
+	</div> 
+</div>
