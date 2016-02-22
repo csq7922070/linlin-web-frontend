@@ -63,16 +63,15 @@ myApp.directive('cAddressList', function() {
                 if($scope.mode != "select"){
                     return;
                 }
+                addressInfo.id = house.id;
                 addressInfo.city = house.city;
+                addressInfo.communityId = house.communityId;
                 addressInfo.community = house.community;
                 addressInfo.block = house.block;
                 addressInfo.unit = house.unit;
-                addressInfo.roomInfo = {
-                    id:house.id,
-                    room:house.room,
-                    ownerName:house.ownerName,
-                    initial: house.initial                    
-                };
+                addressInfo.room = house.room;
+                addressInfo.ownerName = house.ownerName;
+                addressInfo.initial = house.initial;
                 $scope.show = false;
                 $scope.onComplete();
             }

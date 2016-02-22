@@ -16,6 +16,7 @@ angular.module('app.address').controller('addressListCtrl', ['$stateParams', '$s
         $scope.onSelectAddressComplete = function(){
         	console.log("onSelectAddressComplte");
         	if($scope.addressListMode == "select"){
+                console.log("addressList go...");
         		var routeState = control.getRouteState();
         		$state.go(routeState.toState.name, routeState.toParams);
         	}

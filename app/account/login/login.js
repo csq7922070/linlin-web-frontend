@@ -70,7 +70,7 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
                         $("#auth-code").focus();
                     },2000);
                 }else{
-                    userInfo.storageLoginInfo($scope.tel,data.commonUser.nickName,data.commonUser.headImgUrl);//保存用户登录信息
+                    userInfo.storageLoginInfo($scope.tel,data.account.nickName,data.account.headImgUrl);//保存用户登录信息
                     var routeState = control.getRouteState();
                     console.log("login go:");
                     console.log(routeState.toState);
