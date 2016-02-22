@@ -29,7 +29,7 @@ angular.module('app.account')
 				var defer = $q.defer();
 				$timeout(function(){
 					if(authCode == "1001")
-						defer.resolve({flag:true,commonUser:{nickname:"只因有你",headImgUrl:"http://wx.qlogo.cn/mmopen/ggnuItYtFKDLLcNuceHO5NW8YssZwic6krYXwlAaibGcicVR5ZNquzwxjpBHuygrAnaaKZTQV8hIWjo1eV6v8fE5XVXbsGNjKWQ/0"}});
+						defer.resolve({flag:true,commonUser:{nickName:"只因有你",headImgUrl:"http://wx.qlogo.cn/mmopen/ggnuItYtFKDLLcNuceHO5NW8YssZwic6krYXwlAaibGcicVR5ZNquzwxjpBHuygrAnaaKZTQV8hIWjo1eV6v8fE5XVXbsGNjKWQ/0"}});
 					else
 						defer.resolve({flag:false});
 				},1000);

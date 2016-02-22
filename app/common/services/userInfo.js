@@ -94,12 +94,13 @@ angular.module('app.user')
 			return defer.promise;
 		}
 
-		this.storageLoginInfo = function(tel,nickname,headImgUrl){
+		this.storageLoginInfo = function(tel,nickName,headImgUrl){
 			var loginInfo = {
 				openId: openId,
 				tel: tel,
-				nickname: nickname,
+				nickName: nickName,
 				headImgUrl: headImgUrl,
+				login: true,
 				date: new Date()
 			};
 			localStorage.loginInfo = JSON.stringify(loginInfo);
@@ -115,6 +116,8 @@ angular.module('app.user')
 
 		this.storageLogoutInfo = function(){
 			if(localStorage.loginInfo){
+				var loginInfo = JSON.parse(localStorage.loginInfo);
+				loginInfo.login = false;
 				localStorage.loginInfo = JSON.stringify(loginInfo);
 			}
 		}

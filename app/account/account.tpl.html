@@ -4,12 +4,12 @@
 			<img class="head-img-border" ng-src="{{headImgBorder}}"/>
 			<img class="head-img" ng-src="{{headImgUrl}}"/>
 		</div>
-		<a class="account-opt" href="javascript:void(0)" ng-bind="nickname">登陆/注册</a>
+		<a class="account-opt" href="javascript:void(0)" ng-bind="nickName" ng-click="login()">登陆/注册</a>
 	</div>
 	<div class="bottom-container">
 		<ul>
 			<li>
-				<a class="menu-item" href="javascript:void(0)" ui-sref="address-list({mode:'browse'})">
+				<a class="menu-item" href="javascript:void(0)" ng-click="browseAddress()">
 					我的房屋<span class="house-info" ng-bind="addressTip">已关联1套房屋</span>
 				</a>
 				<div class="under-line"></div>
