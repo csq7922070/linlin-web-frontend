@@ -23,7 +23,14 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
             account.sendAuthCode($scope.tel).then(function(data){
                 console.log("sendAuthCode: " +data);
                 if(!data){
-                    alert("验证码发送失败");
+                    $scope.verifyTip = "验证码发送失败";
+                    $scope.verifyError = true;
+                    $timeout(function(){
+                        $scope.verifyError = false;
+                        $scope.sendText = "重新发送";
+                        $scope.authCodeSending = false;
+                        $("#tel").focus();
+                    },2000);
                 }
             },function(reason){
                 alert(reason.errorCode +","+reason.errorMessage);

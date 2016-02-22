@@ -47,6 +47,7 @@ myApp.directive('cAddressList', function() {
                 addresses.save(params).$promise.then(function () {
                     clearAllDefaultTag();
                     house.active = 0;
+                    address.updateDefaultAddress();
                 }, function (data) {
                 })
             }

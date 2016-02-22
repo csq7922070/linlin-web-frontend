@@ -98,7 +98,7 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
         $scope.community = addressInfo.community;
         $scope.block = addressInfo.block;
         $scope.unit = addressInfo.unit;
-        $scope.room = addressInfo.roomInfo.room;
+        $scope.room = addressInfo.room;
 
         $scope.waterFr = $rootScope.waterFree;
         $scope.eleFr = $rootScope.eleFree;

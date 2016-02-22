@@ -18,16 +18,18 @@ angular.module('app.address')
 			var getAddressListing = false;
 			var addressListDefer = null;
 			var addressCount = null;
+			var defaultAddressDirty = false;
 
 			this.getDefaultAddress = function(){
 				var defer = $q.defer();
-				if(!defaultAddress){
+				if(!defaultAddress || defaultAddressDirty){
 					this.getAddressList().then(function(data){
 						console.log('####');
 	                    console.log(data);
 	                    console.log('####');
 						defaultAddress = getDefaultAddressFromList(data);
 						if(defaultAddress){
+							defaultAddressDirty = false;
 							defer.resolve(defaultAddress);
 						}else{
 							reason = {
@@ -59,6 +61,10 @@ angular.module('app.address')
 					}
 				}
 				return defaultAddress;
+			}
+
+			this.updateDefaultAddress = function(){
+				defaultAddressDirty = true;
 			}
 
 			this.addAddress = function(addressInfo){
