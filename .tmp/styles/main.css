@@ -1076,66 +1076,6 @@ div.rn-carousel-indicator span {
   }
 }
 
-<<<<<<< HEAD
-#c-account-container {
-  bottom: 0px;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  position: absolute;
-  background-color: #f0eff5;
-  font-family: 微软雅黑;
-}
-#c-account-container .top-container {
-  background-color: #e62f17;
-  text-align: center;
-  padding: 28px 0px 23px;
-  font-size: 15px;
-}
-#c-account-container .top-container .head-icon {
-  margin-bottom: 7px;
-  width: 128px;
-}
-#c-account-container .top-container .account-opt {
-  color: #fff;
-}
-#c-account-container .top-container .logout {
-  position: absolute;
-  right: 12px;
-  top: 16px;
-}
-#c-account-container .bottom-container {
-  padding-left: 13px;
-  font-size: 15px;
-  background-color: #fff;
-  margin-top: 8px;
-}
-#c-account-container .bottom-container .menu-item {
-  color: #333;
-  height: 51px;
-  display: block;
-  line-height: 51px;
-  background-image: url('../images/right_arrow.png');
-  background-repeat: no-repeat;
-  background-position-x: 100%;
-  background-position-y: 50%;
-  background-size: 9px;
-  margin-right: 12px;
-}
-#c-account-container .bottom-container .menu-item .house-info {
-  float: right;
-  margin-right: 25px;
-  font-size: 14px;
-  color: #999;
-}
-#c-account-container .bottom-container .under-line {
-  border-bottom: solid 1px #e8e8e8;
-}
-#c-account-container .bottom-container .care-us {
-  border-bottom: 0px;
-}
-
-
 #complain_list .item_service {
   margin-top: 5px;
   background: white;
@@ -1166,8 +1106,6 @@ div.rn-carousel-indicator span {
   width: 25px;
 }
 
-=======
->>>>>>> 82316bceb863addef378a65a64735753014d3545
 .confirm-modal {
   position: fixed;
   left: 0px;
