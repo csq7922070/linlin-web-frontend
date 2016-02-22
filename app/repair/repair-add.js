@@ -11,7 +11,7 @@
             }
             vm.submitForm = function() {
                 vm.repair.device = $scope.currentDevice.name;
-                vm.repair.communityId = addressInfo.community.id;
+                vm.repair.communityId = addressInfo.communityId;
                 vm.repair.block = $scope.defaultblock;
                 vm.repair.unit = $scope.defaultunit;
                 vm.repair.room = $scope.defaultroom;
@@ -35,13 +35,14 @@
                 }, 3000);
             }
 
-            $scope.decives=[{name:'开/换锁'},{name:'供电照明'},{name:'抽水马桶'},{name:'上/下水管道'},{name:'门窗维修'},{name:'房屋主体'},{name:'电梯/门禁'},{name:'供暖设施'},{name:'其他'}];
+            $scope.decives=[{name:'请选择报修设备'},{name:'开/换锁'},{name:'供电照明'},{name:'抽水马桶'},{name:'上/下水管道'},{name:'门窗维修'},{name:'房屋主体'},{name:'电梯/门禁'},{name:'供暖设施'},{name:'其他'}];
             $scope.decives.push();
             $scope.currentDevice = $scope.decives[0];
 
             address.getDefaultAddress().then(function(data){
                 console.log('111');
                 console.log(data);
+                $scope.defaultcity = data.city;
                 $scope.defaultcommunity = data.community;
                 $scope.defaultblock = data.block;
                 $scope.defaultunit = data.unit;
@@ -66,11 +67,12 @@
                 // $state.go("repair-add");
                 console.log("onSelectAddressComplte");
                 console.log(addressInfo);
-                $scope.defaultcommunity = addressInfo.community.name;
+                $scope.defaultcity = addressInfo.city;
+                $scope.defaultcommunity = addressInfo.community;
                 $scope.defaultblock = addressInfo.block;
                 $scope.defaultunit = addressInfo.unit;
                 $scope.defaultroom = addressInfo.roomInfo.room;
-                console.log(addressInfo.community.id);
+                console.log(addressInfo.communityId);
             }
         }
     ]);

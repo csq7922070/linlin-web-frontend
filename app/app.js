@@ -277,11 +277,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         id: null,
         city: null,
         community: null,
-<<<<<<< HEAD
-        communityId:null,
-=======
         communityId: null,
->>>>>>> feature/app
         block: null,
         unit: null,
         room: null,

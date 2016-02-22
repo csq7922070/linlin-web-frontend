@@ -1,4 +1,14 @@
 <div id="complain_add">
+    <div class="container-fluid nav">
+        <div class="rows">
+            <div class="col-xs-6">
+                <a ui-sref="complain">投诉列表</a>
+            </div>
+            <div class="col-xs-6">
+                <a ui-sref="complain-add" class="under_line">我要投诉</a>
+            </div>
+        </div>
+    </div>
     <div class="complaint_publish">
         <form ng-submit="vm.submitForm()" method="post" name="complainForm" novalidate>
             <input type="text" name="title" ng-model="vm.complain.title" placeholder="投诉标题（小区内晚间有噪音，影响休息）" required>
@@ -7,10 +17,8 @@
 
             <div class="com_address">
                 <div class="com_left">
+                    <span>{{defaultcity||'city'}}</span>-
                     <span>{{defaultcommunity||'小区'}}</span>
-                    <span ng-model="vm.repair.block">-{{defaultblock||'楼栋号'}}</span>
-                    <span ng-model="vm.repair.unit" ng-if="defaultunit">-{{defaultunit}}</span>
-                    <span ng-model="vm.repair.room" ng-if="defaultroom">-{{defaultroom}}</span>
                 </div>
 
                 <div class="com_right" ng-click="changeaddress()">
@@ -23,6 +31,9 @@
 
             <button class="submit_but" type="submit" ng-disabled="complainForm.$invalid">提交</button>
         </form>
+    </div>
+    <div class="privacy_protection">
+        隐私保护：使用投诉功能时，米饭公社不会提交您的住址信息.
     </div>
     <div class="prompt_mask" ng-show="vm.suc_show">
         <div class="prompt_dialog">

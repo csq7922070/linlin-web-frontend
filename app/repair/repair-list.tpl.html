@@ -52,6 +52,82 @@
             <input type="button" class="prompt_btn" value="确定" ng-click="mask_err_close()">
         </div>
     </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr>
+
+
+
+
+
+<hr><hr><hr>
+<div id="repair_detail">
+    <div class="container-fluid">
+        <div id="repair_type" class="repair_list">
+            <ul>
+                <li><span class="equip">故障描述</span><span class="device">{{vm.repair.remark}}</span>
+                </li>
+                <li><span class="b_date">报修地址</span><span class="date_time">{{vm.repair.block}}</span>
+                </li>
+                <li><span class="number">联系方式</span><span class="list_num">{{vm.repair.mobile}}</span>
+                </li>
+                <div class="repaie_state repaie_state3" >
+                    <img src="images/repair_03.png" alt=""><span><div class="triangle"></div>维修完成<span class="repaie_state_right">1111</span></span>
+                </div>
+                <div class="repaie_state repaie_state2" >
+                    <img src="images/repair_09.png" alt=""><span>物业确认<span class="repaie_state_right">2222</span></span>
+                </div>
+                <div class="repaie_state repaie_state1" >
+                    <img src="images/repair_09.png" alt=""><span>业主报修<span class="repaie_state_right">3333</span></span>
+                </div>                
+            </ul>
+        </div>
+        <div class="repair_but">
+            <input class="l_btn" type="button" value="确认完成" ng-hide="success" ng-click="vm.confirm(vm.repair.id)">
+        </div>
+        
+    </div>
+
+    <!-- <li ng-if="vm.repair.state==2">
+        <span class="w_time">完成时间:</span>
+        <span class="suc_time">{{vm.repair.confirmDate}}</span>
+    </li>
+    <li ng-if="vm.repair.state==3">
+        <span class="w_time">完成时间:</span>
+        <span class="suc_time">{{vm.repair.finishDate}}</span>
+    </li> -->
+
+    <div class="prompt_mask" ng-show="suc_show">
+        <div class="prompt_dialog">
+            <div class="prompt_icon"></div>
+            <div class="prompt_font">提交成功</div>
+            <input type="button" class="prompt_btn" value="确定" ng-click="mask_close()">
+        </div>
+    </div>
+    <div class="prompt_mask_err" ng-show="err_show">
+        <div class="prompt_dialog">
+            <div class="prompt_icon_err"></div>
+            <div class="prompt_font">提交失败，请稍后再试</div>
+            <input type="button" class="prompt_btn" value="确定" ng-click="mask_err_close()">
+        </div>
+    </div>
 
 </div>
+    
+
+
     

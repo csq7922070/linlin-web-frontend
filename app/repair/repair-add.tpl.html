@@ -17,6 +17,7 @@
 
             <div class="com_address">
                 <div class="com_left">
+                    <span>{{defaultcity||'city'}}</span>-
                     <span>{{defaultcommunity||'小区'}}</span>
                     <span ng-model="vm.repair.block">-{{defaultblock||'楼栋号'}}</span>
                     <span ng-model="vm.repair.unit" ng-if="defaultunit">-{{defaultunit}}</span>
