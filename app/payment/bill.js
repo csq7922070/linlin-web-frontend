@@ -2,7 +2,7 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
     '$state', 'addresses', 'payments','addressInfo','address','errorLog','control',
     function($scope, $http, $stateParams, $rootScope, $state, addresses, payments,addressInfo,
         address,errorLog,control) {
-        if(!addressInfo.roomInfo){
+        if(!addressInfo.id){
             var routeState = { 
                 toState:{
                     name: "bill"
@@ -21,7 +21,7 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
                 id: 'query',
                 paymentState: 0,
                 queryType: 'houseId',
-                houseId: addressInfo.roomInfo.id
+                houseId: addressInfo.id
             };
 
             payments.query(params).$promise.then(function(data) {

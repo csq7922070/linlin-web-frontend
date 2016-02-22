@@ -273,11 +273,14 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
     }
 ).value(
     'addressInfo',{
+        id: null,
         city: null,
         community: null,
         block: null,
         unit: null,
-        roomInfo: null// object type
+        room: null,
+        ownerName: null,
+        initial: null//用来对地址进行首字母排序用的
     }
 ).value(
     'locationInfo', {

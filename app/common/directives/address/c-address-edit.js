@@ -16,12 +16,11 @@ myApp.directive('cAddressEdit', function() {
             }
             function refreshAddressInfo(){
                 $scope.city = addressInfo.city;
-                $scope.village = addressInfo.community;
+                $scope.community = addressInfo.community;
                 $scope.block = addressInfo.block;
                 $scope.unit = addressInfo.unit;
-                $scope.room = addressInfo.roomInfo ? addressInfo.roomInfo.room : "";
-                $scope.owner = addressInfo.roomInfo ? addressInfo.roomInfo.ownerName:"";
-                $scope.roomId = addressInfo.roomInfo ? addressInfo.roomInfo.id:"";
+                $scope.room = addressInfo.room;
+                $scope.ownerName = addressInfo.ownerName;
             }
             refreshAddressInfo();
 
@@ -135,15 +134,14 @@ myApp.directive('cAddressEdit', function() {
             }
 
             $scope.addAddress = function () {
-                console.log("触发");
                 var params = {
                     city: addressInfo.city,
                     community: addressInfo.community,
                     block: addressInfo.block,
                     unit: addressInfo.unit,
-                    room: addressInfo.roomInfo.room,
-                    houseId: addressInfo.roomInfo.id,
-                    initial: addressInfo.roomInfo.initial,
+                    room: addressInfo.room,
+                    houseId: addressInfo.id,
+                    initial: addressInfo.initial,
                     openid: sessionStorage.getItem("openid")
                 }
                 addresses.save(params).$promise.then(function (data) {
