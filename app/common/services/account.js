@@ -1,6 +1,6 @@
 angular.module('app.account')
 	.service('account', ['$q','$http','$timeout','errorLog','userInfo',
-		function($q,$http,$timeout, errorLog,userInfo){
+		function($q,$http,$timeout, errorLog,userInfo){			
 			this.sendAuthCode = function(tel){
 				var defer = $q.defer();
 				$timeout(function(){
@@ -61,11 +61,15 @@ angular.module('app.account')
 			this.hasLogin = function(){
 				var has = false;
 				var lastLoginInfo = userInfo.getLastLoginInfo();
-				if(lastLoginInfo){
+				if(lastLoginInfo&&lastLoginInfo.login){
 					console.log("lastLoginInfo:");
 					console.log(lastLoginInfo);
 					has = true;
 				}
 				return has;
+			}
+
+			this.logout = function(){
+				userInfo.storageLogoutInfo();
 			}
 	}]);

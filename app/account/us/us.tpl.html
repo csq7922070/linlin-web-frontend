@@ -9,7 +9,7 @@
 				<a class="menu-item" href="javascript:void(0)">用户协议</a>
 			</li>
 		</ul>
-		<button class="logout">退出登录</button>
+		<button class="logout" ng-click="logout()">退出登录</button>
 	</div>
 	<logout-confirm show="showLogoutConfirm" on-close="onLogoutConfirmClose(state)" ng-init="showLogoutConfirm=false"></logout-confirm>
 </div>

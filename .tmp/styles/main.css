@@ -1345,7 +1345,7 @@ div.rn-carousel-indicator span {
   padding: 60px 23px 0px;
   font-family: 微软雅黑;
 }
-#login-container .disable-input {
+#login-container input[disabled] {
   background-color: transparent!important;
 }
 #login-container .code-container {
@@ -1360,6 +1360,7 @@ div.rn-carousel-indicator span {
   border: 0px;
 }
 #login-container .tel-container .tel-prefix {
+  font-family: arial, sans-serif;
   border-right: solid 1px #ddd;
   color: #333;
   padding-right: 10px;
@@ -1367,8 +1368,14 @@ div.rn-carousel-indicator span {
 #login-container .tel-container .tel {
   margin-left: 15px;
 }
+#login-container .tel-container .tel-edit {
+  font-family: arial, sans-serif;
+}
 #login-container .auth-code-container {
   margin-top: 15px;
+}
+#login-container .auth-code-container .auth-code-edit {
+  font-family: arial, sans-serif;
 }
 #login-container .auth-code-container .send-auth-code {
   color: #e62f17;

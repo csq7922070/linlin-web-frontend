@@ -112,4 +112,10 @@ angular.module('app.user')
 			}
 			return loginInfo;
 		}
+
+		this.storageLogoutInfo = function(){
+			if(localStorage.loginInfo){
+				localStorage.loginInfo = JSON.stringify(loginInfo);
+			}
+		}
 	}]);

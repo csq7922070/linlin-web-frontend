@@ -9,6 +9,7 @@ angular.module('app.account').controller('usCtrl', ['$stateParams', '$scope','ac
             $scope.showLogoutConfirm = false;
             if(state){
                 console.log("logout...");
+                account.logout();
             }
         }
     }

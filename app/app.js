@@ -181,6 +181,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "accountCtrl",
             controllerAs: "vm"
         })
+        .state('us',{
+            url: "/us",
+            templateUrl: "tpl/account/us/us.tpl.html",
+            controller: "usCtrl",
+            controllerAs: "vm"
+        })
         .state('home-nav',{
             url: "/home-nav",
             templateUrl: "tpl/home/home-nav.tpl.html",
