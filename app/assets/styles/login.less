@@ -1,6 +1,6 @@
 #login-container{
 	bottom: 0px;
-    top: 44px;
+    top: 0px;
     left: 0px;
     right: 0px;
     position: absolute;
@@ -8,7 +8,7 @@
 	padding: 60px 23px 0px;
 	font-family: 微软雅黑;
 
-    .disable-input{
+    input[disabled]{
         background-color:transparent!important;
     }
 
@@ -27,6 +27,7 @@
 
     .tel-container{
     	.tel-prefix{
+            font-family: arial,sans-serif;
 		    border-right: solid 1px #ddd;
 			color: #333;
 			padding-right: 10px;
@@ -35,10 +36,18 @@
     	.tel{
     		margin-left: 15px;
     	}
+
+        .tel-edit{
+            font-family: arial,sans-serif;
+        }
     }
 
     .auth-code-container{
     	margin-top: 15px;
+
+        .auth-code-edit{
+            font-family: arial,sans-serif;
+        }
 
     	.send-auth-code{
     		color: #e62f17;

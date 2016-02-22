@@ -1,23 +1,18 @@
 angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', 
-    '$state', 'addresses', 'payments','addressInfo','address','errorLog',
+    '$state', 'addresses', 'payments','addressInfo','address','errorLog','control',
     function($scope, $http, $stateParams, $rootScope, $state, addresses, payments,addressInfo,
-        address,errorLog) {
-        if(!addressInfo.roomInfo){
-            $scope.show = true;
-            address.getAddressList().then(function(data){
-                $scope.addressList = data;
-            },function(reason){
-                $scope.show = false;
-                alert(errorLog.getErrorMessage(reason));
-            });
-        }else{
-            refreshBill();
+        address,errorLog,control) {
+        if(!addressInfo.id){
+            var routeState = { 
+                toState:{
+                    name: "bill"
+                }
+            };
+            control.storageRouteState(routeState);
+            $state.go("address-list");
+            return;
         }
-
-        $scope.onSelectAddressComplete = function(){
-            console.log("onSelectAddressComplte");
-            refreshBill();
-        }
+        refreshBill();
 
         var totalCount = 0;
         var list = null;
@@ -26,7 +21,7 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
                 id: 'query',
                 paymentState: 0,
                 queryType: 'houseId',
-                houseId: addressInfo.roomInfo.id
+                houseId: addressInfo.id
             };
 
             payments.query(params).$promise.then(function(data) {

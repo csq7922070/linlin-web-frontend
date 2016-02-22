@@ -26,6 +26,9 @@ angular.module('app.user')
 		this.getOpenId = function(){
 			var defer = $q.defer();
 			if (!openId){
+				if(!wxParam){
+					this.initWxParam();
+				}
 	            $http({
 	                method: "GET",
 	                url: basePath + '/users/getopenid' + wxParam
@@ -59,6 +62,9 @@ angular.module('app.user')
 		this.getWxConfigParam = function(){
 			var defer = $q.defer();
 			if(!wxConfigParam.timestamp || !wxConfigParam.noncestr || !wxConfigParam.sign){
+				if(!wxParam){
+					this.initWxParam();
+				}
 	            $http({
 	                method: "GET",
 	                url: basePath + '/users/getopenid' + wxParam
@@ -88,10 +94,13 @@ angular.module('app.user')
 			return defer.promise;
 		}
 
-		this.storageLoginInfo = function(tel){
+		this.storageLoginInfo = function(tel,nickName,headImgUrl){
 			var loginInfo = {
-				openId: null,
+				openId: openId,
 				tel: tel,
+				nickName: nickName,
+				headImgUrl: headImgUrl,
+				login: true,
 				date: new Date()
 			};
 			localStorage.loginInfo = JSON.stringify(loginInfo);
@@ -103,5 +112,13 @@ angular.module('app.user')
 				loginInfo = JSON.parse(localStorage.loginInfo);
 			}
 			return loginInfo;
+		}
+
+		this.storageLogoutInfo = function(){
+			if(localStorage.loginInfo){
+				var loginInfo = JSON.parse(localStorage.loginInfo);
+				loginInfo.login = false;
+				localStorage.loginInfo = JSON.stringify(loginInfo);
+			}
 		}
 	}]);

@@ -1,7 +1,8 @@
 angular.module('app.auth')
 	.service('auth', ['$q','$http','$timeout', '$location', 'errorLog', 'communityInfo', 'appState', '$state',
-		'account','address','errorLog',
-		function($q,$http,$timeout, $location, errorLog, communityInfo, appState, $state,account,address,errorLog){
+		'account','address','errorLog','control',
+		function($q,$http,$timeout, $location, errorLog, communityInfo, appState, $state,account,address,errorLog,
+			control){
 			var routeState = null;
 
 			this.startChangeState = function(event, toState, toParams, fromState, fromParams){
@@ -15,6 +16,7 @@ angular.module('app.auth')
 							fromState: fromState,
 							fromParams: fromParams
 						};
+						control.storageRouteState(routeState);
 						event.preventDefault();
 						$state.go("login");
 						return;
@@ -26,14 +28,11 @@ angular.module('app.auth')
 							fromState: fromState,
 							fromParams: fromParams
 						};
+						control.storageRouteState(routeState);
 						event.preventDefault();
 						$state.go("address-edit");
 						return;
 					}
 				}
-			}
-
-			this.getRouteState = function(){
-				return routeState;
 			}
 	}]);

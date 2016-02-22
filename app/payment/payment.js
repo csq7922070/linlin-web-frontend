@@ -1,5 +1,6 @@
 angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$q','addressInfo',
-    function($scope, $http, $stateParams, $rootScope, $state, $q, addressInfo) {
+    'userInfo',
+    function($scope, $http, $stateParams, $rootScope, $state, $q, addressInfo,userInfo) {
         if($rootScope.wmonth!=null&&$rootScope.wmonth!=""){
             $scope.watermonth=$rootScope.wmonth;
         }
@@ -103,7 +104,7 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
         $scope.eleFr = $rootScope.eleFree;
 
         $scope.totalFee = $rootScope.waterFree + $rootScope.eleFree;
-
+        var loginInfo = userInfo.getLastLoginInfo();
 
         $scope.money_payment = function() {
             console.log("支付功能开始");
@@ -113,7 +114,8 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
                     params: {
                         total_fee: $scope.totalFee,
                         openid: sessionStorage.getItem("openid"),
-                        ids: $rootScope.ids
+                        ids: $rootScope.ids,
+                        phone: loginInfo.tel
                     }
                 }).error(function(response, status, headers, config) {
                     self.error = "连接错误!";

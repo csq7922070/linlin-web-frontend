@@ -2,20 +2,21 @@ angular.module('app.address')
 	.service('address', ['$q','$http','$timeout','errorLog', 'addresses',
 		function($q,$http,$timeout, errorLog,addresses){
 			// var defaultAddress = {
+			//  id: null,
 			// 	city: null,
 			// 	community: null,
 			// 	block: null,
 			// 	unit: null,
 			// 	room: null,
-			//  roomId: null,
-			// 	owner: null,//房屋所有者姓名
-			// 	ownerStar: null//所有者姓名加*处理
+			// 	ownerName: null,//房屋所有者姓名
+			// 	initial: null//用来对地址进行首字母排序
 			// };
 			var defaultAddress = null;
 			var addressList = null;
 			var cityList = null;
 			var getAddressListing = false;
 			var addressListDefer = null;
+			var addressCount = null;
 
 			this.getDefaultAddress = function(){
 				var defer = $q.defer();
@@ -52,15 +53,7 @@ angular.module('app.address')
 				for(var i = 0;i<addressList.length;i++){
 					var item = addressList[i];
 					if(item.active == 0){
-						defaultAddress = {
-							city: item.city,
-							community: item.community,
-							block: item.block,
-							unit: item.unit,
-							room: item.room,
-							roomId: item.id,
-							ownerStar: item.ownerName
-						};
+						defaultAddress = angular.copy(item);
 						break;
 					}
 				}
@@ -71,14 +64,7 @@ angular.module('app.address')
 				if(!addressList){
 					addressList = [];
 				}
-				var newAddress = {
-					city:addressInfo.city,
-					community:addressInfo.community,
-					block:addressInfo.block,
-					unit:addressInfo.unit,
-					room: addressInfo.roomInfo.room,
-					roomId: addressInfo.roomInfo.id,
-					ownerStar: addressInfo.roomInfo.ownerName};
+				var newAddress = angular.copy(addressInfo);
 				if(addressList.length == 0){
 					newAddress.active = 0;
 				}
@@ -119,6 +105,25 @@ angular.module('app.address')
 					}
 				}
 				return addressListDefer.promise;
+			}
+
+			this.getAddressCount = function(){
+				var defer = $q.defer();
+				if(!addressCount){
+					this.getAddressList().then(function(data){
+						addressCount = data.length;
+						defer.resolve(addressCount);
+					},function(reason){
+						reason = {
+		            		errorCode: "GET_ADDRESS_COUNT_ERROR",
+		            		errorMessage: errorLog.getErrorMessage(reason)
+		            	};
+						defer.reject(reason);
+					});
+				}else{
+					defer.resolve(addressCount);
+				}
+				return defer.promise;
 			}
 
 			this.getCityList = function(){

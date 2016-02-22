@@ -1,15 +1,24 @@
 angular.module('app.address').controller('addressListCtrl', ['$stateParams', '$state','auth','$scope',
-    'address',
-    function ($stateParams, $state,auth,$scope,address) {
+	'errorLog','address','control',
+    function ($stateParams, $state,auth,$scope,errorLog,address,control) {
+    	$scope.addressListMode = "select";
+    	if($stateParams.mode){
+    		$scope.addressListMode = $stateParams.mode;//select or browse
+    	}
+    	$scope.show = true;
         address.getAddressList().then(function(data){
             $scope.addressList = data;
         },function(reason){
-            alert(reason.errorCode+","+reason.errorMessage);
+            $scope.show = false;
+            alert(errorLog.getErrorMessage(reason));
         });
 
         $scope.onSelectAddressComplete = function(){
-            $state.go($stateParams.toStateName);
-            console.log("onSelectAddressComplte");
+        	console.log("onSelectAddressComplte");
+        	if($scope.addressListMode == "select"){
+        		var routeState = control.getRouteState();
+        		$state.go(routeState.toState.name, routeState.toParams);
+        	}
         }
     }
 ])

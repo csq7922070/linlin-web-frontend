@@ -17,10 +17,10 @@
                 <div class="weui_cell_bd weui_cell_primary">
                     <p style="margin-top: 10px;">小区</p>
                 </div>
-                <div ng-if="village" class="weui_cell_ft" name="block">
-                    {{village.name}}
+                <div ng-if="community" class="weui_cell_ft" name="block">
+                    {{community}}
                 </div>
-                <div ng-if="!village" class="weui_cell_ft" name="village">
+                <div ng-if="!community" class="weui_cell_ft" name="community">
                     请选择
                 </div>
             </div>
@@ -66,9 +66,9 @@
                 </span>
                 <span class="right_detail" style="margin-top: 10px;">
                     <div>
-                        {{village.name}}&nbsp;<span>{{block}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>
+                        {{community}}&nbsp;<span>{{block}}</span><span ng-if="unit">-{{unit}}</span><span ng-if="room">-{{room}}</span>
                     <br>
-                        <span>{{owner}}</span>          
+                        <span>{{ownerName}}</span>          
                     </div>
                 </span>
             </div>

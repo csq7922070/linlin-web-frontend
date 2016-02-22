@@ -35,8 +35,11 @@ myApp.directive('cBlockList', function() {
                         alert(reason.errorCode+","+reason.errorMessage);
                     });
                 }else if(block.type == 0){
+                    addressInfo.id = block.id;
+                    addressInfo.ownerName = block.ownerName;
+                    addressInfo.initial = block.initial;
                     addressInfo.unit = "";
-                    addressInfo.roomInfo = null;
+                    addressInfo.room = "";
                     close();
                 }
             }
