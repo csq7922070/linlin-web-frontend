@@ -12,6 +12,7 @@ myApp.directive('cAddressEdit', function() {
         controller: function ($state, $scope, $stateParams, addresses,communityInfo,addressInfo,address,errorLog) {
             if(!addressInfo.city && communityInfo.auth){
                 addressInfo.city = communityInfo.city;
+                addressInfo.communityId = communityInfo.id;
                 addressInfo.community = communityInfo.name;
             }
             function refreshAddressInfo(){

@@ -262,6 +262,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
     });
 }]).value(
     'communityInfo',{
+        id: null,
         name: null,
         province: null,
         city: null,
@@ -276,6 +277,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         id: null,
         city: null,
         community: null,
+        communityId: null,
         block: null,
         unit: null,
         room: null,

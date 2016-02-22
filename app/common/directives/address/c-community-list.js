@@ -12,7 +12,8 @@ myApp.directive('cCommunityList', function() {
         },
         controller: function ($stateParams,$scope,addresses,addressInfo,address) {
             $scope.changeCommunity = function(community){
-                addressInfo.community = community;
+                addressInfo.communityId = community.id;
+                addressInfo.community = community.name;
                 $scope.showContent = false;
                 $scope.showBlockList = true;
                 address.getBlockList(addressInfo.city, community).then(function(data){
