@@ -12,7 +12,10 @@ myApp.directive('cRoomList', function() {
         },
         controller: function ($stateParams,$scope,addresses,addressInfo) {   
             $scope.changeRoom = function(room){
-                addressInfo.roomInfo = room;
+                addressInfo.id = room.id;
+                addressInfo.ownerName = room.ownerName;
+                addressInfo.initial = room.initial;
+                addressInfo.room = room.room;
                 $scope.show = false;
                 $scope.onComplete();
             }
