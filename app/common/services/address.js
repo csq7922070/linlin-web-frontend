@@ -4,6 +4,7 @@ angular.module('app.address')
 			// var defaultAddress = {
 			//  id: null,
 			// 	city: null,
+			//  communityId: null,
 			// 	community: null,
 			// 	block: null,
 			// 	unit: null,
