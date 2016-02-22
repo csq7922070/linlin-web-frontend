@@ -76,6 +76,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "complainAddCtrl",
             controllerAs: 'vm'
         })
+        .state('address-list', {
+            url: "/address-list/:mode",
+            templateUrl: "tpl/address/address-list.tpl.html",
+            controller: "addressListCtrl",
+            controllerAs: 'vm'
+        })
         .state('address-edit', {
             url: "/address-edit",
             templateUrl: "tpl/address/address-edit.tpl.html",
@@ -285,5 +291,5 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 ).constant(
     'appId', appId
 ).constant(
-    'appType', 'app'//app or weixin
+    'appType', 'weixin'//app or weixin
 );

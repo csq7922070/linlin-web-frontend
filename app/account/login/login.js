@@ -1,7 +1,7 @@
 angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval', 'verify',
-    'account', 'errorLog', 'userInfo', '$state', 'appState', '$location','auth',
+    'account', 'errorLog', 'userInfo', '$state', 'appState', '$location','auth','control',
     function ($stateParams, $scope, $timeout, $interval, verify,account,errorLog,userInfo,$state,appState,$location,
-        auth) {
+        auth,control) {
         //alert($location.url());
         var lastLoginInfo = userInfo.getLastLoginInfo();
         $scope.tel = lastLoginInfo ? lastLoginInfo.tel: "";
@@ -64,7 +64,7 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
                     },2000);
                 }else{
                     userInfo.storageLoginInfo($scope.tel,data.commonUser.nickName,data.commonUser.headImgUrl);//保存用户登录信息
-                    var routeState = auth.getRouteState();
+                    var routeState = control.getRouteState();
                     console.log("login go:");
                     console.log(routeState.toState);
                     $state.go(routeState.toState.name, routeState.toParams);

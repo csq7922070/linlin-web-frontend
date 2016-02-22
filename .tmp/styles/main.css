@@ -13,17 +13,29 @@
   padding: 28px 0px 23px;
   font-size: 15px;
 }
-#account-container .top-container .head-icon {
-  margin-bottom: 7px;
+#account-container .top-container .head-img-container {
+  position: relative;
   width: 128px;
+  height: 128px;
+  left: 50%;
+  margin-left: -64px;
+}
+#account-container .top-container .head-img-container .head-img-border {
+  width: 128px;
+  z-index: 1;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+#account-container .top-container .head-img-container .head-img {
+  width: 90px;
+  position: absolute;
+  left: 20px;
+  top: 19px;
+  z-index: 0;
 }
 #account-container .top-container .account-opt {
   color: #fff;
-}
-#account-container .top-container .logout {
-  position: absolute;
-  right: 12px;
-  top: 16px;
 }
 #account-container .bottom-container {
   padding-left: 13px;
@@ -52,7 +64,7 @@
 #account-container .bottom-container .under-line {
   border-bottom: solid 1px #e8e8e8;
 }
-#account-container .bottom-container .care-us {
+#account-container .bottom-container .about-us {
   border-bottom: 0px;
 }
 
@@ -1325,7 +1337,7 @@ div.rn-carousel-indicator span {
 
 #login-container {
   bottom: 0px;
-  top: 44px;
+  top: 0px;
   left: 0px;
   right: 0px;
   position: absolute;

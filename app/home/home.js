@@ -1,8 +1,8 @@
 angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
     'communityInfo', 'locationState', 'communityLocation', '$q', 'userInfo', 'errorLog', 'locationInfo', 'location',
-    'address','auth',
+    'address','auth','control',
     function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, locationState, communityLocation, $q, 
-        userInfo,errorLog, locationInfo, location,address,auth) {
+        userInfo,errorLog, locationInfo, location,address,auth,control) {
         // // test
         // locationInfo.longitude = 116.30286359442356;
         // locationInfo.latitude = 39.979707375431694;

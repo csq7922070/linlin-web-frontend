@@ -29,32 +29,32 @@ angular.module('app.account')
 				var defer = $q.defer();
 				$timeout(function(){
 					if(authCode == "1001")
-						defer.resolve(true);
+						defer.resolve({flag:true,commonUser:{nickname:"只因有你",headImgUrl:"http://wx.qlogo.cn/mmopen/ggnuItYtFKDLLcNuceHO5NW8YssZwic6krYXwlAaibGcicVR5ZNquzwxjpBHuygrAnaaKZTQV8hIWjo1eV6v8fE5XVXbsGNjKWQ/0"}});
 					else
-						defer.resolve(false);
+						defer.resolve({flag:false});
 				},1000);
-				userInfo.getOpenId().then(function(data){
-					$http({
-						method: "GET",
-						url: basePath + '/sendCode',
-						param: {
-							phone: tel,
-					     	code: authCode,
-					     	type: "login",
-					     	openid: data
-						}
-					}).success(function(data){
-						defer.resolve(data);
-					}).error(function(data){
-						var reason = {
-							errorCode: "LOGIN_ERROR",
-							errorMessage: errorLog.getErrorMessage(data)
-						};
-						defer.reject(reason);
-					});
-				},function(reason){
-					defer.reject(reason);
-				});
+				// userInfo.getOpenId().then(function(data){
+				// 	$http({
+				// 		method: "GET",
+				// 		url: basePath + '/sendCode',
+				// 		param: {
+				// 			phone: tel,
+				// 	     	code: authCode,
+				// 	     	type: "login",
+				// 	     	openid: data
+				// 		}
+				// 	}).success(function(data){
+				// 		defer.resolve(data);
+				// 	}).error(function(data){
+				// 		var reason = {
+				// 			errorCode: "LOGIN_ERROR",
+				// 			errorMessage: errorLog.getErrorMessage(data)
+				// 		};
+				// 		defer.reject(reason);
+				// 	});
+				// },function(reason){
+				// 	defer.reject(reason);
+				// });
 				return defer.promise;
 			}
 

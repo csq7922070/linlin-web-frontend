@@ -13,19 +13,33 @@
         padding: 28px 0px 23px;
         font-size: 15px;
 
-        .head-icon{
-            margin-bottom: 7px;
+        .head-img-container{
+            position: relative;
             width: 128px;
+            height: 128px;
+            left: 50%;
+            margin-left: -64px;
+            //margin-bottom: 7px;
+
+            .head-img-border{
+                width: 128px;
+                z-index: 1;
+                position: absolute;
+                left: 0px;
+                top: 0px;
+            }
+
+            .head-img{
+                width: 90px;
+                position: absolute;
+                left: 20px;
+                top: 19px;
+                z-index: 0;
+            }
         }
 
         .account-opt{
             color: #fff;
-        }
-
-        .logout{
-            position: absolute;
-            right: 12px;
-            top: 16px;
         }
     }
 
@@ -59,7 +73,7 @@
             border-bottom: solid 1px #e8e8e8;
         }
 
-        .care-us{
+        .about-us{
             border-bottom: 0px;
         }
     }

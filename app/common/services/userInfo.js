@@ -26,6 +26,9 @@ angular.module('app.user')
 		this.getOpenId = function(){
 			var defer = $q.defer();
 			if (!openId){
+				if(!wxParam){
+					this.initWxParam();
+				}
 	            $http({
 	                method: "GET",
 	                url: basePath + '/users/getopenid' + wxParam
@@ -59,6 +62,9 @@ angular.module('app.user')
 		this.getWxConfigParam = function(){
 			var defer = $q.defer();
 			if(!wxConfigParam.timestamp || !wxConfigParam.noncestr || !wxConfigParam.sign){
+				if(!wxParam){
+					this.initWxParam();
+				}
 	            $http({
 	                method: "GET",
 	                url: basePath + '/users/getopenid' + wxParam
