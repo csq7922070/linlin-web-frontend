@@ -16,6 +16,7 @@ angular.module('app.address')
 			var cityList = null;
 			var getAddressListing = false;
 			var addressListDefer = null;
+			var addressCount = null;
 
 			this.getDefaultAddress = function(){
 				var defer = $q.defer();
@@ -116,6 +117,25 @@ angular.module('app.address')
 					}
 				}
 				return addressListDefer.promise;
+			}
+
+			this.getAddressCount = function(){
+				var defer = $q.defer();
+				if(!addressCount){
+					this.getAddressList().then(function(data){
+						addressCount = data.length;
+						defer.resolve(addressCount);
+					},function(reason){
+						reason = {
+		            		errorCode: "GET_ADDRESS_COUNT_ERROR",
+		            		errorMessage: errorLog.getErrorMessage(reason)
+		            	};
+						defer.reject(reason);
+					});
+				}else{
+					defer.resolve(addressCount);
+				}
+				return defer.promise;
 			}
 
 			this.getCityList = function(){

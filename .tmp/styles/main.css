@@ -1,3 +1,72 @@
+#account-container {
+  bottom: 0px;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  position: absolute;
+  background-color: #f0eff5;
+  font-family: 微软雅黑;
+}
+#account-container .top-container {
+  background-color: #e62f17;
+  text-align: center;
+  padding: 28px 0px 23px;
+  font-size: 15px;
+}
+#account-container .top-container .head-img-container {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  left: 50%;
+  margin-left: -64px;
+}
+#account-container .top-container .head-img-container .head-img-border {
+  width: 128px;
+  z-index: 1;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+#account-container .top-container .head-img-container .head-img {
+  width: 90px;
+  position: absolute;
+  left: 20px;
+  top: 19px;
+  z-index: 0;
+}
+#account-container .top-container .account-opt {
+  color: #fff;
+}
+#account-container .bottom-container {
+  padding-left: 13px;
+  font-size: 15px;
+  background-color: #fff;
+  margin-top: 8px;
+}
+#account-container .bottom-container .menu-item {
+  color: #333;
+  height: 51px;
+  display: block;
+  line-height: 51px;
+  background-image: url('../images/right_arrow.png');
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+  background-position-y: 50%;
+  background-size: 9px;
+  margin-right: 12px;
+}
+#account-container .bottom-container .menu-item .house-info {
+  float: right;
+  margin-right: 25px;
+  font-size: 14px;
+  color: #999;
+}
+#account-container .bottom-container .under-line {
+  border-bottom: solid 1px #e8e8e8;
+}
+#account-container .bottom-container .about-us {
+  border-bottom: 0px;
+}
 
 body {
   background-color: #eeeeee;
@@ -1002,65 +1071,6 @@ div.rn-carousel-indicator span {
   }
 }
 
-#c-account-container {
-  bottom: 0px;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  position: absolute;
-  background-color: #f0eff5;
-  font-family: 微软雅黑;
-}
-#c-account-container .top-container {
-  background-color: #e62f17;
-  text-align: center;
-  padding: 28px 0px 23px;
-  font-size: 15px;
-}
-#c-account-container .top-container .head-icon {
-  margin-bottom: 7px;
-  width: 128px;
-}
-#c-account-container .top-container .account-opt {
-  color: #fff;
-}
-#c-account-container .top-container .logout {
-  position: absolute;
-  right: 12px;
-  top: 16px;
-}
-#c-account-container .bottom-container {
-  padding-left: 13px;
-  font-size: 15px;
-  background-color: #fff;
-  margin-top: 8px;
-}
-#c-account-container .bottom-container .menu-item {
-  color: #333;
-  height: 51px;
-  display: block;
-  line-height: 51px;
-  background-image: url('../images/right_arrow.png');
-  background-repeat: no-repeat;
-  background-position-x: 100%;
-  background-position-y: 50%;
-  background-size: 9px;
-  margin-right: 12px;
-}
-#c-account-container .bottom-container .menu-item .house-info {
-  float: right;
-  margin-right: 25px;
-  font-size: 14px;
-  color: #999;
-}
-#c-account-container .bottom-container .under-line {
-  border-bottom: solid 1px #e8e8e8;
-}
-#c-account-container .bottom-container .care-us {
-  border-bottom: 0px;
-}
-
-
 .confirm-modal {
   position: fixed;
   left: 0px;
@@ -1170,6 +1180,74 @@ div.rn-carousel-indicator span {
   color: #000;
 }
 
+#home-nav-container {
+  font-family: 微软雅黑;
+}
+#home-nav-container .flip-container {
+  width: 100%;
+  top: 0px;
+  bottom: 51px;
+  left: 0px;
+  position: absolute;
+  -webkit-perspective: 1000;
+  -webkit-transition: 0.6s;
+  -webkit-transform-style: preserve-3d;
+}
+#home-nav-container .flip-container .front,
+#home-nav-container .flip-container .back {
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+#home-nav-container .flip-container .front {
+  z-index: 1;
+}
+#home-nav-container .flip-container .back {
+  -webkit-transform: rotateY(180deg);
+}
+#home-nav-container .flip-container.flip {
+  -webkit-transform: rotateY(180deg);
+}
+#home-nav-container .bottom-nav-bar {
+  height: 51px;
+  border-top: solid 1px #e8e8e8;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  left: 0px;
+  font-size: 13px;
+}
+#home-nav-container .bottom-nav-bar .nav-link {
+  width: 50%;
+  display: block;
+  float: left;
+  height: 100%;
+  text-align: center;
+  line-height: 82px;
+  background-repeat: no-repeat;
+  background-size: 32px;
+  background-position: 50% 12%;
+}
+#home-nav-container .bottom-nav-bar .home-nav {
+  background-image: url('../images/home.png');
+  color: #B1AFAF;
+}
+#home-nav-container .bottom-nav-bar .home-nav-active {
+  background-image: url('../images/home-active.png');
+  color: #F16262;
+}
+#home-nav-container .bottom-nav-bar .account-nav {
+  background-image: url('../images/account.png');
+  color: #B1AFAF;
+}
+#home-nav-container .bottom-nav-bar .account-nav-active {
+  background-image: url('../images/account-active.png');
+  color: #F16262;
+}
+
 #home-container .village .community-name {
   font-size: 14px;
   line-height: 14px;
@@ -1259,7 +1337,7 @@ div.rn-carousel-indicator span {
 
 #login-container {
   bottom: 0px;
-  top: 44px;
+  top: 0px;
   left: 0px;
   right: 0px;
   position: absolute;
@@ -1267,7 +1345,7 @@ div.rn-carousel-indicator span {
   padding: 60px 23px 0px;
   font-family: 微软雅黑;
 }
-#login-container .disable-input {
+#login-container input[disabled] {
   background-color: transparent!important;
 }
 #login-container .code-container {
@@ -1282,6 +1360,7 @@ div.rn-carousel-indicator span {
   border: 0px;
 }
 #login-container .tel-container .tel-prefix {
+  font-family: arial, sans-serif;
   border-right: solid 1px #ddd;
   color: #333;
   padding-right: 10px;
@@ -1289,8 +1368,14 @@ div.rn-carousel-indicator span {
 #login-container .tel-container .tel {
   margin-left: 15px;
 }
+#login-container .tel-container .tel-edit {
+  font-family: arial, sans-serif;
+}
 #login-container .auth-code-container {
   margin-top: 15px;
+}
+#login-container .auth-code-container .auth-code-edit {
+  font-family: arial, sans-serif;
 }
 #login-container .auth-code-container .send-auth-code {
   color: #e62f17;
@@ -1397,74 +1482,6 @@ div.rn-carousel-indicator span {
 }
 .logout-confirm-container .confirm-modal .modal-bottom .modal-cancel {
   border-right: solid 1px #e8e8e8;
-}
-
-#native-home-container {
-  font-family: 微软雅黑;
-}
-#native-home-container .flip-container {
-  width: 100%;
-  top: 0px;
-  bottom: 51px;
-  left: 0px;
-  position: absolute;
-  -webkit-perspective: 1000;
-  -webkit-transition: 0.6s;
-  -webkit-transform-style: preserve-3d;
-}
-#native-home-container .flip-container .front,
-#native-home-container .flip-container .back {
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-}
-#native-home-container .flip-container .front {
-  z-index: 1;
-}
-#native-home-container .flip-container .back {
-  -webkit-transform: rotateY(180deg);
-}
-#native-home-container .flip-container.flip {
-  -webkit-transform: rotateY(180deg);
-}
-#native-home-container .bottom-nav-bar {
-  height: 51px;
-  border-top: solid 1px #e8e8e8;
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-  left: 0px;
-  font-size: 13px;
-}
-#native-home-container .bottom-nav-bar .nav-link {
-  width: 50%;
-  display: block;
-  float: left;
-  height: 100%;
-  text-align: center;
-  line-height: 82px;
-  background-repeat: no-repeat;
-  background-size: 32px;
-  background-position: 50% 12%;
-}
-#native-home-container .bottom-nav-bar .home-nav {
-  background-image: url('../images/home.png');
-  color: #B1AFAF;
-}
-#native-home-container .bottom-nav-bar .home-nav-active {
-  background-image: url('../images/home-active.png');
-  color: #F16262;
-}
-#native-home-container .bottom-nav-bar .account-nav {
-  background-image: url('../images/account.png');
-  color: #B1AFAF;
-}
-#native-home-container .bottom-nav-bar .account-nav-active {
-  background-image: url('../images/account-active.png');
-  color: #F16262;
 }
 
 
@@ -1677,6 +1694,58 @@ th {
   width: 68px;
   margin-bottom: 17px;
   position: relative;
+}
+
+#us-container {
+  background-color: #eeeeee;
+  font-family: 微软雅黑;
+}
+#us-container .top-container {
+  height: 183px;
+  background-color: #fff;
+  margin-top: 9px;
+  text-align: center;
+}
+#us-container .top-container .us-logo {
+  width: 96px;
+  margin-top: 24px;
+}
+#us-container .top-container .version-info {
+  font-size: 14px;
+  color: #333;
+  margin-top: 16px;
+  display: inline-block;
+}
+#us-container .bottom-container {
+  padding: 0px 13px;
+  margin-top: 9px;
+  background-color: #fff;
+}
+#us-container .bottom-container .menu-item {
+  font-size: 15px;
+  color: #333;
+  height: 44px;
+  display: block;
+  width: 100%;
+  line-height: 44px;
+  margin-right: 13px;
+  background-image: url('../images/right_arrow.png');
+  background-repeat: no-repeat;
+  background-size: 9px;
+  background-position: 100% 50%;
+}
+#us-container .footer {
+  padding: 0px 13px;
+  margin-top: 100px;
+}
+#us-container .footer .logout {
+  border: 0px;
+  background-color: #f34832;
+  border-radius: 6px;
+  height: 43px;
+  width: 100%;
+  font-size: 15px;
+  color: #fff;
 }
 
 .address-common-container {
