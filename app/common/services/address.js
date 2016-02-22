@@ -21,6 +21,9 @@ angular.module('app.address')
 				var defer = $q.defer();
 				if(!defaultAddress){
 					this.getAddressList().then(function(data){
+						console.log('####');
+	                    console.log(data);
+	                    console.log('####');
 						defaultAddress = getDefaultAddressFromList(data);
 						if(defaultAddress){
 							defer.resolve(defaultAddress);
@@ -94,7 +97,7 @@ angular.module('app.address')
 			                openid: sessionStorage.getItem("openid")
 			            }
 			            addresses.query(params).$promise.then(function(data) {
-			            	addressList = data.items;
+			            	addressList = data.items;			            	
 			            	if(addressList && addressList.length > 0){
 			                	localStorage.hasAddress = true;
 			                }else{

@@ -1,7 +1,7 @@
 //var basePath = "http://localhost:8080/skh";
 //var basePath="http://192.168.0.120:8080/skh";
 var basePath = "http://mitest.4zlink.com:8080/mifan";
-//var basePath = "http://192.168.0.136:8080/skh";
+// var basePath = "http://192.168.0.135:8080/skh";
 var appId = "wx050cc99d8cec1a73";
 
 angular.module('app.home', []);
@@ -257,6 +257,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
     'addressInfo',{
         city: null,
         community: null,
+        communityId:null,
         block: null,
         unit: null,
         roomInfo: null// object type

@@ -11,6 +11,7 @@
             }
             vm.submitForm = function() {
                 vm.repair.device = $scope.currentDevice.name;
+                vm.repair.communityId = addressInfo.community.id;
                 vm.repair.block = $scope.defaultblock;
                 vm.repair.unit = $scope.defaultunit;
                 vm.repair.room = $scope.defaultroom;
@@ -39,6 +40,7 @@
             $scope.currentDevice = $scope.decives[0];
 
             address.getDefaultAddress().then(function(data){
+                console.log('111');
                 console.log(data);
                 $scope.defaultcommunity = data.community;
                 $scope.defaultblock = data.block;
@@ -64,10 +66,11 @@
                 // $state.go("repair-add");
                 console.log("onSelectAddressComplte");
                 console.log(addressInfo);
-                $scope.defaultcommunity = addressInfo.community;
+                $scope.defaultcommunity = addressInfo.community.name;
                 $scope.defaultblock = addressInfo.block;
                 $scope.defaultunit = addressInfo.unit;
                 $scope.defaultroom = addressInfo.roomInfo.room;
+                console.log(addressInfo.community.id);
             }
         }
     ]);

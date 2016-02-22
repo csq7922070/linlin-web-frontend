@@ -1,36 +1,101 @@
-#repair_type{
-	.repairtype{
-		margin: auto;
-		width: 280px;
-		font-size: 0px;
+#repairlist{
+	#repair_type{
+		.repairtype{
+			margin: auto;
+			width: 280px;
+			font-size: 0px;
+		}
+		.repairtype div{
+			display: inline-block;
+			width: 70px;
+			height: 50px;
+			margin: 0px;
+			text-align: center;
+			font-size: 12px;
+		}
+		.state{
+			color: #e6b417;
+		}
+		.state3{
+			float: right;
+			color: #7b7b7b;
+		}
 	}
-	.repairtype div{
-		display: inline-block;
-		width: 70px;
-		height: 50px;
-		margin: 0px;
-		text-align: center;
-		font-size: 12px;
-	}
-	/*.repairtype0{
-		background: #d92;
-	}
-	.repairtype1{
-		background: #e78;
-	}
-	.repairtype2{
-		background: #a84;
-	}
-	.repairtype3{
-		background: #cad;
-	}*/
-}
-
-
-.list{
-	.rapeat_list{
-		background: #ccc;
-		border: 1px solid red;
-		margin: 5px;
+	.item_service{
+		background: white;
+		margin-top: 10px;
 	}
 }
+
+#rapair_add{
+	input{
+		width: 100%;
+		border: 1px solid #e0e0e0;
+	}
+	select{
+		width: 100%;
+		height: 30px;
+		color: red;
+		margin: 5px 0px;
+		background: #fff;
+		border: 1px solid #e0e0e0;
+	}
+	select:hover{
+		color: red;
+	}
+	select option{
+		color: #000;
+	}
+	textarea{
+		border: 1px solid #e0e0e0;
+	}
+
+	.repair_mobile{
+		margin-top: 6px;
+	}
+} 
+
+#repair_detail{
+	li{
+		background: #fff;
+	}
+	.device{
+		color: #333;
+		font-weight: bolder;
+	}
+	.date_time{
+		color: #333;
+	}
+	.list_num{
+		color: #f34832;
+	}
+
+	.repaie_state{
+		background: #fff3a3;
+		display: block;
+		margin-left: 20px;
+		border-left: 1px #ddd solid;
+		padding-top: 15px;
+		padding-bottom: 15px;
+		
+		span{
+			background: #fff;
+			display: block;
+			line-height: 40px;
+			margin-left: 20px;
+			padding-left: 5px;
+		}
+
+		.repaie_state_right{
+			float: right;
+			margin-right: 15px;
+			color: #777!important;
+		}
+	}
+
+	.repaie_state:nth-of-type(1){
+		color: red;
+
+	}
+}
+

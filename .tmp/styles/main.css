@@ -595,7 +595,7 @@ a {
   box-shadow: none;
 }
 .complaint_publish button {
-  background: #4996ee;
+  background: #f44832;
   width: 100%;
   height: 40px;
   line-height: 40px;
@@ -681,7 +681,7 @@ a {
   color: #ffffff;
   font-size: 16px;
   line-height: 40px;
-  background-color: #4996ee;
+  background-color: #f44832;
   border-radius: 10px;
 }
 .contain_down {
@@ -818,7 +818,7 @@ textarea {
   font-size: 16px;
   text-align: center;
   padding: 5px 5px;
-  background-color: #4996EE;
+  background-color: #f44832;
   color: #ffffff !important;
   margin-bottom: 20px;
 }
@@ -845,10 +845,10 @@ html input[disabled] {
 .repair_list {
   width: 100%;
   height: auto;
-  background-color: #ffffff;
+  /*background-color: #ffffff;*/
   margin: auto;
-  padding-top: 30px;
-  padding-bottom: 10px;
+  /*padding-top: 30px;*/
+  /*padding-bottom: 10px;*/
 }
 .list_top {
   font-size: 16px;
@@ -868,13 +868,14 @@ html input[disabled] {
   margin-top: 10px;
 }
 .repair_list ul li {
-  width: 300px;
-  margin: auto;
+  /*width: 300px;*/
+  /*margin: auto;*/
   padding: 9px 0;
   font-size: 14px;
 }
 .repair_list ul li span:nth-of-type(1) {
   color: #777777;
+  margin-left: 12px;
 }
 .list ul li:nth-of-type(4) span:nth-of-type(1) {
   padding-left: 10px;
@@ -883,8 +884,8 @@ html input[disabled] {
   color: #e95912;
 }
 .repair_list ul li span:nth-of-type(2) {
-  padding-left: 6px;
-  white-space: normal;
+  padding-left: 30px;
+  /*white-space: normal;*/
   word-break: break-all;
 }
 .l_btn {
@@ -1069,8 +1070,30 @@ div.rn-carousel-indicator span {
   margin-top: 5px;
   background: white;
 }
-#complain_list .repliedstate {
-  color: #deb515;
+.repliedstate {
+  color: #e6b417;
+}
+#complain_add .mobile {
+  margin-top: 10px;
+  background: white!important;
+}
+.com_address {
+  background: white;
+  line-height: 30px;
+  padding-left: 5px;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+}
+.com_left,
+.com_right {
+  display: inline-block;
+}
+.com_right {
+  float: right;
+  margin-right: 5px;
+}
+.com_right img {
+  width: 25px;
 }
 
 .confirm-modal {
@@ -1480,40 +1503,35 @@ div.rn-carousel-indicator span {
 }
 
 
-.detail_notice_time {
-  text-align: right;
-  padding-right: 15px;
+#notice_detail {
+  background: white;
+}
+#notice_detail .detail_notice {
+  border-bottom: 1px #e6e6e6 solid;
+  margin: 10px 10px;
+  padding: 0px;
   padding-bottom: 10px;
 }
-.detail_notice_message {
+#notice_detail .detail_notice_time {
+  display: block;
+  color: #8e8e8e;
+  font-weight: normal;
+}
+#notice_detail .detail_notice_message {
   display: block;
   padding: 10px 15px;
 }
-.detail_notice_message textarea {
+#notice_detail .detail_notice_message textarea {
   height: 300px;
   border: none;
 }
 
-#repair_type {
-  /*.repairtype0{
-		background: #d92;
-	}
-	.repairtype1{
-		background: #e78;
-	}
-	.repairtype2{
-		background: #a84;
-	}
-	.repairtype3{
-		background: #cad;
-	}*/
-}
-#repair_type .repairtype {
+#repairlist #repair_type .repairtype {
   margin: auto;
   width: 280px;
   font-size: 0px;
 }
-#repair_type .repairtype div {
+#repairlist #repair_type .repairtype div {
   display: inline-block;
   width: 70px;
   height: 50px;
@@ -1521,10 +1539,76 @@ div.rn-carousel-indicator span {
   text-align: center;
   font-size: 12px;
 }
-.list .rapeat_list {
-  background: #ccc;
-  border: 1px solid red;
-  margin: 5px;
+#repairlist #repair_type .state {
+  color: #e6b417;
+}
+#repairlist #repair_type .state3 {
+  float: right;
+  color: #7b7b7b;
+}
+#repairlist .item_service {
+  background: white;
+  margin-top: 10px;
+}
+#rapair_add input {
+  width: 100%;
+  border: 1px solid #e0e0e0;
+}
+#rapair_add select {
+  width: 100%;
+  height: 30px;
+  color: red;
+  margin: 5px 0px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+}
+#rapair_add select:hover {
+  color: red;
+}
+#rapair_add select option {
+  color: #000;
+}
+#rapair_add textarea {
+  border: 1px solid #e0e0e0;
+}
+#rapair_add .repair_mobile {
+  margin-top: 6px;
+}
+#repair_detail li {
+  background: #fff;
+}
+#repair_detail .device {
+  color: #333;
+  font-weight: bolder;
+}
+#repair_detail .date_time {
+  color: #333;
+}
+#repair_detail .list_num {
+  color: #f34832;
+}
+#repair_detail .repaie_state {
+  background: #fff3a3;
+  display: block;
+  margin-left: 20px;
+  border-left: 1px #ddd solid;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+#repair_detail .repaie_state span {
+  background: #fff;
+  display: block;
+  line-height: 40px;
+  margin-left: 20px;
+  padding-left: 5px;
+}
+#repair_detail .repaie_state .repaie_state_right {
+  float: right;
+  margin-right: 15px;
+  color: #777!important;
+}
+#repair_detail .repaie_state:nth-of-type(1) {
+  color: red;
 }
 
 /*!

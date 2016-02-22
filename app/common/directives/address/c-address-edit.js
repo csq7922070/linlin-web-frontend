@@ -63,6 +63,7 @@ myApp.directive('cAddressEdit', function() {
                 $scope.showContent = false;
                 $scope.showCommunityList = true;
                 address.getCommunityList(addressInfo.city).then(function(data){
+                    console.log(data);
                     $scope.communityList = data;
                 },function(reason){
                     $scope.showCommunityList = false;
