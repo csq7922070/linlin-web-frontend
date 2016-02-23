@@ -40,6 +40,8 @@
                         vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
                         vm.currentPage = goPage;
                         vm.busy = false;
+                        console.log('vm');
+                        console.log(vm.notices.length);
                          Array.prototype.push.apply(vm.notices,data.items);
                     }, function(reason){
                         alert(errorLog.getErrorMessage(reason));
