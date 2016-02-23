@@ -74,17 +74,18 @@
     </div>
     <div ng-if="!payments" style="text-align: center;margin-top: 20%">暂无待缴费信息</div>
     <div class="weui_cells acc_footer" style="font-size: 16px">
-        <div class="weui_cell" style="padding-top: 0;padding-bottom: 0">
-            <div class="weui_cell_hd">
-                <input type="checkbox" ng-model="sel" ng-change="updateAll(sel)" id="sel_all" class="vis_none"
-                       ng-disabled="!selected">
-                <label for="sel_all" ng-if="sel" class="label_account" style="margin-top: -2px"></label>
-                <label for="sel_all" ng-if="!sel" class="label_account_click" style="margin-top: -2px"></label>
+        <div class="weui_cell bill-footer" style="padding-top: 0;padding-bottom: 0">
+            <div class="weui_cell_hd all-select" ng-class="{true:'all-select-container-active'}[sel]" ng-click="updateAll(sel)" 
+                ng-init="sel=false" ng-disabled="!payments || payments.length==0">
+<!--                  <input type="checkbox" ng-model="sel" ng-change="updateAll(sel)" id="sel_all" class="vis_none all-select"> -->
+<!--                 <label for="sel_all" ng-if="sel" class="label_account" style="margin-top: -2px"></label>
+                <label for="sel_all" ng-if="!sel" class="label_account_click" style="margin-top: -2px"></label> -->
             </div>
-            <label for="sel_all" class="weui_cell_bd weui_cell_primary" style="margin-top: 6px;flex: 1.0;font-weight: normal">
+<!--             <label for="sel_all" class="weui_cell_bd weui_cell_primary" style="margin-top: 6px;flex: 1.0;font-weight: normal">
                 <p style="display: inline" class="pos_lef color333">本页全选 </p>
-            </label>
-            <div class="weui_cell_bd weui_cell_primary" style="margin-top:2px;flex: 1.6;">
+            </label> -->
+            <span class="all-select-tip">全选</span>
+            <div class="weui_cell_bd weui_cell_primary total-money-container">
                 <span class="color333">合计:</span><span style="color: #f23737">￥{{total| number:2}}</span><span ng-if="!payments" style="color: #f23737">0.00</span>
             </div>
             <button class="weui_btn weui_btn_mini weui_btn_primary my_btn btn_press account_btn"

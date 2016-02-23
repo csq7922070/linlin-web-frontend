@@ -112,7 +112,7 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
             $q.all([userInfo.getOpenId(),userInfo.getWxConfigParam()]).then(function(datas){
                 openId = datas[0];
                 wxConfigParam = datas[1];
-                return pay($scope.totalFee, openId, $rootScope.ids, loginInfo.tel);
+                return getPaySignParam($scope.totalFee, openId, $rootScope.ids, loginInfo.tel);
             },function(reason){
                 return $q.reject(reason);
             }).then(function(data){// pay data
@@ -138,7 +138,7 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
                         fail: function(res){
                             var reason = {
                                 errorCode:"CHOOSE_WX_PAY_ERROR",
-                                errorMessage:errorLog.getErrorMessage(res)
+                                errorMessage:errorLog.getErrorMessage(res.errMsg)
                             };
                             defer.reject(reason);
                         }
@@ -161,7 +161,8 @@ angular.module('app.payment').controller('paymentCtrl', ['$scope', '$http', '$st
             });
         }
 
-        function pay(totalFee, openId, ids, tel){
+        //获取微信支付相关签名参数
+        function getPaySignParam(totalFee, openId, ids, tel){
             var defer = $q.defer();
             $http({
                 method: "POST",
