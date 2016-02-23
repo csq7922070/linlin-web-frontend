@@ -1,6 +1,6 @@
 angular.module('app.address')
-	.service('address', ['$q','$http','$timeout','errorLog', 'addresses',
-		function($q,$http,$timeout, errorLog,addresses){
+	.service('address', ['$q','$http','$timeout','errorLog', 'addresses','userInfo',
+		function($q,$http,$timeout, errorLog,addresses,userInfo){
 			// var defaultAddress = {
 			//  id: null,
 			// 	city: null,
@@ -82,11 +82,15 @@ angular.module('app.address')
 					addressListDefer = $q.defer();
 					if(!addressList){
 						addressList = [];
-						var params = {
-			                type: 'openid',
-			                openid: sessionStorage.getItem("openid")
-			            }
-			            addresses.query(params).$promise.then(function(data) {
+						userInfo.getOpenId().then(function(data){
+							var params = {
+				                type: 'openid',
+				                openid: data
+				            }
+				            return addresses.query(params).$promise;
+						},function(reason){
+							return $q.reject(reason);
+						}).then(function(data) {
 			            	addressList = data.items;			            	
 			            	if(addressList && addressList.length > 0){
 			                	localStorage.hasAddress = true;
