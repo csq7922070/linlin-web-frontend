@@ -1,5 +1,5 @@
 angular.module('app.repair').controller('repairListCtrl', ['userInfo', '$timeout', '$state', 'repairs','errorLog',
-    function ($timeout, $state, repairs,errorLog,userInfo) {
+    function (userInfo,$timeout, $state, repairs,errorLog) {
         var vm = this;
         vm.currentPage = 0;
         vm.pageSize = 10;

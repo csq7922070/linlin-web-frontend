@@ -1,4 +1,4 @@
-angular.module('app.complain').controller('complainAddCtrl', ['userInfo', '$timeout', '$state', 'complains', 'address', 'addressInfo', '$scope',
+angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$state', 'complains', 'address', 'addressInfo', '$scope','userInfo', 
     function ($timeout, $state, complains, address, addressInfo, $scope,userInfo) {
         var vm = this;
         vm.mask_close = function () {

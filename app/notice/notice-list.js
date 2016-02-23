@@ -1,5 +1,5 @@
 (function() {
-    angular.module('app.notice').controller('noticeListCtrl', ['userInfo', 'notices', 'errorLog','address', '$scope','$q',
+    angular.module('app.notice').controller('noticeListCtrl', ['notices', 'errorLog','address', '$scope','$q','userInfo', 
         function(notices, errorLog, address, $scope, $q, userInfo) {
             var vm = this;
             vm.currentPage = 0;
@@ -50,5 +50,3 @@
         }
     ]);
 })();
-
-// sessionStorage.getItem("openid")

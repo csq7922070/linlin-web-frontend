@@ -1,5 +1,5 @@
 (function() {
-    angular.module('app.repair').controller('repairAddCtrl', ['userInfo', '$timeout', '$state', '$http', 'repairs','address','$scope','addressInfo',
+    angular.module('app.repair').controller('repairAddCtrl', ['userInfo', '$timeout', '$http', '$state', 'repairs','address','$scope','addressInfo',
         function(userInfo, $timeout, $http, $state, repairs, address, $scope, addressInfo) {
             var vm = this;
 

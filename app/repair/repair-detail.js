@@ -23,6 +23,7 @@
                     vm.repair = data;
                     successcb();
                 }, errcb);
+                // alert('ok');
             };
 
             function successcb() {

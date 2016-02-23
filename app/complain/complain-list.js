@@ -1,4 +1,4 @@
-angular.module('app.complain').controller('complainListCtrl', ['userInfo', 'complains', 'errorLog',
+angular.module('app.complain').controller('complainListCtrl', ['complains', 'errorLog','userInfo', 
     function (complains, errorLog,userInfo) {
         var vm = this;
         vm.currentPage = 0;
