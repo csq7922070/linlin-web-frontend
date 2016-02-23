@@ -71,11 +71,11 @@
 	}
 
 	.repaie_state{
-		background: #fff3a3;
+		/*background: #fff3a3;*/
 		display: block;
 		margin-left: 20px;
 		border-left: 1px #ddd solid;
-		padding-top: 15px;
+		/*padding-top: 15px;*/
 		padding-bottom: 15px;
 		
 		span{
@@ -91,11 +91,52 @@
 			margin-right: 15px;
 			color: #777!important;
 		}
+
+		img{
+			display: inline-block;
+			width: 15px;
+			position: relative;
+			left: -8px;
+			bottom: -25px;
+		}
+
+		.triangle{
+			background: red;
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			border-top:5px solid #eee;
+			border-bottom:5px solid #eee;
+			border-right:5px solid #fff;
+			position: relative;
+			left: -15px;
+			bottom: 5px;
+
+		}
 	}
 
 	.repaie_state:nth-of-type(1){
 		color: red;
-
+		padding-top: 20px;
 	}
+
+	.repaie_state:last-child{
+		height: 30px;
+		margin-bottom: 200px;
+	}
+	.repair_but{
+		position: fixed;
+		bottom: 0px;
+		width: 100%;
+		background: #fff;
+		padding: 12px;
+		.l_btn{
+			width: 301px;
+			border: 1px solid #f34832;
+			border-radius: 5px;
+			color: #f34832;
+		}
+	}
+		
 }
 

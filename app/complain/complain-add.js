@@ -8,10 +8,7 @@ angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$stat
             vm.err_show = false;
         }
         vm.submitForm = function () {
-            vm.complain.communityId = addressInfo.community.id;
-            vm.complain.block = $scope.defaultblock;
-            vm.complain.unit = $scope.defaultunit;
-            vm.complain.room = $scope.defaultroom;
+            vm.complain.communityId = addressInfo.communityId;
             vm.complain.openid = sessionStorage.getItem("openid");
             params = vm.complain;
             complains.save(params).$promise.then(successcb, errcb);
@@ -33,10 +30,8 @@ angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$stat
 
         address.getDefaultAddress().then(function(data){
             console.log(data);
+            $scope.defaultcity = data.city;
             $scope.defaultcommunity = data.community;
-            $scope.defaultblock = data.block;
-            $scope.defaultunit = data.unit;
-            $scope.defaultroom = data.room;
         },function(reason){
             alert(reason.errorCode+","+reason.errorMessage);
         });
@@ -56,11 +51,8 @@ angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$stat
             $scope.show = true;
             console.log("onSelectAddressComplte");
             console.log(addressInfo);
-            $scope.defaultcommunity = addressInfo.community.name;
-            $scope.defaultblock = addressInfo.block;
-            $scope.defaultunit = addressInfo.unit;
-            $scope.defaultroom = addressInfo.roomInfo.room;
-            console.log(addressInfo.community.id);
+            $scope.defaultcommunity = addressInfo.community;
+            console.log(addressInfo.communityId);
         }
     }
 ]);

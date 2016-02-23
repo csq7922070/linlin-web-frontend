@@ -1094,6 +1094,12 @@ div.rn-carousel-indicator span {
   margin-top: 10px;
   background: white!important;
 }
+#complain_add .privacy_protection {
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 5px;
+}
 .com_address {
   background: white;
   line-height: 30px;
@@ -1612,11 +1618,11 @@ div.rn-carousel-indicator span {
   color: #f34832;
 }
 #repair_detail .repaie_state {
-  background: #fff3a3;
+  /*background: #fff3a3;*/
   display: block;
   margin-left: 20px;
   border-left: 1px #ddd solid;
-  padding-top: 15px;
+  /*padding-top: 15px;*/
   padding-bottom: 15px;
 }
 #repair_detail .repaie_state span {
@@ -1631,8 +1637,45 @@ div.rn-carousel-indicator span {
   margin-right: 15px;
   color: #777!important;
 }
+#repair_detail .repaie_state img {
+  display: inline-block;
+  width: 15px;
+  position: relative;
+  left: -8px;
+  bottom: -25px;
+}
+#repair_detail .repaie_state .triangle {
+  background: red;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-top: 5px solid #eee;
+  border-bottom: 5px solid #eee;
+  border-right: 5px solid #fff;
+  position: relative;
+  left: -15px;
+  bottom: 5px;
+}
 #repair_detail .repaie_state:nth-of-type(1) {
   color: red;
+  padding-top: 20px;
+}
+#repair_detail .repaie_state:last-child {
+  height: 30px;
+  margin-bottom: 200px;
+}
+#repair_detail .repair_but {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  background: #fff;
+  padding: 12px;
+}
+#repair_detail .repair_but .l_btn {
+  width: 301px;
+  border: 1px solid #f34832;
+  border-radius: 5px;
+  color: #f34832;
 }
 
 /*!

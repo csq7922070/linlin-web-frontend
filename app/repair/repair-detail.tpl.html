@@ -8,34 +8,21 @@
                 </li>
                 <li><span class="number">联系方式</span><span class="list_num">{{vm.repair.mobile}}</span>
                 </li>
-                <div class="repaie_state repaie_state3" ng-if="vm.repair.state>2">
-                    <span>维修完成<span class="repaie_state_right">{{vm.repair.finishDate.substring(0,16)}}</span></span>
+                <div class="repaie_state repaie_state3" >
+                    <img src="images/repair_03.png" alt=""><span><div class="triangle">a</div>维修完成<span class="repaie_state_right">1111</span></span>
                 </div>
-                <div class="repaie_state repaie_state2" ng-if="vm.repair.state>1">
-                    <span>物业确认<span class="repaie_state_right">{{vm.repair.finishDate.substring(0,16)}}</span></span>
+                <div class="repaie_state repaie_state2" >
+                    <img src="images/repair_09.png" alt=""><span>物业确认<span class="repaie_state_right">2222</span></span>
                 </div>
-                <div class="repaie_state repaie_state1" ng-if="vm.repair.state>0">
-                    <span>业主报修<span class="repaie_state_right">{{vm.repair.createDate.substring(0,16)}}</span></span>
-                </div>
-                <!-- <li><span class="list_state">状态:</span>
-                    <span class="list_ste" ng-if="vm.repair.state==0">等待指派</span>
-                    <span class="list_ste" ng-if="vm.repair.state==1">指派完成</span>
-                    <span class="list_ste" ng-if="vm.repair.state==2">指派完成待确认</span>
-                    <span class="list_ste" ng-if="vm.repair.state==3">已完成</span>
-                </li> -->
-
-
-
-                <!-- <div class="repairtype">
-                    <div class="repairtype0">业主报修<br>2011-02-18</div>
-                    <div class="repairtype1">物业确认<br>2011-02-18</div>
-                    <div class="repairtype2">维修完成<br>2011-02-18</div>
-                    <div class="repairtype3">业主确认<br>2011-02-18</div>
-                </div> -->
-                
+                <div class="repaie_state repaie_state1" >
+                    <img src="images/repair_09.png" alt=""><span>业主报修<span class="repaie_state_right">3333</span></span>
+                </div>                
             </ul>
         </div>
-        <input ng-if="vm.repair.state==2" class="l_btn" type="button" value="确认完成" ng-hide="success" ng-click="vm.confirm(vm.repair.id)">
+        <div class="repair_but">
+            <input ng-if="vm.repair.state>0" class="l_btn" type="button" value="确认完成" ng-hide="success" ng-click="vm.confirm(vm.repair.id)">
+        </div>
+        
     </div>
 
     <!-- <li ng-if="vm.repair.state==2">
