@@ -35,14 +35,6 @@ angular.module('app.user')
 						this.initWxParam();
 					}
 					getOpenIdWxConfigParam().then(function(data){
-						openId = data.openid;
-						localStorage.openId = openId;
-		                //微信配置接口所需参数
-		                wxConfigParam = {
-		                	timestamp : data.timestamp,
-		                	noncestr : data.noncestr,
-		                	sign : data.sign
-		                };
 		                defer.resolve(openId);
 					},function(reason){
 						var reason = {
@@ -69,14 +61,6 @@ angular.module('app.user')
 					this.initWxParam();
 				}
 				getOpenIdWxConfigParam().then(function(data){
-					openId = data.openid;
-					localStorage.openId = openId;
-	                //微信配置接口所需参数
-	                wxConfigParam = {
-	                	timestamp : data.timestamp,
-	                	noncestr : data.noncestr,
-	                	sign : data.sign
-	                };
 	                defer.resolve(wxConfigParam);
 				},function(reason){
 					var reason = {
@@ -100,6 +84,14 @@ angular.module('app.user')
                 method: "GET",
                 url: basePath + '/users/getopenid' + wxParam
             }).success(function(data) {
+            	openId = data.openid;
+				localStorage.openId = openId;
+                //微信配置接口所需参数
+                wxConfigParam = {
+                	timestamp : data.timestamp,
+                	noncestr : data.noncestr,
+                	sign : data.sign
+                };
                 defer.resolve(data);
             }).error(function(reason) {
                 var reason = {
