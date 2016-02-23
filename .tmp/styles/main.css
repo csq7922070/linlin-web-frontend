@@ -1097,13 +1097,12 @@ div.rn-carousel-indicator span {
 #bill-container .bill-footer .all-select-container-active {
   background-image: url('../images/select_02.png');
 }
-#bill-container .bill-footer .all-select-tip {
-  margin-top: 4px;
-}
 #bill-container .bill-footer .total-money-container {
   margin-top: 4px;
-  margin-left: 10px;
   flex: 1.6;
+}
+#bill-container .bill-footer .total-money-container .total-money-text {
+  margin-left: 10px;
 }
 
 #complain_list .item_service {
