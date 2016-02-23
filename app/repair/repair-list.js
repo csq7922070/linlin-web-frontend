@@ -1,5 +1,5 @@
-angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state', 'repairs','errorLog',
-    function ($timeout, $state, repairs,errorLog) {
+angular.module('app.repair').controller('repairListCtrl', ['userInfo', '$timeout', '$state', 'repairs','errorLog',
+    function ($timeout, $state, repairs,errorLog,userInfo) {
         var vm = this;
         vm.currentPage = 0;
         vm.pageSize = 10;
@@ -15,7 +15,7 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
                 params = {
                     offset: limit * (goPage - 1),
                     limit: limit,
-                    openid: sessionStorage.getItem("openid"),
+                    openid: userInfo.getOpenIdSync(),
                     queryType: 'openid'
                 };
 

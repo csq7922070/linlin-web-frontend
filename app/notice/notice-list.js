@@ -1,6 +1,6 @@
 (function() {
-    angular.module('app.notice').controller('noticeListCtrl', ['notices', 'errorLog','address', '$scope','$q',
-        function(notices, errorLog, address, $scope, $q) {
+    angular.module('app.notice').controller('noticeListCtrl', ['userInfo', 'notices', 'errorLog','address', '$scope','$q',
+        function(notices, errorLog, address, $scope, $q, userInfo) {
             var vm = this;
             vm.currentPage = 0;
             vm.pageSize = 10;
@@ -33,7 +33,7 @@
                     params = {
                         offset: vm.pageSize * (goPage - 1),
                         limit: vm.pageSize,
-                        openid: sessionStorage.getItem("openid"),
+                        openid: userInfo.getOpenIdSync(),
                         communityId:defaultcommunityId
                     }
                     notices.query(params).$promise.then(function(data) {
@@ -46,6 +46,9 @@
                     });
                 }
             }
+            // vm.load(1, vm.pageSize);
         }
     ]);
 })();
+
+// sessionStorage.getItem("openid")

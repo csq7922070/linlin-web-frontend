@@ -1,6 +1,6 @@
 (function() {
-    angular.module('app.repair').controller('repairAddCtrl', ['$timeout', '$state', '$http', 'repairs','address','$scope','addressInfo',
-        function($timeout, $http, $state, repairs, address, $scope, addressInfo) {
+    angular.module('app.repair').controller('repairAddCtrl', ['userInfo', '$timeout', '$state', '$http', 'repairs','address','$scope','addressInfo',
+        function(userInfo, $timeout, $http, $state, repairs, address, $scope, addressInfo) {
             var vm = this;
 
             vm.mask_close = function() {
@@ -15,7 +15,7 @@
                 vm.repair.block = $scope.defaultblock;
                 vm.repair.unit = $scope.defaultunit;
                 vm.repair.room = $scope.defaultroom;
-                vm.repair.openid=sessionStorage.getItem("openid");
+                vm.repair.openid=userInfo.getOpenIdSync();
                 params = vm.repair;
                 repairs.save(params).$promise.then(successcb, errcb);
             }

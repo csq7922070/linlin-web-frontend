@@ -1,5 +1,5 @@
-angular.module('app.complain').controller('complainListCtrl', ['complains', 'errorLog',
-    function (complains, errorLog) {
+angular.module('app.complain').controller('complainListCtrl', ['userInfo', 'complains', 'errorLog',
+    function (complains, errorLog,userInfo) {
         var vm = this;
         vm.currentPage = 0;
         vm.pageSize = 10;
@@ -13,7 +13,7 @@ angular.module('app.complain').controller('complainListCtrl', ['complains', 'err
                 params = {
                     offset: vm.pageSize * (goPage - 1),
                     limit: vm.pageSize,
-                    openid: sessionStorage.getItem("openid"),
+                    openid: userInfo.getOpenIdSync(),
                     queryType: 'openid'
                 };
                 complains.query(params).$promise.then(function (data) {

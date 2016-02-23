@@ -583,7 +583,7 @@ a {
   top: 50px;
 }
 .notice {
-  padding-top: 15px;
+  /*padding-top: 15px;*/
   font-size: 16px;
   color: #333333;
   font-weight: bold;
@@ -599,7 +599,7 @@ a {
   font-size: 14px;
   color: #333333;
   word-break: break-all;
-  margin-bottom: 15px;
+  margin-bottom: 21px;
 }
 .hidden_value {
   display: none;
@@ -1554,6 +1554,22 @@ div.rn-carousel-indicator span {
 #notice_detail .detail_notice_message textarea {
   height: 300px;
   border: none;
+}
+#notice_list .list {
+  background: none;
+}
+#notice_list .list .rapeat_list {
+  background: white;
+  padding: 8px;
+  padding-top: 16px;
+  margin: 13px;
+}
+#notice_list .list .rapeat_list span {
+  margin-right: 14px;
+}
+#notice_list .list .rapeat_list .notice_date {
+  border-top: 1px solid #e0e0e0;
+  color: #777;
 }
 
 #repairlist #repair_type .repairtype {

@@ -1,5 +1,5 @@
-angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$state', 'complains', 'address', 'addressInfo', '$scope',
-    function ($timeout, $state, complains, address, addressInfo, $scope) {
+angular.module('app.complain').controller('complainAddCtrl', ['userInfo', '$timeout', '$state', 'complains', 'address', 'addressInfo', '$scope',
+    function ($timeout, $state, complains, address, addressInfo, $scope,userInfo) {
         var vm = this;
         vm.mask_close = function () {
             vm.suc_show = false;
@@ -9,7 +9,7 @@ angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$stat
         }
         vm.submitForm = function () {
             vm.complain.communityId = addressInfo.communityId;
-            vm.complain.openid = sessionStorage.getItem("openid");
+            vm.complain.openid = userInfo.getOpenIdSync();
             params = vm.complain;
             complains.save(params).$promise.then(successcb, errcb);
         }

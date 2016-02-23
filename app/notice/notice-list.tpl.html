@@ -1,14 +1,17 @@
-<div class="container-fluid contain" style="background: white" when-scrolled="vm.load(vm.currentPage+1,vm.pageSize)">
-    <ul class="list">
-        <li ng-repeat="notice in vm.notices" class="rapeat_list">
-            <a ui-sref="notice-detail({id:notice.id})">
-                <div class='notice' name='title'>{{notice.title}}</div>
-                <div class='notice_date' name='createtime'>{{notice.createDate.substring(0,16)}}</div>
-                <div class='notice_message' style="padding-left:0px;height:50px;overflow: hidden" name='content'>{{notice.content}}</div>
-            </a>
-        </li>
-        <li ng-if="notices.length==0" style="background-color: #EEEEEE;border: none;text-align: center;font-size: 18px;padding-top: 30px">
-            <div>您所在的小区暂时没有公告!!!</div>
-        </li>
-    </ul>
+<div id="notice_list">
+    <div class="container-fluid contain" when-scrolled="vm.load(vm.currentPage+1,vm.pageSize)">
+        <ul class="list">
+            <li ng-repeat="notice in vm.notices" class="rapeat_list">
+                <a ui-sref="notice-detail({id:notice.id})">
+                    <div class='notice' name='title'><span>[温馨提示]</span>{{notice.title}}</div>
+                    <div class='notice_message' style="padding-left:0px;height:50px;overflow: hidden" name='content'>{{notice.content}}</div>
+                    <div class='notice_date' name='createtime'>{{notice.createDate.substring(0,16)}}</div>
+                </a>
+            </li>
+            <li ng-if="notices.length==0" style="background-color: #EEEEEE;border: none;text-align: center;font-size: 18px;padding-top: 30px">
+                <div>您所在的小区暂时没有公告!!!</div>
+            </li>
+        </ul>
+    </div>
 </div>
+    
