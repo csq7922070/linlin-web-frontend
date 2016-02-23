@@ -410,7 +410,7 @@ p {
   border-bottom: 1px solid #ff6b5c;
   display: inline-block;
   height: 50px;
-  padding: 0 4px;
+  /*padding: 0 4px;*/
 }
 .home_nav p {
   color: black;
@@ -499,7 +499,8 @@ a {
   color: black;
   cursor: pointer;
   text-decoration: none;
-  font-weight: bold;
+  font-family: '微软雅黑';
+  font-weight: normal;
 }
 .nav a:visited {
   color: #000;
@@ -659,7 +660,7 @@ a {
   width: 100%;
   padding: 5px;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 14px;
   color: #999;
   box-shadow: none;
 }
@@ -891,9 +892,10 @@ textarea {
   color: #ffffff !important;
   margin-bottom: 20px;
 }
-/*button[disabled], html input[disabled] {
-  background-color: #ccc !important;
-}*/
+button[disabled],
+html input[disabled] {
+  background-color: #ccc;
+}
 .phone_hidden {
   color: #e95912;
   font-size: 12px;
@@ -956,7 +958,7 @@ textarea {
   /*white-space: normal;*/
   word-break: break-all;
 }
-.l_btn {
+/*.l_btn {
   margin: 30px auto;
   width: 280px;
   height: 40px;
@@ -967,7 +969,7 @@ textarea {
   font-size: 16px;
   color: #333333;
   font-family: arial, serif;
-}
+}*/
 .RD_s {
   width: 63px;
   text-align: right;
@@ -1110,7 +1112,17 @@ div.rn-carousel-indicator span {
   margin-top: 5px;
   background: white;
 }
-.repliedstate {
+.replied_state {
+  color: #e6b417;
+  background: url(../images/change_address.png) no-repeat;
+  display: block;
+  width: 55px;
+  height: 25px;
+  text-align: right;
+  background-size: 35%;
+  background-position: 8px 6px;
+}
+.replied_state:hover {
   color: #e6b417;
 }
 #complain_add .mobile {
@@ -1122,6 +1134,9 @@ div.rn-carousel-indicator span {
   font-size: 14px;
   text-align: center;
   margin-top: 5px;
+}
+#complain_add .tel-edit {
+  font-family: arial, sans-serif;
 }
 .com_address {
   background: white;
@@ -1137,12 +1152,18 @@ div.rn-carousel-indicator span {
 .com_right {
   float: right;
   margin-right: 5px;
+  /*img{
+		width: 20px;
+	}*/
 }
-.com_right img {
-  width: 25px;
+#complain_detail {
+  height: 100%;
+  background: #fff;
+  padding-top: 21px;
 }
 #complain_detail .complaint_title {
   font-size: 15px;
+  /*margin-top: 21px;*/
 }
 #complain_detail .property_detail {
   color: #777;
@@ -1636,6 +1657,7 @@ div.rn-carousel-indicator span {
   margin: 5px 0px;
   background: #fff;
   border: 1px solid #e0e0e0;
+  padding-left: 2px;
 }
 #rapair_add select:hover {
   color: red;
@@ -1649,6 +1671,9 @@ div.rn-carousel-indicator span {
 #rapair_add .repair_mobile {
   margin-top: 6px;
 }
+#rapair_add .tel-edit {
+  font-family: arial, sans-serif;
+}
 #repair_detail li {
   background: #fff;
 }
@@ -1658,6 +1683,7 @@ div.rn-carousel-indicator span {
 }
 #repair_detail .date_time {
   color: #333;
+  padding-left: 25px;
 }
 #repair_detail .list_num {
   color: #f34832;
@@ -1680,6 +1706,7 @@ div.rn-carousel-indicator span {
   margin-left: 20px;
   margin-right: 15px;
   padding-left: 5px;
+  border-radius: 5px;
 }
 #repair_detail .repaie_state .repaie_state_right {
   float: right;
@@ -1718,12 +1745,18 @@ div.rn-carousel-indicator span {
   bottom: 0px;
   width: 100%;
   background: #fff;
+  padding: 12px 12px;
+  height: 56px;
 }
 #repair_detail .repair_but .l_btn {
-  width: 301px;
+  width: 100%;
   border: 1px solid #f34832;
   border-radius: 5px;
   color: #f34832;
+  height: 32px;
+  background-color: #ffffff;
+  font-size: 16px;
+  font-family: arial, serif;
 }
 
 /*!

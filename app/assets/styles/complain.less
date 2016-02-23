@@ -5,7 +5,17 @@
 	}
 	
 }
-.repliedstate{
+.replied_state{
+	color: #e6b417;
+    background: url(../images/change_address.png) no-repeat;
+    display: block;
+    width: 55px;
+    height: 25px;
+    text-align: right;
+    background-size: 35%;
+    background-position: 8px 6px;
+}
+.replied_state:hover{
 	color: #e6b417;
 }
 #complain_add{
@@ -18,6 +28,9 @@
 		font-size: 14px;
 		text-align: center;
 		margin-top: 5px;
+	}
+	.tel-edit{
+	    font-family:arial,sans-serif;
 	}
 }
 
@@ -36,15 +49,19 @@
 	float: right;
 	margin-right: 5px;
 
-	img{
-		width: 25px;
-	}
+	/*img{
+		width: 20px;
+	}*/
 }
 
 
 #complain_detail{
+	height: 100%;
+	background: #fff;
+	padding-top: 21px;
 	.complaint_title{
 		font-size: 15px;
+		/*margin-top: 21px;*/
 	}
 	.property_detail{
 		color: #777;

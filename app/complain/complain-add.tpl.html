@@ -17,17 +17,16 @@
 
             <div class="com_address">
                 <div class="com_left">
-                    <span>{{defaultcity||'city'}}</span>-
-                    <span>{{defaultcommunity||'小区'}}</span>
+                    <span>{{defaultcity||'city'}}</span>-<span>{{defaultcommunity||'小区'}}</span>
                 </div>
 
-                <div class="com_right" ng-click="changeaddress()">
-                    <img src="images/change_address.png" alt=""><a class='repliedstate'>编辑</a>
+                <div class="com_right" ng-click="changeAddress()">
+                   <a class='replied_state'>编辑</a>
                 </div>
             </div>
 
             <input class="mobile" type="text" name="mobile" ng-model="vm.complain.mobile" ng-pattern="/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/" maxlength="11" placeholder="联系方式（您的手机号）" required>
-            <span class="room_hidden" ng-show="complainForm.mobile.$touched && complainForm.mobile.$dirty && complainForm.mobile.$invalid">*请输入正确的手机号码</span>
+            <span class="room_hidden" ng-show="complainForm.mobile.$touched && complainForm.mobile.$dirty && complainForm.mobile.$invalid" ng-class="{true:'tel-edit'}[vm.repair.mobile!='']">*请输入正确的手机号码</span>
 
             <button class="submit_but" type="submit" ng-disabled="complainForm.$invalid">提交</button>
         </form>

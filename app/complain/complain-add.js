@@ -35,7 +35,7 @@ angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$stat
         },function(reason){
             alert(reason.errorCode+","+reason.errorMessage);
         });
-        $scope.changeaddress = function(){
+        $scope.changeAddress = function(){
             $scope.show = false;
             $scope.showAddressList = true;
             address.getAddressList().then(function(data){
