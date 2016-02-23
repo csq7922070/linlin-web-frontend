@@ -1,10 +1,30 @@
 (function() {
-    angular.module('app.notice').controller('noticeListCtrl', ['notices', 'errorLog',
-        function(notices, errorLog) {
+    angular.module('app.notice').controller('noticeListCtrl', ['notices', 'errorLog','address', '$scope','$q',
+        function(notices, errorLog, address, $scope, $q) {
             var vm = this;
             vm.currentPage = 0;
             vm.pageSize = 10;
             vm.notices = [];
+
+            var defaultcommunityId;
+            var defaultDefer = $q.defer();
+            
+            address.getDefaultAddress().then(function(data){
+                defaultcommunityId = data.communityId;
+                console.log('ssss');
+                console.log(defaultcommunityId);
+                defaultDefer.resolve(data.communityId);
+            },function(reason){
+                alert(reason.errorCode+","+reason.errorMessage);
+            });
+
+            defaultDefer.promise.then(function(data){
+                vm.load(1, vm.pageSize);
+                console.log('111');
+            },function(reason){
+                console.log(reason);
+            });
+            
             vm.load = function(goPage, limit) {
                 if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
                     return;
@@ -13,7 +33,8 @@
                     params = {
                         offset: vm.pageSize * (goPage - 1),
                         limit: vm.pageSize,
-                        openid: sessionStorage.getItem("openid")
+                        openid: sessionStorage.getItem("openid"),
+                        communityId:defaultcommunityId
                     }
                     notices.query(params).$promise.then(function(data) {
                         vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
@@ -25,7 +46,6 @@
                     });
                 }
             }
-            vm.load(1, vm.pageSize);
         }
     ]);
 })();

@@ -24,9 +24,6 @@ angular.module('app.address')
 				var defer = $q.defer();
 				if(!defaultAddress || defaultAddressDirty){
 					this.getAddressList().then(function(data){
-						console.log('####');
-	                    console.log(data);
-	                    console.log('####');
 						defaultAddress = getDefaultAddressFromList(data);
 						if(defaultAddress){
 							defaultAddressDirty = false;

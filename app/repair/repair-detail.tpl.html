@@ -9,18 +9,18 @@
                 <li><span class="number">联系方式</span><span class="list_num">{{vm.repair.mobile}}</span>
                 </li>
                 <div class="repaie_state repaie_state3" >
-                    <img src="images/repair_03.png" alt=""><span><div class="triangle">a</div>维修完成<span class="repaie_state_right">1111</span></span>
+                    <img src="images/repair_03.png" alt=""><span><div class="triangle"></div>维修完成<span class="repaie_state_right">1111</span></span>
                 </div>
                 <div class="repaie_state repaie_state2" >
                     <img src="images/repair_09.png" alt=""><span>物业确认<span class="repaie_state_right">2222</span></span>
                 </div>
                 <div class="repaie_state repaie_state1" >
-                    <img src="images/repair_09.png" alt=""><span>业主报修<span class="repaie_state_right">3333</span></span>
+                    <img src="images/repair_09.png" alt=""><span>业主报修<span class="repaie_state_right">{{}}</span></span>
                 </div>                
             </ul>
         </div>
         <div class="repair_but">
-            <input ng-if="vm.repair.state>0" class="l_btn" type="button" value="确认完成" ng-hide="success" ng-click="vm.confirm(vm.repair.id)">
+            <input class="l_btn" type="button" value="确认完成" ng-hide="success" ng-click="vm.confirm(vm.repair.id)">
         </div>
         
     </div>
@@ -50,4 +50,7 @@
     </div>
 
 </div>
+    
+
+
     
