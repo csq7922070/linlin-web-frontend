@@ -58,6 +58,10 @@ angular.module('app.user')
 	        return defer.promise;
 		}
 
+		this.getOpenIdSync = function(){
+			return openId;
+		}
+
 		this.getWxConfigParam = function(){
 			var defer = $q.defer();
 			if(!wxConfigParam){
