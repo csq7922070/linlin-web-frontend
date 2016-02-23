@@ -1,6 +1,6 @@
 angular.module('app.account')
-	.service('account', ['$q','$http','$timeout','errorLog','userInfo',
-		function($q,$http,$timeout, errorLog,userInfo){			
+	.service('account', ['$q','$http','$timeout','errorLog','userInfo','$q',
+		function($q,$http,$timeout, errorLog,userInfo,$q){			
 			this.sendAuthCode = function(tel){
 				var defer = $q.defer();
 				// $timeout(function(){
@@ -45,10 +45,10 @@ angular.module('app.account')
 						}
 					}).success(function(data){
 						defer.resolve(data);
-					}).error(function(data){
+					}).error(function(reason){
 						var reason = {
 							errorCode: "LOGIN_ERROR",
-							errorMessage: errorLog.getErrorMessage(data)
+							errorMessage: errorLog.getErrorMessage(reason)
 						};
 						defer.reject(reason);
 					});

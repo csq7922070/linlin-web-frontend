@@ -2,7 +2,7 @@
 //var basePath="http://192.168.0.120:8080/skh";
 var basePath = "http://mitest.4zlink.com:8080/mifan";
 // var basePath = "http://192.168.0.135:8080/skh";
-var appId = "wx050cc99d8cec1a73";
+var appId = "wx050cc99d8cec1a73";//公众号ID
 
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);

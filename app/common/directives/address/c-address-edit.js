@@ -9,7 +9,8 @@ myApp.directive('cAddressEdit', function() {
         templateUrl: 'tpl/common/directives/address/c-address-edit.tpl.html',
         link: function($scope, element, attrs) {
         },
-        controller: function ($state, $scope, $stateParams, addresses,communityInfo,addressInfo,address,errorLog) {
+        controller: function ($state, $scope, $stateParams, addresses,communityInfo,addressInfo,address,errorLog,
+            userInfo,$q) {
             if(!addressInfo.city && communityInfo.auth){
                 addressInfo.city = communityInfo.city;
                 addressInfo.communityId = communityInfo.id;
@@ -146,17 +147,21 @@ myApp.directive('cAddressEdit', function() {
             
 
             $scope.addAddress = function () {
-                var params = {
-                    city: addressInfo.city,
-                    community: addressInfo.community,
-                    block: addressInfo.block,
-                    unit: addressInfo.unit,
-                    room: addressInfo.room,
-                    houseId: addressInfo.id,
-                    initial: addressInfo.initial,
-                    openid: sessionStorage.getItem("openid")
-                }
-                addresses.save(params).$promise.then(function (data) {
+                userInfo.getOpenId().then(function(data){
+                    var params = {
+                        city: addressInfo.city,
+                        community: addressInfo.community,
+                        block: addressInfo.block,
+                        unit: addressInfo.unit,
+                        room: addressInfo.room,
+                        houseId: addressInfo.id,
+                        initial: addressInfo.initial,
+                        openid: data
+                    }
+                    return addresses.save(params).$promise;
+                },function(reason){
+                    return $q.reject(reason);
+                }).then(function (data) {
                     address.addAddress(addressInfo);
                     close();
                 }, function (reason) {

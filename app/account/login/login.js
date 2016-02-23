@@ -61,6 +61,7 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
             $scope.verifyTip = "登录中...";
             $scope.verifyError = true;
             account.login($scope.tel, $scope.authCode).then(function(data){
+                alert(errorLog.getErrorMessage(data));
                 $scope.verifyError = false;
                 if(!data.flag){//登录失败，手机号和验证码不匹配
                     $scope.verifyTip = "请输入正确的验证码";
