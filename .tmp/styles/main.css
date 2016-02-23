@@ -1087,7 +1087,7 @@ div.rn-carousel-indicator span {
   height: 56px;
   padding-left: 13px;
 }
-#bill-container .bill-footer .all-select-container {
+#bill-container .bill-footer .all-select {
   width: 30px;
   height: 100%;
   background-image: url('../images/select_01.png');
@@ -1095,13 +1095,16 @@ div.rn-carousel-indicator span {
   background-size: 30px;
   background-position: -5px 50%;
 }
-#bill-container .bill-footer .all-select-container .all-select {
-  width: 100%;
-  height: 100%;
-  margin: 0px;
-}
 #bill-container .bill-footer .all-select-container-active {
   background-image: url('../images/select_02.png');
+}
+#bill-container .bill-footer .all-select-tip {
+  margin-top: 4px;
+}
+#bill-container .bill-footer .total-money-container {
+  margin-top: 4px;
+  margin-left: 10px;
+  flex: 1.6;
 }
 
 #complain_list .item_service {
