@@ -202,6 +202,8 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
         }
 
         $scope.updateAll = function(sel) {
+            $scope.sel = !sel;
+            sel = $scope.sel;
             angular.forEach($scope.payments, function(payment) {
                 payment.selected = sel;
                 angular.forEach(payment.eles, function(ele) {

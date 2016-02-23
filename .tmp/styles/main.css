@@ -1083,6 +1083,27 @@ div.rn-carousel-indicator span {
   }
 }
 
+#bill-container .bill-footer {
+  height: 56px;
+  padding-left: 13px;
+}
+#bill-container .bill-footer .all-select-container {
+  width: 30px;
+  height: 100%;
+  background-image: url('../images/select_01.png');
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-position: -5px 50%;
+}
+#bill-container .bill-footer .all-select-container .all-select {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+}
+#bill-container .bill-footer .all-select-container-active {
+  background-image: url('../images/select_02.png');
+}
+
 #complain_list .item_service {
   margin-top: 5px;
   background: white;
@@ -1952,10 +1973,17 @@ th {
 #c-address-list-container {
   z-index: 101;
 }
-#c-address-list-container .add-address-icon {
-  left: -2px;
+#c-address-list-container .add-address-button {
+  height: 36px;
+  line-height: 36px;
+  padding: 0px;
 }
-#c-address-list-container .add-address-text {
+#c-address-list-container .add-address-button .add-address-icon {
+  width: 14px;
+  vertical-align: middle;
+}
+#c-address-list-container .add-address-button .add-address-text {
+  margin-left: 2px;
   vertical-align: middle;
 }
 
