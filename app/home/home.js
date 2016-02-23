@@ -1,8 +1,8 @@
 angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
     'communityInfo', 'locationState', 'communityLocation', '$q', 'userInfo', 'errorLog', 'locationInfo', 'location',
-    'address','auth','control',
+    'address','auth','control','addressInfo',
     function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, locationState, communityLocation, $q, 
-        userInfo,errorLog, locationInfo, location,address,auth,control) {
+        userInfo,errorLog, locationInfo, location,address,auth,control,addressInfo) {
         // // test
         // locationInfo.longitude = 116.30286359442356;
         // locationInfo.latitude = 39.979707375431694;
@@ -97,5 +97,10 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
         $state.go("home.shop-info", {
             site: 1
         });
+
+        $scope.pay = function(){
+            addressInfo.id = null;
+            $state.go('bill');
+        }
     }
 ]);
