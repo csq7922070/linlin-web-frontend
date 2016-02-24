@@ -11,6 +11,6 @@
 			</li>
 		</ul>
 	</div>
-	<div class="footer"><button class="logout" ng-click="logout()">退出登录</button></div>
+	<div class="footer" ng-show="showLogout"><button class="logout" ng-click="logout()">退出登录</button></div>
 	<logout-confirm show="showLogoutConfirm" on-close="onLogoutConfirmClose(state)" ng-init="showLogoutConfirm=false"></logout-confirm>
 </div>
