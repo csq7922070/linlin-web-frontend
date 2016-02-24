@@ -32,6 +32,9 @@
                 // }, 3000);
                 $scope.showSuccess = true;
                 // $state.go('repair');
+                $scope.onSuccessClose = function() {
+                    $state.go('repair');
+                }
             }
 
             function errcb() {
@@ -45,6 +48,14 @@
             $scope.decives=[{name:'请选择报修设备'},{name:'开/换锁'},{name:'供电照明'},{name:'抽水马桶'},{name:'上/下水管道'},{name:'门窗维修'},{name:'房屋主体'},{name:'电梯/门禁'},{name:'供暖设施'},{name:'其他'}];
             $scope.decives.push();
             $scope.currentDevice = $scope.decives[0];
+
+            console.log($scope.currentDevice.name);
+
+            if($scope.currentDevice.name == '请选择报修设备'){
+                console.log('23232');
+                console.log($scope.currentDevice.required);
+                $scope.currentDevice.required = true;
+            }
 
             address.getDefaultAddress().then(function(data){
                 console.log('111');

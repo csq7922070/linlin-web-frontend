@@ -46,6 +46,15 @@
                         <span class="repaie_state_right">{{vm.repair.finishDate.substring(0,16)}}</span>
                     </span>
                 </div>
+                <div class="repaie_state repaie_state2" ng-if="vm.repair.state>1">
+                    <img src="images/repair_09.png" alt="">
+                    <span class="repair_detail_state">
+                        <div class="triangle"></div>
+                        <span>物业确认</span>
+                        <span class="repaie_state_right">{{vm.repair.assignDate.substring(0,16)}}</span>
+                        <span class="repair_wait">已指派{{vm.repair.worker}}上门维修，请耐心等待</span>
+                    </span>
+                </div>
                 <div class="repaie_state repaie_state2" ng-if="vm.repair.state==1">
                     <img src="images/repair_03.png" alt="">
                     <span class="repair_detail_state">
@@ -55,7 +64,7 @@
                         <span class="repair_wait">已指派{{vm.repair.worker}}上门维修，请耐心等待</span>
                     </span>
                 </div>
-                <div class="repaie_state repaie_state2" ng-if="vm.repair.state!=1">
+                <div class="repaie_state repaie_state2" ng-if="vm.repair.state<1">
                     <img src="images/repair_09.png" alt="">
                     <span class="repair_detail_state">
                         <div class="triangle"></div>
@@ -70,6 +79,7 @@
                         <span style="color:red">业主报修</span>
                         <span class="repaie_state_right">{{vm.repair.createDate.substring(0,16)}}</span>
                         <span class="repair_wait">将尽快安排维修人员上门</span>
+                        
                     </span>
                 </div>
                 <div class="repaie_state repaie_state1" ng-if="vm.repair.state!=0">
@@ -78,6 +88,7 @@
                         <div class="triangle"></div>
                         业主报修
                         <span class="repaie_state_right">{{vm.repair.createDate.substring(0,16)}}</span>
+                        <span class="repair_wait">将尽快安排维修人员上门</span>
                     </span>
                 </div>
             </ul>
