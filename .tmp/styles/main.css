@@ -651,7 +651,7 @@ a {
   padding-left: 5px;
   border-radius: 5px;
   font-size: 14px;
-  color: #999;
+  color: #555;
   box-shadow: none;
 }
 .complaint_publish textarea {
@@ -661,7 +661,7 @@ a {
   padding: 5px;
   border-radius: 5px;
   font-size: 14px;
-  color: #999;
+  color: #555;
   box-shadow: none;
 }
 .complaint_publish button {
@@ -1151,9 +1151,6 @@ div.rn-carousel-indicator span {
 .com_right {
   float: right;
   margin-right: 5px;
-  /*img{
-		width: 20px;
-	}*/
 }
 #complain_detail {
   height: 100%;
