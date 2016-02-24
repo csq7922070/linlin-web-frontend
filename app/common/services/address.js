@@ -176,13 +176,13 @@ angular.module('app.address')
 				return defer.promise;
 			}
 
-			this.getBlockList = function(city,community){
+			this.getBlockList = function(city,communityId){
 				var defer = $q.defer();
 				var blockList = null;
 				var params = {
 	                type: "block",
 	                city:city,
-	                community:community
+	                communityId:communityId
 	            }
 	            addresses.query(params).$promise.then(function (data) {
 	                blockList = data.items;

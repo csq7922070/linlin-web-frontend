@@ -16,7 +16,7 @@ myApp.directive('cCommunityList', function() {
                 addressInfo.community = community.name;
                 $scope.showContent = false;
                 $scope.showBlockList = true;
-                address.getBlockList(addressInfo.city, community).then(function(data){
+                address.getBlockList(addressInfo.city, community.id).then(function(data){
                     $scope.blockList = data;
                 },function(reason){
                     $scope.showBlockList = false;
