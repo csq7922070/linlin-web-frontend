@@ -12,6 +12,7 @@
             address.getDefaultAddress().then(function(data){
                 defaultcommunityId = data.communityId;
                 console.log('ssss');
+                console.log(data);
                 console.log(defaultcommunityId);
                 defaultDefer.resolve(data.communityId);
             },function(reason){
@@ -20,7 +21,6 @@
 
             defaultDefer.promise.then(function(data){
                 vm.load(1, vm.pageSize);
-                console.log('111');
             },function(reason){
                 console.log(reason);
             });

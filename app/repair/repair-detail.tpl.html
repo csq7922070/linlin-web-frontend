@@ -2,7 +2,9 @@
     <div class="container-fluid">
         <div id="repair_type" class="repair_list">
             <ul>
-                <li><span class="equip">故障描述</span><span class="device">{{vm.repair.remark}}</span>
+                <li><span class="equip">报修设备</span><span class="device">{{vm.repair.device}}</span>
+                </li>
+                <li ng-if="vm.repair.remark"><span class="equip">故障描述</span><span class="device">{{vm.repair.remark}}</span>
                 </li>
                 <li><span class="b_date">报修地址</span>
                     <span class="date_time">{{vm.repair.block}}
@@ -12,48 +14,78 @@
                 </li>
                 <li><span class="number">联系方式</span><span class="list_num">{{vm.repair.mobile}}</span>
                 </li>
-                <div class="repaie_state repaie_state3" ng-if="vm.repair.state>=2">
+                <div class="repaie_state repaie_state3" ng-if="vm.repair.state!=3" >
+                    <img src="images/repair_09.png" alt="">
+                    <span class="repair_detail_state">
+                        <div class="triangle"></div>
+                        业主确认
+                        <span class="repaie_state_right">{{vm.repair.finishDate.substring(0,16)}}</span>
+                    </span>
+                </div>
+                <div class="repaie_state repaie_state3" ng-if="vm.repair.state==3">
                     <img src="images/repair_03.png" alt="">
+                    <span class="repair_detail_state" style="color:red">
+                        <div class="triangle"></div>
+                        业主确认
+                        <span class="repaie_state_right">{{vm.repair.finishDate.substring(0,16)}}</span>
+                    </span>
+                </div>
+                <div class="repaie_state repaie_state3" ng-if="vm.repair.state!=2" >
+                    <img src="images/repair_09.png" alt="">
                     <span class="repair_detail_state">
                         <div class="triangle"></div>
                         维修完成
                         <span class="repaie_state_right">{{vm.repair.finishDate.substring(0,16)}}</span>
                     </span>
                 </div>
-                <div class="repaie_state repaie_state2" ng-if="vm.repair.state>=1">
-                    <img src="images/repair_03.png" alt="" ng-if="vm.repair.state==1">
-                    <img ng-if="vm.repair.state!=1" src="images/repair_09.png" alt="">
+                <div class="repaie_state repaie_state3" ng-if="vm.repair.state==2">
+                    <img src="images/repair_03.png" alt="">
+                    <span class="repair_detail_state" style="color:red">
+                        <div class="triangle"></div>
+                        维修完成
+                        <span class="repaie_state_right">{{vm.repair.finishDate.substring(0,16)}}</span>
+                    </span>
+                </div>
+                <div class="repaie_state repaie_state2" ng-if="vm.repair.state==1">
+                    <img src="images/repair_03.png" alt="">
                     <span class="repair_detail_state">
                         <div class="triangle"></div>
-                        物业确认
+                        <span style="color:red">物业确认</span>
+                        <span class="repaie_state_right">{{vm.repair.assignDate.substring(0,16)}}</span>
+                        <span class="repair_wait">已指派{{vm.repair.worker}}上门维修，请耐心等待</span>
+                    </span>
+                </div>
+                <div class="repaie_state repaie_state2" ng-if="vm.repair.state!=1">
+                    <img src="images/repair_09.png" alt="">
+                    <span class="repair_detail_state">
+                        <div class="triangle"></div>
+                        <span>物业确认</span>
                         <span class="repaie_state_right">{{vm.repair.assignDate.substring(0,16)}}</span>
                     </span>
                 </div>
-                <div class="repaie_state repaie_state1" ng-if="vm.repair.state>=0">
-                    <img ng-if="vm.repair.state==0" src="images/repair_03.png" alt="">
-                    <img ng-if="vm.repair.state!=0" src="images/repair_09.png" alt="">
+                <div class="repaie_state repaie_state1" ng-if="vm.repair.state==0">
+                    <img src="images/repair_03.png" alt="">
+                    <span class="repair_detail_state">
+                        <div class="triangle"></div>
+                        <span style="color:red">业主报修</span>
+                        <span class="repaie_state_right">{{vm.repair.createDate.substring(0,16)}}</span>
+                        <span class="repair_wait">将尽快安排维修人员上门</span>
+                    </span>
+                </div>
+                <div class="repaie_state repaie_state1" ng-if="vm.repair.state!=0">
+                    <img src="images/repair_09.png" alt="">
                     <span class="repair_detail_state">
                         <div class="triangle"></div>
                         业主报修
                         <span class="repaie_state_right">{{vm.repair.createDate.substring(0,16)}}</span>
                     </span>
-                </div>                
+                </div>
             </ul>
         </div>
         <div class="repair_but" ng-hide="vm.repair.state==3">
             <input class="l_btn" type="button" value="确认解决" ng-click="vm.confirm(vm.repair.id)" ng-disabled="vm.repair.state==0">
         </div>
-        
     </div>
-
-    <!-- <li ng-if="vm.repair.state==2">
-        <span class="w_time">完成时间:</span>
-        <span class="suc_time">{{vm.repair.confirmDate}}</span>
-    </li>
-    <li ng-if="vm.repair.state==3">
-        <span class="w_time">完成时间:</span>
-        <span class="suc_time">{{vm.repair.finishDate}}</span>
-    </li> -->
 
     <div class="prompt_mask" ng-show="suc_show">
         <div class="prompt_dialog">

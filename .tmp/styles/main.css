@@ -574,7 +574,7 @@ a {
   text-align: center;
   width: 80%;
   padding: 5px 0;
-  background-color: #4996ee;
+  background-color: #f34832;
   border: none;
   margin: 0 auto 10px;
   border-radius: 5px;
@@ -647,7 +647,7 @@ a {
   border: 1px solid #e0e0e0;
   width: 100%;
   height: 40px;
-  line-height: 40px;
+  /*line-height: 40px;*/
   padding-left: 5px;
   border-radius: 5px;
   font-size: 14px;
@@ -802,10 +802,10 @@ a {
   right: 0;
   display: inline-block;
   background: #fff;
-  border: 1px solid #4996ee;
+  border: 1px solid #f34832;
   border-radius: 5px;
   padding: 1px 10px;
-  color: #4996ee;
+  color: #f34832;
   text-decoration: none;
 }
 .state_btn .complete {
@@ -825,6 +825,10 @@ a {
   box-shadow: none;
   border-collapse: collapse;
   -webkit-appearance: none;
+}
+input {
+  -webkit-appearance: none!important;
+  -webkit-box-shadow: none!important;
 }
 .container input:first-child {
   margin-top: 10px;
@@ -1028,6 +1032,22 @@ div.rn-carousel-indicator span {
   top: 0px;
   bottom: 0px;
 }
+::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #bbb;
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #bbb;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #bbb;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: #bbb;
+}
 
 #auto-location-container .delete {
   display: none;
@@ -1127,17 +1147,19 @@ div.rn-carousel-indicator span {
 #complain_add .mobile {
   margin-top: 10px;
   background: white!important;
+  color: #999;
 }
 #complain_add .privacy_protection {
   color: #999;
   font-size: 14px;
-  text-align: center;
+  text-align: left;
   margin-top: 5px;
 }
 #complain_add .tel-edit {
   font-family: arial, sans-serif;
 }
 .com_address {
+  color: #999;
   background: white;
   line-height: 30px;
   padding-left: 5px;
@@ -1705,6 +1727,12 @@ div.rn-carousel-indicator span {
   padding-left: 5px;
   border-radius: 5px;
 }
+#repair_detail .repaie_state .repair_detail_state .repair_wait {
+  display: block;
+  color: #777;
+  margin-left: 15px;
+  margin-top: -10px;
+}
 #repair_detail .repaie_state .repaie_state_right {
   float: right;
   margin-right: 15px;
@@ -1730,7 +1758,7 @@ div.rn-carousel-indicator span {
   bottom: 5px;
 }
 #repair_detail .repaie_state:nth-of-type(1) {
-  color: red;
+  /*color: red;*/
   /*padding-top: 20px;*/
 }
 #repair_detail .repaie_state:last-child {
