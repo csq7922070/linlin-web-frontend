@@ -27,7 +27,12 @@ myApp.directive('cAddressList', function() {
                     }
                     addresses.delete(params).$promise.then(function (data) {
                         house.rowState=1;
-                    }, function (data) {
+                    }, function (reason) {
+                        var reason = {
+                            errorCode:"DELETE_ADDRESS_ERROR",
+                            errorMessage: errorLog.getErrorMessage(reason)
+                        };
+                        alert(errorLog.getErrorMessage(reason));
                     })
                 }
             };
@@ -48,7 +53,12 @@ myApp.directive('cAddressList', function() {
                     clearAllDefaultTag();
                     house.active = 0;
                     address.updateDefaultAddress();
-                }, function (data) {
+                }, function (reason) {
+                    var reason = {
+                        errorCode:"SET_DEFAULT_ADDRESS_ERROR",
+                        errorMessage: errorLog.getErrorMessage(reason)
+                    };
+                    alert(errorLog.getErrorMessage(reason));
                 })
             }
 

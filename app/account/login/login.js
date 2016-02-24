@@ -8,7 +8,13 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
         $("#tel").focus();
         $scope.authCode = "";
 
+        // // test code
+        // $scope.onTipClose = function(){
+        //     console.log("onTipClose");
+        // }
+        // // end test code
         $scope.sendAuthCode = function(){
+            //$scope.showSuccess = true;
             if(!verify.verifyTel($scope.tel)){
                 $scope.verifyTip='请输入正确的手机号码';
                 $scope.verifyError = true;
@@ -57,7 +63,7 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
         }
 
         $scope.login = function(){
-            console.log("login...");
+            //$scope.showError = true;
             $scope.verifyTip = "登录中...";
             $scope.verifyError = true;
             account.login($scope.tel, $scope.authCode).then(function(data){

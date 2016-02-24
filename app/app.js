@@ -169,10 +169,10 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "loginCtrl",
             controllerAs: "vm"
         })
-        .state('nickname',{
-            url: "/nickname",
-            templateUrl: "tpl/account/nickname/nickname.tpl.html",
-            controller: "nicknameCtrl",
+        .state('nick-name',{
+            url: "/nick-name",
+            templateUrl: "tpl/account/nickName/nick-name.tpl.html",
+            controller: "nickNameCtrl",
             controllerAs: "vm"
         })
         .state('account',{
@@ -185,6 +185,18 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             url: "/us",
             templateUrl: "tpl/account/us/us.tpl.html",
             controller: "usCtrl",
+            controllerAs: "vm"
+        })
+        .state('user-agreement',{
+            url: "/user-agreement",
+            templateUrl: "tpl/account/userAgreement/user-agreement.tpl.html",
+            controller: "userAgreementCtrl",
+            controllerAs: "vm"
+        })
+        .state('disclaimer',{
+            url: "/disclaimer",
+            templateUrl: "tpl/account/disclaimer/disclaimer.tpl.html",
+            controller: "disclaimerCtrl",
             controllerAs: "vm"
         })
         .state('home-nav',{
