@@ -10,38 +10,52 @@
                 vm.err_show = false;
             }
             vm.submitForm = function() {
-                vm.repair.device = $scope.currentDevice.name;
-                vm.repair.houseId = $scope.defaulthouseId;
-                vm.repair.mobile = $scope.defaultmobile;
-                vm.repair.openid=userInfo.getOpenIdSync();
-                params = vm.repair;
+                params = {
+                    device : $scope.currentDevice.name,
+                    houseId : $scope.defaulthouseId,
+                    mobile : $scope.defaultmobile,
+                    openid : userInfo.getOpenIdSync(),
+                    remark : $scope.defaultremark
+                }
                 repairs.save(params).$promise.then(successcb, errcb);
             }
 
 
             var loginInfo = userInfo.getLastLoginInfo();
-            console.log('loginInfo');
-            console.log(loginInfo.tel);
             $scope.defaultmobile = loginInfo.tel;
 
             function successcb() {
-                vm.suc_show = true;
-                $timeout(function() {
-                    vm.suc_show = false;
-                    $state.go("repair");
-                }, 3000);
+                // vm.suc_show = true;
+                // $timeout(function() {
+                //     vm.suc_show = false;
+                //     $state.go("repair");
+                // }, 3000);
+                $scope.showSuccess = true;
+                // $state.go('repair');
+                $scope.onSuccessClose = function() {
+                    $state.go('repair');
+                }
             }
 
             function errcb() {
-                vm.err_show = true;
-                $timeout(function() {
-                    vm.err_show = false;
-                }, 3000);
+                // vm.err_show = true;
+                // $timeout(function() {
+                //     vm.err_show = false;
+                // }, 3000);                
+                $scope.showError = true;
             }
 
             $scope.decives=[{name:'请选择报修设备'},{name:'开/换锁'},{name:'供电照明'},{name:'抽水马桶'},{name:'上/下水管道'},{name:'门窗维修'},{name:'房屋主体'},{name:'电梯/门禁'},{name:'供暖设施'},{name:'其他'}];
             $scope.decives.push();
             $scope.currentDevice = $scope.decives[0];
+
+            console.log($scope.currentDevice.name);
+
+            if($scope.currentDevice.name == '请选择报修设备'){
+                console.log('23232');
+                console.log($scope.currentDevice.required);
+                $scope.currentDevice.required = true;
+            }
 
             address.getDefaultAddress().then(function(data){
                 console.log('111');

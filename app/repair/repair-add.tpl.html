@@ -11,9 +11,13 @@
     </div>
     <form ng-submit="vm.submitForm()" name="repairForm" class="form-signin" method="post" novalidate>
         <div class="container">
-            <select id="up_year" ng-model="currentDevice" ng-options="decive.name for decive in decives" class="col-xs-8"></select>
+            <select id="up_year" ng-model="currentDevice" ng-options="decive.name for decive in decives" class="col-xs-8" required>
+            </select>
+            <label for="up_year" class="repair_sel" >
+                <div class="repair_sel_s"></div>
+            </label>
   
-            <textarea class="repair_detail" name="remark" ng-model="vm.repair.remark" maxlength="1000" placeholder="请详细描述下出现的问题" required ng-maxlength="20" ng-class="{'has-error':repairForm.remark.$touched && repairForm.remark.$dirty && repairForm.remark.$invalid}"></textarea>
+            <textarea class="repair_detail" name="remark" ng-model="defaultremark" maxlength="1000" placeholder="请详细描述下出现的问题" ng-maxlength="20"></textarea>
 
             <div class="com_address">
                 <div class="com_left">
@@ -25,9 +29,9 @@
             </div>
 
             <input class="repair_mobile" type="text" placeholder="您的手机号码" name="mobile" ng-model="defaultmobile" ng-pattern="/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/" maxlength="11" required>
-            <span class="room_hidden" ng-show="repairForm.mobile.$touched && repairForm.mobile.$dirty && repairForm.mobile.$invalid" ng-class="{true:'tel-edit'}[vm.repair.mobile!='']">*请输入正确的手机号码</span>
+            <span class="room_hidden" ng-show="repairForm.mobile.$touched && repairForm.mobile.$dirty && repairForm.mobile.$invalid" ng-class="{true:'tel-edit'}[vm.repair.mobile!='']">请输入正确的手机号码</span>
         </div>
-        <div class="prompt_mask" ng-show="vm.suc_show">
+        <!-- <div class="prompt_mask" ng-show="vm.suc_show">
             <div class="prompt_dialog">
                 <div class="prompt_icon"></div>
                 <div class="prompt_font">提交成功</div>
@@ -40,10 +44,13 @@
                 <div class="prompt_font">提交失败，请稍后再试</div>
                 <input type="button" class="prompt_btn" value="确定" ng-click="vm.mask_err_close()">
             </div>
-        </div>
+        </div> -->
         <div class="container">
             <button type="submit" type="button" class="submit_btn" ng-disabled="repairForm.$invalid">提交</button>
         </div>
     </form>
+    <c-tip type="success" show="showSuccess" tip="提交成功!" close-time="1500" on-close="onSuccessClose()"></c-tip>
+    <c-tip type="error" show="showError" tip="提交失败!" close-time="1500" on-close="onTipClose()"></c-tip>
 </div>
 <c-address-list show="showAddressList" on-complete="onSelectAddressComplete()" address-list="addressList" mode="addressListMode" ng-init="addressListMode='select'"></c-address-list>
+

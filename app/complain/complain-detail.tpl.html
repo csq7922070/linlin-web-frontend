@@ -6,17 +6,20 @@
         <span class="complaint_time">{{vm.complain.createDate.substring(0,16)}}</span>
         <span class="complaint_detail">{{vm.complain.content}}</span>
     </div>
-    <div class="complaint_title" ng-if="vm.complain.state!=0">
-        <img src="images/icon_08.png" alt="">物业回复
+    <div class="complaint_title">
+        <img ng-if="vm.complain.state == 1" src="images/icon_08.png" alt=""><img ng-if="vm.complain.state == 0" src="images/icon_no_08.png" alt="">物业回复
     </div>
     <!-- <div class="property" ng-if="vm.complain.state!=0">
         <span class="property_detail"></span>
     </div> -->
     <div class="property" ng-if="vm.complain.state != 0">
         <span class="property_time">{{vm.complain.replyTime.substring(0,16)}}</span>
-        <span class="property_detail">{{vm.complain.reply}}</span>
+        <span class="property_detail个">{{vm.complain.reply}}</span>
     </div>
-    <div class="complaint_title" ng-if="vm.complain.state != 0">
-        <img src="images/icon_09.png">处理完成
+    <div class="property" ng-if="vm.complain.state != 1">
+        对不起，暂时没有回复
+    </div>
+    <div class="complaint_title">
+        <img ng-if="vm.complain.state == 1" src="images/icon_09.png"><img ng-if="vm.complain.state == 0" src="images/icon_no_09.png">处理完成
     </div>
 </div>

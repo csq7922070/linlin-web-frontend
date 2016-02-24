@@ -12,7 +12,7 @@
     <div class="complaint_publish">
         <form ng-submit="vm.submitForm()" method="post" name="complainForm" novalidate>
             <input type="text" name="title" ng-model="vm.complain.title" placeholder="投诉标题（小区内晚间有噪音，影响休息）" required>
-            <textarea name="content" name="content" ng-model="vm.complain.content" required cols="30" rows="10"
+            <textarea name="content" ng-model="vm.complain.content" required cols="30" rows="10"
                       placeholder="投诉描述（请详细描述您的困扰，我们将第一时间给予解决）"></textarea>
 
             <div class="com_address">
@@ -25,16 +25,19 @@
                 </div>
             </div>
 
-            <input class="mobile" type="text" name="mobile" ng-model="vm.complain.mobile" ng-pattern="/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/" maxlength="11" placeholder="联系方式（您的手机号）" required>
+            <input class="mobile" type="text" name="mobile" ng-model="defaultmobile" ng-pattern="/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/" maxlength="11" placeholder="联系方式（您的手机号）">
             <span class="room_hidden" ng-show="complainForm.mobile.$touched && complainForm.mobile.$dirty && complainForm.mobile.$invalid" ng-class="{true:'tel-edit'}[vm.repair.mobile!='']">*请输入正确的手机号码</span>
 
             <button class="submit_but" type="submit" ng-disabled="complainForm.$invalid">提交</button>
         </form>
+        <c-tip type="success" show="showSuccess" tip="提交成功!" close-time="1500" on-close="onSuccessClose()"></c-tip>
+        <c-tip type="error" show="showError" tip="提交失败!" close-time="1500" on-close="onTipClose()"></c-tip>
+        <div class="privacy_protection">
+            隐私保护：使用投诉功能时，米饭公社不会提交您的住址信息.
+        </div>
     </div>
-    <div class="privacy_protection">
-        隐私保护：使用投诉功能时，米饭公社不会提交您的住址信息.
-    </div>
-    <div class="prompt_mask" ng-show="vm.suc_show">
+   
+    <!-- <div class="prompt_mask" ng-show="vm.suc_show">
         <div class="prompt_dialog">
             <div class="prompt_icon"></div>
             <div class="prompt_font">
@@ -51,7 +54,7 @@
             </div>
             <input type="button" class="prompt_btn" value="确定" ng-click="vm.mask_err_close()">
         </div>
-    </div>
+    </div> -->
 </div>
 <c-address-list show="showAddressList" on-complete="onSelectAddressComplete()" address-list="addressList" mode="addressListMode" ng-init="addressListMode='select'"></c-address-list>
     

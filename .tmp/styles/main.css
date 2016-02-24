@@ -591,7 +591,7 @@ a {
   text-align: center;
   width: 80%;
   padding: 5px 0;
-  background-color: #4996ee;
+  background-color: #f34832;
   border: none;
   margin: 0 auto 10px;
   border-radius: 5px;
@@ -664,7 +664,7 @@ a {
   border: 1px solid #e0e0e0;
   width: 100%;
   height: 40px;
-  line-height: 40px;
+  /*line-height: 40px;*/
   padding-left: 5px;
   border-radius: 5px;
   font-size: 14px;
@@ -819,10 +819,10 @@ a {
   right: 0;
   display: inline-block;
   background: #fff;
-  border: 1px solid #4996ee;
+  border: 1px solid #f34832;
   border-radius: 5px;
   padding: 1px 10px;
-  color: #4996ee;
+  color: #f34832;
   text-decoration: none;
 }
 .state_btn .complete {
@@ -842,6 +842,10 @@ a {
   box-shadow: none;
   border-collapse: collapse;
   -webkit-appearance: none;
+}
+input {
+  -webkit-appearance: none!important;
+  -webkit-box-shadow: none!important;
 }
 .container input:first-child {
   margin-top: 10px;
@@ -922,7 +926,7 @@ html input[disabled] {
 }
 .room_hidden {
   font-size: 12px;
-  color: #e95912;
+  color: #f34832;
   padding-top: 10px;
 }
 .container-fluid {
@@ -1044,6 +1048,22 @@ div.rn-carousel-indicator span {
   right: 0px;
   top: 0px;
   bottom: 0px;
+}
+::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #bbb;
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #bbb;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #bbb;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: #bbb;
 }
 
 #auto-location-container .delete {
@@ -1181,17 +1201,19 @@ div.rn-carousel-indicator span {
 #complain_add .mobile {
   margin-top: 10px;
   background: white!important;
+  color: #999;
 }
 #complain_add .privacy_protection {
   color: #999;
-  font-size: 14px;
-  text-align: center;
-  margin-top: 5px;
+  font-size: 12px;
+  text-align: left;
+  margin-top: 10px;
 }
 #complain_add .tel-edit {
   font-family: arial, sans-serif;
 }
 .com_address {
+  color: #999;
   background: white;
   line-height: 30px;
   padding-left: 5px;
@@ -1706,15 +1728,13 @@ div.rn-carousel-indicator span {
 #rapair_add select {
   width: 100%;
   height: 30px;
-  color: red;
   margin: 5px 0px;
   background: #fff;
   border: 1px solid #e0e0e0;
-  padding-left: 2px;
-  /*display: none;*/
-}
-#rapair_add select:hover {
-  color: red;
+  padding-left: 5px;
+  box-shadow: none;
+  border-collapse: collapse;
+  -webkit-appearance: none;
 }
 #rapair_add select option {
   color: #000;
@@ -1728,6 +1748,32 @@ div.rn-carousel-indicator span {
 #rapair_add .tel-edit {
   font-family: arial, sans-serif;
 }
+#rapair_add .repair_sel {
+  display: block;
+  height: 28px;
+  width: 28px;
+  background: #e03b25;
+  float: right;
+  position: absolute;
+  top: 56px;
+  right: 15px;
+  border-radius: 0 5px 0 0;
+  text-align: center;
+}
+#rapair_add .repair_sel .repair_sel_s {
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  background: #e03b25;
+  position: relative;
+  border-left: 5px solid #e03b25;
+  border-top: 5px solid #fff;
+  border-right: 5px solid #e03b25;
+  top: 6px;
+}
+#rapair_add .repair_detail {
+  margin-top: 10px;
+}
 #repair_detail li {
   background: #fff;
 }
@@ -1740,7 +1786,7 @@ div.rn-carousel-indicator span {
   padding-left: 25px;
 }
 #repair_detail .list_num {
-  color: #f34832;
+  /*color: #f34832;*/
 }
 #repair_detail .date_u {
   margin-left: 0px;
@@ -1761,6 +1807,12 @@ div.rn-carousel-indicator span {
   margin-right: 15px;
   padding-left: 5px;
   border-radius: 5px;
+}
+#repair_detail .repaie_state .repair_detail_state .repair_wait {
+  display: block;
+  color: #777;
+  margin-left: 15px;
+  margin-top: -10px;
 }
 #repair_detail .repaie_state .repaie_state_right {
   float: right;
@@ -1787,7 +1839,7 @@ div.rn-carousel-indicator span {
   bottom: 5px;
 }
 #repair_detail .repaie_state:nth-of-type(1) {
-  color: red;
+  /*color: red;*/
   /*padding-top: 20px;*/
 }
 #repair_detail .repaie_state:last-child {
