@@ -7,8 +7,10 @@ angular.module('app.account').controller('accountCtrl', ['$stateParams', '$scope
 
         if(account.hasLogin()){
             var loginInfo = userInfo.getLastLoginInfo();
-            $scope.headImgBorder = "images/head-img-border-empty.png";
-            $scope.headImgUrl = loginInfo.headImgUrl;
+            if(loginInfo.headImgUrl){
+                $scope.headImgBorder = "images/head-img-border-empty.png";
+                $scope.headImgUrl = loginInfo.headImgUrl;
+            }
             $scope.nickName = loginInfo.nickName;
             address.getAddressCount().then(function(data){
                 if(data>0){
