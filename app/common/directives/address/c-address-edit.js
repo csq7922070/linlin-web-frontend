@@ -84,7 +84,7 @@ myApp.directive('cAddressEdit', function() {
             $scope.changeBlock = function(){
                 $scope.showContent = false;
                 $scope.showBlockList = true;
-                address.getBlockList(addressInfo.city, addressInfo.community).then(function(data){
+                address.getBlockList(addressInfo.city, addressInfo.communityId).then(function(data){
                     $scope.blockList = data;
                 },function(reason){
                     $scope.showBlockList = false;
