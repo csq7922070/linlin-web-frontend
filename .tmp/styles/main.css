@@ -1124,6 +1124,43 @@ div.rn-carousel-indicator span {
   margin-left: 10px;
 }
 
+#c-tip-container {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  font-family: 微软雅黑;
+  z-index: 1000;
+}
+#c-tip-container .modal-container {
+  width: 130px;
+  left: 50%;
+  margin-left: -65px;
+  text-align: center;
+  padding: 22px 32px 24px;
+  position: absolute;
+  background-color: #030303;
+  opacity: 0.9;
+  color: #fff;
+  top: 30%;
+  border-radius: 6px;
+  font-size: 15px;
+}
+#c-tip-container .modal-container .tip-img {
+  width: 57px;
+}
+#c-tip-container .modal-container .tip-text {
+  margin-top: 17px;
+  display: inline-block;
+}
+#c-tip-container .modal-container-error {
+  padding-top: 13px;
+}
+#c-tip-container .modal-container-error .tip-text {
+  margin-top: 12px;
+}
+
 #complain_list .item_service {
   margin-top: 5px;
   background: white;
@@ -1536,11 +1573,12 @@ div.rn-carousel-indicator span {
   font-size: 15px;
   color: #fff;
   border-radius: 6px;
-  background-color: #555;
+  background-color: #030303;
+  opacity: 0.9;
   width: 180px;
   height: 40px;
   display: block;
-  margin-top: 80%;
+  margin-top: 45%;
   line-height: 40px;
   text-align: center;
   position: relative;
