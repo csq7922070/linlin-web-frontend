@@ -1657,6 +1657,7 @@ div.rn-carousel-indicator span {
   background: #fff;
   border: 1px solid #e0e0e0;
   padding-left: 2px;
+  /*display: none;*/
 }
 #rapair_add select:hover {
   color: red;
@@ -1720,7 +1721,7 @@ div.rn-carousel-indicator span {
   bottom: -25px;
 }
 #repair_detail .repaie_state .triangle {
-  background: red;
+  background: #fff;
   display: inline-block;
   width: 10px;
   height: 10px;
