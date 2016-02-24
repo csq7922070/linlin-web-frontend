@@ -11,14 +11,18 @@
             }
             vm.submitForm = function() {
                 vm.repair.device = $scope.currentDevice.name;
-                vm.repair.communityId = $scope.defaultcommunityId;
-                vm.repair.block = $scope.defaultblock;
-                vm.repair.unit = $scope.defaultunit;
-                vm.repair.room = $scope.defaultroom;
+                vm.repair.houseId = $scope.defaulthouseId;
+                vm.repair.mobile = $scope.defaultmobile;
                 vm.repair.openid=userInfo.getOpenIdSync();
                 params = vm.repair;
                 repairs.save(params).$promise.then(successcb, errcb);
             }
+
+
+            var loginInfo = userInfo.getLastLoginInfo();
+            console.log('loginInfo');
+            console.log(loginInfo.tel);
+            $scope.defaultmobile = loginInfo.tel;
 
             function successcb() {
                 vm.suc_show = true;
@@ -44,7 +48,7 @@
                 console.log(data);
                 $scope.defaultcity = data.city;
                 $scope.defaultcommunity = data.community;
-                $scope.defaultcommunityId = data.communityId;
+                $scope.defaulthouseId = data.id;
                 $scope.defaultblock = data.block;
                 $scope.defaultunit = data.unit;
                 $scope.defaultroom = data.room;
@@ -69,7 +73,7 @@
                 console.log(addressInfo);
                 $scope.defaultcity = addressInfo.city;
                 $scope.defaultcommunity = addressInfo.community;
-                $scope.defaultcommunityId = addressInfo.communityId;
+                $scope.defaulthouseId = addressInfo.id;
                 $scope.defaultblock = addressInfo.block;
                 $scope.defaultunit = addressInfo.unit;
                 $scope.defaultroom = addressInfo.room;
