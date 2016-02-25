@@ -89,7 +89,7 @@
                 <span class="color333 total-money-text">合计:</span><span style="color: #f23737">￥{{total| number:2}}</span><span ng-if="!payments" style="color: #f23737">0.00</span>
             </div>
             <button class="weui_btn weui_btn_mini weui_btn_primary b-pay-button"
-                    ui-sref="payment" ng-disabled="selected.length==0||!selected">结算
+                    ui-sref="payment" ng-disabled="!selected||selected.length==0" ng-class="{true:'disabled-button'}[!selected||selected.length==0]">结算
             </button>
         </div>
     </div>
