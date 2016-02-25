@@ -49,27 +49,6 @@
                 <span class="bill-type bill-type-water" ng-show="ele.type==0">水费</span><span class="bill-type bill-type-elec" ng-show="ele.type==1">电费</span>
                 <span class="bill-type-money">{{ele.amount}}元</span>
             </div>
-            <div class="weui_cell" ng-repeat="ele in payment.eles" ng-class=" $first ? 'border_line':''"
-                 style="padding-top: 0;padding-bottom: 0;height: 40px;">            
-                <div class="weui_cell_hd">
-                    <input ng-checked="payment.selected" ng-model="ele.selected" type="checkbox" id="ele{{ele.id}}"
-                           ng-change="update(ele)" class="vis_none">
-                    <label for="ele{{ele.id}}" ng-if="ele.selected" class="label_account"></label>
-                    <label for="ele{{ele.id}}" ng-if="!ele.selected" class="label_account_click"></label>
-                </div>
-                <label class="weui_cell_hd" for="ele{{ele.id}}" style="display: block">
-                    <img ng-if="ele.type==0" src="images/water.png" alt="icon" class="icon_small" style="margin-top: 4px">
-                    <img ng-if="ele.type==1" src="images/ele.png" alt="icon" class="icon_small" style="margin-top: 5px">
-                </label>
-                <label class="weui_cell_bd weui_cell_primary" for="ele{{ele.id}}" style="display:block;margin-top: 11px;font-weight: normal">
-                    <p ng-if="ele.type==0" class="color333">水费</p>
-
-                    <p ng-if="ele.type==1" class="color333">电费</p>
-                </label>
-                <div class="color333">
-                    {{ele.amount}}元
-                </div>
-            </div>
 
             <div class="detail_free" style="background-color: #ffffff;">
                 <div class="top_arrow color_aaa" ng-click="freeShow = !freeShow"
@@ -104,13 +83,7 @@
         <div class="weui_cell bill-footer" style="padding-top: 0;padding-bottom: 0">
             <div class="weui_cell_hd all-select" ng-class="{true:'all-select-container-active'}[sel]" ng-click="updateAll(sel)" 
                 ng-init="sel=false" ng-disabled="!payments || payments.length==0">
-<!--                  <input type="checkbox" ng-model="sel" ng-change="updateAll(sel)" id="sel_all" class="vis_none all-select"> -->
-<!--                 <label for="sel_all" ng-if="sel" class="label_account" style="margin-top: -2px"></label>
-                <label for="sel_all" ng-if="!sel" class="label_account_click" style="margin-top: -2px"></label> -->
             </div>
-<!--             <label for="sel_all" class="weui_cell_bd weui_cell_primary" style="margin-top: 6px;flex: 1.0;font-weight: normal">
-                <p style="display: inline" class="pos_lef color333">本页全选 </p>
-            </label> -->
             <div class="weui_cell_bd weui_cell_primary total-money-container">
                 <span class="all-select-tip">全选</span>
                 <span class="color333 total-money-text">合计:</span><span style="color: #f23737">￥{{total| number:2}}</span><span ng-if="!payments" style="color: #f23737">0.00</span>
