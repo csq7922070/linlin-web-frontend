@@ -16,7 +16,7 @@
                 console.log(defaultcommunityId);
                 defaultDefer.resolve(data.communityId);
                 if(defaultcommunityId == null){
-                    alert('小区id为null');
+                    alert('defaultcommunityId == null');
                 }
             },function(reason){
                 alert(reason.errorCode+","+reason.errorMessage);

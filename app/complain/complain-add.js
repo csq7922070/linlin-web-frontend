@@ -8,7 +8,7 @@ angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$stat
             vm.err_show = false;
         }
         vm.submitForm = function () {
-            vm.complain.communityId = addressInfo.communityId;
+            vm.complain.communityId = $scope.defaultcommunityId;
             vm.complain.openid = userInfo.getOpenIdSync();
             vm.complain.mobile = $scope.defaultmobile;
             params = vm.complain;
@@ -17,22 +17,13 @@ angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$stat
         var loginInfo = userInfo.getLastLoginInfo();
             $scope.defaultmobile = loginInfo.tel;
         function successcb() {
-                // vm.suc_show = true;
-                // $timeout(function() {
-                //     vm.suc_show = false;
-                //     $state.go("repair");
-                // }, 3000);
                 $scope.showSuccess = true;
                 $scope.onSuccessClose = function() {
                     $state.go('complain');
                 }
             }
 
-            function errcb() {
-                // vm.err_show = true;
-                // $timeout(function() {
-                //     vm.err_show = false;
-                // }, 3000);                
+            function errcb() {           
                 $scope.showError = true;
             }
 
@@ -40,6 +31,7 @@ angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$stat
             console.log(data);
             $scope.defaultcity = data.city;
             $scope.defaultcommunity = data.community;
+            $scope.defaultcommunityId = data.communityId;
         },function(reason){
             alert(reason.errorCode+","+reason.errorMessage);
         });
@@ -61,6 +53,7 @@ angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$stat
             console.log(addressInfo);
             $scope.defaultcity = addressInfo.city;
             $scope.defaultcommunity = addressInfo.community;
+            $scope.defaultcommunityId = addressInfo.communityId;
             console.log(addressInfo.communityId);
         }
     }
