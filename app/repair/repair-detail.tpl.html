@@ -35,7 +35,7 @@
                     <span class="repair_detail_state">
                         <div class="triangle"></div>
                         维修完成
-                        <span class="repaie_state_right">{{vm.repair.finishDate.substring(0,16)}}</span>
+                        <span class="repaie_state_right">{{vm.repair.confirmDate.substring(0,16)}}</span>
                     </span>
                 </div>
                 <div class="repaie_state repaie_state3" ng-if="vm.repair.state==2">
@@ -43,7 +43,7 @@
                     <span class="repair_detail_state" style="color:red">
                         <div class="triangle"></div>
                         维修完成
-                        <span class="repaie_state_right">{{vm.repair.finishDate.substring(0,16)}}</span>
+                        <span class="repaie_state_right">{{vm.repair.confirmDate.substring(0,16)}}</span>
                     </span>
                 </div>
                 <div class="repaie_state repaie_state2" ng-if="vm.repair.state>1">
