@@ -9,16 +9,31 @@
             vm.mask_err_close = function() {
                 vm.err_show = false;
             }
-            vm.submitForm = function() {
-                params = {
-                    device : $scope.currentDevice.name,
-                    houseId : $scope.defaulthouseId,
-                    mobile : $scope.defaultmobile,
-                    openid : userInfo.getOpenIdSync(),
-                    remark : $scope.defaultremark
+            // vm.submitForm = function() {
+            //     params = {
+            //         device : $scope.currentDevice.name,
+            //         houseId : $scope.defaulthouseId,
+            //         mobile : $scope.defaultmobile,
+            //         openid : userInfo.getOpenIdSync(),
+            //         remark : $scope.defaultremark
+            //     }
+            //     repairs.save(params).$promise.then(successcb, errcb);
+            // }
+            $scope.repairSubmit = function() {
+                if($scope.currentDevice.name == '请选择报修设备'){
+                    alert('请选择报修设备');
+                }else{
+                    params = {
+                        device : $scope.currentDevice.name,
+                        houseId : $scope.defaulthouseId,
+                        mobile : $scope.defaultmobile,
+                        openid : userInfo.getOpenIdSync(),
+                        remark : $scope.defaultremark
+                    }
+                    repairs.save(params).$promise.then(successcb, errcb);
                 }
-                repairs.save(params).$promise.then(successcb, errcb);
             }
+            
 
 
             var loginInfo = userInfo.getLastLoginInfo();
@@ -31,7 +46,6 @@
                 //     $state.go("repair");
                 // }, 3000);
                 $scope.showSuccess = true;
-                // $state.go('repair');
                 $scope.onSuccessClose = function() {
                     $state.go('repair');
                 }
