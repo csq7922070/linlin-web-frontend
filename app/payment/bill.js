@@ -77,6 +77,7 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
 
         //按钮单点
         $scope.update = function(ele) {
+            ele.selected = !ele.selected;
             if (ele.selected) {
                 if ($scope.selected.indexOf(ele.id) == -1) {
                     $scope.selected.push(ele.id);
