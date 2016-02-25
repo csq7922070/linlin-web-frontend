@@ -11,6 +11,9 @@
 
             repairs.get(params).$promise.then(function(data) {
                 vm.repair = data;
+                if(vm.repair.confirmDate == null){
+                    vm.repair.confirmDate = vm.repair.finishDate;
+                }
             });
 
             vm.confirm = function(id) {
@@ -23,15 +26,11 @@
                     vm.repair = data;
                     successcb();
                 }, errcb);
-                // alert('ok');
             };
 
+
+
             function successcb() {
-                // vm.suc_show = true;
-                // $timeout(function() {
-                //     vm.suc_show = false;
-                //     $state.go("repair");
-                // }, 3000);
                 $scope.showSuccess = true;
                 $scope.onSuccessClose = function() {
                     $state.go('repair');
@@ -39,10 +38,6 @@
             }
 
             function errcb() {
-                // vm.err_show = true;
-                // $timeout(function() {
-                //     vm.err_show = false;
-                // }, 3000);
                 $scope.showError = true;
             }
         }
