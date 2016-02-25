@@ -98,7 +98,7 @@
         </div>
     </div>
 
-    <div class="prompt_mask" ng-show="suc_show">
+    <!-- <div class="prompt_mask" ng-show="suc_show">
         <div class="prompt_dialog">
             <div class="prompt_icon"></div>
             <div class="prompt_font">提交成功</div>
@@ -111,9 +111,11 @@
             <div class="prompt_font">提交失败，请稍后再试</div>
             <input type="button" class="prompt_btn" value="确定" ng-click="mask_err_close()">
         </div>
-    </div>
-
+    </div> -->
 </div>
+
+<c-tip type="success" show="showSuccess" tip="提交成功!" close-time="1500" on-close="onSuccessClose()"></c-tip>
+<c-tip type="error" show="showError" tip="提交失败!" close-time="1500" on-close="onTipClose()"></c-tip>
     
 
 
