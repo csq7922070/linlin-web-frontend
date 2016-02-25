@@ -51,7 +51,7 @@
                     <span class="repair_detail_state">
                         <div class="triangle"></div>
                         <span>物业确认</span>
-                        <span class="repaie_state_right">{{vm.repair.assignDate.substring(0,16)}}</span>
+                        <span class="repaie_state_right">{{vm.repair.assignDate|date:'yyyy-MM-dd hh:mm'}}</span>
                         <span class="repair_wait">已指派{{vm.repair.worker}}上门维修，请耐心等待</span>
                     </span>
                 </div>
@@ -60,7 +60,7 @@
                     <span class="repair_detail_state">
                         <div class="triangle"></div>
                         <span style="color:red">物业确认</span>
-                        <span class="repaie_state_right">{{vm.repair.assignDate.substring(0,16)}}</span>
+                        <span class="repaie_state_right">{{vm.repair.assignDate|date:'yyyy-MM-dd hh:mm'}}</span>
                         <span class="repair_wait">已指派{{vm.repair.worker}}上门维修，请耐心等待</span>
                     </span>
                 </div>
