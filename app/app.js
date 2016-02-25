@@ -1,8 +1,7 @@
 //var basePath = "http://localhost:8080/skh";
 //var basePath="http://192.168.0.120:8080/skh";
-var basePath = "http://mifan.4zlink.com:8080/mifan";
+var basePath = "http://mitest.4zlink.com:8080/mifan";
 // var basePath = "http://192.168.0.135:8080/skh";
-var appId = "wx050cc99d8cec1a73";//公众号ID
 
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
@@ -311,8 +310,6 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
     'appState', {
         visited: false
     }
-).constant(
-    'appId', appId
 ).constant(
     'appType', 'weixin'//app or weixin
 );
