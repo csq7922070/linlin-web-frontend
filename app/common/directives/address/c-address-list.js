@@ -11,7 +11,7 @@ myApp.directive('cAddressList', function() {
         templateUrl: 'tpl/common/directives/address/c-address-list.tpl.html',
         link: function($scope, element, attrs) {
         },
-        controller: function ($scope, $rootScope,$stateParams, $state, addresses,errorLog,addressInfo) {
+        controller: function ($scope, $rootScope,$stateParams, $state, addresses,errorLog,addressInfo,userInfo,address) {
             $scope.$watch("addressList", function(newVal,oldVal){
                 console.log("directive addressList update:");
                 console.log($scope.addressList);
@@ -23,7 +23,7 @@ myApp.directive('cAddressList', function() {
                     $scope.sure_delete = false;
                     var params = {
                         id: house.id,
-                        openid:sessionStorage.getItem("openid")
+                        openid:userInfo.getOpenIdSync()
                     }
                     addresses.delete(params).$promise.then(function (data) {
                         house.rowState=1;
@@ -47,7 +47,7 @@ myApp.directive('cAddressList', function() {
                 }
                 var params = {
                     id: house.id,
-                    openid: sessionStorage.getItem("openid")
+                    openid: userInfo.getOpenIdSync()
                 }
                 addresses.save(params).$promise.then(function () {
                     clearAllDefaultTag();

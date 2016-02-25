@@ -14,9 +14,9 @@ angular.module('app.payment').controller('paymentListCtrl', ['$scope', '$http', 
                     });
         },function(reason){
             return $q.reject(reason);
-        }).then(function(data){
-            if(data.items.length>0){
-                $scope.records = $filter("payListMerge")(data.items);
+        }).then(function(response){
+            if(response.data.items.length>0){
+                $scope.records = $filter("payListMerge")(response.data.items);
             }
         },function(reason){
             var reason = {
