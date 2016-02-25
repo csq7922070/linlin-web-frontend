@@ -22,8 +22,35 @@
                     应缴金额
                 </div>
             </div>
-            <div class="weui_cell" ng-repeat="ele in payment.eles" ng-class=" $first ? 'border_line':''"
+            <!-- <div class="weui_cell" ng-repeat="ele in payment.eles" ng-class=" $first ? 'border_line':''"
                  style="padding-top: 0;padding-bottom: 0;height: 40px;">
+                <div class="weui_cell_hd">
+                    <input ng-checked="payment.selected" ng-model="ele.selected" type="checkbox" id="ele{{ele.id}}"
+                           ng-change="update(ele)" class="vis_none">
+                    <label for="ele{{ele.id}}" ng-if="ele.selected" class="label_account"></label>
+                    <label for="ele{{ele.id}}" ng-if="!ele.selected" class="label_account_click"></label>
+                </div>
+                <label class="weui_cell_hd" for="ele{{ele.id}}" style="display: block">
+                    <img ng-if="ele.type==0" src="images/water.png" alt="icon" class="icon_small" style="margin-top: 4px">
+                    <img ng-if="ele.type==1" src="images/ele.png" alt="icon" class="icon_small" style="margin-top: 5px">
+                </label>
+                <label class="weui_cell_bd weui_cell_primary" for="ele{{ele.id}}" style="display:block;margin-top: 11px;font-weight: normal">
+                    <p ng-if="ele.type==0" class="color333">水费</p>
+
+                    <p ng-if="ele.type==1" class="color333">电费</p>
+                </label>
+                <div class="color333">
+                    {{ele.amount}}元
+                </div>
+            </div> -->
+            <div class="line"></div>
+            <div class="bill-type-row" ng-repeat="ele in payment.eles">
+                <a class="bill-type-select" ng-click="update(ele)" ng-class="{true:'select-active'}[ele.selected||payment.selected]"></a>
+                <span class="bill-type bill-type-water" ng-show="ele.type==0">水费</span><span class="bill-type bill-type-elec" ng-show="ele.type==1">电费</span>
+                <span class="bill-type-money">{{ele.amount}}元</span>
+            </div>
+            <div class="weui_cell" ng-repeat="ele in payment.eles" ng-class=" $first ? 'border_line':''"
+                 style="padding-top: 0;padding-bottom: 0;height: 40px;">            
                 <div class="weui_cell_hd">
                     <input ng-checked="payment.selected" ng-model="ele.selected" type="checkbox" id="ele{{ele.id}}"
                            ng-change="update(ele)" class="vis_none">
