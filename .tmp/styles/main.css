@@ -1190,6 +1190,11 @@ div.rn-carousel-indicator span {
 #bill-container .bill-footer .total-money-container .total-money-text {
   margin-left: 10px;
 }
+#bill-container .bill-footer .b-pay-button {
+  width: 70px;
+  height: 38px;
+  background-color: #f39f33;
+}
 
 #c-tip-container {
   position: absolute;
