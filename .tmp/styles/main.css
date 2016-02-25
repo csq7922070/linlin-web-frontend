@@ -1242,6 +1242,9 @@ div.rn-carousel-indicator span {
   margin-top: 5px;
   background: white;
 }
+#complain_list .repliestate {
+  float: right;
+}
 .replied_state {
   color: #e6b417;
   background: url(../images/change_address.png) no-repeat;
@@ -1814,7 +1817,7 @@ div.rn-carousel-indicator span {
   position: absolute;
   top: 56px;
   right: 15px;
-  border-radius: 0 5px 0 0;
+  border-radius: 0 5px 5px 0;
   text-align: center;
 }
 #rapair_add .repair_sel .repair_sel_s {
@@ -1869,7 +1872,7 @@ div.rn-carousel-indicator span {
   display: block;
   color: #777;
   margin-left: 15px;
-  margin-top: 0px;
+  margin-top: -10px;
 }
 #repair_detail .repaie_state .repaie_state_right {
   float: right;

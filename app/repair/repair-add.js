@@ -21,7 +21,9 @@
             // }
             $scope.repairSubmit = function() {
                 if($scope.currentDevice.name == '请选择报修设备'){
-                    alert('请选择报修设备');
+                    // alert('请选择报修设备'); 
+                    $scope.repairerroer = '请选择报修设备';
+                    $scope.showError = true;
                 }else{
                     params = {
                         device : $scope.currentDevice.name,
@@ -55,7 +57,8 @@
                 // vm.err_show = true;
                 // $timeout(function() {
                 //     vm.err_show = false;
-                // }, 3000);                
+                // }, 3000);
+                $scope.repairerroer = '提交失败！';      
                 $scope.showError = true;
             }
 
