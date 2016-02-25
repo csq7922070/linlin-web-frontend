@@ -15,6 +15,9 @@
                 console.log(data);
                 console.log(defaultcommunityId);
                 defaultDefer.resolve(data.communityId);
+                if(defaultcommunityId == null){
+                    alert('小区id为null');
+                }
             },function(reason){
                 alert(reason.errorCode+","+reason.errorMessage);
             });
@@ -48,7 +51,7 @@
                     });
                 }
             }
-            // vm.load(1, vm.pageSize);
+            vm.load(1, vm.pageSize);
         }
     ]);
 })();

@@ -50,7 +50,7 @@
         </div>
     </form>
     <c-tip type="success" show="showSuccess" tip="提交成功!" close-time="1500" on-close="onSuccessClose()"></c-tip>
-    <c-tip type="error" show="showError" tip="提交失败!" close-time="1500" on-close="onTipClose()"></c-tip>
+    <c-tip type="error" show="showError" tip="{{repairerroer}}" close-time="1500" on-close="onTipClose()"></c-tip>
 </div>
 <c-address-list show="showAddressList" on-complete="onSelectAddressComplete()" address-list="addressList" mode="addressListMode" ng-init="addressListMode='select'"></c-address-list>
 
