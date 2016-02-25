@@ -11,11 +11,20 @@ myApp.directive('cAddressEdit', function() {
         },
         controller: function ($state, $scope, $stateParams, addresses,communityInfo,addressInfo,address,errorLog,
             userInfo,$q) {
-            if(!addressInfo.city && communityInfo.auth){
+            // init addressInfo
+            addressInfo.city = null
+            addressInfo.communityId = null;
+            addressInfo.community = null;
+            addressInfo.block = null;
+            addressInfo.unit = null;
+            addressInfo.room = null;
+            addressInfo.ownerName = null;
+            if(!addressInfo.city && communityInfo.auth){//将已授权的自动定位的小区城市和小区名赋值给addressInfo
                 addressInfo.city = communityInfo.city;
                 addressInfo.communityId = communityInfo.id;
                 addressInfo.community = communityInfo.name;
             }
+            
             function refreshAddressInfo(){
                 $scope.city = addressInfo.city;
                 $scope.community = addressInfo.community;
