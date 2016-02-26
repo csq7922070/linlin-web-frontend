@@ -235,12 +235,6 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         control.startChangeState(event, toState, toParams, fromState, fromParams);//为了兼容app和微信公众号的首页不一致问题
         auth.startChangeState(event, toState, toParams, fromState, fromParams);//校验权限，需要登录或添加地址时自动跳至对应页面
     });
-    // $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
-    //     $rootScope.previousState = from.name;
-    //     $rootScope.currentState = to.name;
-    //     var url = "/" + to.name.replace(".", "/");
-    //     _hmt.push(['_trackPageview', url]);
-    // });
 }]).value(//保存当前定位小区信息，包括自动定位和搜索定位
     'communityInfo',{
         id: null,
@@ -265,20 +259,10 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         ownerName: null,//房屋所有者姓名加了*
         initial: null//用来对地址进行首字母排序用的
     }
-).value(//保存自动定位信息
-    'locationInfo', {
-        longitude: null,//经度
-        latitude: null,//纬度
-        accuracy: null//位置精度
-    }
 ).value(
     'locationState',{
         hasLocation: false,
         autoLocationVisited: false
-    }
-).value(
-    'appState', {
-        visited: false
     }
 ).constant(
     'appType', 'weixin'//app or weixin

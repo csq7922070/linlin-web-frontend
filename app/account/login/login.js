@@ -1,6 +1,6 @@
 angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval', 'verify',
-    'account', 'errorLog', 'userInfo', '$state', 'appState', '$location','auth','control',
-    function ($stateParams, $scope, $timeout, $interval, verify,account,errorLog,userInfo,$state,appState,$location,
+    'account', 'errorLog', 'userInfo', '$state', '$location','auth','control',
+    function ($stateParams, $scope, $timeout, $interval, verify,account,errorLog,userInfo,$state,$location,
         auth,control) {
         //alert($location.url());
         var lastLoginInfo = userInfo.getLastLoginInfo();

@@ -9,7 +9,7 @@ myApp.directive('cAddressEdit', function() {
         templateUrl: 'tpl/common/directives/address/c-address-edit.tpl.html',
         link: function($scope, element, attrs) {
         },
-        controller: function ($state, $scope, $stateParams, addresses,communityInfo,addressInfo,address,errorLog,
+        controller: function ($state, $scope, $stateParams, addresses,communityLocation,addressInfo,address,errorLog,
             userInfo,$q) {
             // init addressInfo
             addressInfo.id = null;
@@ -22,10 +22,11 @@ myApp.directive('cAddressEdit', function() {
             addressInfo.ownerName = null;
             addressInfo.initial = null;
             // end init
-            if(!addressInfo.city && communityInfo.auth){//将已授权的自动定位的小区城市和小区名赋值给addressInfo
-                addressInfo.city = communityInfo.city;
-                addressInfo.communityId = communityInfo.id;
-                addressInfo.community = communityInfo.name;
+            var cmmInfo = communityLocation.getLastCommunity();
+            if(!addressInfo.city && cmmInfo.auth){//将已授权的自动定位的小区城市和小区名赋值给addressInfo
+                addressInfo.city = cmmInfo.city;
+                addressInfo.communityId = cmmInfo.id;
+                addressInfo.community = cmmInfo.name;
             }
             
             function refreshAddressInfo(){

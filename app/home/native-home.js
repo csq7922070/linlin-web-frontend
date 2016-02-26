@@ -1,19 +1,15 @@
 angular.module('app.home').controller('nativeHomeCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-    'communityInfo', 'locationState', 'communityLocation', '$q', 'userInfo', 'errorLog', 'locationInfo', 'location',
+    'locationState', 'communityLocation', '$q', 'userInfo', 'errorLog', 'location',
     'address','auth',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, locationState, communityLocation, $q, 
-        userInfo,errorLog, locationInfo, location,address,auth) {
-        // // test
-        // locationInfo.longitude = 116.30286359442356;
-        // locationInfo.latitude = 39.979707375431694;
-        // location.storageLocation(locationInfo);
-        // // end test
-        if(!communityInfo.name){
+    function($scope, $http, $stateParams, $rootScope, $state, $location, locationState, communityLocation, $q, 
+        userInfo,errorLog, location,address,auth) {
+        var cmmInfo = communityLocation.getLastCommunity();
+        if(!cmmInfo.name){
             $state.go('auto-location');
             return;
         }
         function refreshCommunityInfo(){
-            $scope.communityName = communityInfo.name.length >4 ? communityInfo.name.substring(0,3)+"..." : communityInfo.name;
+            $scope.communityName = cmmInfo.name.length >4 ? cmmInfo.name.substring(0,3)+"..." : cmmInfo.name;
         }
         refreshCommunityInfo();
 
@@ -27,7 +23,7 @@ angular.module('app.home').controller('nativeHomeCtrl', ['$scope', '$http', '$st
                 setCommunity(data);
             },function(reason){
                 //首页自动定位失败暂时不做提示
-                alert(reason.errorCode + ","+reason.errorMessage);
+                //alert(reason.errorCode + ","+reason.errorMessage);
             });
         }
         // var data = {areaName:"1",lastAreaName:"2",city:"bj",lastCity:'bj',address:'address1',lastAddress:'address2',type:'false'};
@@ -54,19 +50,17 @@ angular.module('app.home').controller('nativeHomeCtrl', ['$scope', '$http', '$st
             }
             defer.promise.then(function(selectCurrent){//selectCurrent代表是否选择当前自动定位小区为登陆小区
                 if(selectCurrent){
-                    var cmm = {
+                    var cmmInfo = {
                         name:data.areaName,
                         city: data.city,
                         address: data.address,
                         auth: data.state
                     };
-                    angular.extend(communityInfo, cmm);
                     refreshCommunityInfo();
-                    communityLocation.storageCommunity(communityInfo);
                     userInfo.getOpenId().then(function(data){
                         var openId = data;
-                        communityLocation.changeCommunity(openId, cmm).then(function(data){//保存用户选择的小区信息到服务器
-                            //alert("changeCommunity success,openId:"+openId+",cmm:"+errorLog.getErrorMessage(cmm));
+                        communityLocation.changeCommunity(openId, cmmInfo).then(function(data){//保存用户选择的小区信息到服务器
+                            //alert("changeCommunity success,openId:"+openId+",cmmInfo:"+errorLog.getErrorMessage(cmmInfo));
                         },function(reason){
                             alert(reason.errorCode +"," +reason.errorMessage);
                         });

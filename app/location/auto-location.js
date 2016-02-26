@@ -1,15 +1,12 @@
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog', 'locationState', 'appState',
+	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'errorLog', 'locationState',
     'appType',
     function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, 
-    	locationInfo,errorLog,locationState, appState,appType) {
+        errorLog,locationState,appType) {
         userInfo.initWxParam();//微信参数只会在公众号第一个页面传入
         //alert($location.url());
     	var locInfo = location.getLastLocation();
-    	if(locInfo){
-    		angular.extend(locationInfo, locInfo);
-    	}
-    	var cmmInfo = communityLocation.getLastCommunity();
+        var cmmInfo = communityLocation.getLastCommunity();
     	if(!locationState.autoLocationVisited && cmmInfo){
     		angular.extend(communityInfo, cmmInfo);
     		locationState.autoLocationVisited = true;

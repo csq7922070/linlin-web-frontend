@@ -1,7 +1,7 @@
 angular.module('app.auth')
-	.service('auth', ['$q','$http','$timeout', '$location', 'errorLog', 'communityInfo', 'appState', '$state',
+	.service('auth', ['$q','$http','$timeout', '$location', 'errorLog', '$state',
 		'account','address','errorLog','control',
-		function($q,$http,$timeout, $location, errorLog, communityInfo, appState, $state,account,address,errorLog,
+		function($q,$http,$timeout, $location, errorLog, $state,account,address,errorLog,
 			control){
 			var routeState = null;
 

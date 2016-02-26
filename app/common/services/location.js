@@ -1,7 +1,6 @@
 angular.module('app.location')
 	.service('location', ['$q', function($q){
-        this.getLocation = function()
-        {
+        this.getLocation = function(){
         	var defer = $q.defer();
 	        if (navigator.geolocation)
 	        {
@@ -15,6 +14,7 @@ angular.module('app.location')
 
 	        function showPosition(position)
 	        {
+	        	this.storageLocation(position.coords);
 	        	defer.resolve(position.coords);
 			    console.log(position.coords);
 			 	// coords.latitude	十进制数的纬度

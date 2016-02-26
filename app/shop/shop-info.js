@@ -1,13 +1,14 @@
 (function() {
     angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops', 'errorLog', 
-        'communityLocation', 'locationInfo',
-        function($scope, $stateParams, $rootScope, shops, errorLog, communityLocation,locationInfo) {
+        'communityLocation', 'location',
+        function($scope, $stateParams, $rootScope, shops, errorLog, communityLocation,location) {
             $rootScope.site = $stateParams.site;
             $scope.currentPage = 0;
             $scope.pageSize = 5;
             $scope.shops = [];
 
             $scope.load = function(goPage, limit) {
+                var locInfo = location.getLastLocation();
                 if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
                     return;
                 } else if ($rootScope.site != 3) {
@@ -16,8 +17,8 @@
                         offset: $scope.pageSize * (goPage - 1),
                         limit: limit == 8 ? limit : $scope.pageSize,
                         type: $stateParams.site - 1,
-                        lon: locationInfo.longitude,
-                        lat: locationInfo.latitude
+                        lon: locInfo.longitude,
+                        lat: locInfo.latitude
                     }
                     shops.query(params).$promise.then(function(data) {
                         $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);

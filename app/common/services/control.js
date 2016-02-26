@@ -1,7 +1,7 @@
 angular.module('app.control')
-	.service('control', ['$q','$http','$timeout', '$location', 'errorLog', 'communityInfo', 'appState', '$state',
+	.service('control', ['$q','$http','$timeout', '$location', 'errorLog', 'communityInfo', '$state',
 		'appType',
-		function($q,$http,$timeout, $location, errorLog, communityInfo, appState, $state,appType){
+		function($q,$http,$timeout, $location, errorLog, communityInfo, $state,appType){
 			var routeState = null;
 
 			this.startChangeState = function(event, toState, toParams, fromState, fromParams){

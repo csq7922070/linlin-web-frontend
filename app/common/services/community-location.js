@@ -1,6 +1,6 @@
 angular.module('app.location')
-	.service('communityLocation', ['$q', '$timeout', '$http', 'errorLog', 'userInfo','locationInfo', 'location',
-		function($q, $timeout, $http, errorLog, userInfo, locationInfo, location){
+	.service('communityLocation', ['$q', '$timeout', '$http', 'errorLog', 'userInfo', 'location',
+		function($q, $timeout, $http, errorLog, userInfo, location){
 		this.changeCommunityHand = false;
 		
 		//根据经纬度定位小区
@@ -35,12 +35,7 @@ angular.module('app.location')
     			return location.getLocation();
     		},function(reason){
     			return $q.reject(reason);
-    		}).then(function(data){//location
-    			//alert("long:"+data.longitude+",lat:"+data.latitude);
-    			locationInfo.longitude = data.longitude;
-    			locationInfo.latitude = data.latitude;
-    			locationInfo.accuracy = data.accuracy;
-    			location.storageLocation(locationInfo);
+    		}).then(function(data){
     			return locationCommunity(openId, data.longitude, data.latitude);
     		},function(reason){
     			return $q.reject(reason);
@@ -64,6 +59,7 @@ angular.module('app.location')
 					address: cmmInfo.address
 				}
 			}).success(function(data){
+				this.storageCommunity(cmmInfo);
 				defer.resolve(data);
 			}).error(function(data){
 				var reason = {

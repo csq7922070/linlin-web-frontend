@@ -1,6 +1,6 @@
 angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'locationInfo', 'errorLog','userInfo','communityLocation', 'locationState',
-    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch, locationInfo,errorLog,userInfo,communityLocation, locationState) {  	
+	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'errorLog','userInfo','communityLocation', 'locationState',
+    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch,errorLog,userInfo,communityLocation, locationState) {  	
     	$scope.loadingTip = "数据加载中...";
     	$scope.loadingShow = false;
     	$scope.lockClickHide = true;
