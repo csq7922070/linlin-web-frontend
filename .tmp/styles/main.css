@@ -2222,6 +2222,9 @@ th {
   font-size: 16px;
   font-family: 微软雅黑;
 }
+.address-common-container .c-disabled:active {
+  background-color: #fff!important;
+}
 
 #c-address-edit-container {
   z-index: 102;

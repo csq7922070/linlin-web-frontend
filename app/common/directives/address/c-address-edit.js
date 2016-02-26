@@ -32,6 +32,7 @@ myApp.directive('cAddressEdit', function() {
             function refreshAddressInfo(){
                 $scope.city = addressInfo.city;
                 $scope.community = addressInfo.community;
+                $scope.blockType = addressInfo.blockType;
                 $scope.block = addressInfo.block;
                 $scope.unit = addressInfo.unit;
                 $scope.room = addressInfo.room;
@@ -59,7 +60,7 @@ myApp.directive('cAddressEdit', function() {
             }
 
             $scope.changeCommunity = function(){
-                if(!city){
+                if(!$scope.city){
                     return;
                 }
                 $scope.showContent = false;
@@ -79,11 +80,10 @@ myApp.directive('cAddressEdit', function() {
                 // console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
-                changebgstate();
             }
 
             $scope.changeBlock = function(){
-                if(!community){
+                if(!$scope.community){
                     return;
                 }
                 $scope.showContent = false;
@@ -102,17 +102,16 @@ myApp.directive('cAddressEdit', function() {
                 // console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
-                changebgstate();
             }
 
             $scope.changeUnit = function() {
-                if(!block||blockType!=2){
+                if(!$scope.block||$scope.blockType!=2){
                     return;
                 }
                 if($scope.unit){
                     $scope.showContent = false;
                     $scope.showUnitList = true;
-                    address.getUnitList(addressInfo.city, addressInfo.community, addressInfo.block).then(function(data){
+                    address.getUnitList(addressInfo.city, addressInfo.communityId, addressInfo.block).then(function(data){
                         $scope.unitList = data;
                     },function(reason){
                         $scope.showUnitList = false;
@@ -127,17 +126,16 @@ myApp.directive('cAddressEdit', function() {
                 // console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
-                changebgstate();
             }
 
             $scope.changeRoom = function() {
-                if(!block||blockType==0||(blockType==2&&!unit)){
+                if(!$scope.block||$scope.blockType==0||($scope.blockType==2&&!$scope.unit)){
                     return;
                 }
                 if($scope.room){
                     $scope.showContent = false;
                     $scope.showRoomList = true;
-                    address.getRoomList(addressInfo.city, addressInfo.community, addressInfo.block, addressInfo.unit).then(function(data){
+                    address.getRoomList(addressInfo.city, addressInfo.communityId, addressInfo.block, addressInfo.unit).then(function(data){
                         $scope.roomList = data;
                     },function(reason){
                         $scope.showRoomList = false;
@@ -152,7 +150,6 @@ myApp.directive('cAddressEdit', function() {
                 // console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
-                changebgstate();
             }
             
 

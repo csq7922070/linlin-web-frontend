@@ -13,7 +13,7 @@
                 </div>
             </div>
 
-            <div class="weui_cell" ng-click="changeCommunity()" ng-class="{true:'disabled'}[!city]">
+            <div class="weui_cell" ng-click="changeCommunity()" ng-class="{true:'c-disabled'}[!city]">
                 <div class="weui_cell_bd weui_cell_primary">
                     <p style="margin-top: 10px;">小区</p>
                 </div>
@@ -25,7 +25,7 @@
                 </div>
             </div>
 
-            <div class="weui_cell" ng-click="changeBlock()" ng-class="{true:'disabled'}[!community]">
+            <div class="weui_cell" ng-click="changeBlock()" ng-class="{true:'c-disabled'}[!community]">
                 <div class="weui_cell_bd weui_cell_primary">
                     <p style="margin-top: 10px;">楼号</p>
                 </div>
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="weui_cell" ng-click="changeUnit()" ng-class="{true:'disabled'}[!block||blockType!=2]">
+            <div class="weui_cell" ng-click="changeUnit()" ng-class="{true:'c-disabled'}[!block||blockType!=2]">
                 <div class="weui_cell_bd weui_cell_primary">
                     <p style="margin-top: 10px;" ng-class="unit?'':'color_ccc'">单元</p>
                 </div>
@@ -48,7 +48,7 @@
                     请选择
                 </div>
             </div>
-            <div class="weui_cell" ng-click="changeRoom()" ng-class="{true:'disabled'}[!block||blockType==0||(blockType==2&&!unit)]">
+            <div class="weui_cell" ng-click="changeRoom()" ng-class="{true:'c-disabled'}[!block||blockType==0||(blockType==2&&!unit)]">
                 <div class="weui_cell_bd weui_cell_primary">
                     <p style="margin-top: 10px;" ng-class="room?'':'color_ccc'">门牌号</p>
                 </div>

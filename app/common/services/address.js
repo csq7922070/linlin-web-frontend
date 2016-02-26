@@ -297,13 +297,13 @@ angular.module('app.address')
 				return defer.promise;
 			}
 
-			this.getUnitList = function(city,community,block){
+			this.getUnitList = function(city,communityId,block){
 				var defer = $q.defer();
 				var unitList = null;
 				var params = {
 	                type:'unit',
 	                city:city,
-	                community:community,
+	                communityId:communityId,
 	                block:block
 	            }
 	            addresses.query(params).$promise.then(function (data) {
@@ -319,13 +319,13 @@ angular.module('app.address')
 				return defer.promise;
 			}
 
-			this.getRoomList = function(city,community,block,unit){
+			this.getRoomList = function(city,communityId,block,unit){
 				var defer = $q.defer();
 				var roomList = null;
 				var params={
 	                type:'room',
 	                city:city,
-	                community:community,
+	                communityId:communityId,
 	                block:block,
 	                unit:unit?unit:""
 	            }
