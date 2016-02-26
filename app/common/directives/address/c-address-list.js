@@ -17,71 +17,43 @@ myApp.directive('cAddressList', function() {
                 console.log($scope.addressList);
             });
 
-            $scope.deleteAddress = function (house) {
-                $scope.sure_delete = true;
-                $scope.sure = function () {
-                    $scope.sure_delete = false;
-                    var params = {
-                        id: house.id,
-                        openid:userInfo.getOpenIdSync()
-                    }
-                    addresses.delete(params).$promise.then(function (data) {
-                        house.rowState=1;
+            $scope.deleteAddress = function (addr) {
+                $scope.showDeleteConfirm = true;
+                $scope.delete = function () {
+                    $scope.showDeleteConfirm = false;
+                    address.deleteAddress(addr).then(function (data) {
                     }, function (reason) {
-                        var reason = {
-                            errorCode:"DELETE_ADDRESS_ERROR",
-                            errorMessage: errorLog.getErrorMessage(reason)
-                        };
                         alert(errorLog.getErrorMessage(reason));
                     })
                 }
             };
 
             $scope.cancel = function () {
-                $scope.sure_delete = false;
+                $scope.showDeleteConfirm = false;
             }
 
-            $scope.setDefaultAddress = function (house) {
-                if (house.active == 0) {
-                    return;
-                }
-                var params = {
-                    id: house.id,
-                    openid: userInfo.getOpenIdSync()
-                }
-                addresses.save(params).$promise.then(function () {
-                    clearAllDefaultTag();
-                    house.active = 0;
-                    address.updateDefaultAddress();
-                }, function (reason) {
-                    var reason = {
-                        errorCode:"SET_DEFAULT_ADDRESS_ERROR",
-                        errorMessage: errorLog.getErrorMessage(reason)
-                    };
+            $scope.setDefaultAddress = function (addr) {
+                address.setDefaultAddress(addr).then(function(data){
+
+                },function(reason){
                     alert(errorLog.getErrorMessage(reason));
-                })
+                });
             }
 
-            function clearAllDefaultTag(){
-                for(var i = 0;i<$scope.addressList.length;i++){
-                    var item = $scope.addressList[i];
-                    item.active = 1;
-                }
-            }
-
-            $scope.selectAddress = function(house){
+            $scope.selectAddress = function(addr){
                 if($scope.mode != "select"){
                     return;
                 }
-                addressInfo.id = house.id;
-                addressInfo.city = house.city;
-                addressInfo.communityId = house.communityId;
-                addressInfo.community = house.community;
-                addressInfo.block = house.block;
-                addressInfo.unit = house.unit;
-                addressInfo.room = house.room;
-                addressInfo.ownerName = house.ownerName;
-                addressInfo.initial = house.initial;
+                angular.extend(addressInfo, addr);
+                // addressInfo.id = address.id;
+                // addressInfo.city = address.city;
+                // addressInfo.communityId = address.communityId;
+                // addressInfo.community = address.community;
+                // addressInfo.block = address.block;
+                // addressInfo.unit = address.unit;
+                // addressInfo.room = address.room;
+                // addressInfo.ownerName = address.ownerName;
+                // addressInfo.initial = address.initial;
                 $scope.show = false;
                 $scope.onComplete();
             }
@@ -98,6 +70,10 @@ myApp.directive('cAddressList', function() {
                     $scope.show = false;
                     $scope.onComplete();
                 }
+            }
+
+            if($scope.addressList && $scope.addressList.length == 0){
+                $scope.addAddress();
             }
         }
     }

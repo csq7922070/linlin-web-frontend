@@ -12,6 +12,7 @@ myApp.directive('cAddressEdit', function() {
         controller: function ($state, $scope, $stateParams, addresses,communityInfo,addressInfo,address,errorLog,
             userInfo,$q) {
             // init addressInfo
+            addressInfo.id = null;
             addressInfo.city = null
             addressInfo.communityId = null;
             addressInfo.community = null;
@@ -19,6 +20,8 @@ myApp.directive('cAddressEdit', function() {
             addressInfo.unit = null;
             addressInfo.room = null;
             addressInfo.ownerName = null;
+            addressInfo.initial = null;
+            // end init
             if(!addressInfo.city && communityInfo.auth){//将已授权的自动定位的小区城市和小区名赋值给addressInfo
                 addressInfo.city = communityInfo.city;
                 addressInfo.communityId = communityInfo.id;
@@ -156,28 +159,10 @@ myApp.directive('cAddressEdit', function() {
             
 
             $scope.addAddress = function () {
-                userInfo.getOpenId().then(function(data){
-                    var params = {
-                        city: addressInfo.city,
-                        community: addressInfo.community,
-                        block: addressInfo.block,
-                        unit: addressInfo.unit,
-                        room: addressInfo.room,
-                        houseId: addressInfo.id,
-                        initial: addressInfo.initial,
-                        openid: data
-                    }
-                    return addresses.save(params).$promise;
-                },function(reason){
-                    return $q.reject(reason);
-                }).then(function (data) {
-                    address.addAddress(addressInfo);
+                var newAddress = angular.copy(addressInfo);
+                address.addAddress(newAddress).then(function(data){
                     close();
-                }, function (reason) {
-                    reason = {
-                        errorCode: "ADD_ADDRESS_ERROR",
-                        errorMessage: errorLog.getErrorMessage(reason)
-                    };
+                },function(reason){
                     alert(errorLog.getErrorMessage(reason));
                     close();
                 });

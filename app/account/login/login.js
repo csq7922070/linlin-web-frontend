@@ -4,7 +4,9 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
         auth,control) {
         //alert($location.url());
         var lastLoginInfo = userInfo.getLastLoginInfo();
-        $scope.tel = lastLoginInfo ? lastLoginInfo.tel: "";
+        if(lastLoginInfo&&lastLoginInfo.tel){
+            $scope.tel = lastLoginInfo.tel;
+        }
         $("#tel").focus();
         $scope.authCode = "";
 
