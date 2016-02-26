@@ -75,6 +75,7 @@ angular.module('app.address')
 			}
 
 			this.setDefaultAddress = function(address){
+				var that = this;
 				var defer = $q.defer();
 				if(address.active == 0){
 					defer.resolve(true);
@@ -84,7 +85,7 @@ angular.module('app.address')
 	                    openid: userInfo.getOpenIdSync()
 	                }
 	                addresses.save(params).$promise.then(function (data) {
-	                	var defaultAddr = this.getDefaultAddressSync();
+	                	var defaultAddr = that.getDefaultAddressSync();
 	                	if(defaultAddr){
 	                		defaultAddr.active = 1;
 	                	}
@@ -123,6 +124,7 @@ angular.module('app.address')
 					}
 					addressList.push(address);
 					localStorage.hasAddress = true;
+					defer.resolve(true);
                 }, function (reason) {
                     reason = {
                         errorCode: "ADD_ADDRESS_ERROR",
