@@ -51,7 +51,7 @@
                     });
                 }
             }
-            vm.load(1, vm.pageSize);
+            // vm.load(1, vm.pageSize);
         }
     ]);
 })();
