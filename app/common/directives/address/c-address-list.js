@@ -13,8 +13,8 @@ myApp.directive('cAddressList', function() {
         },
         controller: function ($scope, $rootScope,$stateParams, $state, addresses,errorLog,addressInfo,userInfo,address) {
             $scope.$watch("addressList", function(newVal,oldVal){
-                console.log("directive addressList update:");
-                console.log($scope.addressList);
+                // console.log("directive addressList update:");
+                // console.log($scope.addressList);
             });
 
             $scope.deleteAddress = function (addr) {
@@ -64,7 +64,7 @@ myApp.directive('cAddressList', function() {
             }
 
             $scope.onEditAddressComplete = function(){
-                console.log("onEditAddressComplete");
+                // console.log("onEditAddressComplete");
                 $scope.showContent = true;
                 if($scope.mode == "select"){
                     $scope.show = false;

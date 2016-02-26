@@ -119,7 +119,7 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
             var wmonth = [];
             var emonth = [];
             var v2 = $scope.selected;
-            console.log(v2)
+            // console.log(v2)
             var v3 = list;
             for (var i = 0; i < v3.length; i++) {
                 for (var j = 0; j < v2.length; j++) {
@@ -139,7 +139,7 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
             $rootScope.wmonth = wmonth;
             $rootScope.emonth = emonth;
             $rootScope.ids = $scope.selected.join(",");
-            console.log($rootScope.ids)
+            // console.log($rootScope.ids)
         }
 
         $scope.updateYearmonth = function(yearmonth, selected) {
@@ -176,7 +176,7 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
             var wf = 0;
             var ef = 0;
             var v2 = $scope.selected;
-            console.log(v2)
+            // console.log(v2)
             var wmonth = [];
             var emonth = [];
 
@@ -199,7 +199,7 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
             $rootScope.wmonth = wmonth;
             $rootScope.emonth = emonth;
             $rootScope.ids = $scope.selected.join(",");
-            console.log($rootScope.ids)
+            // console.log($rootScope.ids)
         }
 
         $scope.updateAll = function(sel) {
@@ -230,7 +230,7 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
             var v2 = $scope.selected;
             var wmonth = [];
             var emonth = [];
-            console.log(v2)
+            // console.log(v2)
             var v3 = list;
             for (var i = 0; i < v3.length; i++) {
                 for (var j = 0; j < v2.length; j++) {
@@ -250,7 +250,7 @@ angular.module('app.payment').controller('billCtrl', ['$scope', '$http', '$state
             $rootScope.wmonth = wmonth;
             $rootScope.emonth = emonth;
             $rootScope.ids = $scope.selected.join(",");
-            console.log($rootScope.ids)
+            // console.log($rootScope.ids)
         }
     }
 ]);

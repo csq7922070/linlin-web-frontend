@@ -11,9 +11,9 @@
             
             address.getDefaultAddress().then(function(data){
                 defaultcommunityId = data.communityId;
-                console.log('ssss');
-                console.log(data);
-                console.log(defaultcommunityId);
+                // console.log('ssss');
+                // console.log(data);
+                // console.log(defaultcommunityId);
                 defaultDefer.resolve(data.communityId);
                 if(defaultcommunityId == null){
                     alert('defaultcommunityId == null');
@@ -25,7 +25,7 @@
             defaultDefer.promise.then(function(data){
                 vm.load(1, vm.pageSize);
             },function(reason){
-                console.log(reason);
+                // console.log(reason);
             });
             
             vm.load = function(goPage, limit) {
@@ -43,15 +43,15 @@
                         vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
                         vm.currentPage = goPage;
                         vm.busy = false;
-                        console.log('vm');
-                        console.log(vm.notices.length);
+                        // console.log('vm');
+                        // console.log(vm.notices.length);
                          Array.prototype.push.apply(vm.notices,data.items);
                     }, function(reason){
                         alert(errorLog.getErrorMessage(reason));
                     });
                 }
             }
-            vm.load(1, vm.pageSize);
+            // vm.load(1, vm.pageSize);
         }
     ]);
 })();

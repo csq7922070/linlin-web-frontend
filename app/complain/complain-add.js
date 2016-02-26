@@ -28,7 +28,7 @@ angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$stat
             }
 
         address.getDefaultAddress().then(function(data){
-            console.log(data);
+            // console.log(data);
             $scope.defaultcity = data.city;
             $scope.defaultcommunity = data.community;
             $scope.defaultcommunityId = data.communityId;
@@ -40,7 +40,7 @@ angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$stat
             $scope.showAddressList = true;
             address.getAddressList().then(function(data){
                 $scope.addressList = data;
-                console.log($scope.addressList);
+                // console.log($scope.addressList);
             },function(reason){
                 $scope.showAddressList = false;
                 alert(reason.errorCode+","+reason.errorMessage);
@@ -49,12 +49,12 @@ angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$stat
 
         $scope.onSelectAddressComplete = function(){
             $scope.show = true;
-            console.log("onSelectAddressComplte");
-            console.log(addressInfo);
+            // console.log("onSelectAddressComplte");
+            // console.log(addressInfo);
             $scope.defaultcity = addressInfo.city;
             $scope.defaultcommunity = addressInfo.community;
             $scope.defaultcommunityId = addressInfo.communityId;
-            console.log(addressInfo.communityId);
+            // console.log(addressInfo.communityId);
         }
     }
 ]);

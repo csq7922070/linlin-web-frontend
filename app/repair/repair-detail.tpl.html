@@ -7,9 +7,9 @@
                 <li ng-if="vm.repair.remark"><span class="equip">故障描述</span><span class="device">{{vm.repair.remark}}</span>
                 </li>
                 <li><span class="b_date">报修地址</span>
-                    <span class="date_time">{{vm.repair.house.block}}
+                    <span class="date_u data_uu">{{vm.repair.house.block}}
                         <span class="date_u" ng-if="vm.repair.house.unit">-{{vm.repair.house.unit}}</span>
-                        <span class="date_u" ng-if="vm.repair.house.room">-{{vm.repair.house.room}}</span>
+                        <span class="date_u data_l" ng-if="vm.repair.house.room">-{{vm.repair.house.room}}</span>
                     </span>
                 </li>
                 <li><span class="number">联系方式</span><span class="list_num">{{vm.repair.mobile}}</span>
