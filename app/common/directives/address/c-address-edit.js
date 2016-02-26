@@ -23,6 +23,7 @@ myApp.directive('cAddressEdit', function() {
             addressInfo.initial = null;
             // end init
             var cmmInfo = communityLocation.getLastCommunity();
+            //alert(errorLog.getFullErrorMessage(cmmInfo));
             if(!addressInfo.city && cmmInfo.auth){//将已授权的自动定位的小区城市和小区名赋值给addressInfo
                 addressInfo.city = cmmInfo.city;
                 addressInfo.communityId = cmmInfo.id;

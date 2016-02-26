@@ -24,6 +24,7 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		$scope.loadingTip = "定位中...";
     		$scope.loadingShow = true;
     		communityLocation.autoLocationCommunity().then(function(data){
+                // alert(errorLog.getFullErrorMessage(data));
     			setCommunity(data);
     		},function(reason){
     			if(reason && reason.errorCode == "PERMISSION_DENIED"){//用户拒绝了定位请求，提示打开定位功能

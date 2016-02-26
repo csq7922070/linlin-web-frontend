@@ -39,6 +39,7 @@ angular.module('app.location')
 
 		//自动定位小区，先定位经纬度，然后调用接口查询小区信息
 		this.autoLocationCommunity = function(){
+			//alert("autoLocationCommunity...");
 			var defer = $q.defer();
 			var openId = null;
     		userInfo.getOpenId().then(function(data){//openid
@@ -59,6 +60,7 @@ angular.module('app.location')
 		}
 
 		this.changeCommunity = function(openId, cmmInfo){
+			var that = this;
 			var defer = $q.defer();
 			$http({
 				method: 'POST',
@@ -71,7 +73,7 @@ angular.module('app.location')
 				}
 			}).success(function(data){
 				lastCommunity = cmmInfo;
-				this.storageCommunity(cmmInfo);
+				that.storageCommunity(cmmInfo);
 				defer.resolve(data);
 			}).error(function(data){
 				var reason = {
@@ -99,10 +101,14 @@ angular.module('app.location')
 			if(!lastCommunity && window.localStorage && localStorage.communityInfo){
 				lastCommunity = JSON.parse(localStorage.communityInfo);
 			}
+			// alert("getLastCommunity");
+			// alert(errorLog.getFullErrorMessage(lastCommunity));
 			return lastCommunity;
 		}
 
 		this.storageCommunity = function(cmmInfo){
+			// alert("storageCommunity");
+			// alert(errorLog.getFullErrorMessage(cmmInfo));
 			var state = false;
 			if(window.localStorage){
 				localStorage.communityInfo = JSON.stringify(cmmInfo);

@@ -18,12 +18,15 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
         }
 
         if(!locationState.hasLocation){
+            //alert("home start auto-location");
             communityLocation.autoLocationCommunity().then(function(data){
+                // alert("home auto-location success");
+                // alert(errorLog.getFullErrorMessage(data));
                 //alert(errorLog.getErrorMessage(data));
                 setCommunity(data);
             },function(reason){
                 //首页自动定位失败暂时不做提示
-                //alert(reason.errorCode + ","+reason.errorMessage);
+                alert(reason.errorCode + ","+reason.errorMessage);
             });
         }
         // var data = {areaName:"1",lastAreaName:"2",city:"bj",lastCity:'bj',address:'address1',lastAddress:'address2',type:'false'};
