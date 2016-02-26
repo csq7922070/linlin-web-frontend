@@ -1,12 +1,13 @@
 angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'$timeout', 'communityInfo', 'communityList', 'communitySearch', 'errorLog','userInfo','communityLocation', 'locationState',
-    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityInfo, communityList, communitySearch,errorLog,userInfo,communityLocation, locationState) {  	
+	'$timeout', 'communityList', 'communitySearch', 'errorLog','userInfo','communityLocation', 'locationState',
+    function($scope, $http, $stateParams, $rootScope, $state, $location,$timeout, communityList, communitySearch,errorLog,userInfo,communityLocation, locationState) {  	
     	$scope.loadingTip = "数据加载中...";
     	$scope.loadingShow = false;
     	$scope.lockClickHide = true;
 
     	var cmmList = null;
-    	communityList.getCommunityList(communityInfo.city)
+        var cmmInfo = communityLocation.getLastCommunity();
+    	communityList.getCommunityList(cmmInfo.city)
     		.then(function(data){
     			//alert("cmmList.length: "+data.length);
     			cmmList = data;
@@ -20,7 +21,6 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     			alert(reason.errorCode +"," +reason.errorMessage);
     		});
 
-    	console.log(communityInfo);
     	$scope.changeCommunity = function(community){
     		console.log(community);
     	}
@@ -46,9 +46,6 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	});
 
     	$scope.changeCommunity = function(community){
-    		console.log(community);
-    		angular.extend(communityInfo, community);
-    		communityLocation.storageCommunity(communityInfo);
     		var openId = null;
 			userInfo.getOpenId().then(function(data){
 				openId = data;

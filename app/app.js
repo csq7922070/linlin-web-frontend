@@ -1,6 +1,6 @@
 //var basePath = "http://localhost:8080/skh";
 //var basePath="http://192.168.0.120:8080/skh";
-var basePath = "http://mitest.4zlink.com:8080/mifan";
+var basePath = "http://mifan.4zlink.com:8080/mifan";
 // var basePath = "http://192.168.0.135:8080/skh";
 
 angular.module('app.home', []);
@@ -235,19 +235,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         control.startChangeState(event, toState, toParams, fromState, fromParams);//为了兼容app和微信公众号的首页不一致问题
         auth.startChangeState(event, toState, toParams, fromState, fromParams);//校验权限，需要登录或添加地址时自动跳至对应页面
     });
-}]).value(//保存当前定位小区信息，包括自动定位和搜索定位
-    'communityInfo',{
-        id: null,
-        name: null,
-        province: null,
-        city: null,
-        district: null,
-        street: null,
-        steetNumber: null,
-        address: null,//这是完整的地址
-        auth: null//该字段用来判断小区是否为合作小区，值为true or false
-    }
-).value(//用来在添加地址环节保存各个添加地址子页面产生的数据
+}]).value(//用来在添加地址环节保存各个添加地址子页面产生的数据
     'addressInfo',{
         id: null,
         city: null,
