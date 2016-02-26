@@ -51,6 +51,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
             defer.promise.then(function(selectCurrent){//selectCurrent代表是否选择当前自动定位小区为登陆小区
                 if(selectCurrent){
                     var cmmInfo = {
+                        id: data.id,
                         name:data.areaName,
                         city: data.city,
                         address: data.address,

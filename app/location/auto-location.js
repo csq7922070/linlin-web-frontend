@@ -77,6 +77,7 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 
     	function setLastCommunity(data){
     		$scope.autoLocationCommunities = [{
+                id: data.lastId,
 				name:data.lastAreaName,
 				city: data.lastCity,
 				address: data.lastAddress,
@@ -87,6 +88,7 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 
     	function setCurrentCommunity(data){
 			$scope.autoLocationCommunities = [{
+                id: data.id,
 				name:data.areaName,
 				city: data.city,
 				address: data.address,
