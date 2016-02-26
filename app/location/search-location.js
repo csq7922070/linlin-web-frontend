@@ -20,9 +20,9 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     			alert(reason.errorCode +"," +reason.errorMessage);
     		});
 
-    	console.log(communityInfo);
+    	// console.log(communityInfo);
     	$scope.changeCommunity = function(community){
-    		console.log(community);
+    		// console.log(community);
     	}
 
     	$scope.showInexistenceTip = false;
@@ -34,7 +34,7 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     				$timeout.cancel(changePromise);
     			}
     			changePromise = $timeout(function(){
-    				console.log("change...");
+    				// console.log("change...");
     				$scope.showInexistenceTip = false;
     				$scope.searchLocationCommunities = communitySearch.searchCommunity($scope.communityName);
     				if($scope.communityName && $scope.searchLocationCommunities.length == 0){
@@ -46,14 +46,14 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
     	});
 
     	$scope.changeCommunity = function(community){
-    		console.log(community);
+    		// console.log(community);
     		angular.extend(communityInfo, community);
     		communityLocation.storageCommunity(communityInfo);
     		var openId = null;
 			userInfo.getOpenId().then(function(data){
 				openId = data;
 				communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
-	    			console.log("changeCommunity success.");
+	    			// console.log("changeCommunity success.");
 	    		},function(reason){
 	    			alert(reason.errorCode +"," +reason.errorMessage);
 	    		});

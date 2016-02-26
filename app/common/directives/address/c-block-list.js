@@ -12,7 +12,7 @@ myApp.directive('cBlockList', function() {
         },
         controller: function ($stateParams,$scope,addresses,addressInfo,address) {
             $scope.changeBlock = function(block){
-                console.log("changeBlock...");
+                // console.log("changeBlock...");
                 addressInfo.block = block.block;
                 $scope.showContent = false;
                 if(block.type == 2){
@@ -45,12 +45,12 @@ myApp.directive('cBlockList', function() {
             }
 
             $scope.onSelectUnitComplete = function(){
-                console.log("onSelectUnitComplete");
+                // console.log("onSelectUnitComplete");
                 close();
             }
 
             $scope.onSelectRoomComplete = function(){
-                console.log("onSelectRoomComplete");
+                // console.log("onSelectRoomComplete");
                 close();
             }
 

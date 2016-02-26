@@ -1838,6 +1838,16 @@ div.rn-carousel-indicator span {
 #rapair_add .repair_detail {
   margin-top: 10px;
 }
+#repair_detail {
+  /*.date_time{
+		color: #333;
+		padding-left: 25px;
+
+	}
+	.list_num{
+		color: #f34832;
+	}*/
+}
 #repair_detail li {
   background: #fff;
 }
@@ -1845,15 +1855,15 @@ div.rn-carousel-indicator span {
   color: #333;
   font-weight: bolder;
 }
-#repair_detail .date_time {
-  color: #333;
-  padding-left: 25px;
-}
-#repair_detail .list_num {
-  /*color: #f34832;*/
-}
 #repair_detail .date_u {
   margin-left: 0px;
+  color: #333;
+}
+#repair_detail .data_uu {
+  margin-left: -5px;
+}
+#repair_detail .data_l {
+  padding-left: 0px;
 }
 #repair_detail .repaie_state {
   /*background: #fff3a3;*/
@@ -1927,6 +1937,10 @@ div.rn-carousel-indicator span {
   background-color: #ffffff;
   font-size: 16px;
   font-family: arial, serif;
+}
+#repair_detail .l_btn[disabled] {
+  color: #999;
+  border-color: #e8e8e8;
 }
 
 /*!

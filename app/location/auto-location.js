@@ -23,7 +23,7 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     	}
 
 
-        console.log(communityInfo.name+ ' 11');
+        // console.log(communityInfo.name+ ' 11');
 
     	//openId = "o-YfcstQPoTDSPuNHZ44cEof8";
     	$scope.retryLocation = function(){
@@ -109,7 +109,7 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 			userInfo.getOpenId().then(function(data){
 				openId = data;
 				communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
-	    			console.log("changeCommunity success.");
+	    			// console.log("changeCommunity success.");
 	    		},function(reason){
 	    			alert(reason.errorCode +"," +reason.errorMessage);
 	    		});

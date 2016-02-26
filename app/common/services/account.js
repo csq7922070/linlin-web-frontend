@@ -62,8 +62,8 @@ angular.module('app.account')
 				var has = false;
 				var lastLoginInfo = userInfo.getLastLoginInfo();
 				if(lastLoginInfo&&lastLoginInfo.login){
-					console.log("lastLoginInfo:");
-					console.log(lastLoginInfo);
+					// console.log("lastLoginInfo:");
+					// console.log(lastLoginInfo);
 					has = true;
 				}
 				return has;

@@ -62,8 +62,8 @@ myApp.directive('cAddressEdit', function() {
             }
 
             $scope.onSelectCityComplete = function(){
-                console.log("onSelectCityComplete");
-                console.log(addressInfo);
+                // console.log("onSelectCityComplete");
+                // console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
                 changebgstate();
@@ -73,7 +73,7 @@ myApp.directive('cAddressEdit', function() {
                 $scope.showContent = false;
                 $scope.showCommunityList = true;
                 address.getCommunityList(addressInfo.city).then(function(data){
-                    console.log(data);
+                    // console.log(data);
                     $scope.communityList = data;
                 },function(reason){
                     $scope.showCommunityList = false;
@@ -83,8 +83,8 @@ myApp.directive('cAddressEdit', function() {
             }
 
             $scope.onSelectCommunityComplete = function(){
-                console.log("onSelectCommunityComplete");
-                console.log(addressInfo);
+                // console.log("onSelectCommunityComplete");
+                // console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
                 changebgstate();
@@ -103,8 +103,8 @@ myApp.directive('cAddressEdit', function() {
             }
 
             $scope.onSelectBlockComplete = function(){
-                console.log("onSelectBlockComplete");
-                console.log(addressInfo);
+                // console.log("onSelectBlockComplete");
+                // console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
                 changebgstate();
@@ -125,8 +125,8 @@ myApp.directive('cAddressEdit', function() {
             }
 
             $scope.onSelectUnitComplete = function(){
-                console.log("onSelectUnitComplete");
-                console.log(addressInfo);
+                // console.log("onSelectUnitComplete");
+                // console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
                 changebgstate();
@@ -147,8 +147,8 @@ myApp.directive('cAddressEdit', function() {
             }
 
             $scope.onSelectRoomComplete = function(){
-                console.log("onSelectRoomComplete");
-                console.log(addressInfo);
+                // console.log("onSelectRoomComplete");
+                // console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
                 changebgstate();
