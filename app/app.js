@@ -241,6 +241,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
         city: null,
         community: null,
         communityId: null,
+        blockType: null,
         block: null,
         unit: null,
         room: null,

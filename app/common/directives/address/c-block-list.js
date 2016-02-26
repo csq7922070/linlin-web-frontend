@@ -13,6 +13,7 @@ myApp.directive('cBlockList', function() {
         controller: function ($stateParams,$scope,addresses,addressInfo,address) {
             $scope.changeBlock = function(block){
                 console.log("changeBlock...");
+                addressInfo.blockType = block.type;
                 addressInfo.block = block.block;
                 $scope.showContent = false;
                 if(block.type == 2){

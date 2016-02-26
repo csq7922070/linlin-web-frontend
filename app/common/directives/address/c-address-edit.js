@@ -39,20 +39,6 @@ myApp.directive('cAddressEdit', function() {
             }
             refreshAddressInfo();
 
-            function changebgstate() {
-                $scope.ccc = 'ccc';
-                $scope.sss = 'ccc'; 
-
-                if(!$scope.unit){
-                    $scope.sss = 'bgclick'
-                }
-
-                if(!$scope.room){
-                    $scope.ccc = 'bgclick'
-                }
-            }
-            changebgstate();
-
             $scope.changeCity = function(){
                 $scope.showContent = false;
                 $scope.showCityList = true;
@@ -70,10 +56,12 @@ myApp.directive('cAddressEdit', function() {
                 console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
-                changebgstate();
             }
 
             $scope.changeCommunity = function(){
+                if(!city){
+                    return;
+                }
                 $scope.showContent = false;
                 $scope.showCommunityList = true;
                 address.getCommunityList(addressInfo.city).then(function(data){
@@ -95,6 +83,9 @@ myApp.directive('cAddressEdit', function() {
             }
 
             $scope.changeBlock = function(){
+                if(!community){
+                    return;
+                }
                 $scope.showContent = false;
                 $scope.showBlockList = true;
                 address.getBlockList(addressInfo.city, addressInfo.communityId).then(function(data){
@@ -115,6 +106,9 @@ myApp.directive('cAddressEdit', function() {
             }
 
             $scope.changeUnit = function() {
+                if(!block||blockType!=2){
+                    return;
+                }
                 if($scope.unit){
                     $scope.showContent = false;
                     $scope.showUnitList = true;
@@ -137,6 +131,9 @@ myApp.directive('cAddressEdit', function() {
             }
 
             $scope.changeRoom = function() {
+                if(!block||blockType==0||(blockType==2&&!unit)){
+                    return;
+                }
                 if($scope.room){
                     $scope.showContent = false;
                     $scope.showRoomList = true;
