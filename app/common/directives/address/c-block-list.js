@@ -12,12 +12,13 @@ myApp.directive('cBlockList', function() {
         },
         controller: function ($stateParams,$scope,addresses,addressInfo,address) {
             $scope.changeBlock = function(block){
-                // console.log("changeBlock...");
+                console.log("changeBlock...");
+                addressInfo.blockType = block.type;
                 addressInfo.block = block.block;
                 $scope.showContent = false;
                 if(block.type == 2){
                     $scope.showUnitList = true;
-                    address.getUnitList(addressInfo.city, addressInfo.community, block.block).then(function(data){
+                    address.getUnitList(addressInfo.city, addressInfo.communityId, block.block).then(function(data){
                         $scope.unitList = data;
                     },function(reason){
                         $scope.showUnitList = false;
@@ -27,7 +28,7 @@ myApp.directive('cBlockList', function() {
                 }else if(block.type == 1){
                     addressInfo.unit = "";
                     $scope.showRoomList = true;
-                    address.getRoomList(addressInfo.city, addressInfo.community, block.block, addressInfo.unit).then(function(data){
+                    address.getRoomList(addressInfo.city, addressInfo.communityId, block.block, addressInfo.unit).then(function(data){
                         $scope.roomList = data;
                     },function(reason){
                         $scope.showRoomList = false;
@@ -45,12 +46,12 @@ myApp.directive('cBlockList', function() {
             }
 
             $scope.onSelectUnitComplete = function(){
-                // console.log("onSelectUnitComplete");
+                console.log("onSelectUnitComplete");
                 close();
             }
 
             $scope.onSelectRoomComplete = function(){
-                // console.log("onSelectRoomComplete");
+                console.log("onSelectRoomComplete");
                 close();
             }
 

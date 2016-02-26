@@ -1,7 +1,18 @@
 angular.module('app.location')
-	.service('communityLocation', ['$q', '$timeout', '$http', 'errorLog', 'userInfo','locationInfo', 'location',
-		function($q, $timeout, $http, errorLog, userInfo, locationInfo, location){
+	.service('communityLocation', ['$q', '$timeout', '$http', 'errorLog', 'userInfo', 'location',
+		function($q, $timeout, $http, errorLog, userInfo, location){
 		this.changeCommunityHand = false;
+
+		var lastCommunity = null;
+		// id: null,
+  //       name: null,
+  //       province: null,
+  //       city: null,
+  //       district: null,
+  //       street: null,
+  //       steetNumber: null,
+  //       address: null,//这是完整的地址
+  //       auth: null//该字段用来判断小区是否为合作小区，值为true or false
 		
 		//根据经纬度定位小区
 		function locationCommunity(openId, longitude, latitude){// longitude经度，latitude维度
@@ -35,12 +46,7 @@ angular.module('app.location')
     			return location.getLocation();
     		},function(reason){
     			return $q.reject(reason);
-    		}).then(function(data){//location
-    			//alert("long:"+data.longitude+",lat:"+data.latitude);
-    			locationInfo.longitude = data.longitude;
-    			locationInfo.latitude = data.latitude;
-    			locationInfo.accuracy = data.accuracy;
-    			location.storageLocation(locationInfo);
+    		}).then(function(data){
     			return locationCommunity(openId, data.longitude, data.latitude);
     		},function(reason){
     			return $q.reject(reason);
@@ -64,6 +70,8 @@ angular.module('app.location')
 					address: cmmInfo.address
 				}
 			}).success(function(data){
+				lastCommunity = cmmInfo;
+				this.storageCommunity(cmmInfo);
 				defer.resolve(data);
 			}).error(function(data){
 				var reason = {
@@ -88,11 +96,10 @@ angular.module('app.location')
 
 		//获取上一次使用的小区信息，此信息通过localStorage持久化存储
 		this.getLastCommunity = function(){
-			var cmm = null;
-			if(window.localStorage && localStorage.communityInfo){
-				cmm = JSON.parse(localStorage.communityInfo);
+			if(!lastCommunity && window.localStorage && localStorage.communityInfo){
+				lastCommunity = JSON.parse(localStorage.communityInfo);
 			}
-			return cmm;
+			return lastCommunity;
 		}
 
 		this.storageCommunity = function(cmmInfo){

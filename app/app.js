@@ -1,6 +1,6 @@
 //var basePath = "http://localhost:8080/skh";
 //var basePath="http://192.168.0.120:8080/skh";
-var basePath = "http://mitest.4zlink.com:8080/mifan";
+var basePath = "http://mifan.4zlink.com:8080/mifan";
 // var basePath = "http://192.168.0.135:8080/skh";
 
 angular.module('app.home', []);
@@ -85,36 +85,6 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             url: "/address-edit",
             templateUrl: "tpl/address/address-edit.tpl.html",
             controller: "addressEditCtrl",
-            controllerAs: 'vm'
-        })
-        .state('address-city', {
-            url: "/address-city/",
-            templateUrl: "tpl/address/city/city.tpl.html",
-            controller: "addressCityCtrl",
-            controllerAs: 'vm'
-        })
-        .state('address-village', {
-            url: "/address-village/",
-            templateUrl: "tpl/address/village/village.tpl.html",
-            controller: "addressVillageCtrl",
-            controllerAs: 'vm'
-        })
-        .state('address-block', {
-            url: "/address-block/",
-            templateUrl: "tpl/address/block/block.tpl.html",
-            controller: "addressBlockCtrl",
-            controllerAs: 'vm'
-        })
-        .state('address-unit', {
-            url: "/address-unit/",
-            templateUrl: "tpl/address/unit/unit.tpl.html",
-            controller: "addressUnitCtrl",
-            controllerAs: 'vm'
-        })
-        .state('address-room', {
-            url: "/address-room/",
-            templateUrl: "tpl/address/room/room.tpl.html",
-            controller: "addressRoomCtrl",
             controllerAs: 'vm'
         })
         .state('bill', {
@@ -263,52 +233,25 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 }]).run(['$rootScope', 'auth', 'control', function($rootScope, auth, control) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
         control.startChangeState(event, toState, toParams, fromState, fromParams);//为了兼容app和微信公众号的首页不一致问题
-        auth.startChangeState(event, toState, toParams, fromState, fromParams);
+        auth.startChangeState(event, toState, toParams, fromState, fromParams);//校验权限，需要登录或添加地址时自动跳至对应页面
     });
-    $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
-        $rootScope.previousState = from.name;
-        $rootScope.currentState = to.name;
-        var url = "/" + to.name.replace(".", "/");
-        _hmt.push(['_trackPageview', url]);
-    });
-}]).value(
-    'communityInfo',{
-        id: null,
-        name: null,
-        province: null,
-        city: null,
-        district: null,
-        street: null,
-        steetNumber: null,
-        address: null,//这是完整的地址
-        auth: null//该字段用来判断小区是否为合作小区，值为true or false
-    }
-).value(
+}]).value(//用来在添加地址环节保存各个添加地址子页面产生的数据
     'addressInfo',{
         id: null,
         city: null,
         community: null,
         communityId: null,
+        blockType: null,
         block: null,
         unit: null,
         room: null,
-        ownerName: null,
+        ownerName: null,//房屋所有者姓名加了*
         initial: null//用来对地址进行首字母排序用的
-    }
-).value(
-    'locationInfo', {
-        longitude: null,//经度
-        latitude: null,//纬度
-        accuracy: null//位置精度
     }
 ).value(
     'locationState',{
         hasLocation: false,
         autoLocationVisited: false
-    }
-).value(
-    'appState', {
-        visited: false
     }
 ).constant(
     'appType', 'weixin'//app or weixin

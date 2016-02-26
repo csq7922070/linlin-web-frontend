@@ -9,9 +9,10 @@ myApp.directive('cAddressEdit', function() {
         templateUrl: 'tpl/common/directives/address/c-address-edit.tpl.html',
         link: function($scope, element, attrs) {
         },
-        controller: function ($state, $scope, $stateParams, addresses,communityInfo,addressInfo,address,errorLog,
+        controller: function ($state, $scope, $stateParams, addresses,communityLocation,addressInfo,address,errorLog,
             userInfo,$q) {
             // init addressInfo
+            addressInfo.id = null;
             addressInfo.city = null
             addressInfo.communityId = null;
             addressInfo.community = null;
@@ -19,35 +20,25 @@ myApp.directive('cAddressEdit', function() {
             addressInfo.unit = null;
             addressInfo.room = null;
             addressInfo.ownerName = null;
-            if(!addressInfo.city && communityInfo.auth){//将已授权的自动定位的小区城市和小区名赋值给addressInfo
-                addressInfo.city = communityInfo.city;
-                addressInfo.communityId = communityInfo.id;
-                addressInfo.community = communityInfo.name;
+            addressInfo.initial = null;
+            // end init
+            var cmmInfo = communityLocation.getLastCommunity();
+            if(!addressInfo.city && cmmInfo.auth){//将已授权的自动定位的小区城市和小区名赋值给addressInfo
+                addressInfo.city = cmmInfo.city;
+                addressInfo.communityId = cmmInfo.id;
+                addressInfo.community = cmmInfo.name;
             }
             
             function refreshAddressInfo(){
                 $scope.city = addressInfo.city;
                 $scope.community = addressInfo.community;
+                $scope.blockType = addressInfo.blockType;
                 $scope.block = addressInfo.block;
                 $scope.unit = addressInfo.unit;
                 $scope.room = addressInfo.room;
                 $scope.ownerName = addressInfo.ownerName;
             }
             refreshAddressInfo();
-
-            function changebgstate() {
-                $scope.ccc = 'ccc';
-                $scope.sss = 'ccc'; 
-
-                if(!$scope.unit){
-                    $scope.sss = 'bgclick'
-                }
-
-                if(!$scope.room){
-                    $scope.ccc = 'bgclick'
-                }
-            }
-            changebgstate();
 
             $scope.changeCity = function(){
                 $scope.showContent = false;
@@ -66,10 +57,12 @@ myApp.directive('cAddressEdit', function() {
                 // console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
-                changebgstate();
             }
 
             $scope.changeCommunity = function(){
+                if(!$scope.city){
+                    return;
+                }
                 $scope.showContent = false;
                 $scope.showCommunityList = true;
                 address.getCommunityList(addressInfo.city).then(function(data){
@@ -87,10 +80,12 @@ myApp.directive('cAddressEdit', function() {
                 // console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
-                changebgstate();
             }
 
             $scope.changeBlock = function(){
+                if(!$scope.community){
+                    return;
+                }
                 $scope.showContent = false;
                 $scope.showBlockList = true;
                 address.getBlockList(addressInfo.city, addressInfo.communityId).then(function(data){
@@ -107,14 +102,16 @@ myApp.directive('cAddressEdit', function() {
                 // console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
-                changebgstate();
             }
 
             $scope.changeUnit = function() {
+                if(!$scope.block||$scope.blockType!=2){
+                    return;
+                }
                 if($scope.unit){
                     $scope.showContent = false;
                     $scope.showUnitList = true;
-                    address.getUnitList(addressInfo.city, addressInfo.community, addressInfo.block).then(function(data){
+                    address.getUnitList(addressInfo.city, addressInfo.communityId, addressInfo.block).then(function(data){
                         $scope.unitList = data;
                     },function(reason){
                         $scope.showUnitList = false;
@@ -129,14 +126,16 @@ myApp.directive('cAddressEdit', function() {
                 // console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
-                changebgstate();
             }
 
             $scope.changeRoom = function() {
+                if(!$scope.block||$scope.blockType==0||($scope.blockType==2&&!$scope.unit)){
+                    return;
+                }
                 if($scope.room){
                     $scope.showContent = false;
                     $scope.showRoomList = true;
-                    address.getRoomList(addressInfo.city, addressInfo.community, addressInfo.block, addressInfo.unit).then(function(data){
+                    address.getRoomList(addressInfo.city, addressInfo.communityId, addressInfo.block, addressInfo.unit).then(function(data){
                         $scope.roomList = data;
                     },function(reason){
                         $scope.showRoomList = false;
@@ -151,33 +150,14 @@ myApp.directive('cAddressEdit', function() {
                 // console.log(addressInfo);
                 $scope.showContent = true;
                 refreshAddressInfo();
-                changebgstate();
             }
             
 
             $scope.addAddress = function () {
-                userInfo.getOpenId().then(function(data){
-                    var params = {
-                        city: addressInfo.city,
-                        community: addressInfo.community,
-                        block: addressInfo.block,
-                        unit: addressInfo.unit,
-                        room: addressInfo.room,
-                        houseId: addressInfo.id,
-                        initial: addressInfo.initial,
-                        openid: data
-                    }
-                    return addresses.save(params).$promise;
-                },function(reason){
-                    return $q.reject(reason);
-                }).then(function (data) {
-                    address.addAddress(addressInfo);
+                var newAddress = angular.copy(addressInfo);
+                address.addAddress(newAddress).then(function(data){
                     close();
-                }, function (reason) {
-                    reason = {
-                        errorCode: "ADD_ADDRESS_ERROR",
-                        errorMessage: errorLog.getErrorMessage(reason)
-                    };
+                },function(reason){
                     alert(errorLog.getErrorMessage(reason));
                     close();
                 });

@@ -1,17 +1,13 @@
 angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http', '$stateParams', '$rootScope', '$state', '$location',
-	'communityInfo', 'communityLocation', 'location', '$q', 'userInfo', 'locationInfo', 'errorLog', 'locationState', 'appState',
+	'communityLocation', 'location', '$q', 'userInfo', 'errorLog', 'locationState',
     'appType',
-    function($scope, $http, $stateParams, $rootScope, $state, $location, communityInfo, communityLocation, location, $q, userInfo, 
-    	locationInfo,errorLog,locationState, appState,appType) {
+    function($scope, $http, $stateParams, $rootScope, $state, $location, communityLocation, location, $q, userInfo, 
+        errorLog,locationState,appType) {
         userInfo.initWxParam();//微信参数只会在公众号第一个页面传入
         //alert($location.url());
     	var locInfo = location.getLastLocation();
-    	if(locInfo){
-    		angular.extend(locationInfo, locInfo);
-    	}
-    	var cmmInfo = communityLocation.getLastCommunity();
+        var cmmInfo = communityLocation.getLastCommunity();
     	if(!locationState.autoLocationVisited && cmmInfo){
-    		angular.extend(communityInfo, cmmInfo);
     		locationState.autoLocationVisited = true;
     		$state.go('home');
     		return;
@@ -21,9 +17,6 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		locationState.autoLocationVisited = true;
     		$state.go('search-location');
     	}
-
-
-        // console.log(communityInfo.name+ ' 11');
 
     	//openId = "o-YfcstQPoTDSPuNHZ44cEof8";
     	$scope.retryLocation = function(){
@@ -103,13 +96,11 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     	}
 
     	$scope.changeCommunity = function(community){
-    		angular.extend(communityInfo, community);
-    		communityLocation.storageCommunity(communityInfo);
 			var openId = null;
 			userInfo.getOpenId().then(function(data){
 				openId = data;
 				communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
-	    			// console.log("changeCommunity success.");
+	    			console.log("changeCommunity success.");
 	    		},function(reason){
 	    			alert(reason.errorCode +"," +reason.errorMessage);
 	    		});

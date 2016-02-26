@@ -8,6 +8,7 @@ angular.module('app.location')
 				promise = $q.when(cmmList);
 			}else{
 				var defer = $q.defer();
+				cityName = cityName ? cityName:"";
 				$http({
 					method: "GET",
 					url: basePath + '/GPS/findArea',

@@ -29,9 +29,10 @@ angular.module('app.address')
 							defaultAddressDirty = false;
 							defer.resolve(defaultAddress);
 						}else{
+							var errorMessage = data && data.length>0?"未设置默认地址":"暂无地址";
 							reason = {
 			            		errorCode: "GET_DEFAULT_ADDRESS_ERROR",
-			            		errorMessage: "暂无地址或未设置默认地址"
+			            		errorMessage: errorMessage
 			            	};
 							defer.reject(reason);
 						}
@@ -48,32 +49,129 @@ angular.module('app.address')
 				return defer.promise;
 			}
 
+			this.getDefaultAddressSync = function(){
+				if(!defaultAddress || defaultAddressDirty){
+					for(var i = 0;i<addressList.length;i++){
+						var item = addressList[i];
+						if(item.active == 0){
+							defaultAddress = item;
+							break;
+						}
+					}
+				}
+				return defaultAddress;
+			}
+
 			function getDefaultAddressFromList(addressList){
 				var defaultAddress = null;
 				for(var i = 0;i<addressList.length;i++){
 					var item = addressList[i];
 					if(item.active == 0){
-						defaultAddress = angular.copy(item);
+						defaultAddress = item;
 						break;
 					}
 				}
 				return defaultAddress;
 			}
 
-			this.updateDefaultAddress = function(){
-				defaultAddressDirty = true;
+			this.setDefaultAddress = function(address){
+				var that = this;
+				var defer = $q.defer();
+				if(address.active == 0){
+					defer.resolve(true);
+				}else{
+					var params = {
+	                    id: address.id,
+	                    openid: userInfo.getOpenIdSync()
+	                }
+	                addresses.save(params).$promise.then(function (data) {
+	                	var defaultAddr = that.getDefaultAddressSync();
+	                	if(defaultAddr){
+	                		defaultAddr.active = 1;
+	                	}
+	                    address.active = 0;
+	                    defaultAddressDirty = true;
+	                }, function (reason) {
+	                    var reason = {
+	                        errorCode:"SET_DEFAULT_ADDRESS_ERROR",
+	                        errorMessage: errorLog.getErrorMessage(reason)
+	                    };
+	                    defer.reject(reason);
+	                })
+					defaultAddressDirty = true;
+				}
+				return defer.promise;
 			}
 
-			this.addAddress = function(addressInfo){
-				if(!addressList){
-					addressList = [];
+			this.addAddress = function(address){
+				var defer = $q.defer();
+                var params = {
+                    city: address.city,
+                    community: address.community,
+                    block: address.block,
+                    unit: address.unit,
+                    room: address.room,
+                    houseId: address.id,
+                    initial: address.initial,
+                    openid: userInfo.getOpenIdSync()
+                }
+                addresses.save(params).$promise.then(function (data) {
+	                if(!addressList){
+						addressList = [];
+					}
+					if(addressList.length == 0){
+						address.active = 0;
+					}
+					addressList.push(address);
+					localStorage.hasAddress = true;
+					defer.resolve(true);
+                }, function (reason) {
+                    reason = {
+                        errorCode: "ADD_ADDRESS_ERROR",
+                        errorMessage: errorLog.getErrorMessage(reason)
+                    };
+                    defer.reject(reason);
+                });
+				return defer.promise;
+			}
+
+			this.deleteAddress = function(address){
+				var defer = $q.defer();
+				var params = {
+                    id: address.id,
+                    openid:userInfo.getOpenIdSync()
+                }
+                addresses.delete(params).$promise.then(function (data) {
+                    var deleteDefault = address.active == 0;
+					deleteAddressWithId(address.id);
+					if(deleteDefault){
+						if(addressList.length>0){
+							addressList[0].active = 0;
+						}
+						defaultAddressDirty = true;
+					}
+					if(addressList.length == 0){
+						localStorage.hasAddress = false;
+					}
+					defer.resolve(true);
+                }, function (reason) {
+                    var reason = {
+                        errorCode:"DELETE_ADDRESS_ERROR",
+                        errorMessage: errorLog.getErrorMessage(reason)
+                    };
+                    defer.reject(reason);
+                });
+                return defer.promise;
+			}
+
+			function deleteAddressWithId(id){
+				for(var i = 0;i<addressList.length;i++){
+					var item = addressList[i];
+					if(item.id == id){
+						addressList.splice(i, 1);
+						break;
+					}
 				}
-				var newAddress = angular.copy(addressInfo);
-				if(addressList.length == 0){
-					newAddress.active = 0;
-				}
-				addressList.push(newAddress);
-				localStorage.hasAddress = true;
 			}
 
 			this.getAddressList = function(){
@@ -91,7 +189,9 @@ angular.module('app.address')
 						},function(reason){
 							return $q.reject(reason);
 						}).then(function(data) {
-			            	addressList = data.items;			            	
+							if(data.items){
+								addressList = data.items;
+							}			            	
 			            	if(addressList && addressList.length > 0){
 			                	localStorage.hasAddress = true;
 			                }else{
@@ -197,13 +297,13 @@ angular.module('app.address')
 				return defer.promise;
 			}
 
-			this.getUnitList = function(city,community,block){
+			this.getUnitList = function(city,communityId,block){
 				var defer = $q.defer();
 				var unitList = null;
 				var params = {
 	                type:'unit',
 	                city:city,
-	                community:community,
+	                communityId:communityId,
 	                block:block
 	            }
 	            addresses.query(params).$promise.then(function (data) {
@@ -219,13 +319,13 @@ angular.module('app.address')
 				return defer.promise;
 			}
 
-			this.getRoomList = function(city,community,block,unit){
+			this.getRoomList = function(city,communityId,block,unit){
 				var defer = $q.defer();
 				var roomList = null;
 				var params={
 	                type:'room',
 	                city:city,
-	                community:community,
+	                communityId:communityId,
 	                block:block,
 	                unit:unit?unit:""
 	            }
@@ -244,7 +344,7 @@ angular.module('app.address')
 
 			this.hasAddress = function(){
 				var has = false;
-				if((addressList && addressList.length > 0) || localStorage.hasAddress){
+				if((addressList && addressList.length > 0) || localStorage.hasAddress=="true"){
 					has = true;
 				}
 				return has;
