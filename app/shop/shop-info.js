@@ -9,6 +9,8 @@
 
             $scope.load = function(goPage, limit) {
                 var locInfo = location.getLastLocation();
+                var longitude = locInfo&&locInfo.longitude ? locInfo.longitude:"";
+                var latitude = locInfo&&locInfo.latitude ? locInfo.latitude:"";
                 if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
                     return;
                 } else if ($rootScope.site != 3) {
@@ -17,8 +19,8 @@
                         offset: $scope.pageSize * (goPage - 1),
                         limit: limit == 8 ? limit : $scope.pageSize,
                         type: $stateParams.site - 1,
-                        lon: locInfo.longitude,
-                        lat: locInfo.latitude
+                        lon: longitude,
+                        lat: latitude
                     }
                     shops.query(params).$promise.then(function(data) {
                         $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);

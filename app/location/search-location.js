@@ -7,7 +7,8 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
 
     	var cmmList = null;
         var cmmInfo = communityLocation.getLastCommunity();
-    	communityList.getCommunityList(cmmInfo.city)
+        var city = cmmInfo&& cmmInfo.city ? cmmInfo.city:"";
+    	communityList.getCommunityList(city)
     		.then(function(data){
     			//alert("cmmList.length: "+data.length);
     			cmmList = data;
