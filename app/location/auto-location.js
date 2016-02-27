@@ -12,9 +12,9 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
     		$state.go('home');
     		return;
     	}
+        locationState.autoLocationVisited = true;
 
     	$scope.clickSearchField = function(){
-    		locationState.autoLocationVisited = true;
     		$state.go('search-location');
     	}
 
@@ -27,21 +27,24 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
                 // alert(errorLog.getFullErrorMessage(data));
     			setCommunity(data);
     		},function(reason){
-    			if(reason && reason.errorCode == "PERMISSION_DENIED"){//用户拒绝了定位请求，提示打开定位功能
-    				$scope.modalTitle = "定位服务未开启";
-    				$scope.modalTip = "请在系统设置中开启定位服务";
-    				$scope.tipAlign = "center";
-    				$scope.okText = "确定";
-    				$scope.onlyOkButton = true;
-    				$scope.showModal = true;
-    				$scope.onModalClose = function(state){//state on is true
-    					$scope.modalTitle = "";
-    					$scope.onlyOkButton = false;
-						$scope.showModal = false;
-					}
-    			}else{
-    				alert(reason.errorCode + "," + reason.errorMessage);
-    			}
+    	// 		if(reason && reason.errorCode == "PERMISSION_DENIED"){//用户拒绝了定位请求，提示打开定位功能
+    	// 			$scope.modalTitle = "定位服务未开启";
+    	// 			$scope.modalTip = "请在系统设置中开启定位服务";
+    	// 			$scope.tipAlign = "center";
+    	// 			$scope.okText = "确定";
+    	// 			$scope.onlyOkButton = true;
+    	// 			$scope.showModal = true;
+    	// 			$scope.onModalClose = function(state){//state on is true
+    	// 				$scope.modalTitle = "";
+    	// 				$scope.onlyOkButton = false;
+					// 	$scope.showModal = false;
+					// }
+    	// 		}else{
+    	// 			alert(reason.errorCode + "," + reason.errorMessage);
+    	// 		}
+                if(reason && reason.errorCode == "PERMISSION_DENIED"){
+                    alert("定位服务未开启, 请在系统设置中开启定位服务");
+                }
     			$scope.loadingShow = false; 
     			$scope.showLocationError = true;
     		});
@@ -103,16 +106,14 @@ angular.module('app.location').controller('autoLocationCtrl', ['$scope', '$http'
 			userInfo.getOpenId().then(function(data){
 				openId = data;
 				communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
-	    			console.log("changeCommunity success.");
+	    			locationState.hasLocation = true;
+                    $state.go('home');
 	    		},function(reason){
 	    			alert(reason.errorCode +"," +reason.errorMessage);
 	    		});
 			},function(reason){
 				alert(reason.errorCode +"," +reason.errorMessage);
 			});
-    		locationState.hasLocation = true;
-    		locationState.autoLocationVisited = true;
-    		$state.go('home');
     	}
 
     	$scope.autoLocationCommunities = [];

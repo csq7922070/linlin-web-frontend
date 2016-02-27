@@ -4,7 +4,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
     function($scope, $http, $stateParams, $rootScope, $state, $location, locationState, communityLocation, $q, 
         userInfo,errorLog, location,address,auth,control,addressInfo) {
         var cmmInfo = communityLocation.getLastCommunity();
-        if(!cmmInfo.name){
+        if(!cmmInfo || !cmmInfo.name){
             $state.go('auto-location');
             return;
         }
@@ -26,7 +26,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
                 setCommunity(data);
             },function(reason){
                 //首页自动定位失败暂时不做提示
-                alert(reason.errorCode + ","+reason.errorMessage);
+                //alert(reason.errorCode + ","+reason.errorMessage);
             });
         }
         // var data = {areaName:"1",lastAreaName:"2",city:"bj",lastCity:'bj',address:'address1',lastAddress:'address2',type:'false'};
