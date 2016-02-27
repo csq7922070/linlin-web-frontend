@@ -51,15 +51,14 @@ angular.module('app.location').controller('searchLocationCtrl', ['$scope', '$htt
 			userInfo.getOpenId().then(function(data){
 				openId = data;
 				communityLocation.changeCommunity(openId, community).then(function(data){//保存用户选择的小区信息到服务器
-	    			console.log("changeCommunity success.");
+	    			locationState.hasLocation = true;
+                    $state.go('home');
 	    		},function(reason){
 	    			alert(reason.errorCode +"," +reason.errorMessage);
 	    		});
 			},function(reason){
 				alert(reason.errorCode +"," +reason.errorMessage);
 			});
-    		locationState.hasLocation = true;
-    		$state.go('home');
     	}
 
     	$scope.searchLocationCommunities = [];
