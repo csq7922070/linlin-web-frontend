@@ -12,13 +12,16 @@ myApp.directive('cCommunityList', function() {
         },
         controller: function ($stateParams,$scope,addresses,addressInfo,address) {
             $scope.changeCommunity = function(community){
+                $scope.showLoading = true;
                 addressInfo.communityId = community.id;
                 addressInfo.community = community.name;
                 $scope.showContent = false;
                 $scope.showBlockList = true;
                 address.getBlockList(addressInfo.city, community.id).then(function(data){
+                    $scope.showLoading = false;
                     $scope.blockList = data;
                 },function(reason){
+                    $scope.showLoading = false;
                     $scope.showBlockList = false;
                     $scope.showContent = true;
                     alert(reason.errorCode+","+reason.errorMessage);

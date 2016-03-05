@@ -44,16 +44,7 @@ myApp.directive('cAddressList', function() {
                 if($scope.mode != "select"){
                     return;
                 }
-                angular.extend(addressInfo, addr);
-                // addressInfo.id = address.id;
-                // addressInfo.city = address.city;
-                // addressInfo.communityId = address.communityId;
-                // addressInfo.community = address.community;
-                // addressInfo.block = address.block;
-                // addressInfo.unit = address.unit;
-                // addressInfo.room = address.room;
-                // addressInfo.ownerName = address.ownerName;
-                // addressInfo.initial = address.initial;
+                addressInfo.selectAddress(addr);
                 $scope.show = false;
                 $scope.onComplete();
             }

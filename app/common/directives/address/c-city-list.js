@@ -12,12 +12,15 @@ myApp.directive('cCityList', function() {
         },
         controller: function ($stateParams,$scope,addresses,addressInfo,address) {
             $scope.changeCity = function(city){
+                $scope.showLoading = true;
                 addressInfo.city = city;
                 $scope.showContent = false;
                 $scope.showCommunityList = true;
                 address.getCommunityList(city).then(function(data){
+                    $scope.showLoading = false;
                     $scope.communityList = data;
                 },function(reason){
+                    $scope.showLoading = false;
                     $scope.showCommunityList = false;
                     $scope.showContent = true;
                     alert(reason.errorCode+","+reason.errorMessage);

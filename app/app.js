@@ -1,6 +1,6 @@
 //var basePath = "http://localhost:8080/skh";
 //var basePath="http://192.168.0.120:8080/skh";
-var basePath = "http://mifan.4zlink.com:8080/mifan";
+var basePath = "http://mitest.4zlink.com:8080/mifan";
 // var basePath = "http://192.168.0.135:8080/skh";
 
 angular.module('app.home', []);
@@ -9,7 +9,7 @@ angular.module('app.repair', ['resources.repair']);
 angular.module('app.shop', ['resources.shop']);
 angular.module('app.complain', ['resources.complain']);
 angular.module('app.address', ['resources.address']);
-angular.module('app.payment', ['resources.address', 'resources.payment']);
+angular.module('app.pay', ['resources.address', 'resources.pay']);
 angular.module('app.location', []);
 angular.module('app.user',[]);
 angular.module('app.log',[]);
@@ -19,7 +19,7 @@ angular.module('app.verify',[]);
 angular.module('app.control',[]);
 
 var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 
-    'app.complain', 'app.address', 'app.payment', 'app.location', 'app.user', 'app.log', 'app.auth', 'app.account', 'app.verify',
+    'app.complain', 'app.address', 'app.pay', 'app.location', 'app.user', 'app.log', 'app.auth', 'app.account', 'app.verify',
     'app.control']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
@@ -87,21 +87,51 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "addressEditCtrl",
             controllerAs: 'vm'
         })
-        .state('bill', {
-            url: "/bill/",
-            templateUrl: "tpl/payment/bill.tpl.html",
-            controller: "billCtrl"
-        })
-        .state('payment', {
-            url: "/payment/",
-            templateUrl: "tpl/payment/payment.tpl.html",
-            controller: "paymentCtrl",
+        .state('address-city', {
+            url: "/address-city/",
+            templateUrl: "tpl/address/city/city.tpl.html",
+            controller: "addressCityCtrl",
             controllerAs: 'vm'
         })
-        .state('payment-list', {
-            url: "/payment-list",
-            templateUrl: "tpl/payment/payment-list.tpl.html",
-            controller: "paymentListCtrl"
+        .state('address-village', {
+            url: "/address-village/",
+            templateUrl: "tpl/address/village/village.tpl.html",
+            controller: "addressVillageCtrl",
+            controllerAs: 'vm'
+        })
+        .state('address-block', {
+            url: "/address-block/",
+            templateUrl: "tpl/address/block/block.tpl.html",
+            controller: "addressBlockCtrl",
+            controllerAs: 'vm'
+        })
+        .state('address-unit', {
+            url: "/address-unit/",
+            templateUrl: "tpl/address/unit/unit.tpl.html",
+            controller: "addressUnitCtrl",
+            controllerAs: 'vm'
+        })
+        .state('address-room', {
+            url: "/address-room/",
+            templateUrl: "tpl/address/room/room.tpl.html",
+            controller: "addressRoomCtrl",
+            controllerAs: 'vm'
+        })
+        .state('bill', {
+            url: "/bill/",
+            templateUrl: "tpl/pay/bill.tpl.html",
+            controller: "billCtrl"
+        })
+        .state('pay', {
+            url: "/pay/",
+            templateUrl: "tpl/pay/pay.tpl.html",
+            controller: "payCtrl",
+            controllerAs: 'vm'
+        })
+        .state('pay-list', {
+            url: "/pay-list",
+            templateUrl: "tpl/pay/pay-list.tpl.html",
+            controller: "payListCtrl"
         })
         .state('home', {
             url: "/home",
@@ -233,26 +263,14 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 }]).run(['$rootScope', 'auth', 'control', function($rootScope, auth, control) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
         control.startChangeState(event, toState, toParams, fromState, fromParams);//为了兼容app和微信公众号的首页不一致问题
-        auth.startChangeState(event, toState, toParams, fromState, fromParams);//校验权限，需要登录或添加地址时自动跳至对应页面
+        auth.startChangeState(event, toState, toParams, fromState, fromParams);
     });
-}]).value(//用来在添加地址环节保存各个添加地址子页面产生的数据
-    'addressInfo',{
-        id: null,
-        city: null,
-        community: null,
-        communityId: null,
-        blockType: null,
-        block: null,
-        unit: null,
-        room: null,
-        ownerName: null,//房屋所有者姓名加了*
-        initial: null//用来对地址进行首字母排序用的
-    }
-).value(
-    'locationState',{
+}]).value('locationState',{
         hasLocation: false,
         autoLocationVisited: false
     }
 ).constant(
     'appType', 'weixin'//app or weixin
+).constant(
+    'appState', 'debug'//debug or release
 );

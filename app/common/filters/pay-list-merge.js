@@ -1,46 +1,62 @@
 angular.module('myApp').filter('payListMerge', function() {
     return function(input) {
-        var result = [];//新增属性waterDates,elecDates,waterDateText,elecDateText
+        var payList = [];//新增属性waterDates,elecDates,waterDateText,elecDateText,propertyDates,carMaintenanceDates,carportDates
         for(var i = 0;i<input.length;i++){
             var item = input[i];
             var find = false;
-            for(var j = 0;j<result.length;j++){
-                var temp = result[j];
-                if(item.payDate == temp.payDate && item.ownerName == temp.ownerName){
+            for(var j = 0;j<payList.length;j++){
+                var exist = payList[j];
+                if(item.payDate == exist.payDate && item.ownerName == exist.ownerName){//判断是否为同一笔缴费订单中的数据
                     find = true;
                     break;
                 }
             }
+            var payItem = null;
             if(find){
-                temp.amount+=item.amount;
-                if(item.type == "0"){
-                    temp.waterDates.push({year: parseInt(item.year),month: parseInt(item.month)});
-                }else{// is "1"
-                    temp.elecDates.push({year: parseInt(item.year),month: parseInt(item.month)});
-                }
+                exist.amount+=item.amount;
+                payItem = exist;
             }else{
-                var newItem = angular.copy(item);
-                newItem.waterDates = [];
-                newItem.elecDates = [];
-                if(item.type == "0"){
-                    newItem.waterDates.push({year: parseInt(item.year),month: parseInt(item.month)});
-                }else{// is "1"
-                    newItem.elecDates.push({year: parseInt(item.year),month: parseInt(item.month)});
-                }
-                result.push(newItem);
+                payItem = {
+                    propertyDates : [],
+                    carMaintenanceDates:[],
+                    carportDates:[],
+                    waterDates: [],
+                    elecDates:[],
+                    otherDates:[]//propertyDates,carMaintenanceDates,carportDates按顺序连接成新数组
+                };
+                angular.extend(payItem, item);
+                payList.push(payItem);
+            }
+            if(item.type == 0){//水费
+                payItem.waterDates.push({year: parseInt(item.year),month: parseInt(item.month)});
+            }else if(item.type == 1){//电费
+                payItem.elecDates.push({year: parseInt(item.year),month: parseInt(item.month)});
+            }else if(item.type == 2){//物业费
+                payItem.propertyDates.push({type: 2, year: parseInt(item.year),month: parseInt(item.month),day: parseInt(item.day),difference: parseInt(item.difference)});
+            }else if(item.type == 3){//车位维护费
+                payItem.carMaintenanceDates.push({type: 3, year: parseInt(item.year),month: parseInt(item.month),day: parseInt(item.day),difference: parseInt(item.difference)});
+            }else if(item.type == 4){//车位费
+                payItem.carportDates.push({type: 4, year: parseInt(item.year),month: parseInt(item.month),day: parseInt(item.day),difference: parseInt(item.difference)});
             }
         }
-        //对数组result中每个元素中的水费和电费日期分别进行合并处理，比如2015年2月、2015年3月合并为2015年2-3月
+
+        //对数组payList中每个元素中的水费和电费日期分别进行合并处理，比如2015年2月、2015年3月合并为2015年2-3月
         //2015年2月，2015年3月，2015年5月合并为2015年2、3月等
         //2015年12月、2016年1月合并为2015年12月、2016年1月
-        for(var i = 0;i<result.length;i++){
-            var item = result[i];
+        for(var i = 0;i<payList.length;i++){
+            var payItem = payList[i];
             //将item对象的属性waterDates和elecDates2个数组按照年月进行升序排序处理
-            item.waterDates.sort(compareDate);
-            item.elecDates.sort(compareDate);
-
-            item.waterDateText = getDateText(item.waterDates);
-            item.elecDateText = getDateText(item.elecDates);
+            payItem.waterDates.sort(compareDate);
+            payItem.elecDates.sort(compareDate);
+            payItem.waterDateText = getDateText(payItem.waterDates);
+            payItem.elecDateText = getDateText(payItem.elecDates);
+            //处理物业费、车位维护费、车位费的显示日期
+            payItem.otherDates = payItem.otherDates.concat(payItem.propertyDates);
+            payItem.otherDates = payItem.otherDates.concat(payItem.carMaintenanceDates);
+            payItem.otherDates = payItem.otherDates.concat(payItem.carportDates);
+            angular.forEach(payItem.otherDates, function(item){
+                item.dateText = item.year+"年"+item.month+"月"+item.day+"日起"+item.difference+"个月";
+            })
         }
 
         function compareDate(prev, next){
@@ -121,6 +137,6 @@ angular.module('myApp').filter('payListMerge', function() {
             return text;
         }
 
-        return result;
+        return payList;
     };
 });

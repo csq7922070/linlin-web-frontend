@@ -91,13 +91,12 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
         }];
         $scope.carouselIndex7 = 0;
 
-        $rootScope.site = 1;
         $state.go("home.shop-info", {
             site: 1
         });
 
         $scope.pay = function(){
-            addressInfo.id = null;
+            addressInfo.init();
             $state.go('bill');
         }
     }

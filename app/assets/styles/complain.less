@@ -3,24 +3,12 @@
 		margin-top: 5px;
 		background: white;
 	}
-	.repliestate{
+	.complain_replied{
 		float: right;
 	}
 	
-}
-.replied_state{
-	color: #e6b417;
-    background: url(../images/change_address.png) no-repeat;
-    display: block;
-    width: 55px;
-    height: 25px;
-    text-align: right;
-    background-size: 35%;
-    background-position: 8px 6px;
-}
-.replied_state:hover{
-	color: #e6b417;
-}
+}	
+
 #complain_add{
 	.mobile{
 		margin-top: 10px;
@@ -45,16 +33,33 @@
 	padding-left: 5px;
 	border-radius: 5px;
 	border: 1px solid #e0e0e0;
-}
+	.com_left,.compile_right{
+		display: inline-block;
+	}
+	.compile_right{
+		float: right;
+		margin-right: 5px;
+	}
 
-.com_left,.com_right{
-	display: inline-block;
+	.compile_right{
+		.compile_right_state{
+			color: #e6b417;
+		    background: url(../images/change_address.png) no-repeat;
+		    display: block;
+		    width: 55px;
+		    height: 25px;
+		    text-align: right;
+		    background-size: 35%;
+		    background-position: 8px 6px;
+		}
+		.compile_right_state:hover{
+			color: #e6b417;
+		}
+		.complie_right_state:active{
+			color: #e6b417;
+		}
+	}
 }
-.com_right{
-	float: right;
-	margin-right: 5px;
-}
-
 
 #complain_detail{
 	height: 100%;
@@ -62,7 +67,6 @@
 	padding-top: 21px;
 	.complaint_title{
 		font-size: 15px;
-		/*margin-top: 21px;*/
 	}
 	.property_detail{
 		color: #777;

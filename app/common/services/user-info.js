@@ -1,26 +1,23 @@
 angular.module('app.user')
-	.service('userInfo', ['$q','$http','$timeout', '$location', 'errorLog', function($q,$http,$timeout, $location, errorLog){
-		var wxParam = null;//此参数是用户进入公众号页面后微信传入的参数，根据此参数再调API获取用户的OpenId
-		var openId = null;
+	.service('userInfo', ['$q','$http','$timeout', '$location', 'errorLog', 'appState',
+		function($q,$http,$timeout, $location, errorLog,appState){
+		var wxParam = null;//此参数是用户进入公众号页面后微信传入的参数，根据此参数再调API获取用户的OpenId，此参数是微信动态生成的
+		var openId = null;//可持久化到本地
 		// var wxConfigParam = {
 		// 	timestamp : null,
 		// 	noncestr : null,
 		// 	sign : null,
 		// };
-		var wxConfigParam = null;//object type
+		var wxConfigParam = null;//object type，服务器动态生成，不可持久化到本地
 		var tel = null;//用户的手机号
 
 		this.initWxParam = function(){
 			if(!wxParam){
 				var url = $location.url().substring($location.url().indexOf("?"));
-				if(url.indexOf("?code")<0){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
+				if(url.indexOf("?code")<0&&appState=="debug"){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
 					url="";
 				}
-				if(!url && localStorage.wxParam && localStorage.wxParam.indexOf("?code")>=0){
-					url = localStorage.wxParam;
-				}
 				wxParam = url;
-				localStorage.wxParam = wxParam;
 			}
 		}
 
@@ -31,10 +28,7 @@ angular.module('app.user')
 					openId = localStorage.openId;
 					defer.resolve(openId);
 				}else{
-					if(!wxParam){
-						this.initWxParam();
-					}
-					getOpenIdWxConfigParam().then(function(data){
+					this.getOpenIdWxConfigParam().then(function(data){
 		                defer.resolve(openId);
 					},function(reason){
 						var reason = {
@@ -57,10 +51,7 @@ angular.module('app.user')
 		this.getWxConfigParam = function(){
 			var defer = $q.defer();
 			if(!wxConfigParam){
-				if(!wxParam){
-					this.initWxParam();
-				}
-				getOpenIdWxConfigParam().then(function(data){
+				this.getOpenIdWxConfigParam().then(function(data){
 	                defer.resolve(wxConfigParam);
 				},function(reason){
 					var reason = {
@@ -75,8 +66,15 @@ angular.module('app.user')
 			return defer.promise;
 		}
 
-		function getOpenIdWxConfigParam(){
+		// this.getWxConfigParamSync = function(){
+		// 	return wxConfigParam;
+		// }
+
+		this.getOpenIdWxConfigParam = function(){
 			var defer = $q.defer();
+			if(!wxParam){
+				this.initWxParam();
+			}
 			if(!wxParam){
 				alert("wxParam is null or empty string.");
 			}
@@ -95,7 +93,7 @@ angular.module('app.user')
                 defer.resolve(data);
             }).error(function(reason) {
                 var reason = {
-    				errorCode: "GETOPENID_CALL_ERROR",
+    				errorCode: "GET_OPENID_CALL_ERROR",
     				errorMessage: errorLog.getErrorMessage(reason)
     			};
                 defer.reject(reason);
@@ -124,8 +122,7 @@ angular.module('app.user')
 		}
 
 		this.storageLogoutInfo = function(){
-			localStorage.wxParam = "";
-			localStorage.openId = "";//注销登录时从localStorage中清空wxParam和openId
+			localStorage.openId = "";//注销登录时从localStorage中清空openId
 			if(localStorage.loginInfo){
 				var loginInfo = JSON.parse(localStorage.loginInfo);
 				loginInfo.login = false;

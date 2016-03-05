@@ -1,42 +1,48 @@
 (function() {
-    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'shops', 'errorLog', 
-        'communityLocation', 'location',
-        function($scope, $stateParams, $rootScope, shops, errorLog, communityLocation,location) {
-            $rootScope.site = $stateParams.site;
-            $scope.currentPage = 0;
-            $scope.pageSize = 5;
-            $scope.shops = [];
+    angular.module('app.shop').controller('shopInfoCtrl', ['$scope',  '$stateParams', '$rootScope', 'errorLog', 
+        'communityLocation', 'location','shop',
+        function($scope, $stateParams, $rootScope, errorLog, communityLocation,location,shop) {
+            $scope.site = $stateParams.site;
+            if($scope.site == undefined){
+                $scope.site = 1;
+            }
+            var currentPage = 0;
+            var pageSize = 10;
+            var busy = false;
+            $scope.shopList = [];
 
-            $scope.load = function(goPage, limit) {
+            function load(pageIndex, pageSize) {
+                if (busy) {
+                    return;
+                }
                 var locInfo = location.getLastLocation();
                 var longitude = locInfo&&locInfo.longitude ? locInfo.longitude:"";
                 var latitude = locInfo&&locInfo.latitude ? locInfo.latitude:"";
-                if (goPage > $scope.numberOfPages || $scope.currentPage == goPage || $scope.busy) {
-                    return;
-                } else if ($rootScope.site != 3) {
-                    $scope.busy = true;
-                    params = {
-                        offset: $scope.pageSize * (goPage - 1),
-                        limit: limit == 8 ? limit : $scope.pageSize,
-                        type: $stateParams.site - 1,
-                        lon: longitude,
-                        lat: latitude
-                    }
-                    shops.query(params).$promise.then(function(data) {
-                        $scope.numberOfPages = Math.ceil(data.count / $scope.pageSize);
-                        $scope.currentPage = goPage;
-                        $scope.busy = false;
-                        $scope.shops.push.apply($scope.shops, data.items);
-                    },function(reason){
-                        alert(errorLog.getErrorMessage(reason));
-                    });
+                busy = true;
+                if(pageIndex == 0){
+                    $scope.showLoading = true;
                 }
+                shop.getShopList(pageIndex, pageSize, $scope.site - 1, longitude, latitude).then(function(data){
+                    $scope.showLoading = false;
+                    busy = false;
+                    currentPage = pageIndex+1;
+                    $scope.shopList = $scope.shopList.concat($scope.shopList, data);
+                    //console.log($scope.showList);
+                },function(reason){
+                    busy = false;
+                    $scope.showLoading = false;
+                    alert(errorLog.getErrorMessage(reason));
+                });
             }
-            $scope.load(1, 8);
+            load(currentPage, pageSize);
+
+            $scope.scroll = function(){
+                load(currentPage+1, pageSize);
+            }
 
             $scope.$watch('communityLocation.changeCommunityHand', function(newVal, oldVal){
                 if(newVal){
-                    $scope.load(1, 8);
+                    load(currentPage, pageSize);
                 }
             });
         }

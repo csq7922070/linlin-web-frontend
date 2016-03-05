@@ -16,11 +16,16 @@ myApp.directive('cBlockList', function() {
                 addressInfo.blockType = block.type;
                 addressInfo.block = block.block;
                 $scope.showContent = false;
+                if(block.type == 2 || block.type == 1){
+                    $scope.showLoading = true;
+                }
                 if(block.type == 2){
                     $scope.showUnitList = true;
                     address.getUnitList(addressInfo.city, addressInfo.communityId, block.block).then(function(data){
+                        $scope.showLoading = false;
                         $scope.unitList = data;
                     },function(reason){
+                        $scope.showLoading = false;
                         $scope.showUnitList = false;
                         $scope.showContent = true;
                         alert(reason.errorCode+","+reason.errorMessage);
@@ -29,8 +34,10 @@ myApp.directive('cBlockList', function() {
                     addressInfo.unit = "";
                     $scope.showRoomList = true;
                     address.getRoomList(addressInfo.city, addressInfo.communityId, block.block, addressInfo.unit).then(function(data){
+                        $scope.showLoading = false;
                         $scope.roomList = data;
                     },function(reason){
+                        $scope.showLoading = false;
                         $scope.showRoomList = false;
                         $scope.showContent = true;
                         alert(reason.errorCode+","+reason.errorMessage);
