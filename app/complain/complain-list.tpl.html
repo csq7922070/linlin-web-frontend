@@ -20,12 +20,14 @@
         <div class="contain_down" ng-repeat="complain in vm.complains">
             <li ui-sref="complain-detail({id:complain.id})">
                 <div class='date_state'>
-                    <span class='date'>{{complain.createDate.substring(0,10)}}</span>
+                    <span class='date' ng-bind="complain.createDate.substring(0,16)"></span>
                     <span class='state' ng-if="complain.state == 0">未回复</span>
-                    <span class='repliestate' ng-if="complain.state == 1">已回复</span>
+                    <span class='complain_replied' ng-if="complain.state == 1">已回复</span>
                 </div>
-                <div class='goods'>{{complain.title}}</div>
+                <div class='goods' ng-bind="complain.title"></div>
             </li>
         </div>
     </ul>
 </div>
+
+<c-loading show="showLoading" tip="正在加载中..." tip-loading="loading"></c-loading>

@@ -1,37 +1,30 @@
-angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$state', 'complains', 'address', 'addressInfo', '$scope','userInfo', 
-    function ($timeout, $state, complains, address, addressInfo, $scope,userInfo) {
+angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$state', 'address', 'addressInfo', '$scope','userInfo', 'complain',
+    function ($timeout, $state, address, addressInfo, $scope, userInfo, complain) {
         var vm = this;
-        vm.mask_close = function () {
-            vm.suc_show = false;
-        }
-        vm.mask_err_close = function () {
-            vm.err_show = false;
-        }
-        vm.submitForm = function () {
-            vm.complain.communityId = $scope.defaultcommunityId;
-            vm.complain.openid = userInfo.getOpenIdSync();
-            vm.complain.mobile = $scope.defaultmobile;
-            params = vm.complain;
-            complains.save(params).$promise.then(successcb, errcb);
-        }
         var loginInfo = userInfo.getLastLoginInfo();
-            $scope.defaultmobile = loginInfo.tel;
-        function successcb() {
+        $scope.defaultMobile = loginInfo.tel;
+
+        vm.submitForm = function () {
+            var params = {
+                communityId : $scope.address.communityId,
+                openid : userInfo.getOpenIdSync(),
+                mobile : $scope.defaultMobile,
+                title : $scope.title,
+                content : $scope.content
+            }
+            complain.saveComplainAdd(params).then(function(data){
                 $scope.showSuccess = true;
                 $scope.onSuccessClose = function() {
                     $state.go('complain');
                 }
-            }
-
-            function errcb() {           
+            },function(){    
                 $scope.showError = true;
-            }
-
+            });
+        }
+        
         address.getDefaultAddress().then(function(data){
             // console.log(data);
-            $scope.defaultcity = data.city;
-            $scope.defaultcommunity = data.community;
-            $scope.defaultcommunityId = data.communityId;
+            $scope.address = data;
         },function(reason){
             alert(reason.errorCode+","+reason.errorMessage);
         });
@@ -40,21 +33,14 @@ angular.module('app.complain').controller('complainAddCtrl', ['$timeout', '$stat
             $scope.showAddressList = true;
             address.getAddressList().then(function(data){
                 $scope.addressList = data;
-                // console.log($scope.addressList);
             },function(reason){
                 $scope.showAddressList = false;
                 alert(reason.errorCode+","+reason.errorMessage);
             });
         }
-
         $scope.onSelectAddressComplete = function(){
             $scope.show = true;
-            // console.log("onSelectAddressComplte");
-            // console.log(addressInfo);
-            $scope.defaultcity = addressInfo.city;
-            $scope.defaultcommunity = addressInfo.community;
-            $scope.defaultcommunityId = addressInfo.communityId;
-            // console.log(addressInfo.communityId);
+            $scope.address = addressInfo;
         }
     }
 ]);

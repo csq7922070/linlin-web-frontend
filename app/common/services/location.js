@@ -1,5 +1,5 @@
 angular.module('app.location')
-	.service('location', ['$q', function($q){
+	.service('location', ['$q', 'errorLog', function($q,errorLog){
         this.getLocation = function(){
         	var that = this;
         	var defer = $q.defer();
@@ -15,9 +15,17 @@ angular.module('app.location')
 
 	        function showPosition(position)
 	        {
-	        	that.storageLocation(position.coords);
-	        	defer.resolve(position.coords);
-			    console.log(position.coords);
+	        	var locInfo = {
+	        		latitude:position.coords.latitude,
+	        		longitude:position.coords.longitude,
+	        		accuracy:position.coords.accuracy
+	        	};
+	        	var state = that.storageLocation(locInfo);
+	        	if(!state){
+	        		alert("定位信息持久化失败");
+	        	}
+	        	defer.resolve(locInfo);
+			    // console.log(position.coords);
 			 	// coords.latitude	十进制数的纬度
 				// coords.longitude	十进制数的经度
 				// coords.accuracy	位置精度
@@ -65,6 +73,12 @@ angular.module('app.location')
 		}
 
 		this.storageLocation = function(locInfo){
+			// //test code
+			// alert("storageLocation...");
+			// alert(errorLog.getFullErrorMessage(locInfo));
+			// alert("json.stringify");
+			// alert(JSON.stringify(locInfo));
+			// //end test
 			var state = false;
 			if(window.localStorage){
 				localStorage.locationInfo = JSON.stringify(locInfo);

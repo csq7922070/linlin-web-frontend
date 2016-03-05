@@ -1,45 +1,38 @@
 (function() {
-    angular.module('app.repair').controller('repairDetailCtrl', ['$state', '$stateParams', '$timeout', 'repairs',
-        function($state, $stateParams, $timeout, repairs) {
+    angular.module('app.repair').controller('repairDetailCtrl', ['$state', '$stateParams', '$timeout', 'repair', '$scope',
+        function($state, $stateParams, $timeout, repair, $scope) {
             var vm = this;
-            vm.suc_show = false;
-            vm.err_show = false;
+            var id =  $stateParams.id;
+            $scope.showLoading = true;
 
-            params = {
-                'id': $stateParams.id
-            };
-
-            repairs.get(params).$promise.then(function(data) {
+            repair.getRepairDetail(id).then(function(data){
+                $scope.showLoading = false;
                 vm.repair = data;
                 if(vm.repair.confirmDate == null){
                     vm.repair.confirmDate = vm.repair.finishDate;
                 }
-            });
+            }, function(reason){
+                $scope.showLoading = false;
+                alert(errorLog.getErrorMessage(reason));
+            })
 
             vm.confirm = function(id) {
-                params = {
-                    id: id,
-                    state: 3
-                };
-
-                repairs.save(params).$promise.then(function(data) {
+                $scope.showLoading = true;
+                repair.saveRepairDetailComfirm(id).then(function(data){
+                   $scope.showLoading = false;
                     vm.repair = data;
-                    successcb();
-                }, errcb);
-            };
-
-
-
-            function successcb() {
-                $scope.showSuccess = true;
-                $scope.onSuccessClose = function() {
-                    $state.go('repair');
-                }
-            }
-
-            function errcb() {
-                $scope.showError = true;
-            }
+                    if(vm.repair.confirmDate == null){
+                        vm.repair.confirmDate = vm.repair.finishDate;
+                    }
+                    $scope.showSuccess = true;
+                    $scope.onSuccessClose = function() {
+                        $state.go('repair');
+                    }
+                },function(){
+                    $scope.showLoading = true;
+                    $scope.showError = true;
+                })
+            };            
         }
     ]);
 })();

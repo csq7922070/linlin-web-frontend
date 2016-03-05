@@ -1,18 +1,5 @@
-#repairlist{
+#repair_listtpl{
 	#repair_type{
-		.repairtype{
-			margin: auto;
-			width: 280px;
-			font-size: 0px;
-		}
-		.repairtype div{
-			display: inline-block;
-			width: 70px;
-			height: 50px;
-			margin: 0px;
-			text-align: center;
-			font-size: 12px;
-		}
 		.state{
 			color: #ffa400;
 		}
@@ -27,7 +14,7 @@
 	}
 }
 
-#rapair_add{
+#repair_add{
 	input{
 		width: 100%;
 		border: 1px solid #e0e0e0;
@@ -45,12 +32,7 @@
 	}
 	select option{
 		color: #000;
-
 	}
-	textarea{
-		border: 1px solid #e0e0e0;
-	}
-
 	.repair_mobile{
 		margin-top: 6px;
 	}
@@ -80,8 +62,10 @@
 			top: 6px;
 		}
 	}
-	.repair_detail{
-		margin-top: 10px;
+	.repair_detail_textarea{
+		padding: 5px;
+  		margin: 6px 0;
+		border: 1px solid #e0e0e0;
 	}
 } 
 
@@ -89,36 +73,21 @@
 	li{
 		background: #fff;
 	}
+	.repair_detail_name{
+		color: #777777;
+  		margin-left: 12px;
+  		margin-right: 30px;
+	}
+	
 	.device{
 		color: #333;
 		font-weight: bolder;
 	}
-	/*.date_time{
-		color: #333;
-		padding-left: 25px;
-
-	}
-	.list_num{
-		color: #f34832;
-	}*/
-
-	.date_u{
-		margin-left: 0px;
-		color: #333;
-	}
-	.data_uu{
-		margin-left: -5px;
-	}
-	.data_l{
-		padding-left: 0px;
-	}
 
 	.repaie_state{
-		/*background: #fff3a3;*/
 		display: block;
 		margin-left: 20px;
 		border-left: 1px #ddd solid;
-		/*padding-top: 15px;*/
 		padding-bottom: 15px;
 		
 		.repair_detail_state{
@@ -133,18 +102,22 @@
 				display: block;
 				color: #777;
 				margin-left: 15px;
-				/*margin-top: -10px;*/
+				margin-top: -10px;
+			}
+			.repaie_state_right{
+				float: right;
+				margin-right: 15px;
+				color: #777!important;
+				height: 30px;
+			}
+			.repair_state_on{
+				color: red;
+			}
+			.repair_state_out{
+				color: #333;
 			}
 		}
-		.repair_main{
-			display: block;
-		}
-
-		.repaie_state_right{
-			float: right;
-			margin-right: 15px;
-			color: #777!important;
-		}
+		
 
 		img{
 			display: inline-block;
@@ -168,18 +141,13 @@
 
 		}
 	}
-
-	.repaie_state:nth-of-type(1){
-		/*color: red;*/
-		/*padding-top: 20px;*/
-	}
-
 	.repaie_state:last-child{
 		height: 30px;
 		margin-bottom: 200px;
 	}
-	.repair_but{
+	.repair_detail_but{
 		position: fixed;
+		bottom: 1px solid #f34832;
 		bottom: 0px;
 		width: 100%;
 		background: #fff;

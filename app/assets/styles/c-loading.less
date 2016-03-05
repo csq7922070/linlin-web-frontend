@@ -1,0 +1,46 @@
+#c-loading-container{
+	position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    font-family: 微软雅黑;
+    z-index: 1000;
+    background: #eee;
+
+    .modal-container{
+    	width: 130px;
+    	left: 50%;
+    	margin-left: -65px;
+    	text-align: center;
+	    /*padding: 30px 10px;*/
+	    position: absolute;
+	    opacity: 0.9;
+	    top: 30%;
+        color: #f34832;
+	    border-radius: 6px;
+	    font-size: 15px;
+
+        .loading-loading{
+            display: block;
+            position: relative;
+            bottom: 75px;
+        }
+        .loading-text{
+            color: #000;
+        }
+    }
+
+    .modal-container-error{
+    	padding-top: 13px;
+  
+
+    	.loading-text{
+    		margin-top: 12px;
+    	}
+    }
+}
+
+.translucence{//背景半透明
+    opacity: 0.5;
+}

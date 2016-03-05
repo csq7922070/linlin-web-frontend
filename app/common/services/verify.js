@@ -8,4 +8,12 @@ angular.module('app.verify')
 	            }
 	            return result;
 	        }
+
+	        this.supportTel = function(tel){//判断格式正确的手机号是否在号段上受支持
+	        	var result = true;
+	        	if(tel.indexOf("178")==0||tel.indexOf("178")==0){
+	        		result = false;
+	        	}
+	        	return result;
+	        }
 	}]);
