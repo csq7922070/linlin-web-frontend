@@ -1,4 +1,4 @@
-<div id="rapair_add">
+<div id="repair_add">
     <div class="container-fluid nav">
         <div class="rows">
             <div class="col-xs-6">
@@ -9,48 +9,35 @@
             </div>
         </div>
     </div>
-    <form ng-submit="vm.submitForm()" name="repairForm" class="form-signin" method="post" novalidate>
+    <form ng-submit="submitForm()" name="repairForm" class="form-signin" method="post" novalidate>
         <div class="container">
             <select id="up_year" ng-model="currentDevice" ng-options="decive.name for decive in decives" class="col-xs-8" required>
             </select>
             <label for="up_year" class="repair_sel" >
                 <div class="repair_sel_s"></div>
             </label>
-  
-            <textarea class="repair_detail" name="remark" ng-model="defaultremark" maxlength="1000" placeholder="请详细描述下出现的问题" ng-maxlength="20"></textarea>
+
+            <textarea class="repair_detail_textarea" name="remark" ng-model="remark" maxlength="1000" placeholder="请详细描述下出现的问题" ng-maxlength="20"></textarea>
 
             <div class="com_address">
                 <div class="com_left">
-                    <span>{{defaultcity||'city'}}</span>-<span>{{defaultcommunity||'小区'}}</span><span ng-model="vm.repair.block">-{{defaultblock||'楼栋号'}}</span><span ng-model="vm.repair.unit" ng-if="defaultunit">-{{defaultunit}}</span><span ng-model="vm.repair.room" ng-if="defaultroom">-{{defaultroom}}</span>
+                    <span ng-bind="address.city"></span>-<span ng-bind="address.community">
+                    </span>-<span ng-bind="address.block"></span><span ng-if="address.unit">-</span><span ng-bind="address.unit"></span><span ng-if="address.room">-</span><span ng-bind="address.room"></span>
                 </div>
-                <div class="com_right" ng-click="changeAddress()">
-                    <a class='replied_state'>编辑</a>
+
+                <div class="compile_right" ng-click="changeAddress()">
+                    <a class='compile_right_state'>编辑</a>
                 </div>
             </div>
 
-            <input class="repair_mobile" type="text" placeholder="您的手机号码" name="mobile" ng-model="defaultmobile" ng-pattern="/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/" maxlength="11" required>
-            <span class="room_hidden" ng-show="repairForm.mobile.$touched && repairForm.mobile.$dirty && repairForm.mobile.$invalid" ng-class="{true:'tel-edit'}[vm.repair.mobile!='']">请输入正确的手机号码</span>
+            <input class="repair_mobile" type="text" placeholder="您的手机号码" name="mobile" ng-model="mobile" ng-pattern="/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/" maxlength="11" required>
+            <span class="room_hidden" ng-show="repairForm.mobile.$touched && repairForm.mobile.$dirty && repairForm.mobile.$invalid" ng-class="{true:'tel-edit'}[repair.mobile!='']">请输入正确的手机号码</span>
         </div>
-        <!-- <div class="prompt_mask" ng-show="vm.suc_show">
-            <div class="prompt_dialog">
-                <div class="prompt_icon"></div>
-                <div class="prompt_font">提交成功</div>
-                <input type="button" class="prompt_btn" value="确定" ng-click="vm.mask_close()">
-            </div>
-        </div>
-        <div class="prompt_mask_err" ng-show="vm.err_show">
-            <div class="prompt_dialog">
-                <div class="prompt_icon_err"></div>
-                <div class="prompt_font">提交失败，请稍后再试</div>
-                <input type="button" class="prompt_btn" value="确定" ng-click="vm.mask_err_close()">
-            </div>
-        </div> -->
         <div class="container">
             <button type="submit" type="button" class="submit_btn" ng-disabled="repairForm.$invalid" ng-click="repairSubmit();">提交</button>
         </div>
     </form>
     <c-tip type="success" show="showSuccess" tip="提交成功!" close-time="1500" on-close="onSuccessClose()"></c-tip>
-    <c-tip type="error" show="showError" tip="{{repairerroer}}" close-time="1500" on-close="onTipClose()"></c-tip>
+    <c-tip type="error" show="showError" tip="{{repairErroer}}" close-time="1500" on-close="onTipClose()"></c-tip>
 </div>
 <c-address-list show="showAddressList" on-complete="onSelectAddressComplete()" address-list="addressList" mode="addressListMode" ng-init="addressListMode='select'"></c-address-list>
-

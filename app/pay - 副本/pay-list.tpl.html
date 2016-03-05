@@ -1,0 +1,62 @@
+<div id="payment-list-container">
+    <div ng-if="payList&&payList.length>0">
+        <div ng-repeat="pay in payList">
+            <div class="weui_cells_title title_style body_normal payment-date"><span class="color777">{{pay.payDate}}</span>
+            </div>
+            <div class="weui_cells address_down page_pay">
+                <div class="weui_cell" style="padding-top: 15px">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p class="pay-address">{{pay.block}}
+                            <span ng-if="pay.unit">-{{pay.unit}}</span><span ng-if="pay.room">-{{pay.room}}</span>
+                        </p>
+                    </div>
+                    <div class="no_img" style="margin-top: 0">
+                        {{pay.amount|number:2}}元
+                    </div>
+                </div>
+                <!-- 物业费、车位维护费、车位费 -->
+                <div class="weui_cell {{!$first?'no-border-top': ''}}" ng-repeat="otherDate in pay.otherDates">
+                    <div class="weui_cell_hd">
+                        <img src="images/property.png" alt="icon" class="fee-icon" ng-if="otherDate.type==2">
+                        <img src="images/car-maintenance.png" alt="icon" class="fee-icon" ng-if="otherDate.type==3">
+                        <img src="images/car-port.png" alt="icon" class="fee-icon car-port-fee-icon" ng-if="otherDate.type==4">
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p style="margin-top: 8px;margin-bottom: 8px" ng-if="otherDate.type==2">物业费</p>
+                        <p style="margin-top: 8px;margin-bottom: 8px" ng-if="otherDate.type==3">车位维护费</p>
+                        <p style="margin-top: 8px;margin-bottom: 8px" ng-if="otherDate.type==4">车位费</p>
+                    </div>
+                    <div class="should_info">
+                        <span class="color777" ng-bind="otherDate.dateText"></span>
+                    </div>
+                </div>
+                <!-- 水费 -->
+                <div class="weui_cell {{pay.otherDates&&pay.otherDates.length>0 ? 'no-border-top': ''}}" ng-if="pay.waterDates.length > 0">
+                    <div class="weui_cell_hd">
+                        <img src="images/water.png" alt="icon" class="fee-icon life-fee-icon">
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p style="margin-top: 8px;margin-bottom: 8px">水费</p>
+                    </div>
+                    <div class="should_info">
+                        <span class="color777" ng-bind="pay.waterDateText"></span>
+                    </div>
+                </div>
+                <!-- 电费 -->
+                <div class="weui_cell {{((pay.otherDates&&pay.otherDates.length>0) || pay.waterDates.length>0)? 'no-border-top': ''}}" ng-if="pay.elecDates.length>0">
+                    <div class="weui_cell_hd">
+                        <img src="images/ele.png" alt="icon" class="fee-icon life-fee-icon">
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p style="margin-top: 8px">电费</p>
+                    </div>
+                    <div class="no_img">
+                        <span class="color777" ng-bind="pay.elecDateText"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p ng-if="!payList || payList.length==0" style="text-align: center;margin-top: 30%">你还没有缴费记录哦!</p>
+</div>

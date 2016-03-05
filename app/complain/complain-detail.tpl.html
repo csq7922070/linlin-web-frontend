@@ -1,10 +1,10 @@
 <div id="complain_detail">
     <div class="complaint_title">
-        <img src="images/icon_07.png" alt="">投诉：{{vm.complain.title}}
+        <img src="images/icon_07.png" alt="">投诉：<span ng-bind="vm.complain.title"></span>
     </div>
     <div class="complaint">
-        <span class="complaint_time">{{vm.complain.createDate.substring(0,16)}}</span>
-        <span class="complaint_detail">{{vm.complain.content}}</span>
+        <span class="complaint_time" ng-bind="vm.complain.createDate.substring(0,16)"></span>
+        <span class="complaint_detail" ng-bind="vm.complain.content"></span>
     </div>
     <div class="complaint_title">
         <img ng-if="vm.complain.state == 1" src="images/icon_08.png" alt=""><img ng-if="vm.complain.state == 0" src="images/icon_no_08.png" alt="">物业回复
@@ -13,8 +13,8 @@
         <span class="property_detail"></span>
     </div> -->
     <div class="property" ng-if="vm.complain.state != 0">
-        <span class="property_time">{{vm.complain.replyTime.substring(0,16)}}</span>
-        <span class="property_detail个">{{vm.complain.reply}}</span>
+        <span class="property_time" ng-bind="vm.complain.replyTime.substring(0,16)"></span>
+        <span class="property_detail" ng-bind="vm.complain.reply"></span>
     </div>
     <div class="property" ng-if="vm.complain.state != 1">
         对不起，暂时没有回复
@@ -23,3 +23,5 @@
         <img ng-if="vm.complain.state == 1" src="images/icon_09.png"><img ng-if="vm.complain.state == 0" src="images/icon_no_09.png">处理完成
     </div>
 </div>
+
+<c-loading show="showLoading" tip="正在加载中..." tip-loading="loading"></c-loading>

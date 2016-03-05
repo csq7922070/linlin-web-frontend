@@ -12,12 +12,15 @@ myApp.directive('cUnitList', function() {
         },
         controller: function ($stateParams,$scope,addresses,addressInfo,address) {
             $scope.changeUnit = function(unit){
+                $scope.showLoading = true;
                 addressInfo.unit = unit;
                 $scope.showContent = false;
                 $scope.showRoomList = true;
                 address.getRoomList(addressInfo.city, addressInfo.communityId, addressInfo.block, unit).then(function(data){
+                    $scope.showLoading = false;
                     $scope.roomList = data;
                 },function(reason){
+                    $scope.showLoading = false;
                     $scope.showRoomList = false;
                     $scope.showContent = true;
                     alert(reason.errorCode+","+reason.errorMessage);

@@ -1,64 +1,28 @@
-angular.module('app.repair').controller('repairListCtrl', ['userInfo', '$timeout', '$state', 'repairs','errorLog',
-    function (userInfo,$timeout, $state, repairs,errorLog) {
+angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state', 'errorLog','$scope','repair',
+    function ($timeout, $state, errorLog,$scope,repair) {
         var vm = this;
         vm.currentPage = 0;
         vm.pageSize = 10;
-        vm.suc_show = false;
-        vm.err_show = false;
         vm.repairs = [];
         var params = {};
+        $scope.showLoading = true;
 
         vm.load = function (goPage, limit) {
             if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
                 return;
             } else {
-                params = {
-                    offset: limit * (goPage - 1),
-                    limit: limit,
-                    openid: userInfo.getOpenIdSync(),
-                    queryType: 'openid'
-                };
-
-                repairs.query(params).$promise.then(function (data) {
+                repair.getRepairList(limit,goPage).then(function(data){
+                    $scope.showLoading = false;
+                    Array.prototype.push.apply(vm.repairs,data.items);
                     vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
                     vm.currentPage = goPage;
                     vm.busy = false;
-                    Array.prototype.push.apply(vm.repairs, data.items);
-                }, function (reason) {
+                }, function(reason){
+                    $scope.showLoading = false;
                     alert(errorLog.getErrorMessage(reason));
-                });
+                })
             }
         }
-
-        vm.confirm = function (id) {
-            params = {
-                id: id,
-                state: 3
-            };
-            repairs.save(params).$promise.then(function () {
-                successcb()
-            }, function () {
-                errcb()
-            });
-        }
-
-        function successcb() {
-            vm.suc_show = true;
-            $timeout(function () {
-                vm.suc_show = false;
-                $state.go("repair", {}, {
-                    reload: true
-                });
-            }, 3000);
-        }
-
-        function errcb() {
-            vm.err_show = true;
-            $timeout(function () {
-                vm.err_show = false;
-            }, 3000);
-        }
-
         vm.load(1, vm.pageSize);
     }
 ]);

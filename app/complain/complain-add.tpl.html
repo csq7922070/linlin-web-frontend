@@ -11,22 +11,20 @@
     </div>
     <div class="complaint_publish">
         <form ng-submit="vm.submitForm()" method="post" name="complainForm" novalidate>
-            <input type="text" name="title" ng-model="vm.complain.title" placeholder="投诉标题（小区内晚间有噪音，影响休息）" required>
-            <textarea name="content" ng-model="vm.complain.content" required cols="30" rows="10"
-                      placeholder="投诉描述（请详细描述您的困扰，我们将第一时间给予解决）"></textarea>
+            <input type="text" name="title" ng-model="title" placeholder="投诉标题（小区内晚间有噪音，影响休息）" required>
+            <textarea name="content" ng-model="content" required cols="30" rows="10" placeholder="投诉描述（请详细描述您的困扰，我们将第一时间给予解决）"></textarea>
 
             <div class="com_address">
                 <div class="com_left">
-                    <span>{{defaultcity||'city'}}</span>-<span>{{defaultcommunity||'小区'}}</span>
+                    <span ng-bind="address.city"></span>-<span ng-bind="address.community"></span>
                 </div>
-
-                <div class="com_right" ng-click="changeAddress()">
-                   <a class='replied_state'>编辑</a>
+                <div class="compile_right" ng-click="changeAddress()">
+                   <a class='compile_right_state'>编辑</a>
                 </div>
             </div>
 
-            <input class="mobile" type="text" name="mobile" ng-model="defaultmobile" ng-pattern="/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/" maxlength="11" placeholder="联系方式（您的手机号）">
-            <span class="room_hidden" ng-show="complainForm.mobile.$touched && complainForm.mobile.$dirty && complainForm.mobile.$invalid" ng-class="{true:'tel-edit'}[vm.repair.mobile!='']">*请输入正确的手机号码</span>
+            <input class="mobile" type="text" name="mobile" ng-model="defaultMobile" ng-pattern="/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/" maxlength="11" placeholder="联系方式（您的手机号）">
+            <span class="room_hidden" ng-show="complainForm.mobile.$touched && complainForm.mobile.$dirty && complainForm.mobile.$invalid" ng-class="{true:'tel-edit'}[mobile!='']">*请输入正确的手机号码</span>
 
             <button class="submit_but" type="submit" ng-disabled="complainForm.$invalid">提交</button>
         </form>
@@ -36,25 +34,6 @@
             隐私保护：使用投诉功能时，米饭公社不会提交您的住址信息.
         </div>
     </div>
-   
-    <!-- <div class="prompt_mask" ng-show="vm.suc_show">
-        <div class="prompt_dialog">
-            <div class="prompt_icon"></div>
-            <div class="prompt_font">
-                <p style="font-size: 12px; margin-top:5px;">提交成功</p>
-            </div>
-            <input type="button" class="prompt_btn" value="确定" ng-click="vm.mask_close()">
-        </div>
-    </div>
-    <div class="prompt_mask_err" ng-show="vm.err_show">
-        <div class="prompt_dialog">
-            <div class="prompt_icon_err"></div>
-            <div class="prompt_font" name="prompt_info">
-                <p style="font-size: 12px; margin-top:5px;">提交失败，请稍后再试</p>
-            </div>
-            <input type="button" class="prompt_btn" value="确定" ng-click="vm.mask_err_close()">
-        </div>
-    </div> -->
 </div>
 <c-address-list show="showAddressList" on-complete="onSelectAddressComplete()" address-list="addressList" mode="addressListMode" ng-init="addressListMode='select'"></c-address-list>
     

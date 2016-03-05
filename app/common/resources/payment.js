@@ -1,4 +1,4 @@
-angular.module('resources.payment', ['ngResource']).
+angular.module('resources.pay', ['ngResource']).
     factory('payments', ['$resource', function($resource) {
         return $resource(basePath+'/payments/:id', {id:'@id'}, {
             query: {

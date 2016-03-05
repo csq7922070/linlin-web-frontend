@@ -1,16 +1,17 @@
 (function () {
-    angular.module('app.complain').controller('complainDetailCtrl', ['$stateParams', 'complains','errorLog',
-        function ($stateParams, complains, errorLog) {
+    angular.module('app.complain').controller('complainDetailCtrl', ['$stateParams', 'errorLog', 'complain', '$scope',
+        function ($stateParams, errorLog, complain ,$scope) {
             var vm = this;
-            params = {
-                id: $stateParams.id
-            }
-            complains.get(params).$promise.then(function(data) {
+            $scope.showLoading = true;
+
+            var id =  $stateParams.id;
+            complain.getComplainDetail(id).then(function(data){
+                $scope.showLoading = false;
                 vm.complain = data;
-            },function(reason){
+            }, function(reason){
+                $scope.showLoading = false;
                 alert(errorLog.getErrorMessage(reason));
             })
         }
-
     ])
 })();

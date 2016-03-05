@@ -17,8 +17,11 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
         // // end test code
         $scope.sendAuthCode = function(){
             //$scope.showSuccess = true;
-            if(!verify.verifyTel($scope.tel)){
+            if(!verify.verifyTel($scope.tel) || !verify.supportTel($scope.tel)){
                 $scope.verifyTip='请输入正确的手机号码';
+                if(!verify.supportTel($scope.tel)){
+                    $scope.verifyTip="暂时不支持177、178号段的手机号"
+                }
                 $scope.verifyError = true;
                 $timeout(function(){
                     $scope.verifyError = false;
