@@ -23,32 +23,6 @@
                     </span>
                 </div>
             </li>
-<!--             <li class="bill bill-spacing">
-                <div class="date-bar">
-                    <a class="select"></a>
-                    <span class="fee-date">2015年12月25日起12个月</span>
-                    <span class="fee-tip">应缴金额</span>
-                </div>
-                <div class="bill-line"></div>
-                <div class="fee-bar">
-                    <a class="select"></a>
-                    <span class="fee-type car-maintenance-fee-type">车位维护费</span>
-                    <span class="fee"><span class="fee-number">1890.00</span>元</span>
-                </div>
-            </li>
-            <li class="bill bill-spacing">
-                <div class="date-bar">
-                    <a class="select"></a>
-                    <span class="fee-date">2015年12月25日起12个月</span>
-                    <span class="fee-tip">应缴金额</span>
-                </div>
-                <div class="bill-line"></div>
-                <div class="fee-bar">
-                    <a class="select"></a>
-                    <span class="fee-type car-port-fee-type">车位费</span>
-                    <span class="fee"><span class="fee-number">1890.00</span>元</span>
-                </div>
-            </li> -->
             <li class="bill" ng-class="{'bill-spacing':!$first||(otherBillList&&otherBillList.length>0)}" ng-repeat="bill in lifeBillList">
                 <div class="date-bar">
                     <a class="select" ng-click="changeMonthSelection(bill)" ng-class="{'select-active':bill.selected}"></a>

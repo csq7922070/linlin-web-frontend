@@ -2064,6 +2064,9 @@ div.rn-carousel-indicator span {
   font-size: 13px;
   color: #999;
 }
+#pay-list-container #c-empty-container {
+  padding-top: 90px;
+}
 
 #pay-container {
   width: 100%;
