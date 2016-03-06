@@ -21,7 +21,9 @@ angular.module('app.pay').controller('billCtrl', ['$scope', '$http', '$statePara
         $scope.billItemCount = 0;//全部可选账单数量
         refreshBillList();
         function refreshBillList(){
+            $scope.showLoading = true;
             billPay.getBillInfo(addressInfo.id).then(function(data) {
+                $scope.showLoading = false;
                 // $scope.propertyBillList = angular.copy(data.propertyFeeList);//物业费
                 // $scope.carMaintenanceBillList = angular.copy(data.carMaintenanceFeeList);//车位维护费
                 // $scope.carportBillList = angular.copy(data.carportFeeList);//车位费
@@ -36,6 +38,7 @@ angular.module('app.pay').controller('billCtrl', ['$scope', '$http', '$statePara
                     $scope.billItemCount+=bill.items.length;
                 });
             },function(reason){
+                $scope.showLoading = false;
                 alert(errorLog.getErrorMessage(reason));
             });
         }
@@ -113,7 +116,7 @@ angular.module('app.pay').controller('billCtrl', ['$scope', '$http', '$statePara
             });
         }
 
-        $scope.pay = function(){
+        $scope.checkOut = function(){
             var waterFee = 0;
             var elecFee = 0;
             var wDates = [];//['20151','201510']

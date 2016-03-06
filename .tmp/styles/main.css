@@ -1127,6 +1127,9 @@ div.rn-carousel-indicator span {
   display: inline-block;
   background-repeat: no-repeat;
 }
+#bill-container .select-active {
+  background-image: url('../images/selected-red-right.png');
+}
 #bill-container .title-bar {
   height: 44px;
   padding: 0px 12px;
@@ -1330,6 +1333,9 @@ div.rn-carousel-indicator span {
   color: #fff;
   font-size: 15px;
   border: 0px;
+}
+#bill-container .bottom-bar .check-out-disabled {
+  background-color: #ccc;
 }
 #bill-container #c-empty-container {
   padding-top: 90px;
@@ -1959,35 +1965,6 @@ div.rn-carousel-indicator span {
 #notice_listtpl .list .notice_list .notice_date {
   border-top: 1px solid #e0e0e0;
   color: #777;
-}
-
-#payment-list-container .payment-date {
-  padding: 6px 15px;
-  text-align: left;
-  font-size: 13px;
-  color: #777;
-}
-#payment-list-container .pay-address {
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #555;
-}
-#payment-list-container .fee-icon {
-  width: 16px;
-  margin-right: 6px;
-  margin-top: -2px;
-}
-#payment-list-container .car-port-fee-icon {
-  width: 15px;
-  margin-top: 0px;
-  margin-left: 2px;
-}
-#payment-list-container .life-fee-icon {
-  margin-left: 2px;
-  width: 14px;
-}
-#payment-list-container .no-border-top:before {
-  border-top: none;
 }
 
 #pay-list-container {
