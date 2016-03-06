@@ -1267,16 +1267,16 @@ div.rn-carousel-indicator span {
   color: #777;
 }
 #bill-container .content-container .bill .detail-container .detail-content-container .first-detail-column {
-  width: 33%;
+  width: 28%;
   display: inline-block;
 }
 #bill-container .content-container .bill .detail-container .detail-content-container .second-detail-column {
-  width: 31%;
+  width: 41%;
   display: inline-block;
   text-align: center;
 }
 #bill-container .content-container .bill .detail-container .detail-content-container .third-detail-column {
-  width: 33%;
+  width: 28%;
   display: inline-block;
   text-align: right;
 }
@@ -2086,7 +2086,7 @@ div.rn-carousel-indicator span {
   float: right;
   color: #555;
 }
-#pay-container .bill-address-bar .detail-address {
+#pay-container .bill-address-bar .short-address {
   float: right;
 }
 #pay-container .pay-bill-list {
