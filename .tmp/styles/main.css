@@ -1961,36 +1961,6 @@ div.rn-carousel-indicator span {
   color: #777;
 }
 
-#payment-container {
-  padding-bottom: 20px;
-}
-#payment-container .fee-icon {
-  width: 16px;
-  margin-right: 6px;
-  display: block;
-}
-#payment-container .life-fee-icon {
-  width: 14px;
-  margin-left: 2px;
-  margin-right: 5px;
-  margin-top: 1px;
-}
-#payment-container .fee-type {
-  position: relative;
-  top: 3px;
-}
-#payment-container .no-border-top:before {
-  border-top: none;
-}
-#payment-container .pay-type-text {
-  margin-top: 2px;
-  margin-left: 14px;
-  margin-bottom: 0px;
-}
-#payment-container .pay-money {
-  color: #ffa400;
-}
-
 #payment-list-container .payment-date {
   padding: 6px 15px;
   text-align: left;
@@ -2018,6 +1988,104 @@ div.rn-carousel-indicator span {
 }
 #payment-list-container .no-border-top:before {
   border-top: none;
+}
+
+#pay-list-container {
+  width: 100%;
+  padding-bottom: 40px;
+  background-color: #eeeeee;
+  font-family: 微软雅黑;
+}
+#pay-list-container ul {
+  margin: 0px;
+}
+#pay-list-container dl {
+  margin: 0px;
+  padding: 0px;
+}
+#pay-list-container dt {
+  font-weight: normal;
+}
+#pay-list-container .pay-time-bar {
+  height: 44px;
+  padding: 0px 12px;
+}
+#pay-list-container .pay-time-bar .pay-time {
+  line-height: 44px;
+  font-size: 13px;
+  color: #777;
+}
+#pay-list-container .pay-bill {
+  position: relative;
+  padding: 0px 12px;
+  background-color: #fff;
+  padding-bottom: 13px;
+}
+#pay-list-container .pay-bill .bill-overview {
+  height: 50px;
+  margin-bottom: 9px;
+}
+#pay-list-container .pay-bill .bill-overview .bill-address {
+  font-size: 14px;
+  color: #555;
+  line-height: 50px;
+}
+#pay-list-container .pay-bill .bill-overview .bill-money {
+  font-size: 15px;
+  color: #333;
+  float: right;
+  line-height: 50px;
+}
+#pay-list-container .pay-bill .bill-line {
+  border-top: solid 1px #e8e8e8;
+  position: absolute;
+  top: 50px;
+  left: 12px;
+  right: 0px;
+}
+#pay-list-container .pay-bill .fee-item {
+  height: 35px;
+}
+#pay-list-container .pay-bill .fee-item .fee-type {
+  font-size: 15px;
+  color: #333;
+  padding-left: 30px;
+  background-repeat: no-repeat;
+  background-size: 18px;
+  background-position: 0px 2px;
+  position: absolute;
+  margin-top: 7px;
+}
+#pay-list-container .pay-bill .fee-item .property-fee-type {
+  background-image: url('../images/property.png');
+}
+#pay-list-container .pay-bill .fee-item .car-maintenance-fee-type {
+  background-image: url('../images/car-maintenance.png');
+  background-position-y: 3px;
+}
+#pay-list-container .pay-bill .fee-item .car-port-fee-type {
+  background-image: url('../images/car-port.png');
+  padding-bottom: 4px;
+  background-size: 16px;
+  background-position: 1px 1px;
+}
+#pay-list-container .pay-bill .fee-item .elec-fee-type {
+  background-image: url('../images/ele.png');
+  padding-bottom: 5px;
+  background-size: 16px;
+  background-position: 1px 0px;
+}
+#pay-list-container .pay-bill .fee-item .water-fee-type {
+  background-image: url('../images/water.png');
+  padding-bottom: 5px;
+  background-size: 16px;
+  background-position: 1px -1px;
+}
+#pay-list-container .pay-bill .fee-item .fee-date {
+  float: right;
+  line-height: 35px;
+  font-size: 13px;
+  color: #999;
 }
 
 #pay-container {
