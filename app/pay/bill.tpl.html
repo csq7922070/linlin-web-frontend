@@ -1,132 +1,96 @@
 ﻿<div id="bill-container">
     <div class="title-bar">
         <span class="bill-title">待缴费信息</span>
-        <a class="pay-list-link">缴费记录</a>
+        <a class="pay-list-link" ui-sref="pay-list">缴费记录</a>
     </div>
     <div class="content-container">
         <ul>
-            <li class="bill">
+            <li class="bill" ng-repeat="bill in otherBillList" ng-class="{'bill-spacing':!$first}">
                 <div class="date-bar">
-                    <a class="select"></a>
-                    <span class="fee-date">2015年12月25日起12个月</span>
+                    <a class="select" ng-click="changeMonthSelection(bill)" ng-class="{'select-active':bill.selected}"></a>
+                    <span class="fee-date" ng-bind="bill.date">2015年12月25日起12个月</span>
                     <span class="fee-tip">应缴金额</span>
                 </div>
                 <div class="bill-line"></div>
                 <div class="fee-bar">
-                    <a class="select"></a>
-                    <span class="fee-type property-fee-type">物业费</span>
-                    <span class="fee"><span class="fee-number">1890.00</span>元</span>
+                    <span class="fee-type property-fee-type" ng-if="bill.type==2">物业费</span>
+                    <span class="fee-type car-maintenance-fee-type" 
+                        ng-if="bill.type==3">车位维护费</span>
+                    <span class="fee-type car-port-fee-type" ng-if="bill.type==4">车位费</span>
+                    <span class="fee">
+                        <span class="fee-number" ng-bind="bill.amount">1890.00</span>元
+                    </span>
                 </div>
             </li>
-            <li class="bill bill-spacing">
+            <li class="bill" ng-class="{'bill-spacing':!$first||(otherBillList&&otherBillList.length>0)}" ng-repeat="bill in lifeBillList">
                 <div class="date-bar">
-                    <a class="select"></a>
-                    <span class="fee-date">2015年12月25日起12个月</span>
+                    <a class="select" ng-click="changeMonthSelection(bill)" ng-class="{'select-active':bill.selected}"></a>
+                    <span class="fee-date" ng-bind="bill.date">2015年12月</span>
                     <span class="fee-tip">应缴金额</span>
                 </div>
                 <div class="bill-line"></div>
-                <div class="fee-bar">
-                    <a class="select"></a>
-                    <span class="fee-type car-maintenance-fee-type">车位维护费</span>
-                    <span class="fee"><span class="fee-number">1890.00</span>元</span>
-                </div>
-            </li>
-            <li class="bill bill-spacing">
-                <div class="date-bar">
-                    <a class="select"></a>
-                    <span class="fee-date">2015年12月25日起12个月</span>
-                    <span class="fee-tip">应缴金额</span>
-                </div>
-                <div class="bill-line"></div>
-                <div class="fee-bar">
-                    <a class="select"></a>
-                    <span class="fee-type car-port-fee-type">车位费</span>
-                    <span class="fee"><span class="fee-number">1890.00</span>元</span>
-                </div>
-            </li>
-            <li class="bill bill-spacing">
-                <div class="date-bar">
-                    <a class="select"></a>
-                    <span class="fee-date">2015年12月</span>
-                    <span class="fee-tip">应缴金额</span>
-                </div>
-                <div class="bill-line"></div>
-                <div class="fee-bar">
-                    <a class="select"></a>
-                    <span class="fee-type elec-fee-type">电费</span>
-                    <span class="fee"><span class="fee-number">1890.00</span>元</span>
-                </div>
-                <div class="fee-bar">
-                    <a class="select"></a>
-                    <span class="fee-type water-fee-type">水费</span>
-                    <span class="fee"><span class="fee-number">1890.00</span>元</span>
+                <div class="fee-bar" ng-repeat="billItem in bill.items">
+                    <a class="select" ng-click="changeSelection(bill, billItem)" ng-class="{'select-active':billItem.selected||bill.selected}"></a>
+                    <span class="fee-type water-fee-type" ng-if="billItem.type==0">水费</span>
+                    <span class="fee-type elec-fee-type" ng-if="billItem.type==1">电费</span>
+                    <span class="fee">
+                        <span class="fee-number" ng-bind="billItem.amount">1890.00</span>元
+                    </span>
                 </div>
                 <div class="detail-container">
                     <div class="detail-control-bar">
-                        <a class="detail-control detail-control-expanded">详情</a>
+                        <a class="detail-control" 
+                            ng-class="{'detail-control-expanded':bill.showDetail}"
+                            ng-click="bill.showDetail = !bill.showDetail">详情</a>
                     </div>
-                    <div class="detail-content-container">
+                    <div class="detail-content-container" ng-show="bill.showDetail">
                         <dl>
                             <dt>
                                 <span class="detail-title detail-column first-detail-column">类别</span>
                                 <span class="detail-title detail-column second-detail-column">上月-本月</span>
                                 <span class="detail-title detail-column third-detail-column">用量</span>
                             </dt>
-                            <dd>
-                                <span class="detail-content detail-column first-detail-column">电表数</span>
+                            <dd ng-repeat="billItem in bill.items">
+                                <span class="detail-content detail-column first-detail-column"
+                                    ng-if="billItem.type==0">水表数</span>
+                                <span class="detail-content detail-column first-detail-column"
+                                    ng-if="billItem.type==1">电表数</span>
                                 <span class="detail-content detail-column second-detail-column">
-                                    <span>0</span>°&nbsp;-&nbsp;<span>6542</span>°
+                                    <span ng-bind="billItem.lastNumber">0</span>
+                                        <span ng-if="billItem.type==0">m³</span>
+                                        <span ng-if="billItem.type==1">°</span>&nbsp;-&nbsp;
+                                    <span ng-bind="billItem.number">6542</span>
+                                        <span ng-if="billItem.type==0">m³</span>
+                                        <span ng-if="billItem.type==1">°</span>
                                 </span>
                                 <span class="detail-content detail-column third-detail-column">
-                                    <span>6542</span>°
-                                </span>
-                            </dd>
-                            <dd>
-                                <span class="detail-content detail-column first-detail-column">水表数</span>
-                                <span class="detail-content detail-column second-detail-column">
-                                    <span>0</span>³&nbsp;-&nbsp;<span>6543</span>m³
-                                </span>
-                                <span class="detail-content detail-column third-detail-column">
-                                    <span>6543</span>m³
+                                    <span ng-bind="billItem.count">6542</span>
+                                        <span ng-if="billItem.type==0">m³</span>
+                                        <span ng-if="billItem.type==1">°</span>
                                 </span>
                             </dd>
                         </dl>
                     </div>
                 </div>
             </li>
-            <li class="bill bill-spacing">
-                <div class="date-bar">
-                    <a class="select"></a>
-                    <span class="fee-date">2016年1月</span>
-                    <span class="fee-tip">应缴金额</span>
-                </div>
-                <div class="bill-line"></div>
-                <div class="fee-bar">
-                    <a class="select"></a>
-                    <span class="fee-type elec-fee-type">电费</span>
-                    <span class="fee"><span class="fee-number">1890.00</span>元</span>
-                </div>
-                <div class="fee-bar">
-                    <a class="select"></a>
-                    <span class="fee-type water-fee-type">水费</span>
-                    <span class="fee"><span class="fee-number">1890.00</span>元</span>
-                </div>
-                <div class="detail-container">
-                    <div class="detail-control-bar">
-                        <a class="detail-control detail-control">详情</a>
-                    </div>
-                </div>
-            </li>
         </ul>
-        <div class="fee-reference-info">
+        <div class="fee-reference-info" ng-if="billItemCount">
             计费标准参考：水费-3.7元/m³&nbsp; &nbsp;电费-0.52元/°
         </div>
+        <c-empty show="!billItemCount" tip="暂时还没有待缴费信息哦~"></c-empty>
     </div>
     <div class="bottom-bar">
-        <a class="select"></a>
+        <a class="select" ng-class="{'select-active':allSelected}" 
+            ng-click="changeAllSelection()" 
+            ng-disabled="!billItemCount"></a>
         <span class="all-select-tip">全选</span>
         <span class="total-fee-tip">合计</span>
-        <span class="total-fee">￥<span>2211.73</span></span>
-        <button class="check-out">结算</button>
+        <span class="total-fee">
+            ￥<span ng-bind="totalFee">2211.73</span>
+        </span>
+        <button class="check-out" ng-click="checkOut()" 
+            ng-disabled="!selectedIds||selectedIds.length==0"
+            ng-class="{'check-out-disabled':!selectedIds||selectedIds.length==0}">结算</button>
     </div>
+    <c-loading show="showLoading" tip="正在加载中..." tip-loading="loading"></c-loading>
 </div>

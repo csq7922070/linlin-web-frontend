@@ -276,9 +276,6 @@ p {
 .btn_press:active {
   background-color: #cc7f1c !important;
 }
-.page_pay .weui_cell:nth-of-type(3):before {
-  border-top: none;
-}
 .page_pay.weui_cell:nth-of-type(3) {
   margin-top: -10px;
 }
@@ -448,10 +445,6 @@ p {
   background-size: contain;
   width: 16px;
   height: 16px;
-}
-.payment_date {
-  font-size: 14px;
-  text-align: center;
 }
 .owner_name_del {
   width: 16px;
@@ -801,7 +794,7 @@ a {
 }
 .state {
   float: right;
-  color: #e6b417;
+  color: #ffa400;
 }
 .goods {
   font-size: 14px;
@@ -933,13 +926,10 @@ html input[disabled] {
   padding-left: 0;
   padding-right: 0;
 }
-.repair_list {
+.repair_detail_list {
   width: 100%;
   height: auto;
-  /*background-color: #ffffff;*/
   margin: auto;
-  /*padding-top: 30px;*/
-  /*padding-bottom: 10px;*/
 }
 .list_top {
   font-size: 16px;
@@ -951,34 +941,36 @@ html input[disabled] {
   border-bottom: 1px solid #e8e8e8;
   border-top: none;
 }
-.repair_detail {
+/*.repair_detail_textarea {
   padding: 5px;
   margin: 6px 0;
-}
-.repair_list ul {
+}*/
+.repair_detail_list ul {
   margin-top: 10px;
 }
-.repair_list ul li {
+.repair_detail_list ul li {
   /*width: 300px;*/
   /*margin: auto;*/
   padding: 9px 0;
   font-size: 14px;
 }
-.repair_list ul li span:nth-of-type(1) {
+/*.repair_detail_list ul li span:nth-of-type(1) {
   color: #777777;
   margin-left: 12px;
 }
+*/
 .list ul li:nth-of-type(4) span:nth-of-type(1) {
   padding-left: 10px;
 }
-.repair_list ul li:nth-of-type(5) span {
+.repair_detail_list ul li:nth-of-type(5) span {
   color: #e95912;
 }
-.repair_list ul li span:nth-of-type(2) {
+/*.repair_detail_list ul li span:nth-of-type(2) {
   padding-left: 30px;
-  /*white-space: normal;*/
+  white-space: normal;
   word-break: break-all;
 }
+*/
 /*.l_btn {
   margin: 30px auto;
   width: 280px;
@@ -1121,84 +1113,291 @@ div.rn-carousel-indicator span {
   }
 }
 
-#bill-container .line {
-  margin-left: 15px;
-  border-top: 1px solid #E8E8E8;
-}
-#bill-container .bill-type-row {
-  height: 40px;
-  padding: 0px 15px;
-}
-#bill-container .bill-type-row .bill-type-select {
-  background-image: url('../images/select_01.png');
-  display: block;
-  width: 30px;
-  height: 30px;
-  background-repeat: no-repeat;
-  background-size: 30px;
-  float: left;
-  margin-top: 5px;
-  margin-left: -6px;
-}
-#bill-container .bill-type-row .select-active {
-  background-image: url('../images/select_02.png');
-}
-#bill-container .bill-type-row .bill-type {
-  display: block;
-  float: left;
-  background-size: 14px;
-  background-repeat: no-repeat;
-  padding-left: 19px;
-  margin-left: 12px;
-  height: 20px;
-  margin-top: 10px;
-  background-position-y: 0px;
-  line-height: 22px;
-}
-#bill-container .bill-type-row .bill-type-water {
-  background-image: url('../images/water.png');
-}
-#bill-container .bill-type-row .bill-type-elec {
-  background-image: url('../images/ele.png');
-}
-#bill-container .bill-type-row .bill-type-money {
-  float: right;
-  line-height: 40px;
-}
-#bill-container .bill-type-row:after {
-  clear: both;
-}
-#bill-container .bill-footer {
-  height: 56px;
-  padding-left: 13px;
-}
-#bill-container .bill-footer .all-select {
-  width: 30px;
+#bill-container {
+  width: 100%;
   height: 100%;
-  background-image: url('../images/select_01.png');
+  background-color: #eeeeee;
+  font-family: 微软雅黑;
+}
+#bill-container .select {
+  background-image: url('../images/unselected-red-right.png');
+  background-size: 19px;
+  width: 19px;
+  height: 19px;
+  display: inline-block;
   background-repeat: no-repeat;
-  background-size: 30px;
-  background-position: -5px 50%;
 }
-#bill-container .bill-footer .all-select-container-active {
-  background-image: url('../images/select_02.png');
+#bill-container .select-active {
+  background-image: url('../images/selected-red-right.png');
 }
-#bill-container .bill-footer .total-money-container {
+#bill-container .title-bar {
+  height: 44px;
+  padding: 0px 12px;
+}
+#bill-container .title-bar .bill-title {
+  font-size: 15px;
+  color: #333;
+  line-height: 44px;
+}
+#bill-container .title-bar .pay-list-link {
+  float: right;
+  background-image: url('../images/right_arrow.png');
+  background-repeat: no-repeat;
+  background-size: 7px;
+  padding-right: 17px;
+  background-position: 100%;
+  font-size: 13px;
+  color: #777;
+  line-height: 44px;
+}
+#bill-container .content-container {
+  padding-bottom: 48px;
+}
+#bill-container .content-container .bill-spacing {
+  margin-top: 8px;
+}
+#bill-container .content-container .bill {
+  position: relative;
+  background-color: #fff;
+  padding: 0px 15px 0px 12px;
+}
+#bill-container .content-container .bill .date-bar {
+  height: 50px;
+}
+#bill-container .content-container .bill .date-bar .select {
+  margin-top: 15px;
+}
+#bill-container .content-container .bill .date-bar .fee-date {
+  font-size: 13px;
+  color: #777;
+  line-height: 50px;
+  position: absolute;
+  left: 43px;
+}
+#bill-container .content-container .bill .date-bar .fee-tip {
+  font-size: 15px;
+  color: #555;
+  float: right;
+  line-height: 50px;
+}
+#bill-container .content-container .bill .bill-line {
+  border-top: solid 1px #e8e8e8;
+  position: absolute;
+  top: 50px;
+  left: 12px;
+  right: 0px;
+}
+#bill-container .content-container .bill .fee-bar {
+  height: 54px;
+}
+#bill-container .content-container .bill .fee-bar .select {
+  margin-top: 17px;
+}
+#bill-container .content-container .bill .fee-bar .fee-type {
+  font-size: 15px;
+  color: #333;
+  padding-left: 30px;
+  background-repeat: no-repeat;
+  background-size: 18px;
+  background-position: 0px 1px;
+  position: absolute;
+  left: 43px;
+  margin-top: 17px;
+  line-height: 21px;
+}
+#bill-container .content-container .bill .fee-bar .property-fee-type {
+  background-image: url('../images/property.png');
+}
+#bill-container .content-container .bill .fee-bar .car-maintenance-fee-type {
+  background-image: url('../images/car-maintenance.png');
+  background-position-y: 2px;
+}
+#bill-container .content-container .bill .fee-bar .car-port-fee-type {
+  background-image: url('../images/car-port.png');
+  padding-bottom: 4px;
+  background-size: 16px;
+  background-position: 1px 0px;
+}
+#bill-container .content-container .bill .fee-bar .elec-fee-type {
+  background-image: url('../images/ele.png');
+  padding-bottom: 5px;
+  background-size: 16px;
+  background-position: 1px 0px;
+}
+#bill-container .content-container .bill .fee-bar .water-fee-type {
+  background-image: url('../images/water.png');
+  padding-bottom: 5px;
+  background-size: 16px;
+  background-position: 1px -1px;
+}
+#bill-container .content-container .bill .fee-bar .fee {
+  font-size: 15px;
+  color: #333;
+  float: right;
+  line-height: 54px;
+}
+#bill-container .content-container .bill .detail-container .detail-control-bar {
+  text-align: right;
+  padding-bottom: 6px;
+}
+#bill-container .content-container .bill .detail-container .detail-control-bar .detail-control {
+  color: #999;
+  background-image: url('../images/down_arrow.png');
+  padding-right: 24px;
+  background-repeat: no-repeat;
+  background-position: 100% -2px;
+  background-size: 25px;
+}
+#bill-container .content-container .bill .detail-container .detail-control-bar .detail-control-expanded {
+  background-image: url('../images/up_arrow.png');
+}
+#bill-container .content-container .bill .detail-container .detail-content-container {
+  font-size: 12px;
+  padding-bottom: 2px;
+}
+#bill-container .content-container .bill .detail-container .detail-content-container dl {
+  margin: 0px;
+}
+#bill-container .content-container .bill .detail-container .detail-content-container .detail-title {
+  color: #aaa;
+  font-weight: normal;
+  margin-bottom: 1px;
+}
+#bill-container .content-container .bill .detail-container .detail-content-container .detail-content {
+  color: #777;
+}
+#bill-container .content-container .bill .detail-container .detail-content-container .first-detail-column {
+  width: 28%;
+  display: inline-block;
+}
+#bill-container .content-container .bill .detail-container .detail-content-container .second-detail-column {
+  width: 41%;
+  display: inline-block;
+  text-align: center;
+}
+#bill-container .content-container .bill .detail-container .detail-content-container .third-detail-column {
+  width: 28%;
+  display: inline-block;
+  text-align: right;
+}
+#bill-container .content-container .bill .detail-container .detail-content-container .detail-content.second-detail-column,
+#bill-container .content-container .bill .detail-container .detail-content-container .third-detail-column {
+  font-family: arial, sans-serif;
+}
+#bill-container .content-container .fee-reference-info {
+  text-align: center;
+  font-size: 12px;
+  color: #555;
+  padding: 10px 15px 44px;
+}
+#bill-container .bottom-bar {
+  height: 48px;
+  background-color: #fff;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  padding: 0px 12px;
+}
+#bill-container .bottom-bar .select {
+  margin-top: 14px;
+}
+#bill-container .bottom-bar .all-select-tip {
+  font-size: 15px;
+  color: #333;
+  margin-left: 8px;
+  position: relative;
+  top: -3px;
+}
+#bill-container .bottom-bar .total-fee-tip {
+  font-size: 15px;
+  color: #333;
+  margin-left: 8%;
+  position: relative;
+  top: -3px;
+}
+#bill-container .bottom-bar .total-fee {
+  font-size: 17px;
+  color: #ffa400;
+  margin-left: 11px;
+  position: relative;
+  top: -2px;
+}
+#bill-container .bottom-bar .check-out {
+  height: 40px;
+  width: 74px;
   margin-top: 4px;
-  flex: 1.6;
+  position: absolute;
+  right: 12px;
+  background-color: #ffa400;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 15px;
+  border: 0px;
 }
-#bill-container .bill-footer .total-money-container .total-money-text {
-  margin-left: 10px;
-}
-#bill-container .bill-footer .b-pay-button {
-  width: 70px;
-  height: 38px;
-  margin-top: 2px;
-  padding: 0px;
-  background-color: #f39f33;
-}
-#bill-container .bill-footer .disabled-button {
+#bill-container .bottom-bar .check-out-disabled {
   background-color: #ccc;
+}
+#bill-container #c-empty-container {
+  padding-top: 90px;
+}
+
+#c-empty-container {
+  text-align: center;
+  padding-top: 56px;
+  font-family: 微软雅黑;
+  font-size: 15px;
+  color: #333;
+}
+#c-empty-container .empty-icon {
+  width: 70px;
+}
+#c-empty-container .empty-tip {
+  display: inline-block;
+  margin-top: 15px;
+}
+#c-empty-container .second-tip {
+  margin-top: 9px;
+}
+
+#c-loading-container {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  font-family: 微软雅黑;
+  z-index: 1000;
+  background: #eee;
+}
+#c-loading-container .modal-container {
+  width: 130px;
+  left: 50%;
+  margin-left: -65px;
+  text-align: center;
+  /*padding: 30px 10px;*/
+  position: absolute;
+  opacity: 0.9;
+  top: 30%;
+  color: #f34832;
+  border-radius: 6px;
+  font-size: 15px;
+}
+#c-loading-container .modal-container .loading-loading {
+  display: block;
+  position: relative;
+  bottom: 75px;
+}
+#c-loading-container .modal-container .loading-text {
+  color: #000;
+}
+#c-loading-container .modal-container-error {
+  padding-top: 13px;
+}
+#c-loading-container .modal-container-error .loading-text {
+  margin-top: 12px;
+}
+.translucence {
+  opacity: 0.5;
 }
 
 #c-tip-container {
@@ -1238,25 +1437,21 @@ div.rn-carousel-indicator span {
   margin-top: 12px;
 }
 
+#c-transparent-mask-container {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  z-index: 1000;
+}
+
 #complain_list .item_service {
   margin-top: 5px;
   background: white;
 }
-#complain_list .repliestate {
+#complain_list .complain_replied {
   float: right;
-}
-.replied_state {
-  color: #e6b417;
-  background: url(../images/change_address.png) no-repeat;
-  display: block;
-  width: 55px;
-  height: 25px;
-  text-align: right;
-  background-size: 35%;
-  background-position: 8px 6px;
-}
-.replied_state:hover {
-  color: #e6b417;
 }
 #complain_add .mobile {
   margin-top: 10px;
@@ -1280,13 +1475,29 @@ div.rn-carousel-indicator span {
   border-radius: 5px;
   border: 1px solid #e0e0e0;
 }
-.com_left,
-.com_right {
+.com_address .com_left,
+.com_address .compile_right {
   display: inline-block;
 }
-.com_right {
+.com_address .compile_right {
   float: right;
   margin-right: 5px;
+}
+.com_address .compile_right .compile_right_state {
+  color: #e6b417;
+  background: url(../images/change_address.png) no-repeat;
+  display: block;
+  width: 55px;
+  height: 25px;
+  text-align: right;
+  background-size: 35%;
+  background-position: 8px 6px;
+}
+.com_address .compile_right .compile_right_state:hover {
+  color: #e6b417;
+}
+.com_address .compile_right .complie_right_state:active {
+  color: #e6b417;
 }
 #complain_detail {
   height: 100%;
@@ -1295,7 +1506,6 @@ div.rn-carousel-indicator span {
 }
 #complain_detail .complaint_title {
   font-size: 15px;
-  /*margin-top: 21px;*/
 }
 #complain_detail .property_detail {
   color: #777;
@@ -1723,73 +1933,322 @@ div.rn-carousel-indicator span {
 }
 #notice_detail .detail_notice {
   border-bottom: 1px #e6e6e6 solid;
-  margin: 10px 10px;
+  margin: 20px 12px 0px 12px;
   padding: 0px;
-  padding-bottom: 10px;
+}
+#notice_detail .warm_prompt {
+  margin-right: 14px;
 }
 #notice_detail .detail_notice_time {
   display: block;
   color: #8e8e8e;
   font-weight: normal;
+  margin-top: 11px;
+  margin-bottom: 13px;
 }
 #notice_detail .detail_notice_message {
   display: block;
-  padding: 10px 15px;
-  /*textarea{
-			height: 400px;
-			border: none;
-			color: #555;
-		}
-		textarea[disabled]{
-			color: #555;
-		}*/
+  padding: 16px 12px;
 }
-#notice_list .list {
+#notice_listtpl .list {
   background: none;
 }
-#notice_list .list .rapeat_list {
+#notice_listtpl .list .notice_list {
   background: white;
   padding: 8px;
   padding-top: 16px;
   margin: 13px;
 }
-#notice_list .list .rapeat_list span {
+#notice_listtpl .list .notice_list .warm_prompt {
   margin-right: 14px;
 }
-#notice_list .list .rapeat_list .notice_date {
+#notice_listtpl .list .notice_list .notice_date {
   border-top: 1px solid #e0e0e0;
   color: #777;
 }
 
-#repairlist #repair_type .repairtype {
-  margin: auto;
-  width: 280px;
-  font-size: 0px;
+#pay-list-container {
+  width: 100%;
+  padding-bottom: 40px;
+  background-color: #eeeeee;
+  font-family: 微软雅黑;
 }
-#repairlist #repair_type .repairtype div {
-  display: inline-block;
-  width: 70px;
-  height: 50px;
+#pay-list-container ul {
   margin: 0px;
-  text-align: center;
-  font-size: 12px;
 }
-#repairlist #repair_type .state {
+#pay-list-container dl {
+  margin: 0px;
+  padding: 0px;
+}
+#pay-list-container dt {
+  font-weight: normal;
+}
+#pay-list-container .pay-time-bar {
+  height: 44px;
+  padding: 0px 12px;
+}
+#pay-list-container .pay-time-bar .pay-time {
+  line-height: 44px;
+  font-size: 13px;
+  color: #777;
+}
+#pay-list-container .pay-bill {
+  position: relative;
+  padding: 0px 12px;
+  background-color: #fff;
+  padding-bottom: 13px;
+}
+#pay-list-container .pay-bill .bill-overview {
+  height: 50px;
+  margin-bottom: 9px;
+}
+#pay-list-container .pay-bill .bill-overview .bill-address {
+  font-size: 14px;
+  color: #555;
+  line-height: 50px;
+}
+#pay-list-container .pay-bill .bill-overview .bill-money {
+  font-size: 15px;
+  color: #333;
+  float: right;
+  line-height: 50px;
+}
+#pay-list-container .pay-bill .bill-line {
+  border-top: solid 1px #e8e8e8;
+  position: absolute;
+  top: 50px;
+  left: 12px;
+  right: 0px;
+}
+#pay-list-container .pay-bill .fee-item {
+  height: 35px;
+}
+#pay-list-container .pay-bill .fee-item .fee-type {
+  font-size: 15px;
+  color: #333;
+  padding-left: 30px;
+  background-repeat: no-repeat;
+  background-size: 18px;
+  background-position: 0px 2px;
+  position: absolute;
+  margin-top: 7px;
+}
+#pay-list-container .pay-bill .fee-item .property-fee-type {
+  background-image: url('../images/property.png');
+}
+#pay-list-container .pay-bill .fee-item .car-maintenance-fee-type {
+  background-image: url('../images/car-maintenance.png');
+  background-position-y: 3px;
+}
+#pay-list-container .pay-bill .fee-item .car-port-fee-type {
+  background-image: url('../images/car-port.png');
+  padding-bottom: 4px;
+  background-size: 16px;
+  background-position: 1px 1px;
+}
+#pay-list-container .pay-bill .fee-item .elec-fee-type {
+  background-image: url('../images/ele.png');
+  padding-bottom: 5px;
+  background-size: 16px;
+  background-position: 1px 0px;
+}
+#pay-list-container .pay-bill .fee-item .water-fee-type {
+  background-image: url('../images/water.png');
+  padding-bottom: 5px;
+  background-size: 16px;
+  background-position: 1px -1px;
+}
+#pay-list-container .pay-bill .fee-item .fee-date {
+  float: right;
+  line-height: 35px;
+  font-size: 13px;
+  color: #999;
+}
+#pay-list-container #c-empty-container {
+  padding-top: 90px;
+}
+
+#pay-container {
+  width: 100%;
+  padding-bottom: 40px;
+  background-color: #eeeeee;
+  font-family: 微软雅黑;
+}
+#pay-container .bill-address-bar {
+  height: 67px;
+  background-color: #fff;
+  margin-top: 8px;
+  padding: 16px 12px 0px;
+  font-size: 15px;
+  color: #333;
+}
+#pay-container .bill-address-bar .community {
+  float: right;
+  color: #555;
+}
+#pay-container .bill-address-bar .short-address {
+  float: right;
+}
+#pay-container .pay-bill-list {
+  margin-top: 8px;
+}
+#pay-container .pay-bill-list .bill-spacing {
+  margin-top: 8px;
+}
+#pay-container .pay-bill-list .pay-bill {
+  position: relative;
+  background-color: #fff;
+  padding: 0px 12px 0px;
+}
+#pay-container .pay-bill-list .pay-bill .bill-line {
+  border-top: solid 1px #e8e8e8;
+  position: absolute;
+  top: 50px;
+  left: 12px;
+  right: 0px;
+}
+#pay-container .pay-bill-list .pay-bill .fee-type-bar {
+  height: 50px;
+}
+#pay-container .pay-bill-list .pay-bill .fee-type-bar .fee-type {
+  font-size: 15px;
+  color: #333;
+  padding-left: 30px;
+  background-repeat: no-repeat;
+  background-size: 18px;
+  background-position: 0px 1px;
+  line-height: 50px;
+}
+#pay-container .pay-bill-list .pay-bill .fee-type-bar .property-fee-type {
+  background-image: url('../images/property.png');
+}
+#pay-container .pay-bill-list .pay-bill .fee-type-bar .car-maintenance-fee-type {
+  background-image: url('../images/car-maintenance.png');
+  background-position-y: 2px;
+}
+#pay-container .pay-bill-list .pay-bill .fee-type-bar .car-port-fee-type {
+  background-image: url('../images/car-port.png');
+  padding-bottom: 4px;
+  background-size: 16px;
+  background-position: 1px 0px;
+}
+#pay-container .pay-bill-list .pay-bill .fee-type-bar .elec-fee-type {
+  background-image: url('../images/ele.png');
+  padding-bottom: 5px;
+  background-size: 16px;
+  background-position: 1px 0px;
+}
+#pay-container .pay-bill-list .pay-bill .fee-type-bar .water-fee-type {
+  background-image: url('../images/water.png');
+  padding-bottom: 5px;
+  background-size: 16px;
+  background-position: 1px -1px;
+}
+#pay-container .pay-bill-list .pay-bill .date-bar {
+  height: 34px;
+}
+#pay-container .pay-bill-list .pay-bill .date-bar .bill-date-tip {
+  font-size: 14px;
+  color: #555;
+  line-height: 34px;
+}
+#pay-container .pay-bill-list .pay-bill .date-bar .fee-date {
+  font-size: 13px;
+  color: #777;
+  float: right;
+  line-height: 34px;
+}
+#pay-container .pay-bill-list .pay-bill .fee-bar {
+  height: 42px;
+  padding-top: 9px;
+}
+#pay-container .pay-bill-list .pay-bill .fee-bar .fee-tip {
+  font-size: 14px;
+  color: #555;
+}
+#pay-container .pay-bill-list .pay-bill .fee-bar .fee {
+  font-size: 15px;
+  color: #333;
+  float: right;
+}
+#pay-container .pay-money-bar {
+  height: 41px;
+  padding: 0px 12px 0px;
+  background-color: #fff;
+  margin-top: 8px;
+}
+#pay-container .pay-money-bar .pay-money-tip {
+  font-size: 15px;
+  color: #333;
+  line-height: 41px;
+}
+#pay-container .pay-money-bar .pay-money {
+  font-size: 17px;
+  color: #ffa400;
+  float: right;
+  line-height: 41px;
+}
+#pay-container .pay-type-bar {
+  margin-top: 8px;
+  background-color: #fff;
+  padding: 0px 12px 0px;
+}
+#pay-container .pay-type-bar ul {
+  margin: 0px;
+  padding: 0px;
+}
+#pay-container .pay-type-bar .pay-type-item {
+  height: 58px;
+  background-image: url('../images/wetalk_big.png');
+  background-repeat: no-repeat;
+  background-size: 34px;
+  background-position: 0px;
+  padding-left: 48px;
+}
+#pay-container .pay-type-bar .pay-type-item .pay-type-text {
+  line-height: 58px;
+  color: #333;
+  font-size: 14px;
+}
+#pay-container .pay-type-bar .pay-type-item .pay-type-select {
+  background-image: url('../images/selected-red-right.png');
+  background-size: 19px;
+  width: 19px;
+  height: 19px;
+  display: inline-block;
+  float: right;
+  margin-top: 19px;
+}
+#pay-container .bottom-container {
+  margin-top: 18px;
+  padding: 0px 12px;
+}
+#pay-container .bottom-container .pay-button {
+  height: 40px;
+  width: 100%;
+  color: #fff;
+  background-color: #ffa400;
+  border: 0px;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+#repair_listtpl #repair_type .state {
   color: #ffa400;
 }
-#repairlist #repair_type .state3 {
+#repair_listtpl #repair_type .state3 {
   float: right;
   color: #7b7b7b;
 }
-#repairlist .item_service {
+#repair_listtpl .item_service {
   background: white;
   margin-top: 10px;
 }
-#rapair_add input {
+#repair_add input {
   width: 100%;
   border: 1px solid #e0e0e0;
 }
-#rapair_add select {
+#repair_add select {
   width: 100%;
   height: 30px;
   margin: 5px 0px;
@@ -1800,19 +2259,16 @@ div.rn-carousel-indicator span {
   border-collapse: collapse;
   -webkit-appearance: none;
 }
-#rapair_add select option {
+#repair_add select option {
   color: #000;
 }
-#rapair_add textarea {
-  border: 1px solid #e0e0e0;
-}
-#rapair_add .repair_mobile {
+#repair_add .repair_mobile {
   margin-top: 6px;
 }
-#rapair_add .tel-edit {
+#repair_add .tel-edit {
   font-family: arial, sans-serif;
 }
-#rapair_add .repair_sel {
+#repair_add .repair_sel {
   display: block;
   height: 28px;
   width: 28px;
@@ -1824,7 +2280,7 @@ div.rn-carousel-indicator span {
   border-radius: 0 5px 5px 0;
   text-align: center;
 }
-#rapair_add .repair_sel .repair_sel_s {
+#repair_add .repair_sel .repair_sel_s {
   display: inline-block;
   height: 10px;
   width: 10px;
@@ -1835,42 +2291,27 @@ div.rn-carousel-indicator span {
   border-right: 5px solid #e03b25;
   top: 6px;
 }
-#rapair_add .repair_detail {
-  margin-top: 10px;
-}
-#repair_detail {
-  /*.date_time{
-		color: #333;
-		padding-left: 25px;
-
-	}
-	.list_num{
-		color: #f34832;
-	}*/
+#repair_add .repair_detail_textarea {
+  padding: 5px;
+  margin: 6px 0;
+  border: 1px solid #e0e0e0;
 }
 #repair_detail li {
   background: #fff;
+}
+#repair_detail .repair_detail_name {
+  color: #777777;
+  margin-left: 12px;
+  margin-right: 30px;
 }
 #repair_detail .device {
   color: #333;
   font-weight: bolder;
 }
-#repair_detail .date_u {
-  margin-left: 0px;
-  color: #333;
-}
-#repair_detail .data_uu {
-  margin-left: -5px;
-}
-#repair_detail .data_l {
-  padding-left: 0px;
-}
 #repair_detail .repaie_state {
-  /*background: #fff3a3;*/
   display: block;
   margin-left: 20px;
   border-left: 1px #ddd solid;
-  /*padding-top: 15px;*/
   padding-bottom: 15px;
 }
 #repair_detail .repaie_state .repair_detail_state {
@@ -1886,15 +2327,19 @@ div.rn-carousel-indicator span {
   display: block;
   color: #777;
   margin-left: 15px;
-  /*margin-top: -10px;*/
+  margin-top: -10px;
 }
-#repair_detail .repaie_state .repair_main {
-  display: block;
-}
-#repair_detail .repaie_state .repaie_state_right {
+#repair_detail .repaie_state .repair_detail_state .repaie_state_right {
   float: right;
   margin-right: 15px;
   color: #777!important;
+  height: 30px;
+}
+#repair_detail .repaie_state .repair_detail_state .repair_state_on {
+  color: red;
+}
+#repair_detail .repaie_state .repair_detail_state .repair_state_out {
+  color: #333;
 }
 #repair_detail .repaie_state img {
   display: inline-block;
@@ -1915,23 +2360,20 @@ div.rn-carousel-indicator span {
   left: -15px;
   bottom: 5px;
 }
-#repair_detail .repaie_state:nth-of-type(1) {
-  /*color: red;*/
-  /*padding-top: 20px;*/
-}
 #repair_detail .repaie_state:last-child {
   height: 30px;
   margin-bottom: 200px;
 }
-#repair_detail .repair_but {
+#repair_detail .repair_detail_but {
   position: fixed;
+  bottom: 1px solid #f34832;
   bottom: 0px;
   width: 100%;
   background: #fff;
   padding: 12px 12px;
   height: 56px;
 }
-#repair_detail .repair_but .l_btn {
+#repair_detail .repair_detail_but .l_btn {
   width: 100%;
   border: 1px solid #f34832;
   border-radius: 5px;
@@ -2155,6 +2597,18 @@ th {
   width: 68px;
   margin-bottom: 17px;
   position: relative;
+}
+
+#show-info-container {
+  position: relative;
+}
+#show-info-container .modal-container {
+  top: 50px;
+}
+.show-info-empty {
+  height: 366px;
+  background-color: #fff;
+  margin-top: 1px;
 }
 
 #us-container {

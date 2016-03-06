@@ -1,35 +1,119 @@
-#payment-list-container{
-	.payment-date {
-	    padding: 6px 15px;
-    	text-align: left;
-    	font-size: 13px;
-    	color: #777;
-	}
+#pay-list-container{
+	width: 100%;
+    padding-bottom: 40px;
+    background-color: rgb(238,238,238);
+    font-family: 微软雅黑;
 
-	.pay-address{
-		margin-bottom: 5px;
-		font-size: 14px;
-		color: #555;
-	}
+    ul{
+    	margin: 0px;
+    }
 
-	.fee-icon{
-		width: 16px;
-		margin-right: 6px;
-		margin-top : -2px;
-	}
+    dl{
+	    margin: 0px;
+		padding: 0px;
+    }
 
-	.car-port-fee-icon{
-		width: 15px;
-		margin-top: 0px;
-		margin-left: 2px;
-	}
+    dt{
+    	font-weight: normal;
+    }
 
-	.life-fee-icon{
-		margin-left: 2px;
-		width: 14px;
-	}
+    .pay-time-bar{
+	    height: 44px;
+	    padding: 0px 12px;
 
-	.no-border-top:before {
-		border-top: none;
+    	.pay-time{
+    		line-height: 44px;
+		    font-size: 13px;
+		    color: #777;
+    	}
+    }
+
+    .pay-bill{
+    	position: relative;
+    	padding: 0px 12px;
+    	background-color: #fff;
+    	padding-bottom: 13px;
+
+    	.bill-overview{
+    		height: 50px;
+    		margin-bottom: 9px;
+
+    		.bill-address{
+				font-size: 14px;
+			    color: #555;
+			    line-height: 50px;
+    		}
+
+    		.bill-money{
+    			font-size: 15px;
+			    color: #333;
+			    float: right;
+			    line-height: 50px;
+    		}
+    	}
+
+    	.bill-line{
+	    	border-top: solid 1px #e8e8e8;
+		    position: absolute;
+		    top: 50px;
+		    left: 12px;
+		    right: 0px;
+	    }
+
+	    .fee-item{
+			height: 35px;
+
+			.fee-type{
+			    font-size: 15px;
+			    color: #333;
+			    padding-left: 30px;
+			    background-repeat: no-repeat;
+			    background-size: 18px;
+			    background-position: 0px 2px;
+			    position: absolute;
+			    margin-top: 7px;
+	    	}
+
+	    	.property-fee-type{
+	    		background-image: url('../images/property.png');
+	    	}
+
+	    	.car-maintenance-fee-type{
+	    		background-image: url('../images/car-maintenance.png');
+	    		background-position-y: 3px;
+	    	}
+
+	    	.car-port-fee-type{
+	    		background-image: url('../images/car-port.png');
+	    		padding-bottom: 4px;
+			    background-size: 16px;
+				background-position: 1px 1px;
+	    	}
+
+	    	.elec-fee-type{
+	    		background-image: url('../images/ele.png');
+			    padding-bottom: 5px;
+			    background-size: 16px;
+			    background-position: 1px 0px;
+	    	}
+
+	    	.water-fee-type{
+	    		background-image: url('../images/water.png');
+	    		padding-bottom: 5px;
+			    background-size: 16px;
+			    background-position: 1px -1px;
+	    	}
+
+	    	.fee-date{
+	    		float: right;
+	    		line-height: 35px;
+	    		font-size: 13px;
+	    		color: #999;
+	    	}
+	    }
+    }
+
+    #c-empty-container{
+		padding-top: 90px;
 	}
 }

@@ -1,76 +1,66 @@
 ﻿<div id="pay-container">
     <div class="bill-address-bar">
+        <div>
+            <span class="bill-address-tip">缴费户号</span>
+            <span class="community" ng-bind="community">阿尔卡地亚</span>
+        </div>
+        <div>
+            <span class="short-address" ng-bind="address">2-1-203</span>
+        </div>
     </div>
     <div class="pay-bill-list">
         <ul>
-            <li class="pay-bill">
+            <li class="pay-bill" ng-repeat="bill in otherBillList">
                 <div class="fee-type-bar">
-                    <span class="fee-type property-fee-type">物业费</span>
+                    <span class="fee-type property-fee-type" 
+                        ng-if="bill.type==2">物业费</span>
+                    <span class="fee-type car-maintenance-fee-type" 
+                        ng-if="bill.type==3">车位维护费</span>
+                    <span class="fee-type car-port-fee-type" 
+                        ng-if="bill.type==4">车位费</span>
                 </div>
                 <div class="bill-line"></div>
                 <div class="date-bar">
                     <span class="bill-date-tip">账期</span>
-                    <span class="fee-date">2015年12月25日起12个月</span>
+                    <span class="fee-date" ng-bind="bill.date">2015年12月25日起12个月</span>
                 </div>
                 <div class="fee-bar">
                     <span class="fee-tip">应付金额</span>
-                    <span class="fee"><span class="fee-number">1890.00</span>元</span>
+                    <span class="fee">
+                        <span class="fee-number" ng-bind="bill.amount">1890.00</span>元
+                    </span>
                 </div>
             </li>
-            <li class="pay-bill bill-spacing">
-                <div class="fee-type-bar">
-                    <span class="fee-type car-maintenance-fee-type">车位维护费</span>
-                </div>
-                <div class="bill-line"></div>
-                <div class="date-bar">
-                    <span class="bill-date-tip">账期</span>
-                    <span class="fee-date">2015年12月25日起12个月</span>
-                </div>
-                <div class="fee-bar">
-                    <span class="fee-tip">应付金额</span>
-                    <span class="fee"><span class="fee-number">1890.00</span>元</span>
-                </div>
-            </li>
-            <li class="pay-bill bill-spacing">
-                <div class="fee-type-bar">
-                    <span class="fee-type car-port-fee-type">车位费</span>
-                </div>
-                <div class="bill-line"></div>
-                <div class="date-bar">
-                    <span class="bill-date-tip">账期</span>
-                    <span class="fee-date">2015年12月25日起12个月</span>
-                </div>
-                <div class="fee-bar">
-                    <span class="fee-tip">应付金额</span>
-                    <span class="fee"><span class="fee-number">1890.00</span>元</span>
-                </div>
-            </li>
-            <li class="pay-bill bill-spacing">
+            <li class="pay-bill bill-spacing" ng-if="wDates&&wDates.length>0">
                 <div class="fee-type-bar">
                     <span class="fee-type water-fee-type">水费</span>
                 </div>
                 <div class="bill-line"></div>
                 <div class="date-bar">
                     <span class="bill-date-tip">账期</span>
-                    <span class="fee-date">2015年12月25日起12个月</span>
+                    <span class="fee-date" ng-bind="wBillDate">2015年12月25日起12个月</span>
                 </div>
                 <div class="fee-bar">
                     <span class="fee-tip">应付金额</span>
-                    <span class="fee"><span class="fee-number">1890.00</span>元</span>
+                    <span class="fee">
+                        <span class="fee-number" ng-bind="waterFee">1890.00</span>元
+                    </span>
                 </div>
             </li>
-            <li class="pay-bill bill-spacing">
+            <li class="pay-bill bill-spacing" ng-if="eDates&&eDates.length>0">
                 <div class="fee-type-bar">
                     <span class="fee-type elec-fee-type">电费</span>
                 </div>
                 <div class="bill-line"></div>
                 <div class="date-bar">
                     <span class="bill-date-tip">账期</span>
-                    <span class="fee-date">2015年12月25日起12个月</span>
+                    <span class="fee-date" ng-bind="eBillDate">2015年12月25日起12个月</span>
                 </div>
                 <div class="fee-bar">
                     <span class="fee-tip">应付金额</span>
-                    <span class="fee"><span class="fee-number">1890.00</span>元</span>
+                    <span class="fee">
+                        <span class="fee-number" ng-bind="elecFee">1890.00</span>元
+                    </span>
                 </div>
             </li>
         </ul>
@@ -82,15 +72,15 @@
     <div class="pay-type-bar">
         <ul>
             <li>
-                <div>
-                    <span>微信支付</span>
-                    <a></a>
+                <div class="pay-type-item">
+                    <span class="pay-type-text">微信支付</span>
+                    <a class="pay-type-select"></a>
                 </div>
             </li>
         </ul>
     </div>
     <div class="bottom-container">
-        <button>确认支付</button>
+        <button class="pay-button" ng-click="pay()">确认支付</button>
     </div>
     <c-transparent-mask show="showTransparentMask"></c-transparent-mask>
 </div>

@@ -13,10 +13,19 @@ angular.module('app.pay').controller('payCtrl', ['$scope', '$http', '$stateParam
             $scope.eBillDate = billPay.getMergeDate(payBillInfo.eDates);
         }
         
+        // make address info
         $scope.community = addressInfo.community;
         $scope.block = addressInfo.block;
         $scope.unit = addressInfo.unit;
         $scope.room = addressInfo.room;
+        $scope.address = $scope.block;
+        if($scope.unit){
+            $scope.address+="-"+$scope.unit;
+        }
+        if($scope.room){
+            $scope.address+="-"+$scope.room;
+        }
+        // end
 
         var loginInfo = userInfo.getLastLoginInfo();
         var openId = userInfo.getOpenIdSync();
