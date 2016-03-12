@@ -20,7 +20,8 @@ myApp.directive('cBill', function() {
                     $scope.otherBillList = $scope.billList.otherBillList;
                     $scope.billItemCount = $scope.billList.billItemCount;
                     $scope.selectedIds = [];//保存选择的待支付账单的ID
-                    $scope.totalFee = 0;//已选账单总金额        
+                    $scope.totalFee = 0;//已选账单总金额    
+                    $scope.allSelected = false;    
                 }
             })
 
