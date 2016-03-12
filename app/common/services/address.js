@@ -52,6 +52,7 @@ angular.module('app.address')
 
 			this.getDefaultAddressSync = function(){
 				if(!defaultAddress || defaultAddressDirty){
+					defaultAddress = null;
 					for(var i = 0;i<addressList.length;i++){
 						var item = addressList[i];
 						if(item.active == 0){
@@ -91,7 +92,6 @@ angular.module('app.address')
 	                		defaultAddr.active = 1;
 	                	}
 	                    address.active = 0;
-	                    defaultAddressDirty = true;
 	                }, function (reason) {
 	                    var reason = {
 	                        errorCode:"SET_DEFAULT_ADDRESS_ERROR",
@@ -138,6 +138,7 @@ angular.module('app.address')
 			}
 
 			this.deleteAddress = function(address){
+				var that = this;
 				var defer = $q.defer();
 				var params = {
                     id: address.id,
@@ -147,10 +148,10 @@ angular.module('app.address')
                     var deleteDefault = address.active == 0;
 					deleteAddressWithId(address.id);
 					if(deleteDefault){
-						if(addressList.length>0){
-							addressList[0].active = 0;
-						}
 						defaultAddressDirty = true;
+						if(addressList&& addressList.length>0){
+							that.setDefaultAddress(addressList[0]);
+						}
 					}
 					if(addressList.length == 0){
 						localStorage.hasAddress = false;

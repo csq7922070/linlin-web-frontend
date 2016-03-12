@@ -40,6 +40,8 @@ angular.module('app.address')
 					this.room = addr.room;
 					this.ownerName = addr.ownerName;
 					this.initial = addr.initial;
+				}else{
+					this.init();
 				}
 			}
 

@@ -19,13 +19,16 @@ myApp.directive('cSlideAddress', function() {
                 }
             });
 
-            function updateCurrentAddressList(deleted){
+            function updateCurrentAddressList(type){
                 $scope.maxPage = Math.ceil($scope.addressList.length/pageSize);//
-                if($scope.currentPage>$scope.maxPage&&$scope.currentPage!=1){
+                if($scope.currentPage>$scope.maxPage&&$scope.currentPage>1){//删除了地址
                     $scope.currentPage--;
                 }
+                if(type=="add"&&$scope.currentPage<$scope.maxPage){//添加了地址
+                    $scope.currentPage++;
+                }
                 $scope.currentAddressList = getSubArray($scope.addressList, $scope.currentPage, pageSize);
-                if($scope.currentAddress==undefined&&$scope.currentAddressList.length>0){
+                if(!$scope.currentAddress&&$scope.currentAddressList.length>0){
                     var defaultAddress = address.getDefaultAddressSync();
                     if(defaultAddress){
                         $scope.currentAddress = defaultAddress;
@@ -33,12 +36,15 @@ myApp.directive('cSlideAddress', function() {
                         $scope.currentAddress = $scope.currentAddressList[0];
                     }
                 }
-                if(deleted){
+                if(type=="delete"&&deleteCurrent){//删除了当前地址
                     if($scope.currentAddressList.length>0){
                         $scope.selectAddress($scope.currentAddressList[0]);
                     }else{
-                        $scope.selectAddress();
+                        $scope.selectAddress(null);
                     }
+                }
+                if(type=="add"){
+                    $scope.selectAddress(addressInfo.getSelectedAddress());
                 }
             }
 
@@ -70,12 +76,14 @@ myApp.directive('cSlideAddress', function() {
                 $scope.currentAddressList = getSubArray($scope.addressList, $scope.currentPage, pageSize);
             }
 
+            var deleteCurrent = false;
             $scope.deleteAddress = function (addr) {
                 $scope.showDeleteConfirm = true;
+                deleteCurrent = $scope.currentAddress.id == addr.id;
                 $scope.delete = function () {
                     $scope.showDeleteConfirm = false;
                     address.deleteAddress(addr).then(function (data) {
-                        updateCurrentAddressList(true);
+                        updateCurrentAddressList("delete");
                     }, function (reason) {
                         alert(errorLog.getErrorMessage(reason));
                     })
@@ -127,8 +135,7 @@ myApp.directive('cSlideAddress', function() {
 
             $scope.onEditAddressComplete = function(){
                 //$scope.showContent = true;
-                updateCurrentAddressList();
-                $scope.selectAddress(addressInfo.getSelectedAddress());
+                updateCurrentAddressList("add");
             }
         }
     }
