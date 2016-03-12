@@ -1,0 +1,38 @@
+<div id="location-container">
+	<div class="search-container">
+		<input type="text" ng-model="cityName" class="search-field" 
+			placeholder="输入城市名或拼音" />
+	</div>
+	<div>
+		<div class="location-title-bar title-bar">定位城市</div>
+		<div class="location-bar">
+			<a ng-bind="locationCity" ng-click="changeCity(locationCity)" class="city-block-link"
+				ng-show="!showLocationLoading && !showLocationError"></a>
+			<div class="location-loading" ng-show="showLocationLoading">定位中...</div>
+			<div class="location-error-container" ng-show="showLocationError">定位失败，请<a ng-click="retryLocation()">重试</a>或通过搜索框搜索</div>
+		</div>
+	</div>
+	<div>
+		<div class="recommend-title-bar title-bar">推荐城市</div>
+		<div class="recommend-bar">
+			<ul>
+				<li>
+					<a ng-click="changeCity('廊坊')" class="city-block-link">廊坊</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="city-list-container">
+		<ul>
+			<li ng-repeat="cityGroup in cities">
+				<dl>
+					<dt ng-bind="cityGroup.initial" class="city-initial-bar"></dt>
+					<dd ng-repeat="city in cityGroup.items">
+						<a ng-bind="city.cityName" ng-click="changeCity(city.cityName)" class="city-link"></a>
+					</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
+	<c-loading show="showLoading" tip="正在加载中..." tip-loading="loading"></c-loading>
+</div>

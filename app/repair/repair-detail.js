@@ -17,21 +17,33 @@
             })
 
             vm.confirm = function(id) {
-                $scope.showLoading = true;
-                repair.saveRepairDetailComfirm(id).then(function(data){
-                   $scope.showLoading = false;
-                    vm.repair = data;
-                    if(vm.repair.confirmDate == null){
-                        vm.repair.confirmDate = vm.repair.finishDate;
+                $scope.repairIconShow = true;
+                $scope.onRpeairIconComplete = function(iconId){
+                    params = {
+                        id : id,
+                        score : iconId,
+                        state: 3
                     }
-                    $scope.showSuccess = true;
-                    $scope.onSuccessClose = function() {
-                        $state.go('repair');
-                    }
-                },function(){
-                    $scope.showLoading = true;
-                    $scope.showError = true;
-                })
+                    // console.log(params);
+                    
+                    repair.saveRepairDetailComfirm(params).then(function(data){
+                       $scope.showLoading = false;
+                        vm.repair = data;
+                        if(vm.repair.confirmDate == null){
+                            vm.repair.confirmDate = vm.repair.finishDate;
+                        }
+                        $scope.repairIconShow = false;
+                        $scope.showSuccess = true;
+                        $scope.onSuccessClose = function() {
+                            $state.go('repair');
+                        }
+                        $scope.repairIconShow = false;
+                    },function(){
+                        $scope.showLoading = true;
+                        $scope.showError = true;
+                    })
+                }
+                    
             };            
         }
     ]);

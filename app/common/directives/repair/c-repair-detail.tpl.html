@@ -1,0 +1,62 @@
+<div id="c-repair-detail-container" class="" ng-show="show">
+    <div class="repair_detail_list_state">
+        <div class="repaie_state">
+            <img ng-if="repairDetail.state!=0" src="images/repair_09.png">
+            <img ng-if="repairDetail.state==0" src="images/repair_03.png">
+            <span class="repair_detail_state">
+                <div class="triangle"></div>
+                <div class="triangle_transparent"></div>
+                <span>
+                    <span ng-class="{true:'repair_state_on',false:'repair_state_out'}[repairDetail.state==0]">业主报修</span>
+                    <span class="repaie_state_right" ng-bind="repairDetail.createDate.substring(0,16)"></span>
+                    <span class="repair_wait">
+                        将尽快安排维修人员上门
+                    </span>
+                </span>
+            </span>
+        </div>
+        <div class="repaie_state">
+            <img ng-if="repairDetail.state!=1" src="images/repair_09.png">
+            <img ng-if="repairDetail.state==1" src="images/repair_03.png">
+            <span class="repair_detail_state">
+                <div class="triangle"></div>
+                <div class="triangle_transparent"></div>
+                <span>
+                    <span ng-class="{true:'repair_state_on',false:'repair_state_out'}[repairDetail.state==1]">物业确认</span>
+                    <span class="repaie_state_right" ng-bind="repairDetail.assignDate|date:'yyyy-MM-dd hh:mm'"></span>
+                    <span class="repair_wait" ng-if="repairDetail.worker">
+                        已指派{{repairDetail.worker}}上门维修，请耐心等待
+                    </span>
+                    <a href="tel:{{repairDetail.workerMobile}}" class="repair_wait" ng-if="repairDetail.workerMobile">
+                        {{repairDetail.workerMobile}}
+                    </a>
+                </span>
+            </span>
+        </div>
+        <div class="repaie_state">
+            <img ng-if="repairDetail.state!=2" src="images/repair_09.png">
+            <img ng-if="repairDetail.state==2" src="images/repair_03.png">
+            <span class="repair_detail_state">
+                <div class="triangle"></div>
+                <div class="triangle_transparent"></div>
+                <span>
+                    <span ng-class="{true:'repair_state_on',false:'repair_state_out'}[repairDetail.state==2]">维修完成</span>
+                    <span class="repaie_state_right" ng-bind="repairDetail.confirmDate.substring(0,16)"></span>
+                </span>
+            </span>
+        </div>
+        <div class="repaie_state">
+            <img ng-if="repairDetail.state!=3" src="images/repair_09.png">
+            <img ng-if="repairDetail.state==3" src="images/repair_03.png">
+            <span class="repair_detail_state">
+                <div class="triangle"></div>
+                <div class="triangle_transparent"></div>
+                <span>
+                    <span ng-class="{true:'repair_state_on',false:'repair_state_out'}[repairDetail.state==3]">业主确认</span>
+                    <span class="repaie_state_right" ng-bind="repairDetail.finishDate.substring(0,16)"></span>
+                </span>
+            </span>
+        </div>
+    </div>
+    	
+</div>

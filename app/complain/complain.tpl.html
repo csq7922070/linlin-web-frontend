@@ -1,0 +1,16 @@
+<div id="complain_list">
+    <div class="complain_dir_add" ng-click="complainAdd();" ng-if="!complainAddShow">
+    	<button class="complain_btn" ng-click="complainAdd();">
+    		我要投诉
+    	</button>
+    </div>
+    <!-- 投诉添加详情 -->
+    <c-complain-add complain-add="vm.complainAdd" show="complainAddShow" on-complete="onComplainAddComplete()"></c-complain-add>
+    
+    <div class="complain_dir_list">
+       投诉记录
+    </div>
+    <c-complain-list complain-list="vm.complainList" show="complainListShow" on-scrolled="refreshComplainList()"></c-complain-list>
+
+</div>
+<c-loading type="loading" show="showLoading" tip="正在加载中。。。" tiploading="loading"></c-loading>

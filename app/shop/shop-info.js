@@ -4,30 +4,35 @@
         function($scope, $stateParams, $rootScope, errorLog, communityLocation,location,shop) {
             $scope.site = $stateParams.site;
             if($scope.site == undefined){
-                $scope.site = 1;
+                $scope.site = 0;
             }
-            var currentPage = 0;
+            var currentPage = 1;//从1开始计算
             var pageSize = 10;
+            var total = 10000;
             var busy = false;
             $scope.shopList = [];
 
             function load(pageIndex, pageSize) {
-                if (busy) {
+                console.log("load...");
+                if (busy || (pageIndex-1)*pageSize >= total) {//拉取数据查询中或者没有数据可拉取则直接返回
                     return;
                 }
+                console.log("load start");
                 var locInfo = location.getLastLocation();
                 var longitude = locInfo&&locInfo.longitude ? locInfo.longitude:"";
                 var latitude = locInfo&&locInfo.latitude ? locInfo.latitude:"";
                 busy = true;
-                if(pageIndex == 0){
+                if(pageIndex == 1){
                     $scope.showLoading = true;
                 }
-                shop.getShopList(pageIndex, pageSize, $scope.site - 1, longitude, latitude).then(function(data){
+                shop.getShopList(pageIndex, pageSize, $scope.site, longitude, latitude).then(function(data){
                     $scope.showLoading = false;
                     busy = false;
-                    currentPage = pageIndex+1;
-                    $scope.shopList = $scope.shopList.concat($scope.shopList, data);
-                    //console.log($scope.showList);
+                    currentPage = pageIndex;
+                    total = data.count;
+                    console.log(total);
+                    $scope.shopList = $scope.shopList.concat(data);
+                    console.log($scope.shopList);
                 },function(reason){
                     busy = false;
                     $scope.showLoading = false;

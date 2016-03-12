@@ -3,8 +3,12 @@
         <div id="repair_type" class="repair_detail_list">
             <ul>
                 <li>
-                    <span class="repair_detail_name">报修设备</span>
-                    <span class="device" ng-bind="vm.repair.device"></span>
+                    <div class="repair_detail_icon">
+                         <img ng-src='images/device_0{{vm.repair.imgTag}}.png'>
+                         <p class="device" ng-bind="vm.repair.device"></p>
+                    </div>
+                    <!-- <span class="repair_detail_name">报修设备</span>
+                    <span class="device" ng-bind="vm.repair.device"></span> -->
                 </li>
                 <li ng-if="vm.repair.remark">
                     <span class="repair_detail_name">故障描述</span>
@@ -19,56 +23,7 @@
                     <span class="repair_detail_name">联系方式</span>
                     <span ng-bind="vm.repair.mobile"></span>
                 </li>
-                <div class="repaie_state">
-                    <img ng-if="vm.repair.state!=3" src="images/repair_09.png">
-                    <img ng-if="vm.repair.state==3" src="images/repair_03.png">
-                    <span class="repair_detail_state">
-                        <div class="triangle"></div>
-                        <span>
-                            <span ng-class="{true:'repair_state_on',false:'repair_state_out'}[vm.repair.state==3]">业主确认</span>
-                            <span class="repaie_state_right" ng-bind="vm.repair.finishDate.substring(0,16)"></span>
-                        </span>
-                    </span>
-                </div>
-                <div class="repaie_state">
-                    <img ng-if="vm.repair.state!=2" src="images/repair_09.png">
-                    <img ng-if="vm.repair.state==2" src="images/repair_03.png">
-                    <span class="repair_detail_state">
-                        <div class="triangle"></div>
-                        <span>
-                            <span ng-class="{true:'repair_state_on',false:'repair_state_out'}[vm.repair.state==2]">维修完成</span>
-                            <span class="repaie_state_right" ng-bind="vm.repair.confirmDate.substring(0,16)"></span>
-                        </span>
-                    </span>
-                </div>
-                <div class="repaie_state">
-                    <img ng-if="vm.repair.state!=1" src="images/repair_09.png">
-                    <img ng-if="vm.repair.state==1" src="images/repair_03.png">
-                    <span class="repair_detail_state">
-                        <div class="triangle"></div>
-                        <span>
-                            <span ng-class="{true:'repair_state_on',false:'repair_state_out'}[vm.repair.state==1]">物业确认</span>
-                            <span class="repaie_state_right" ng-bind="vm.repair.assignDate|date:'yyyy-MM-dd hh:mm'"></span>
-                            <span class="repair_wait" ng-if="vm.repair.worker">
-                                已指派{{vm.repair.worker}}上门维修，请耐心等待
-                            </span>
-                        </span>
-                    </span>
-                </div>
-                <div class="repaie_state">
-                    <img ng-if="vm.repair.state!=0" src="images/repair_09.png">
-                    <img ng-if="vm.repair.state==0" src="images/repair_03.png">
-                    <span class="repair_detail_state">
-                        <div class="triangle"></div>
-                        <span>
-                            <span ng-class="{true:'repair_state_on',false:'repair_state_out'}[vm.repair.state==0]">业主报修</span>
-                            <span class="repaie_state_right" ng-bind="vm.repair.createDate.substring(0,16)"></span>
-                            <span class="repair_wait">
-                                将尽快安排维修人员上门
-                            </span>
-                        </span>
-                    </span>
-                </div>                    
+                <c-repair-detail repair-detail="vm.repair" show="repairDetailShow" ng-init="repairDetailShow=true"></c-repair-detail>              
             </ul>
         </div>
         <div class="repair_detail_but" ng-hide="vm.repair.state==3">
@@ -81,3 +36,4 @@
 <c-tip type="error" show="showError" tip="提交失败!" close-time="1500" on-close="onTipClose()"></c-tip>
 
 <c-loading show="showLoading" tip="正在加载中..." tip-loading="loading"></c-loading>
+<c-repair-icon repair-icon="vm.repair"  show="repairIconShow" on-complete="onRpeairIconComplete(iconId);"></c-repair-icon>

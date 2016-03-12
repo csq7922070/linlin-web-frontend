@@ -1,7 +1,7 @@
 angular.module('app.user')
 	.service('userInfo', ['$q','$http','$timeout', '$location', 'errorLog', 'appState',
 		function($q,$http,$timeout, $location, errorLog,appState){
-		var wxParam = null;//此参数是用户进入公众号页面后微信传入的参数，根据此参数再调API获取用户的OpenId，此参数是微信动态生成的
+		var wxParam = null;//此参数是用户进入公众号页面后微信传入的参数，根据此参数再调API获取用户的OpenId，此参数是微信动态生成的，不可持久化到本地
 		var openId = null;//可持久化到本地
 		// var wxConfigParam = {
 		// 	timestamp : null,
@@ -18,6 +18,13 @@ angular.module('app.user')
 					url="";
 				}
 				wxParam = url;
+			}
+		}
+
+		this.init = function(){
+			if(!openId || !localStorage.openId){
+				this.initWxParam();
+				this.getOpenId();
 			}
 		}
 

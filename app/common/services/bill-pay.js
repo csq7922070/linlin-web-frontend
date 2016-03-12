@@ -5,22 +5,33 @@ angular.module('app.pay')
 
 			this.getBillInfo = function(addressId){
 				var defer = $q.defer();
-				var params = {
-	                id: 'query',
-	                paymentState: 0,
-	                queryType: 'houseId',
-	                houseId: addressId
-	            };
-	            payments.query(params).$promise.then(function(data) {
-	            	var billInfo = getFormatBillInfo(data);
-	                defer.resolve(billInfo);
-	            },function(reason){
-	            	reason = {
-	                    errorCode:"GET_BILL_LIST_ERROR",
-	                    errorMessage:errorLog.getErrorMessage(reason)
-	                };
-	                defer.reject(reason);
-	            });
+				if(addressId!=null){
+					var params = {
+		                id: 'query',
+		                paymentState: 0,
+		                queryType: 'houseId',
+		                houseId: addressId
+		            };
+		            payments.query(params).$promise.then(function(data) {
+		            	var billInfo = getFormatBillInfo(data);
+		                defer.resolve(billInfo);
+		            },function(reason){
+		            	reason = {
+		                    errorCode:"GET_BILL_LIST_ERROR",
+		                    errorMessage:errorLog.getErrorMessage(reason)
+		                };
+		                defer.reject(reason);
+		            });
+				}else{
+					var billInfo = {
+						propertyFeeList:[],//物业费列表
+						carMaintenanceFeeList:[],//车位维护费列表
+						carportFeeList:[],//车位费列表
+						lifeFeeList:[],//水电费列表
+						otherFeeList:[]//物业费、车位维护费、车位费列表
+					};	
+					defer.resolve(billInfo);
+				}
 				return defer.promise;
 			}
 

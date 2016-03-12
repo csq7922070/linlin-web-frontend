@@ -1,6 +1,6 @@
 //var basePath = "http://localhost:8080/skh";
 //var basePath="http://192.168.0.120:8080/skh";
-var basePath = "http://mitest.4zlink.com:8080/mifan";
+var basePath = "http://mifan.4zlink.com:8080/mifan";
 // var basePath = "http://192.168.0.135:8080/skh";
 
 angular.module('app.home', []);
@@ -24,7 +24,7 @@ var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home'
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/auto-location");
+    $urlRouterProvider.otherwise("/location");
 
     $stateProvider
         .state('notice', {
@@ -39,9 +39,15 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "noticeDetailCtrl",
             controllerAs: 'vm'
         })
+        // .state('repair', {
+        //     url: "/repair-list",
+        //     templateUrl: "tpl/repair/repair-list.tpl.html",
+        //     controller: 'repairListCtrl',
+        //     controllerAs: 'vm'
+        // })
         .state('repair', {
-            url: "/repair-list",
-            templateUrl: "tpl/repair/repair-list.tpl.html",
+            url: "/repair",
+            templateUrl: "tpl/repair/repair.tpl.html",
             controller: 'repairListCtrl',
             controllerAs: 'vm'
         })
@@ -51,15 +57,21 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: 'repairDetailCtrl',
             controllerAs: 'vm'
         })
-        .state('repair-add', {
-            url: "/repair-add",
-            templateUrl: "tpl/repair/repair-add.tpl.html", 
-            controller: 'repairAddCtrl',
-            controllerAs: 'vm'
-        })
+        // .state('repair-add', {
+        //     url: "/repair-add",
+        //     templateUrl: "tpl/repair/repair-add.tpl.html", 
+        //     controller: 'repairAddCtrl',
+        //     controllerAs: 'vm'
+        // })
+        // .state('complain', {
+        //     url: "/complain-list",
+        //     templateUrl: "tpl/complain/complain-list.tpl.html",
+        //     controller: "complainListCtrl",
+        //     controllerAs: 'vm'
+        // })
         .state('complain', {
-            url: "/complain-list",
-            templateUrl: "tpl/complain/complain-list.tpl.html",
+            url: "/complain",
+            templateUrl: "tpl/complain/complain.tpl.html",
             controller: "complainListCtrl",
             controllerAs: 'vm'
         })
@@ -69,12 +81,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "complainDetailCtrl",
             controllerAs: 'vm'
         })
-        .state('complain-add', {
-            url: "/complain-add",
-            templateUrl: "tpl/complain/complain-add.tpl.html",
-            controller: "complainAddCtrl",
-            controllerAs: 'vm'
-        })
+        // .state('complain-add', {
+        //     url: "/complain-add",
+        //     templateUrl: "tpl/complain/complain-add.tpl.html",
+        //     controller: "complainAddCtrl",
+        //     controllerAs: 'vm'
+        // })
         .state('address-list', {
             url: "/address-list/:mode",
             templateUrl: "tpl/address/address-list.tpl.html",
@@ -160,6 +172,12 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             url: "/search-location",
             templateUrl: "tpl/location/search-location.tpl.html",
             controller: "searchLocationCtrl",
+            controllerAs: 'vm'
+        })
+        .state('location', {
+            url: "/location",
+            templateUrl: "tpl/location/location.tpl.html",
+            controller: "locationCtrl",
             controllerAs: 'vm'
         })
         .state('login',{
@@ -267,10 +285,10 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
     });
 }]).value('locationState',{
         hasLocation: false,
-        autoLocationVisited: false
+        locationVisited: false
     }
 ).constant(
     'appType', 'weixin'//app or weixin
 ).constant(
-    'appState', 'debug'//debug or release
+    'appState', 'release'//debug or release
 );

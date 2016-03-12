@@ -1,10 +1,10 @@
 angular.module('app.shop')
 	.service('shop', ['$q','$http','$timeout','errorLog', 'addresses','userInfo','shops',
 		function($q,$http,$timeout, errorLog,addresses,userInfo,shops){
-			this.getShopList = function(pageIndex, pageSize, type, longitude, latitude){//pageIndex从0开始算，type从0开始算
+			this.getShopList = function(pageIndex, pageSize, type, longitude, latitude){//pageIndex从1开始算，type从0开始算
 				var defer = $q.defer();
 				var params = {
-                    offset: pageIndex,
+                    page: pageIndex,
                     limit: pageSize,
                     type: type,
                     lon: longitude,

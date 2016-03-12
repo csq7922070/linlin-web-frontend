@@ -1,6 +1,6 @@
-<div id="show-info-container" ng-class="{true:'show-info-empty'}[shopList.length==0||site==3]">
-    <div when-scrolled="scroll()" ng-if="site!=3">
-        <div class="row home_list" ng-repeat="shop in shopList">
+<div id="show-info-container" ng-class="{true:'show-info-empty'}[shopList.length==0||site==2]">
+    <div when-scrolled="scroll()" ng-if="site!=2">
+        <div class="row home_list" ng-repeat="shop in shopList track by $index">
             <a href="{{shop.business_url}}">
                 <div class="col-xs-4"><img ng-src="{{shop.s_photo_url}}" err-src="images/404.png" alt="暂无图片" style="padding-left: 2px;border-radius: 5px"></div>
                 <div class="col-xs-8 clear_padd">
@@ -17,7 +17,7 @@
         </div>
         <c-empty show="shopList.length==0&&site!=3" tip="获取周边商户失败" second-tip="请稍后重试"></c-empty>
     </div>
-    <div class="online_visit" ng-if="site==3">
+    <div class="online_visit" ng-if="site==2">
         <img src="images/develop.png" style="width: 100%;">
         <div class="online_err" style="position: relative;top:-60px">程序员哥哥，正在努力的开发中!</div>
     </div>

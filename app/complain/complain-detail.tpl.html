@@ -1,27 +1,30 @@
 <div id="complain_detail">
-    <div class="complaint_title">
-        <img src="images/icon_07.png" alt="">投诉：<span ng-bind="vm.complain.title"></span>
-    </div>
-    <div class="complaint">
-        <span class="complaint_time" ng-bind="vm.complain.createDate.substring(0,16)"></span>
-        <span class="complaint_detail" ng-bind="vm.complain.content"></span>
-    </div>
-    <div class="complaint_title">
-        <img ng-if="vm.complain.state == 1" src="images/icon_08.png" alt=""><img ng-if="vm.complain.state == 0" src="images/icon_no_08.png" alt="">物业回复
-    </div>
-    <!-- <div class="property" ng-if="vm.complain.state!=0">
-        <span class="property_detail"></span>
-    </div> -->
-    <div class="property" ng-if="vm.complain.state != 0">
-        <span class="property_time" ng-bind="vm.complain.replyTime.substring(0,16)"></span>
-        <span class="property_detail" ng-bind="vm.complain.reply"></span>
-    </div>
-    <div class="property" ng-if="vm.complain.state != 1">
-        对不起，暂时没有回复
-    </div>
-    <div class="complaint_title">
-        <img ng-if="vm.complain.state == 1" src="images/icon_09.png"><img ng-if="vm.complain.state == 0" src="images/icon_no_09.png">处理完成
+    <div class="container-fluid">
+        <div id="complain_type" class="complain_detail_list">
+            <ul>
+                <li>
+                    <span class="complain_detail_name">投诉时间</span>
+                    <span ng-bind="vm.complain.createDate.substring(0,16)"></span>
+                </li>
+                <li>
+                    <span class="complain_detail_name">投诉内容</span>
+                    <span ng-bind="vm.complain.title"></span>
+                </li>
+                <li>
+                    <span class="complain_detail_name">投诉小区</span>
+                    <span><span ng-bind="vm.complain.house.block"></span>
+                    </span>
+                </li>
+                <li>
+                    <span class="complain_detail_name">联系方式</span>
+                    <span ng-bind="vm.complain.mobile"></span>
+                </li>
+                <c-complain-detail complain-detail="vm.complain.replys" show="complainDetailShow" ng-init="complainDetailShow=true"></c-complain-detail>              
+            </ul>
+        </div>
+        <!-- <div class="complain_detail_but" ng-hide="vm.complain.state==3">
+            <input class="l_btn" type="button" value="确认解决" ng-click="vm.confirm(vm.complain.id)" ng-disabled="vm.complain.state == 0">
+        </div> -->
     </div>
 </div>
-
 <c-loading show="showLoading" tip="正在加载中..." tip-loading="loading"></c-loading>

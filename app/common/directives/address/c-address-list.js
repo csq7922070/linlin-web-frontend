@@ -50,13 +50,13 @@ myApp.directive('cAddressList', function() {
             }
 
             $scope.addAddress = function(){
-                $scope.showContent = false;
+                //$scope.showContent = false;
                 $scope.showAddressEdit = true;
             }
 
             $scope.onEditAddressComplete = function(){
                 // console.log("onEditAddressComplete");
-                $scope.showContent = true;
+                //$scope.showContent = true;
                 if($scope.mode == "select"){
                     $scope.show = false;
                     $scope.onComplete();

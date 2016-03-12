@@ -6,6 +6,8 @@ myApp.directive('whenScrolled', ['$document', function ($document) {
             $document.bind('scroll', function () {
                 var rectObject = raw.getBoundingClientRect();
                 if (window.innerHeight >= rectObject.bottom) {
+                    // console.log("whenScrolled...");
+                    // console.log(raw);
                     scope.$apply(attrs.whenScrolled);
                 }
             });

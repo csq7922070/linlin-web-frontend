@@ -1,0 +1,32 @@
+<div id="c-repair-add-container" class="" ng-show="show">
+    <div id="repair_add">
+        <form ng-submit="submitForm()" name="repairForm" class="form-signin" method="post" novalidate>
+            <div class="container">
+                <textarea class="repair_detail_textarea" name="remark" ng-model="remark" maxlength="1000" placeholder="请详细描述下出现的问题" ng-maxlength="20"></textarea>
+
+                <div class="com_address">
+                    <div class="com_left">
+                        <span ng-bind="address.city"></span>-<span ng-bind="address.community">
+                        </span>-<span ng-bind="address.block"></span><span ng-if="address.unit">-</span><span ng-bind="address.unit"></span><span ng-if="address.room">-</span><span ng-bind="address.room"></span>
+                    </div>
+
+                    <div class="compile_right" ng-click="changeAddress()">
+                        <a class='compile_right_state'>编辑</a>
+                    </div>
+                </div>
+
+                <input class="repair_mobile" type="text" placeholder="您的手机号码" name="mobile" ng-model="mobile" ng-pattern="/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/" maxlength="11" required>
+                <span class="room_hidden" ng-show="repairForm.mobile.$touched && repairForm.mobile.$dirty && repairForm.mobile.$invalid" ng-class="{true:'tel-edit'}[repair.mobile!='']">请输入正确的手机号码</span>
+            </div>
+            <div class="container">
+                <button type="submit" type="button" class="submit_btn" ng-click="repairConcel();">取消</button>
+                <button type="submit" type="button" class="submit_btn submit_btn_concel" ng-disabled="repairForm.$invalid" ng-click="repairSubmit();">提交</button>
+            </div>
+                
+        </form>
+        <c-tip type="success" show="showSuccess" tip="提交成功!" close-time="1500" on-close="onSuccessClose()"></c-tip>
+        <c-tip type="error" show="showError" tip="提交失败!" close-time="1500" on-close="onTipClose()"></c-tip>
+    </div>
+    <c-address-list show="showAddressList" on-complete="onSelectAddressComplete()" address-list="addressList" mode="addressListMode" ng-init="addressListMode='select'"></c-address-list>
+</div>
+

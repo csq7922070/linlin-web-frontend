@@ -53,5 +53,20 @@ angular.module('app.repair')
                 return defer.promise;
 			}
 
+			this.saveComplainReply = function(params) {
+				var defer = $q.defer();
+				// var params = params;
+                complains.save(params).$promise.then(function(data){
+                	defer.resolve(data);
+                }, function (reason) {
+                	reason = {
+	            		errorCode: "SAVE_COMPLAIN_ADD_ERROR",
+	            		errorMessage: errorLog.getErrorMessage(reason)
+	            	};
+					defer.reject(reason);
+                });
+                return defer.promise;
+			}
+
 		}
 	]);

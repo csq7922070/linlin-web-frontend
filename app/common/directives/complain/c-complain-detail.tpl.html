@@ -1,0 +1,25 @@
+<div id="c-compalin-detail-container" class="" ng-show="show">
+    <div class="com_detail_reply"><!--  ng-if="complainDetail.state==1" -->
+        <div ng-repeat="reply in complainDetail">
+            <div class="complain_state">
+                <img src="images/repair_03.png">
+                <span class="complain_detail_state">
+                    <div class="triangle"></div>
+                    <div class="triangle_transparent"></div>
+                    <span>
+                        <span ng-if="reply.type==0">物业回复</span>
+                        <span ng-if="reply.type==1">业主回复</span>
+                        <span class="complain_state_right" ng-bind="reply.createDate.substring(0,16)"></span>
+                        <span class="complain_wait" ng-bind="reply.content"></span>
+                        <span class="repair_replybut" ng-if="$index == 0" ng-click="complainReply();"></span>
+                    </span>
+                </span>
+            </div>
+        </div>
+
+        <div ng-if="complainDetail.length==0">
+            暂时没有回复
+        </div>
+    </div>
+    <c-complain-reply show="complainReplyShow" on-complete="onComplainReply(newReply);"></c-complain-reply>
+</div>

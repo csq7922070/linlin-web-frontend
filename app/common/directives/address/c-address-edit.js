@@ -14,12 +14,10 @@ myApp.directive('cAddressEdit', function() {
             // init addressInfo
             addressInfo.init();
             // end init
-            var cmmInfo = communityLocation.getLastCommunity();
+            var city = communityLocation.getLastCity();
             //alert(errorLog.getFullErrorMessage(cmmInfo));
-            if(!addressInfo.city&& cmmInfo.auth){//将已授权的自动定位的小区城市和小区名赋值给addressInfo
-                addressInfo.city = cmmInfo.city;
-                addressInfo.communityId = cmmInfo.id;
-                addressInfo.community = cmmInfo.name;
+            if(!addressInfo.city){//将自动定位的城市赋值给addressInfo
+                addressInfo.city = city;
             }
             
             function refreshAddressInfo(){
@@ -33,9 +31,24 @@ myApp.directive('cAddressEdit', function() {
             }
             refreshAddressInfo();
 
+            $scope.tags = [{
+                name:'我家'
+            },{
+                name:'公司',
+            },{
+                name:'父母',
+            },{
+                name: '朋友',
+            },{
+                name:'房东',
+            },{
+                name:'其它'
+            }];
+            $scope.tag = $scope.tags[0];
+
             $scope.changeCity = function(){
                 $scope.showLoading = true;
-                $scope.showContent = false;
+                //$scope.showContent = false;
                 $scope.showCityList = true;
                 address.getCityList().then(function(data){
                     $scope.showLoading = false;
@@ -51,7 +64,7 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectCityComplete = function(){
                 // console.log("onSelectCityComplete");
                 // console.log(addressInfo);
-                $scope.showContent = true;
+                //$scope.showContent = true;
                 refreshAddressInfo();
             }
 
@@ -60,10 +73,10 @@ myApp.directive('cAddressEdit', function() {
                     return;
                 }
                 $scope.showLoading = true;
-                $scope.showContent = false;
+                //$scope.showContent = false;
                 $scope.showCommunityList = true;
                 address.getCommunityList(addressInfo.city).then(function(data){
-                    $scope.showLoading = fasle;
+                    $scope.showLoading = false;
                     $scope.communityList = data;
                 },function(reason){
                     $scope.showLoading = false;
@@ -76,7 +89,7 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectCommunityComplete = function(){
                 // console.log("onSelectCommunityComplete");
                 // console.log(addressInfo);
-                $scope.showContent = true;
+                //$scope.showContent = true;
                 refreshAddressInfo();
             }
 
@@ -85,7 +98,7 @@ myApp.directive('cAddressEdit', function() {
                     return;
                 }
                 $scope.showLoading = true;
-                $scope.showContent = false;
+                //$scope.showContent = false;
                 $scope.showBlockList = true;
                 address.getBlockList(addressInfo.city, addressInfo.communityId).then(function(data){
                     $scope.showLoading = false;
@@ -101,7 +114,7 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectBlockComplete = function(){
                 // console.log("onSelectBlockComplete");
                 // console.log(addressInfo);
-                $scope.showContent = true;
+                //$scope.showContent = true;
                 refreshAddressInfo();
             }
 
@@ -110,7 +123,7 @@ myApp.directive('cAddressEdit', function() {
                     return;
                 }
                 $scope.showLoading = true;
-                $scope.showContent = false;
+                //$scope.showContent = false;
                 $scope.showUnitList = true;
                 address.getUnitList(addressInfo.city, addressInfo.communityId, addressInfo.block).then(function(data){
                     $scope.showLoading = false;
@@ -126,7 +139,7 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectUnitComplete = function(){
                 // console.log("onSelectUnitComplete");
                 // console.log(addressInfo);
-                $scope.showContent = true;
+                //$scope.showContent = true;
                 refreshAddressInfo();
             }
 
@@ -135,7 +148,7 @@ myApp.directive('cAddressEdit', function() {
                     return;
                 }
                 $scope.showLoading = true;
-                $scope.showContent = false;
+                //$scope.showContent = false;
                 $scope.showRoomList = true;
                 address.getRoomList(addressInfo.city, addressInfo.communityId, addressInfo.block, addressInfo.unit).then(function(data){
                     $scope.showLoading = false;
@@ -151,12 +164,17 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectRoomComplete = function(){
                 // console.log("onSelectRoomComplete");
                 // console.log(addressInfo);
-                $scope.showContent = true;
+                //$scope.showContent = true;
                 refreshAddressInfo();
             }
             
 
             $scope.addAddress = function () {
+                if($scope.tag&&$scope.tag.name!='其它'){
+                    addressInfo.tag = $scope.tag.name;
+                }else{
+                    addressInfo.tag = $scope.tagName;
+                }
                 var newAddress = addressInfo.getSelectedAddress();
                 address.addAddress(newAddress).then(function(data){
                     close();

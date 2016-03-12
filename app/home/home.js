@@ -3,41 +3,39 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
     'address','auth','control','addressInfo',
     function($scope, $http, $stateParams, $rootScope, $state, $location, locationState, communityLocation, $q, 
         userInfo,errorLog, location,address,auth,control,addressInfo) {
-        var cmmInfo = communityLocation.getLastCommunity();
-        if(!cmmInfo || !cmmInfo.name){
-            $state.go('auto-location');
+        //处理首页中的当前城市信息
+        var city = communityLocation.getLastCity();
+        if(!city){
+            $state.go('location');
             return;
         }
-        function refreshCommunityInfo(){
-            $scope.communityName = cmmInfo.name.length >4 ? cmmInfo.name.substring(0,3)+"..." : cmmInfo.name;
+        function refreshCityInfo(){
+            $scope.city = city.length >4 ? city.substring(0,3)+"..." : city;
         }
-        refreshCommunityInfo();
+        refreshCityInfo();
 
-        $scope.changeCommunity = function(){
-            $state.go('auto-location');
+        //跳至定位页面
+        $scope.changeCity = function(){
+            $state.go('location');
         }
 
+        //判断首页中是否需要自动定位
         if(!locationState.hasLocation){
-            //alert("home start auto-location");
             communityLocation.autoLocationCommunity().then(function(data){
-                // alert("home auto-location success");
-                // alert(errorLog.getFullErrorMessage(data));
-                //alert(errorLog.getErrorMessage(data));
-                setCommunity(data);
+                setCity(data);
             },function(reason){
                 //首页自动定位失败暂时不做提示
                 //alert(reason.errorCode + ","+reason.errorMessage);
             });
         }
-        // var data = {areaName:"1",lastAreaName:"2",city:"bj",lastCity:'bj',address:'address1',lastAddress:'address2',type:'false'};
-        // setCommunity(data);
 
-        function setCommunity(data){
+        //处理定位成功后的逻辑
+        function setCity(data){
             var defer = $q.defer();
-            if(!communityLocation.compareCommunity(data)){//检测到2次小区地址不一致
+            if(!communityLocation.compareCity(data)){//检测到2次城市不一致
                 //需要提示用户是否切换到当前定位地址
-                $scope.modalTip = "检测到当前登陆位置为"+data.city+data.areaName+", "+
-                    "上次登陆位置为"+data.lastCity+data.lastAreaName+", 是否切换?"
+                $scope.modalTip = "检测到当前登陆位置为"+data.city+", "+
+                    "上次登陆位置为"+data.lastCity+", 是否切换?"
                 $scope.tipAlign = "left";
                 $scope.okText = "切换";
                 $scope.showModal = true;
@@ -51,19 +49,13 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
             }else{
                 defer.resolve(true);
             }
-            defer.promise.then(function(selectCurrent){//selectCurrent代表是否选择当前自动定位小区为登陆小区
+            defer.promise.then(function(selectCurrent){//selectCurrent代表是否选择当前自动定位城市为登陆城市
                 if(selectCurrent){
-                    var cmmInfo = {
-                        id: data.id,
-                        name:data.areaName,
-                        city: data.city,
-                        address: data.address,
-                        auth: data.state
-                    };
-                    refreshCommunityInfo();
+                    city = data.city;
+                    refreshCityInfo();
                     userInfo.getOpenId().then(function(data){
                         var openId = data;
-                        communityLocation.changeCommunity(openId, cmmInfo).then(function(data){//保存用户选择的小区信息到服务器
+                        communityLocation.changeCity(openId, city).then(function(data){//保存用户选择的城市信息到服务器
                             //alert("changeCommunity success,openId:"+openId+",cmmInfo:"+errorLog.getErrorMessage(cmmInfo));
                         },function(reason){
                             alert(reason.errorCode +"," +reason.errorMessage);
@@ -76,6 +68,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
             });
         }
 
+        //首页轮播图配置数据
         $scope.slides7 = [{
             id: 10,
             label: "slide #1",
@@ -91,13 +84,9 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
         }];
         $scope.carouselIndex7 = 0;
 
+        //加载首页下方的附近商户信息页面
         $state.go("home.shop-info", {
-            site: 1
+            site: 0
         });
-
-        $scope.pay = function(){
-            addressInfo.init();
-            $state.go('bill');
-        }
     }
 ]);

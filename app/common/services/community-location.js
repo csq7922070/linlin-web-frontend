@@ -3,7 +3,6 @@ angular.module('app.location')
 		function($q, $timeout, $http, errorLog, userInfo, location){
 		this.changeCommunityHand = false;
 
-		var lastCommunity = null;
 		// id: null,
   //       name: null,
   //       province: null,
@@ -13,6 +12,8 @@ angular.module('app.location')
   //       steetNumber: null,
   //       address: null,//这是完整的地址
   //       auth: null//该字段用来判断小区是否为合作小区，值为true or false
+		var lastCommunity = null;
+		var lastCity = null;
 		
 		//根据经纬度定位小区
 		function locationCommunity(openId, longitude, latitude){// longitude经度，latitude维度
@@ -75,10 +76,36 @@ angular.module('app.location')
 				lastCommunity = cmmInfo;
 				that.storageCommunity(cmmInfo);
 				defer.resolve(data);
-			}).error(function(data){
+			}).error(function(reason){
 				var reason = {
 					errorCode: "CHANGE_COMMUNITY_ERROR",
-					errorMessage: errorLog.getErrorMessage(data)
+					errorMessage: errorLog.getErrorMessage(reason)
+				};
+				defer.reject(reason);
+			});
+			return defer.promise;
+		}
+
+		this.changeCity = function(openId, city){
+			var that = this;
+			var defer = $q.defer();
+			$http({
+				method: 'POST',
+				url: basePath + '/GPS/save',
+				data:{
+					openid: openId,
+					name: "",
+					city: city,
+					address: ""
+				}
+			}).success(function(data){
+				lastCity = city;
+				that.storageCity(city);
+				defer.resolve(data);
+			}).error(function(reason){
+				var reason = {
+					errorCode: "CHANGE_CITY_ERROR",
+					errorMessage: errorLog.getErrorMessage(reason)
 				};
 				defer.reject(reason);
 			});
@@ -96,22 +123,47 @@ angular.module('app.location')
 			return result;
 		}
 
+		//判断2次城市定位是否一致，如果上一次定位不存在，直接返回true
+		// data:{type,areaName,city,address,lastAreaName,lastCity,lastAddress}
+		this.compareCity = function(data){
+			var result = true;
+			if(!data.type && data.city != data.lastCity){
+				result = false;
+			}
+			return result;
+		}
+
 		//获取上一次使用的小区信息，此信息通过localStorage持久化存储
 		this.getLastCommunity = function(){
 			if(!lastCommunity && window.localStorage && localStorage.communityInfo){
 				lastCommunity = JSON.parse(localStorage.communityInfo);
 			}
-			// alert("getLastCommunity");
-			// alert(errorLog.getFullErrorMessage(lastCommunity));
 			return lastCommunity;
 		}
 
+		//获取上一次使用的城市信息，此信息通过localStorage持久化存储
+		this.getLastCity = function(){
+			if(!lastCity && window.localStorage && localStorage.city){
+				lastCity = localStorage.city;
+			}
+			// alert("getLastCity done.");
+			// alert(lastCity);
+			return lastCity;
+		}
+
 		this.storageCommunity = function(cmmInfo){
-			// alert("storageCommunity");
-			// alert(errorLog.getFullErrorMessage(cmmInfo));
 			var state = false;
 			if(window.localStorage){
 				localStorage.communityInfo = JSON.stringify(cmmInfo);
+				state = true;
+			}
+			return state;
+		}
+
+		this.storageCity = function(city){
+			var state = false;
+			if(window.localStorage){
+				localStorage.city = city;
 				state = true;
 			}
 			return state;

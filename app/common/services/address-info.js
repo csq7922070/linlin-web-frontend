@@ -2,6 +2,7 @@ angular.module('app.address')
 	.service('addressInfo', ['$q','$http','$timeout','errorLog', 'addresses','userInfo',
 		function($q,$http,$timeout, errorLog,addresses,userInfo){
 			this.id = null;
+			this.tag = null;
 			this.city = null;
 			this.communityId = null;
 			this.community = null;
@@ -14,6 +15,7 @@ angular.module('app.address')
 			
 			this.init = function(){
 				this.id = null;
+				this.tag = null;
 				this.city = null;
 				this.communityId = null;
 				this.community = null;
@@ -28,6 +30,7 @@ angular.module('app.address')
 			this.selectAddress = function(addr){
 				if(addr){
 					this.id = addr.id;
+					this.tag = addr.tag;
 					this.city = addr.city;
 					this.communityId = addr.communityId;
 					this.community = addr.community;
@@ -43,6 +46,7 @@ angular.module('app.address')
 			this.getSelectedAddress = function(){
 				var addr = {
 					id: this.id,
+					tag: this.tag,
 					city: this.city,
 					communityId: this.communityId,
 					community: this.community,

@@ -1,6 +1,9 @@
 angular.module('app.account').controller('accountCtrl', ['$stateParams', '$scope','account','errorLog',
-    'userInfo','address','control','$state',
-    function ($stateParams,$scope,account,errorLog,userInfo,address,control,$state) {
+    'userInfo','address','control','$state','$location',
+    function ($stateParams,$scope,account,errorLog,userInfo,address,control,$state,$location) {
+        //alert($location.url());
+        userInfo.init();//微信参数只会在公众号第一个页面传入
+        //
         $scope.headImgBorder = "images/head-img-border.png";
         $scope.nickName = "登录/注册";
         $scope.addressTip = "";

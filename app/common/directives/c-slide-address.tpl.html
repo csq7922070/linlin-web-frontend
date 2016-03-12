@@ -1,0 +1,40 @@
+<div id="c-slide-address">
+    <!-- <div class="content-container" ng-show="showContent" ng-init="showContent=true"> -->
+        <div class="nav-bar">
+            <div class="nav-link-container">
+                <a class="prev-page nav-page" ng-click="prevPage()" ng-show="currentPage>1"></a>
+                <ul>
+                    <li ng-repeat="address in currentAddressList" class="nav-item">
+                        <a ng-bind="address.tag" ng-click="selectAddress(address)" class="nav-link"
+                            ng-class="{'actived-nav-link':currentAddress.id==address.id}"></a>
+                    </li>
+                </ul>
+                <a class="next-page nav-page" ng-click="nextPage()" ng-show="currentPage<maxPage"></a>
+            </div>
+            <a ng-click="addAddress()" class="add-address"></a>
+        </div>
+        <div class="detail-bar">
+            <div>
+                <span ng-bind="currentAddress.city"></span>
+                <a ng-click="setDefaultAddress(currentAddress)" class="set-default" ng-class="{'actived-set-default':currentAddress.active==0}">常用地址</a>
+            </div>
+            <div class="bottom-detail">
+                <span ng-bind="currentAddress.community"></span>
+                <span ng-bind="shortAddress" class="short-address"></span>
+                <a ng-click="deleteAddress(currentAddress)" class="delete-address">删除</a>
+            </div>
+        </div>
+        <!--提示框-->
+        <div class="weui_dialog_confirm" ng-show="showDeleteConfirm">
+            <div class="weui_mask"></div>
+            <div class="weui_dialog">
+                <div class="weui_dialog_hd"><strong class="weui_dialog_title">确定要删除吗?</strong></div>
+                <div class="weui_dialog_ft">
+                    <a href="javascript:;" class="weui_btn_dialog default small_color" ng-click="cancel()">取消</a>
+                    <a href="javascript:;" class="weui_btn_dialog primary small_color" ng-click="delete()">确定</a>
+                </div>
+            </div>
+        </div>
+    <!-- </div> -->
+    <c-address-edit show="showAddressEdit" on-complete="onEditAddressComplete()"></c-address-edit>
+</div>

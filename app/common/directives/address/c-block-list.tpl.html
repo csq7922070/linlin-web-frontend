@@ -1,5 +1,5 @@
-<div id="c-block-list-container" class="absolute-full-container address-common-container" ng-show="show">
-    <div class="content-container" ng-show="showContent" ng-init="showContent=true">
+<div id="c-block-list-container" class="fixed-full-container address-common-container" ng-show="show">
+    <!-- <div class="content-container" ng-show="showContent" ng-init="showContent=true"> -->
         <div ng-repeat="blocks in blockList">
             <div class="weui_cells_title title_style">
                 {{blocks.initial}}
@@ -28,7 +28,7 @@
                 </a>
             </div>
         </div>
-    </div>
+    <!-- </div> -->
     <div class="no-data-tip" ng-show="blockList.length==0">暂无数据</div>
     <c-unit-list show="showUnitList" on-complete="onSelectUnitComplete()" unit-list="unitList"></c-unit-list>
     <c-room-list show="showRoomList" on-complete="onSelectRoomComplete()" room-list="roomList"></c-room-list>

@@ -1,4 +1,62 @@
+#repair {
+	.repair_dir{
+		display: block; 
+		/*background: #fff;*/
+		line-height: 45px;
+		font-size: '微软雅黑';
+		padding-left: 12px;
+		font-size: 15px;
+		color: #333;
+	}
+}
+.repair_device_nav_c{	
+	background: #fff;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	#repair_device_nav{
+		height: 80px;
+		white-space:nowrap;
+		overflow: hidden;
+		margin: 0px 20px;
+		
+		#repair_device_list{
+			position: relative;
+		}
+		.repair_device{
+			display: inline-block;
+			/*background: #ccc;*/
+			height: 50px;
+			width: 25%;
+			font-size: 12px;
+			text-align: center;
+
+			img{
+				width: 50px;
+			}
+		}
+		.color_red{
+			color: #f34832;
+		}
+		.color_normal{
+			color: #333;
+		}
+	}
+	.arrow{
+		position: absolute;
+		display: inline-block;
+		height: 80px;
+		width: 30px;
+		text-align: center;
+		font-size: 30px;
+		line-height: 80px;
+		font-weight: normal;
+	}
+	.right_arrow{
+		right: 0px;
+	}
+}
 #repair_listtpl{
+	background: #fff;
 	#repair_type{
 		.state{
 			color: #ffa400;
@@ -10,11 +68,14 @@
 	}
 	.item_service{
 		background: white;
-		margin-top: 10px;
+		/*margin-top: 10px;*/
 	}
 }
 
 #repair_add{
+	background: #fff;
+	padding-top: 11px;
+	border-top: 1px solid #eee;
 	input{
 		width: 100%;
 		border: 1px solid #e0e0e0;
@@ -67,6 +128,14 @@
   		margin: 6px 0;
 		border: 1px solid #e0e0e0;
 	}
+	.submit_btn{
+		display: inline-block;
+		width: 130px;
+		height: 41px;
+	}
+	.submit_btn_concel{
+		float: right;
+	}
 } 
 
 #repair_detail{
@@ -78,10 +147,30 @@
   		margin-left: 12px;
   		margin-right: 30px;
 	}
-	
-	.device{
+	.remark{
 		color: #333;
 		font-weight: bolder;
+	}
+	.repair_detail_list_state{
+		background: #fff;
+		margin-top: 10px;
+		height: 100%;
+		margin-bottom: 70px;
+	}
+
+	.repair_detail_icon{
+		text-align: center;
+		margin-top: 18px;
+		.device{
+			color: #f34782;
+			font-family: '苹果丽黑W3';
+			margin: 0px;
+			font-size: 15px;
+			margin-top: 7px;
+		}
+		img{
+			width:38px;
+		}
 	}
 
 	.repaie_state{
@@ -98,10 +187,11 @@
 			margin-right: 15px;
 			padding-left: 5px;
 			border-radius: 5px;
+			border: 1px solid #ccc;
 			.repair_wait{
 				display: block;
 				color: #777;
-				margin-left: 15px;
+				margin-left: 25px;
 				margin-top: -10px;
 			}
 			.repaie_state_right{
@@ -131,19 +221,32 @@
 			background: #fff;
 			display: inline-block;
 			width: 10px;
-			height: 10px;
-			border-top:5px solid #eee;
-			border-bottom:5px solid #eee;
-			border-right:5px solid #fff;
+			height: 14px;
+			border-top:7px solid #fff;
+			border-bottom:7px solid #fff;
+			border-right:7px solid #ccc;
 			position: relative;
-			left: -15px;
+			left: -16px;
 			bottom: 5px;
-
 		}
+		.triangle_transparent{
+			display: inline-block;
+			width: 10px;
+			height: 14px;
+			border-top:7px solid transparent;
+			border-bottom:7px solid transparent;
+			border-right:7px solid #fff;
+			position: relative;
+			left: -28px;
+			bottom: 5px;
+		}
+	}
+	.repaie_state:first-child{
+		/*height: 30px;*/
 	}
 	.repaie_state:last-child{
 		height: 30px;
-		margin-bottom: 200px;
+		margin-bottom: 42px;
 	}
 	.repair_detail_but{
 		position: fixed;
@@ -153,6 +256,7 @@
 		background: #fff;
 		padding: 12px 12px;
 		height: 56px;
+		/*margin-top: 10px;*/
 		.l_btn{
 			width: 100%;
 			border: 1px solid #f34832;

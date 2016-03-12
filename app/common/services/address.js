@@ -3,6 +3,7 @@ angular.module('app.address')
 		function($q,$http,$timeout, errorLog,addresses,userInfo){
 			// var defaultAddress = {
 			//  id: null,
+			//  tag: null,//每个地址都有个标签名
 			// 	city: null,
 			//  communityId: null,
 			// 	community: null,
@@ -106,6 +107,7 @@ angular.module('app.address')
 			this.addAddress = function(address){
 				var defer = $q.defer();
                 var params = {
+                	tag: address.tag,
                     city: address.city,
                     community: address.community,
                     block: address.block,

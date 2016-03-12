@@ -1,0 +1,21 @@
+﻿<div id="c-complain-list-container" class="" ng-show="show">
+    <div class="com_list">
+        <div ng-if="complainList.length == 0" class="container-fluid">
+            <div class="icon_err"></div>
+            <div class="err_b_font">您还没有发表过投诉建议哦！</div>
+        </div>
+        <ul class="item_service" ng-if="complainList.length > 0" when-scrolled="onScrolled()">
+            <div class="contain_down" ng-repeat="complain in complainList">
+                <li ui-sref="complain-detail({id:complain.id})">
+                    <div class='date_state'>
+                        <span class='date' ng-bind="complain.createDate.substring(0,16)"></span>
+                        <span class='state' ng-if="complain.state == 0">未回复</span>
+                        <span class='complain_replied' ng-if="complain.state == 1">已回复</span>
+                    </div>
+                    <div class='goods' ng-bind="complain.title"></div>
+                </li>
+            </div>
+        </ul>
+    </div>
+        
+</div>

@@ -1,0 +1,24 @@
+<div id="c-repair-list-container" class="" ng-show="show">
+    <div id="repair_listtpl">
+        <div class="container-fluid" ng-if="repairList.length == 0">
+            <div class="icon_err"></div>
+            <div class="err_b_font">暂时还没有报修记录哦~</div>
+        </div>
+        <div class="contain_down" when-scrolled="onScrolled()">
+            <ul class="item_service">
+                <li id="repair_type" ng-repeat="repair in repairList track by $index">
+                    <a ui-sref="repair-detail({id:repair.id})">
+                        <div class='date_state'>
+                            <span class='date' ng-bind="repair.createDate.substring(0.10)"></span>
+                            <span class='state' ng-if="repair.state==0">等待物业确认</span>
+                            <span class='state' ng-if="repair.state==1">物业已确认</span>
+                            <span class='state' ng-if="repair.state==2">维修完成</span>
+                            <span class='state3' ng-if="repair.state==3">业主已确认</span>
+                        </div>
+                        <div class='goods' ng-bind="repair.device"></div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div> 

@@ -1,6 +1,7 @@
 angular.module('app.repair')
 	.service('repair', ['$q','$http','$timeout','errorLog','userInfo', 'repairs',
 		function($q,$http,$timeout, errorLog, userInfo, repairs){
+			this.repairDevice = null;
 			this.getRepairList = function(limit,goPage) {
 				var defer = $q.defer();
                 var params = {
@@ -38,12 +39,8 @@ angular.module('app.repair')
 	            return defer.promise;
 			}
 
-			this.saveRepairDetailComfirm = function(id){
+			this.saveRepairDetailComfirm = function(params){
 				var defer = $q.defer();
-				var params = {
-	                    id: id,
-	                    state: 3
-	                };
 	            repairs.save(params).$promise.then(function(data) {
 	            	defer.resolve(data);
                 }, function (reason) {
@@ -71,6 +68,10 @@ angular.module('app.repair')
                 });
                 return defer.promise;
 			}
+
+
+
+
 
 		}
 	]);

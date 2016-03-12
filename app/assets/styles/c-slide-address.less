@@ -1,0 +1,135 @@
+#c-slide-address{
+	background-color: rgb(238,238,238);
+    font-family: 微软雅黑;
+
+	.nav-bar{
+        position: relative;
+		background-color: #fff;
+		height: 44px;
+		padding: 0px 12px;
+
+		ul{
+			margin: 0px;
+		}
+
+        .nav-link-container{
+            height: 100%;
+            position: relative;
+            float: left;
+            //background-color: green;
+
+            .nav-page{
+                display: inline-block;
+                width: 16px; 
+                height: 30px;
+                position: absolute;
+                top: 16px;
+                background-repeat: no-repeat;
+                background-size: 8px;
+            }
+
+            .prev-page{
+                background-image: url('../images/left_arrow.png');
+                left: -8px;
+                background-size: 18px;
+                top: 14px;
+            }
+
+            .next-page{
+                background-image: url('../images/right_arrow.png');
+                right: -14px;
+            }
+
+            .nav-item{
+                display: inline-block;
+
+                .nav-link{
+                    display: inline-block;
+                    font-size: 15px;
+                    color: #999; 
+                    line-height: 44px;
+                    padding: 0px 10px;
+                }
+
+                @media(min-width:375px){
+                    .nav-link{
+                        // display: inline-block;
+                        // font-size: 15px;
+                        // color: #999; 
+                        // line-height: 44px;
+                        padding: 0px 16px;
+                    }
+                }
+
+                @media(min-width:414px){
+                    .nav-link{
+                        // display: inline-block;
+                        // font-size: 15px;
+                        // color: #999; 
+                        // line-height: 44px;
+                        padding: 0px 20px;
+                    }
+                }
+
+                .actived-nav-link{
+                    color: #555;
+                    border-bottom: solid 2px #e62f17;
+                }
+            }
+        }
+
+		.add-address{
+			background-image: url('../images/red-plus.png');
+		    background-repeat: no-repeat;
+		    background-size: 20px;
+		    width: 20px;
+		    height: 20px;
+		    display: inline-block;
+		    margin-top: 13px;
+		    float: right;
+		}
+	}
+
+	.detail-bar{
+		margin-top: 6px;
+		background-color: #fff;
+		height: 91px;
+		padding: 22px 12px;
+		font-size: 15px;
+		color: #555;
+
+		.set-default,.delete-address{
+			float: right;
+			font-size: 13px;
+			color: #999;
+		}
+
+		.set-default{
+		    background-image: url('../images/flag_01.png');
+		    background-repeat: no-repeat;
+		    padding-left: 22px;
+		    background-size: 13px;
+		    background-position: 0px;
+		}
+
+        .actived-set-default{
+            background-image: url('../images/flag_02.png');
+        }
+
+		.bottom-detail{
+			margin-top: 10px;
+
+			.short-address{
+				margin-left: 18px;
+			}
+
+			.delete-address{
+				background-image: url('../images/delete.png');
+			    background-repeat: no-repeat;
+			    background-size: 16px;
+			    padding-left: 24px;
+			    background-position: 0px;
+			}
+		}
+	}
+}
