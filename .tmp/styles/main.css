@@ -3243,35 +3243,35 @@ th {
   z-index: 102;
   padding-bottom: 40px;
 }
-#c-address-edit-container .tag-container {
+#c-address-edit-container .content-container .tag-container {
   padding: 20px 15px;
 }
-#c-address-edit-container .tag-container .tag-tip {
+#c-address-edit-container .content-container .tag-container .tag-tip {
   color: #333;
   font-size: 14px;
   font-weight: normal;
   margin: 0px;
 }
-#c-address-edit-container .tag-container .tag-select-container {
+#c-address-edit-container .content-container .tag-container .tag-select-container {
   float: right;
   position: relative;
   width: 60%;
   font-size: 14px;
   color: #777;
 }
-#c-address-edit-container .tag-container .tag-select-container .tag-list {
+#c-address-edit-container .content-container .tag-container .tag-select-container .tag-list {
   -webkit-appearance: none;
   float: right;
   border: 0px;
   font-size: 14px;
   color: #777;
 }
-#c-address-edit-container .tag-container .tag-select-container .tag-select-tip {
+#c-address-edit-container .content-container .tag-container .tag-select-container .tag-select-tip {
   position: absolute;
   right: 0px;
   top: 0px;
 }
-#c-address-edit-container .tag-container .tag-field {
+#c-address-edit-container .content-container .tag-container .tag-field {
   width: 100%;
   font-size: 14px;
   color: #333;
@@ -3281,7 +3281,7 @@ th {
   line-height: 24px;
   margin-top: 6px;
 }
-#c-address-edit-container .save-address {
+#c-address-edit-container .content-container .save-address {
   background-color: #f34832;
 }
 

@@ -48,7 +48,7 @@ myApp.directive('cAddressEdit', function() {
 
             $scope.changeCity = function(){
                 $scope.showLoading = true;
-                //$scope.showContent = false;
+                $scope.showContent = false;
                 $scope.showCityList = true;
                 address.getCityList().then(function(data){
                     $scope.showLoading = false;
@@ -64,7 +64,7 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectCityComplete = function(){
                 // console.log("onSelectCityComplete");
                 // console.log(addressInfo);
-                //$scope.showContent = true;
+                $scope.showContent = true;
                 refreshAddressInfo();
             }
 
@@ -73,7 +73,7 @@ myApp.directive('cAddressEdit', function() {
                     return;
                 }
                 $scope.showLoading = true;
-                //$scope.showContent = false;
+                $scope.showContent = false;
                 $scope.showCommunityList = true;
                 address.getCommunityList(addressInfo.city).then(function(data){
                     $scope.showLoading = false;
@@ -89,7 +89,7 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectCommunityComplete = function(){
                 // console.log("onSelectCommunityComplete");
                 // console.log(addressInfo);
-                //$scope.showContent = true;
+                $scope.showContent = true;
                 refreshAddressInfo();
             }
 
@@ -98,7 +98,7 @@ myApp.directive('cAddressEdit', function() {
                     return;
                 }
                 $scope.showLoading = true;
-                //$scope.showContent = false;
+                $scope.showContent = false;
                 $scope.showBlockList = true;
                 address.getBlockList(addressInfo.city, addressInfo.communityId).then(function(data){
                     $scope.showLoading = false;
@@ -114,7 +114,7 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectBlockComplete = function(){
                 // console.log("onSelectBlockComplete");
                 // console.log(addressInfo);
-                //$scope.showContent = true;
+                $scope.showContent = true;
                 refreshAddressInfo();
             }
 
@@ -123,7 +123,7 @@ myApp.directive('cAddressEdit', function() {
                     return;
                 }
                 $scope.showLoading = true;
-                //$scope.showContent = false;
+                $scope.showContent = false;
                 $scope.showUnitList = true;
                 address.getUnitList(addressInfo.city, addressInfo.communityId, addressInfo.block).then(function(data){
                     $scope.showLoading = false;
@@ -139,7 +139,7 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectUnitComplete = function(){
                 // console.log("onSelectUnitComplete");
                 // console.log(addressInfo);
-                //$scope.showContent = true;
+                $scope.showContent = true;
                 refreshAddressInfo();
             }
 
@@ -148,7 +148,7 @@ myApp.directive('cAddressEdit', function() {
                     return;
                 }
                 $scope.showLoading = true;
-                //$scope.showContent = false;
+                $scope.showContent = false;
                 $scope.showRoomList = true;
                 address.getRoomList(addressInfo.city, addressInfo.communityId, addressInfo.block, addressInfo.unit).then(function(data){
                     $scope.showLoading = false;
@@ -164,11 +164,11 @@ myApp.directive('cAddressEdit', function() {
             $scope.onSelectRoomComplete = function(){
                 // console.log("onSelectRoomComplete");
                 // console.log(addressInfo);
-                //$scope.showContent = true;
+                $scope.showContent = true;
                 refreshAddressInfo();
             }
             
-
+            //添加地址，添加地址前会进行地址标签和地址的重复检测提示
             $scope.addAddress = function () {
                 if($scope.tag&&$scope.tag.name!='其它'){
                     addressInfo.tag = $scope.tag.name;
@@ -176,11 +176,23 @@ myApp.directive('cAddressEdit', function() {
                     addressInfo.tag = $scope.tagName;
                 }
                 var newAddress = addressInfo.getSelectedAddress();
-                address.addAddress(newAddress).then(function(data){
-                    close();
+                $q.all([address.existTag(newAddress.tag),
+                        address.existAddress(newAddress.id)]).then(function(datas){
+                    if(datas[0]){//地址标签已存在
+                        alert("地址标签"+newAddress.tag+"已存在，请选择其它标签");
+                        return;
+                    }
+                    if(datas[1]){//地址已存在
+                        alert("地址已存在，请不要重复添加");
+                        return;
+                    }
+                    address.addAddress(newAddress).then(function(data){
+                        close();
+                    },function(reason){
+                        alert(errorLog.getErrorMessage(reason));
+                    });
                 },function(reason){
                     alert(errorLog.getErrorMessage(reason));
-                    close();
                 });
             }
 

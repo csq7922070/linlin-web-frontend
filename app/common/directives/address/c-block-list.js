@@ -15,7 +15,7 @@ myApp.directive('cBlockList', function() {
                 console.log("changeBlock...");
                 addressInfo.blockType = block.type;
                 addressInfo.block = block.block;
-                //$scope.showContent = false;
+                $scope.showContent = false;
                 if(block.type == 2 || block.type == 1){
                     $scope.showLoading = true;
                 }
@@ -27,7 +27,7 @@ myApp.directive('cBlockList', function() {
                     },function(reason){
                         $scope.showLoading = false;
                         $scope.showUnitList = false;
-                        //$scope.showContent = true;
+                        $scope.showContent = true;
                         alert(reason.errorCode+","+reason.errorMessage);
                     });
                 }else if(block.type == 1){
@@ -39,7 +39,7 @@ myApp.directive('cBlockList', function() {
                     },function(reason){
                         $scope.showLoading = false;
                         $scope.showRoomList = false;
-                        //$scope.showContent = true;
+                        $scope.showContent = true;
                         alert(reason.errorCode+","+reason.errorMessage);
                     });
                 }else if(block.type == 0){
@@ -63,7 +63,7 @@ myApp.directive('cBlockList', function() {
             }
 
             function close(){
-                //$scope.showContent = true;
+                $scope.showContent = true;
                 $scope.show = false;
                 $scope.onComplete();
             }

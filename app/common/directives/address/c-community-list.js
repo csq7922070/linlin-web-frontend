@@ -15,7 +15,7 @@ myApp.directive('cCommunityList', function() {
                 $scope.showLoading = true;
                 addressInfo.communityId = community.id;
                 addressInfo.community = community.name;
-                //$scope.showContent = false;
+                $scope.showContent = false;
                 $scope.showBlockList = true;
                 address.getBlockList(addressInfo.city, community.id).then(function(data){
                     $scope.showLoading = false;
@@ -29,7 +29,7 @@ myApp.directive('cCommunityList', function() {
             }
 
             $scope.onSelectBlockComplete = function(){
-                //$scope.showContent = true;
+                $scope.showContent = true;
                 $scope.show = false;
                 $scope.onComplete();
             }

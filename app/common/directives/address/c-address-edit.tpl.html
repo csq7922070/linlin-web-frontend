@@ -1,5 +1,5 @@
 <div id="c-address-edit-container" class="fixed-full-container address-common-container" ng-show="show">
-    <!-- <div class="content-container" ng-show="showContent" ng-init="showContent=true"> -->
+    <div class="content-container" ng-show="showContent" ng-init="showContent=true">
         <div class="weui_cells weui_cells_access address_down">
             <div class="tag-container">
                 <label class="tag-tip">标签</label>
@@ -108,7 +108,7 @@
                 text-decoration:none;
             }
         </style>
-    <!-- </div> -->
+    </div>
     <c-city-list show="showCityList" on-complete="onSelectCityComplete()" city-list="cityList"></c-city-list>
     <c-community-list show="showCommunityList" on-complete="onSelectCommunityComplete()" community-list="communityList"></c-community-list>
     <c-block-list show="showBlockList" on-complete="onSelectBlockComplete()" block-list="blockList"></c-block-list>

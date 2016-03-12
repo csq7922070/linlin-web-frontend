@@ -351,5 +351,51 @@ angular.module('app.address')
 				}
 				return has;
 			}
+
+			this.existTag = function(tag){
+				var defer = $q.defer();
+				this.getAddressList().then(function(data){
+					var exist = false;
+					if(data){
+						angular.forEach(data,function(item){
+							if(item.tag == tag){
+								exist = true;
+								return false;
+							}
+						});
+					}
+					defer.resolve(exist);
+				},function(reason){
+					reason = {
+	            		errorCode: "EXIST_TAG_ERROR",
+	            		errorMessage: errorLog.getErrorMessage(reason)
+	            	};
+	                defer.reject(reason);
+				});
+				return defer.promise;
+			}
+
+			this.existAddress = function(id){
+				var defer = $q.defer();
+				this.getAddressList().then(function(data){
+					var exist = false;
+					if(data){
+						angular.forEach(data,function(item){
+							if(item.id == id){
+								exist = true;
+								return false;
+							}
+						});
+					}
+					defer.resolve(exist);
+				},function(reason){
+					reason = {
+	            		errorCode: "EXIST_ADDRESS_ERROR",
+	            		errorMessage: errorLog.getErrorMessage(reason)
+	            	};
+	                defer.reject(reason);
+				});
+				return defer.promise;
+			}
 		}
 	]);

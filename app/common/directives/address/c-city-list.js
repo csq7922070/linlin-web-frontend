@@ -14,7 +14,7 @@ myApp.directive('cCityList', function() {
             $scope.changeCity = function(city){
                 $scope.showLoading = true;
                 addressInfo.city = city;
-                //$scope.showContent = false;
+                $scope.showContent = false;
                 $scope.showCommunityList = true;
                 address.getCommunityList(city).then(function(data){
                     $scope.showLoading = false;
@@ -28,7 +28,7 @@ myApp.directive('cCityList', function() {
             }
 
             $scope.onSelectCommunityComplete = function(){
-                //$scope.showContent = true;
+                $scope.showContent = true;
                 $scope.show = false;
                 $scope.onComplete();
             }

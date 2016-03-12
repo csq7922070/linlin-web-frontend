@@ -14,7 +14,7 @@ myApp.directive('cUnitList', function() {
             $scope.changeUnit = function(unit){
                 $scope.showLoading = true;
                 addressInfo.unit = unit;
-                //$scope.showContent = false;
+                $scope.showContent = false;
                 $scope.showRoomList = true;
                 address.getRoomList(addressInfo.city, addressInfo.communityId, addressInfo.block, unit).then(function(data){
                     $scope.showLoading = false;
@@ -28,7 +28,7 @@ myApp.directive('cUnitList', function() {
             }
 
             $scope.onSelectRoomComplete = function(){
-                //$scope.showContent = true;
+                $scope.showContent = true;
                 $scope.show = false;
                 $scope.onComplete();
             }

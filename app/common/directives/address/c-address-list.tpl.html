@@ -1,5 +1,5 @@
 <div id="c-address-list-container" class="fixed-full-container address-common-container" ng-show="show">
-    <!-- <div class="content-container" ng-show="showContent" ng-init="showContent=true"> -->
+    <div class="content-container" ng-show="showContent" ng-init="showContent=true">
         <div class="weui_cells address_down account_page owner_top" ng-repeat="address in addressList">
             <a class="weui_cell" style="padding-top: 10px;padding-bottom: 0;" ng-click="selectAddress(address)">
                 <div class="weui_cell_bd weui_cell_primary">
@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-    <!-- </div> -->
+    </div>
     <c-address-edit show="showAddressEdit" on-complete="onEditAddressComplete()"></c-address-edit>
 </div>
 

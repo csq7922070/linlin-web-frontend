@@ -121,6 +121,7 @@ myApp.directive('cSlideAddress', function() {
 
             $scope.addAddress = function(){
                 //$scope.showContent = false;
+                addressInfo.init();
                 $scope.showAddressEdit = true;
             }
 
