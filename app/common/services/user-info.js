@@ -53,6 +53,9 @@ angular.module('app.user')
 		}
 
 		this.getOpenIdSync = function(){
+			if(!openId){
+				openId = localStorage.openId;
+			}
 			return openId;
 		}
 
@@ -83,29 +86,34 @@ angular.module('app.user')
 			if(!wxParam){
 				this.initWxParam();
 			}
-			if(!wxParam){
-				alert("wxParam is null or empty string.");
-			}
-			$http({
-                method: "GET",
-                url: basePath + '/users/getopenid' + wxParam
-            }).success(function(data) {
-            	openId = data.openid;
-				localStorage.openId = openId;
-                //微信配置接口所需参数
-                wxConfigParam = {
-                	timestamp : data.timestamp,
-                	noncestr : data.noncestr,
-                	sign : data.sign
-                };
-                defer.resolve(data);
-            }).error(function(reason) {
-                var reason = {
-    				errorCode: "GET_OPENID_CALL_ERROR",
-    				errorMessage: errorLog.getErrorMessage(reason)
+			if(!wxParam&&localStorage.debug!="true"){
+				var reason = {
+    				errorCode: "GET_OPENID_WX_CONFIG_PARAM_ERROR",
+    				errorMessage: "wxParam is null or empty string"
     			};
                 defer.reject(reason);
-            });
+			}else{
+				$http({
+	                method: "GET",
+	                url: basePath + '/users/getopenid' + wxParam
+	            }).success(function(data) {
+	            	openId = data.openid;
+					localStorage.openId = openId;
+	                //微信配置接口所需参数
+	                wxConfigParam = {
+	                	timestamp : data.timestamp,
+	                	noncestr : data.noncestr,
+	                	sign : data.sign
+	                };
+	                defer.resolve(data);
+	            }).error(function(reason) {
+	                var reason = {
+	    				errorCode: "GET_OPENID_CALL_ERROR",
+	    				errorMessage: errorLog.getErrorMessage(reason)
+	    			};
+	                defer.reject(reason);
+	            });
+        	}
 		    return defer.promise; 
 		}
 
