@@ -14,18 +14,19 @@ angular.module('app.user')
 		this.initWxParam = function(){
 			if(!wxParam){
 				var url = $location.url().substring($location.url().indexOf("?"));
-				if(url.indexOf("?code")<0&&appState=="debug"){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
-					url="";
+				if(url.indexOf("?code")<0){
+					if(appState=="debug"){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
+						url="";
+					}
+				}else{
+					wxParam = url;
 				}
-				wxParam = url;
 			}
 		}
 
 		this.init = function(){
-			if(!openId || !localStorage.openId){
-				this.initWxParam();
-				this.getOpenId();
-			}
+			this.initWxParam();
+			this.getOpenIdWxConfigParam();
 		}
 
 		this.getOpenId = function(){

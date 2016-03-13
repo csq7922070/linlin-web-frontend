@@ -39,6 +39,7 @@ myApp.directive('cBill', function() {
                         $scope.selectedIds.push(billItem.id);
                         bill.selectedCount++;
                         $scope.totalFee += billItem.amount;
+                        $scope.totalFee = Math.round($scope.totalFee*100)/100;
                     }
                 } else {
                     if ($scope.selectedIds.indexOf(billItem.id) != -1) {
@@ -71,6 +72,7 @@ myApp.directive('cBill', function() {
                         if ($scope.selectedIds.indexOf(bill.id) == -1) {
                             $scope.selectedIds.push(bill.id);
                             $scope.totalFee += bill.amount;
+                            $scope.totalFee = Math.round($scope.totalFee*100)/100;
                         }
                     } else {
                         if ($scope.selectedIds.indexOf(bill.id) != -1) {
