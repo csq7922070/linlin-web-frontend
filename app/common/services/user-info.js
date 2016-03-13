@@ -1,6 +1,6 @@
 angular.module('app.user')
-	.service('userInfo', ['$q','$http','$timeout', '$location', 'errorLog', 'appState',
-		function($q,$http,$timeout, $location, errorLog,appState){
+	.service('userInfo', ['$q','$http','$timeout', '$location', 'errorLog',
+		function($q,$http,$timeout, $location, errorLog){
 		var wxParam = null;//此参数是用户进入公众号页面后微信传入的参数，根据此参数再调API获取用户的OpenId，此参数是微信动态生成的，不可持久化到本地
 		var openId = null;//可持久化到本地
 		// var wxConfigParam = {
@@ -14,19 +14,19 @@ angular.module('app.user')
 		this.initWxParam = function(){
 			if(!wxParam){
 				var url = $location.url().substring($location.url().indexOf("?"));
-				if(url.indexOf("?code")<0){
-					if(appState=="debug"){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
-						url="";
-					}
-				}else{
+				if(url.indexOf("?code")==0){//微信传给页面的参数以?code开头
 					wxParam = url;
+				}else if(localStorage.debug=="true"){//此判断是为了在PC浏览器中调试时能够获取测试用的OpenId
+					wxParam="";//获取到的测试openId将为124
 				}
 			}
 		}
 
 		this.init = function(){
-			this.initWxParam();
-			this.getOpenIdWxConfigParam();
+			if(!wxParam){
+				this.initWxParam();
+				this.getOpenIdWxConfigParam();
+			}
 		}
 
 		this.getOpenId = function(){

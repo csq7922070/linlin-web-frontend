@@ -31,6 +31,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
 
         //处理定位成功后的逻辑
         function setCity(data){
+            city = data.city;
             var defer = $q.defer();
             if(!communityLocation.compareCity(data)){//检测到2次城市不一致
                 //需要提示用户是否切换到当前定位地址
@@ -51,7 +52,6 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
             }
             defer.promise.then(function(selectCurrent){//selectCurrent代表是否选择当前自动定位城市为登陆城市
                 if(selectCurrent){
-                    city = data.city;
                     refreshCityInfo();
                     userInfo.getOpenId().then(function(data){
                         var openId = data;

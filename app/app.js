@@ -1,6 +1,6 @@
 //var basePath = "http://localhost:8080/skh";
 //var basePath="http://192.168.0.120:8080/skh";
-var basePath = "http://mifan.4zlink.com:8080/mifan";
+var basePath = "http://mitest.4zlink.com:8080/mifan";
 // var basePath = "http://192.168.0.135:8080/skh";
 
 angular.module('app.home', []);
@@ -281,6 +281,8 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 }]).run(['$rootScope', 'auth', 'control', function($rootScope, auth, control) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
         control.startChangeState(event, toState, toParams, fromState, fromParams);//为了兼容app和微信公众号的首页不一致问题
+        //在页面跳转前检测需要用户登录以及绑定地址的页面用户是否完成了登录和地址绑定
+        //否则跳转到登录页面或者添加地址页面
         auth.startChangeState(event, toState, toParams, fromState, fromParams);
     });
 }]).value('locationState',{
@@ -289,6 +291,4 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
     }
 ).constant(
     'appType', 'weixin'//app or weixin
-).constant(
-    'appState', 'release'//debug or release
 );
