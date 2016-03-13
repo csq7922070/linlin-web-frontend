@@ -435,16 +435,16 @@ p {
   height: 44px;
 }
 .img_active {
-  background: url("../images/flag_02.png") no-repeat;
+  background: url("../images/actived-default.png") no-repeat;
   background-size: contain;
-  width: 16px;
-  height: 16px;
+  width: 26px;
+  height: 28px;
 }
 .dis_active {
-  background: url("../images/flag_01.png") no-repeat;
+  background: url("../images/default.png") no-repeat;
   background-size: contain;
-  width: 16px;
-  height: 16px;
+  width: 26px;
+  height: 28px;
 }
 .owner_name_del {
   width: 16px;
@@ -1540,14 +1540,14 @@ div.rn-carousel-indicator span {
   color: #999;
 }
 #c-slide-address .detail-bar .set-default {
-  background-image: url('../images/flag_01.png');
+  background-image: url('../images/default.png');
   background-repeat: no-repeat;
-  padding-left: 22px;
-  background-size: 13px;
+  padding-left: 24px;
+  background-size: 24px;
   background-position: 0px;
 }
 #c-slide-address .detail-bar .actived-set-default {
-  background-image: url('../images/flag_02.png');
+  background-image: url('../images/actived-default.png');
 }
 #c-slide-address .detail-bar .bottom-detail {
   margin-top: 10px;
