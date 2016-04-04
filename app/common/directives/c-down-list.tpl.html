@@ -4,6 +4,6 @@
 		<div class="triangle" ng-class="{true:'below_triangle',false:'up_triangle'}[triangle == 1]"></div>
 	</div>
 	<ul class="down_list_content" ng-show="downList">
-		<li ng-repeat="text in downLists" ng-click="chooseList(text);" ng-bind="text.name"></li>
+		<li ng-repeat="text in downLists" ng-click="chooseList(text);" ng-bind="text.{{showField}}"></li>
 	</ul>
 </div>

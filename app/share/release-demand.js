@@ -9,7 +9,7 @@ angular.module('app.share').controller('releaseDemandCtrl', ['$timeout', '$state
         $scope.controlNumber = 1;
         $scope.showSkillSecondary = true;
         $scope.texts = shareTypes.getPrimarySkills();
-        $scope.sums = shareTypes.getFeeTypesPriceUnit();
+        $scope.sums = shareTypes.getFeeTypes();
         $scope.sexs = shareTypes.getSexTypes();
         $scope.ages = shareTypes.getAgeTypes();
         //获得用户信息

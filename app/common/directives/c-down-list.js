@@ -4,7 +4,7 @@ myApp.directive('cDownList', function() {
         replace: true,
         scope: {
             show: '=',
-            showName:'@',
+            showField:'@',
             downLists: '=',
             downName: '=',
             currentList: '@', //默认显示

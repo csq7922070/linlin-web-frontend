@@ -8,7 +8,7 @@ angular.module('app.share').controller('releaseSkillCtrl', ['$timeout', '$state'
         $scope.haveAddress = false;
         $scope.haveMydistrict = false;
         $scope.texts = shareTypes.getPrimarySkills();
-        $scope.sums = shareTypes.getFeeTypesPriceUnit();
+        $scope.sums = shareTypes.getFeeTypes();
 
         //获得用户信息
         if(account.hasLogin()){

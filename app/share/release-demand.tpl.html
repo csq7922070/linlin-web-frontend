@@ -11,7 +11,7 @@
 			<div class="release_module">
 				<div class="release_name">需求类型</div>
 				<div class="release_right_module">
-					<c-down-list class="release_classify_list" down-lists="texts" current-list="请选择" show="showDownList" on-Complete="getReleaseSkillClassify(currentList)"></c-down-list>
+					<c-down-list class="release_classify_list" down-lists="texts" current-list="请选择" show="showDownList" show-field="name" on-Complete="getReleaseSkillClassify(currentList)"></c-down-list>
 					<input type="text" name="skillOther" placeholder="请输入需求" class="release_time" ng-model="currentSkillSecondary.name" ng-show="showskillOther">
 					<c-skill-secondary class="" skill-others="skillSecondaryList" skill-pid="pid" show="showSkillSecondary" on-Complete="getSkillSeconday(checkCurrentSecondary)"></c-skill-secondary>
 				</div>
@@ -47,7 +47,7 @@
 				<div class="release_name">服务单价</div>
 				<div class="release_right_module">
 					<input type="text" name="skillInput" placeholder="请输入金额" class="release_input" ng-model="skillSum" ng-pattern="/^\d*$/" required>
-					<c-down-list class="release_sum" down-lists="sums" current-list="请选择" show="showDownList" on-complete="getReleaseSkillSum(currentList);"></c-down-list>
+					<c-down-list class="release_sum" down-lists="sums" current-list="请选择" show="showDownList" show-field="priceUnit" on-complete="getReleaseSkillSum(currentList);"></c-down-list>
 				</div>
 			</div>
 			<div class="release_module">
