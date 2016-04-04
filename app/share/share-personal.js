@@ -47,6 +47,6 @@ angular.module('app.share').controller('sharePersonalCtrl', ['$scope', '$http', 
         });
         //$scope.backgroundImage = loginInfo.headImgUrl;
     	// $scope.uploadImages = [];
-        // $scope.shareImages = [{dataUrl:"images/banner_01.png"}];
+        //$scope.shareImages = [{dataUrl:"images/banner_01.png"}];
     }
 ]);
