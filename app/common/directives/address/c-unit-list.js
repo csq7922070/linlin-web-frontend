@@ -10,7 +10,17 @@ myApp.directive('cUnitList', function() {
         templateUrl: 'tpl/common/directives/address/c-unit-list.tpl.html',
         link: function($scope, element, attrs) {
         },
-        controller: function ($stateParams,$scope,addresses,addressInfo,address) {
+        controller: function ($stateParams,$scope,addresses,addressInfo,address,modalSvc) {
+            var modal = null;
+            $scope.$watch("show", function(newVal,oldVal){
+                if(newVal){
+                    if(!modal){
+                        modal = {scope:$scope};
+                    }
+                    modalSvc.addModal(modal);
+                }
+            });
+
             $scope.changeUnit = function(unit){
                 $scope.showLoading = true;
                 addressInfo.unit = unit;
@@ -27,9 +37,16 @@ myApp.directive('cUnitList', function() {
                 });
             }
 
+            $scope.$watch("showRoomList", function(newVal,oldVal){
+                if(!newVal){
+                    $scope.showContent = true;
+                }
+            });
+
             $scope.onSelectRoomComplete = function(){
                 $scope.showContent = true;
                 $scope.show = false;
+                modalSvc.removeModal(modal);
                 $scope.onComplete();
             }
         }

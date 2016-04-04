@@ -1,0 +1,88 @@
+<div id="c-accept-order" ng-show="show" class="accept-order">
+	<div ng-show="showOrderBox">
+		<div class="accept_order_module">
+			<div class="accept_order_title">
+				<span class="message_left">预约时间</span>
+				<input class="message_right" type="date" class="accept_time" ng-model="acceptTime">
+			</div>
+		</div>
+
+		<div class="accept_order_module">
+			<div class="accept_order_title">
+				<span>预约地点</span>
+			</div>
+			<div class="accept_module_content">
+				<div ng-if="acceptOrder.address.districts">
+					<div class="detail_address detail_address_space">
+						<span class="detail_address_icon" ng-class="{true:'detail_address_check'}[addressType == 1]" ng-click="changeAddress(1)">(他来找我)</span>
+						<span class="detail_address_right">服务区域：<span ng-bind="acceptOrder.address.city"></span>(<span ng-repeat="area in acceptOrder.address.districts"> {{area}} </span>)</span>
+					</div>
+					<div class="detail_address accept_address" ng-if="addressType == 1">
+						<span class="release_set_address" ng-click="setSkillAddress(2)">设置我的地址</span>
+					</div>
+				</div>
+				<div class="address_style" ng-if="addressForme"><span>{{addressForme.city}}</span><span ng-if="addressForme.area">-{{addressForme.area}}-{{addressForme.detail}}</span></div>
+				<div class="detail_address" ng-if="acceptOrder.address.detail">
+					<span class="detail_address_icon" ng-class="{true:'detail_address_check'}[addressType == 0]"  ng-click="changeAddress(0)">(我去找他)</span>
+					<span class="detail_address_right">{{acceptOrder.address.city}}-{{acceptOrder.address.detail}}</span>
+				</div>
+			</div>
+		</div>
+		<div class="accept_order_module">
+			<div class="accept_order_title">
+				<span>服务技能</span>
+				<span class="accept_right">
+					<span ng-bind="acceptOrder.category.name"></span>-<span ng-repeat="childrens in acceptOrder.category.children">{{childrens.name}}</span>
+				</span>
+			</div>
+		</div>
+
+		<div class="accept_order_module">
+			<div class="accept_order_title">
+				<span>服务单价</span>
+				<span class="accept_right">￥
+					<span ng-bind="acceptOrder.price"></span>{{priceType.priceUnit}}
+				</span>
+			</div>
+			<div class="accept_order_title accept_title">
+				<span>服务时长</span>
+				<span class="accept_right">
+					<c-control-number show="showControlNUmber" on-complete="getControlNumber(number);" class="accept_number" ng-if="orderType == 1"></c-control-number>
+					<span ng-bind="acceptOrder.count" ng-if="orderType == 3"></span>
+					<span ng-bind="priceType.countUnit"></span>
+				</span>
+			</div>
+			<div class="accept_order_title accept_title" ng-if="orderType == 3">
+				<span>服务费用合计:</span>
+				<span class="accept_right">￥{{totalCost}}</span>
+			</div>
+		</div>
+		<div class="accept_order_module">
+			<div class="accept_order_title">
+				<span class="message_left">我的电话</span>
+				<input type="text" class="message_right accept_mobile" ng-model="mobile" ng-pattern="/^(11[0-9]|13[0-9]|15[0-9]|18[0-9])\d{8}$/" maxlength="11">
+			</div>
+			<div class="accept_order_title">
+				<span class="message_left">给他留言</span>
+				<textarea class="message_right" name="" id="" cols="10" rows="10" ng-model="message"></textarea>
+			</div>
+		</div>
+		<div class="accept_order_module" ng-if="orderType == 1">
+			<div class="accept_order_title">
+				<span class="pay_method_right"></span>
+				<span class="pay_method">微信支付</span>
+			</div>
+		</div>
+		<span class="guarantee_transaction" ng-if="orderType == 1">米饭公社提供担保交易</span>
+		<div class="release_detail_button" ng-if="orderType == 1">
+			<span class="accept_total">合计:</span>
+			<span class="accept_total">{{totalCost || acceptOrder.price}} <a ng-if="totalCost>0"></a>￥</span>
+			<button class="detail_button" ng-click="getSkillOrder(orderType)">提交订单</button>
+		</div>
+		<div class="release_detail_button" ng-if="orderType == 3">
+			<button class="detail_button demand_button" ng-click="getSkillOrder(orderType)">申请接单</button>
+		</div>
+	</div>
+	<c-set-my-address class="" show="showSetAddress" address-type="addressType" on-Complete="getMyAddress(myAddress)"></c-set-my-address>
+	<c-share-tip type="success" show="showShareTip" tip-text="{{shareTipText}}" close-time="1500" on-close="onSuccessClose()"></c-share-tip>
+</div>

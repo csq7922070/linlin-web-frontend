@@ -1,0 +1,132 @@
+#share-container{
+	width: 100%;
+	height: 100%;
+	background-color: rgb(238,238,238);
+
+	.share-nav-bar{
+		height: 41px;
+		background-color: #fff;
+		padding: 0px 13px;
+		position:relative;
+
+		.map{
+		    background-image: url(../images/map.png);
+		    background-repeat: no-repeat;
+		    display: block;
+		    width: 38px;
+		    height: 38px;
+		    position: absolute;
+		    background-size: 60%;
+		    background-position: 50%;
+		    margin-top: 2px;
+		    margin-left: -8px;
+		}
+
+		.share-nav-items{
+			margin: 0px auto;
+			height: 100%;
+			font-size: 15px;
+			width: 40%;
+
+			.share-nav-item{
+				float:left;
+				width: 50%;
+				height: 100%;
+
+				.share-nav{
+					text-align:center;
+					width:100%;
+					height: 100%;
+					color: #333;
+					display: block;
+					line-height: 41px;
+				}
+
+				.share-nav.active{
+					color: #f34832;
+					border-bottom: solid 2px #f34832;
+				}
+			}
+		}
+
+		.share-nav-items:after{
+			content:"";
+			display:block;
+			clear:both;
+		}
+
+		.release{
+			font-size: 14px;
+			color: #49a5fc;
+			position: absolute;
+		    right: 13px;
+		    top: 11px;
+		}
+	}
+
+	.primary-skill-filter{
+		margin-top: 6px;
+	}
+
+	.filter-bar{
+		height: 44px;
+		background-color: #fff;
+		margin-top: 9px;
+		font-size: 15px;
+		border-bottom: solid 1px #e8e8e8;
+
+		.filter-wrapper{
+			width: 50%;
+			height: 100%;
+			float: left;
+		}
+	}
+
+	.filter-bar:after{
+		content:"";
+		display:block;
+		clear:both;
+	}
+
+	.release-mask{
+		position: fixed;
+		left: 0px;
+		right:0px;
+		top:0px;
+		bottom:0px;
+		background-color:#000;
+		opacity:0.9;
+		text-align:center;
+
+		.close-mask{
+			background-image: url('../images/close.png');
+		    width: 25px;
+		    height: 25px;
+		    background-repeat: no-repeat;
+		    opacity: 1;
+		    float: none;
+		    position: absolute;
+		    right: 13px;
+		    top: 30px;
+		    background-size: 25px;
+		}
+
+		.release-skill,.release-requirement{
+		    background-repeat: no-repeat;
+		    width: 130px;
+		    height: 130px;
+		    display: inline-block;
+		    background-size: 130px;
+		}
+
+		.release-skill{
+			background-image: url('../images/share/release-skill.png');
+			margin-top:34%;
+		}
+
+		.release-requirement{
+			background-image: url('../images/share/release-requirement.png');
+			margin-top:16%;
+		}
+	}
+}

@@ -24,10 +24,16 @@ gulp.task('copy', function() {
   .pipe(gulp.dest('dist/data'));
   gulp.src('app/assets/images/**')
   .pipe(gulp.dest('dist/images'));
+  //复制开源库
   gulp.src('bower_components/**/*min.js')
   .pipe(gulp.dest('dist/bower_components'));
   gulp.src('bower_components/**/*min.css')
   .pipe(gulp.dest('dist/bower_components'));
+  //复制修改后的开源库
+  gulp.src('open_sources/**/*min.js')
+  .pipe(gulp.dest('dist/open_sources'));
+  gulp.src('open_sources/**/*min.css')
+  .pipe(gulp.dest('dist/open_sources'));
 });
 
 
@@ -92,6 +98,13 @@ gulp.task('inject:dev', ['concat:js', 'templates','less'], function(){
     .pipe(cssFilter.restore())
     .pipe($.revReplace())
     .pipe(gulp.dest('dist'));
+});
+
+gulp.task('build:carousel',function(){
+  gulp.src('open_sources/angular-carousel/dist/angular-carousel.js')
+  .pipe($.uglify())
+  .pipe($.rename("angular-carousel.min.js"))
+  .pipe(gulp.dest('open_sources/angular-carousel/dist'));
 });
 
 gulp.task('build:dist', ['clean:dist'], function () {

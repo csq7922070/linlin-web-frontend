@@ -1,6 +1,6 @@
 #c-slide-address{
 	background-color: rgb(238,238,238);
-    font-family: 微软雅黑;
+    //font-family: 微软雅黑;
 
 	.nav-bar{
         position: relative;
@@ -13,6 +13,7 @@
 		}
 
         .nav-link-container{
+            width: 84%;
             height: 100%;
             position: relative;
             float: left;
@@ -30,9 +31,7 @@
 
             .prev-page{
                 background-image: url('../images/left_arrow.png');
-                left: -8px;
-                background-size: 18px;
-                top: 14px;
+                left: -6px;
             }
 
             .next-page{
@@ -40,41 +39,49 @@
                 right: -14px;
             }
 
+            .nav-items{
+                width: 100%;
+                height: 100%;
+            }
+
             .nav-item{
                 display: inline-block;
+                text-align: center;
+                width: 20%!important;
 
                 .nav-link{
+                    width: 100%;
                     display: inline-block;
                     font-size: 15px;
                     color: #999; 
                     line-height: 44px;
-                    padding: 0px 10px;
+                    //padding: 0px 10px;
                 }
 
-                @media(min-width:375px){
-                    .nav-link{
-                        // display: inline-block;
-                        // font-size: 15px;
-                        // color: #999; 
-                        // line-height: 44px;
-                        padding: 0px 16px;
-                    }
-                }
+                // @media(min-width:375px){
+                //     .nav-link{
+                //         // display: inline-block;
+                //         // font-size: 15px;
+                //         // color: #999; 
+                //         // line-height: 44px;
+                //         padding: 0px 16px;
+                //     }
+                // }
 
-                @media(min-width:414px){
-                    .nav-link{
-                        // display: inline-block;
-                        // font-size: 15px;
-                        // color: #999; 
-                        // line-height: 44px;
-                        padding: 0px 20px;
-                    }
-                }
+                // @media(min-width:414px){
+                //     .nav-link{
+                //         // display: inline-block;
+                //         // font-size: 15px;
+                //         // color: #999; 
+                //         // line-height: 44px;
+                //         padding: 0px 20px;
+                //     }
+                // }
+            }
 
-                .actived-nav-link{
-                    color: #555;
-                    border-bottom: solid 2px #e62f17;
-                }
+            .actived-nav-item{
+                color: #555;
+                border-bottom: solid 2px #e62f17;
             }
         }
 

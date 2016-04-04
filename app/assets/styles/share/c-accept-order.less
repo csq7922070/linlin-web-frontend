@@ -1,0 +1,128 @@
+@borderColor: #e8e8e8;
+@bgColor: #f34832;
+.accept-order{
+	// position: fixed;
+	// overflow-y:scroll;
+	// top: 0px;
+	// bottom: 0px;
+	// left: 0px;
+	// right: 0px;
+	background: #eee;
+	.accept_order_module{
+		line-height: 49px;
+		background: #fff;
+		margin-bottom: 9px;
+		.accept_order_title{
+			color: #333;
+			font-size: 15px;
+			margin-left: 12px;
+		}
+		.accept_module_content{
+			margin-left: 14px;
+			margin-right: 14px;
+			border-top: 1px solid @borderColor;
+			color: #777;
+			padding-top: 15px;
+			padding-bottom: 15px;
+		}
+		.accept_time{
+			text-align: right;
+		}
+		.accept_mobile{
+			line-height: 30px;
+			color: #777;
+			text-align: right;
+			padding-right: 10px;
+		}
+		.message_left{
+			display: inline-block;
+			width: 20%;
+		}
+		.message_right{
+			display: inline-block;
+			width: 76%;
+			border: 1px solid @borderColor;
+			position: relative;
+		}
+		.accept_address{
+			text-align: right;
+			line-height: 20px;
+		}
+		.detail_address{
+			.detail_address_icon{
+				width: 70px;
+				padding-left: 20px;
+				background: url(../images/share/uncheck_address.png) no-repeat 0px -5px;
+				background-size: 24px;
+			}
+			.detail_address_check{
+				background: url(../images/share/check_address.png) no-repeat 0px -5px;
+				background-size: 24px;
+			}
+			.detail_address_right{
+				float: right;
+			}
+		}
+		.accept_right{
+			float: right;
+			color: #777;
+			margin-right: 12px;
+		}
+		.accept_number{
+			height: 41px;
+			margin-top: 3px;
+			/*background: red;*/
+		}
+		.accept_title{
+			border-top: 1px solid @borderColor;
+		}
+		.pay_method{
+			display: block;
+			background: url(../images/wetalk_big.png) no-repeat 0px 5px;
+			background-size: 40px;
+			padding-left: 50px;
+		}
+		.pay_method_right{
+			float: right;
+			background: url(../images/right_1.png) no-repeat;
+			width: 20px;
+			height: 20px;
+			background-size: 20px;
+			margin-top: 15px;
+			margin-right: 12px;
+		}
+	}
+	.guarantee_transaction{
+		display: block;
+		text-align: center;
+		color: #999;
+		font-size: 13px;
+		margin-top: 9px;
+		margin-bottom: 9px;
+	}
+	.release_detail_button{
+		clear: both;
+		height: 55px;
+		background: #fff;
+		padding-left: 24px;
+		.accept_total{
+			line-height: 55px;
+			margin-left: 12px;
+			color: #ffa400;
+		}
+		.detail_button{
+			float: right;
+			width: 136px;
+			height: 40px;
+			margin-right: 12px;
+			margin-top: 9px;
+			border: 1px solid @bgColor;
+			background: @bgColor;
+			color: #fff;
+			border-radius: 5px;
+		}
+		.demand_button{
+			width: 100%;
+		}
+	}
+}

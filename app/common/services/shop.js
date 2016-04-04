@@ -11,7 +11,7 @@ angular.module('app.shop')
                     lat: latitude
                 }
                 shops.query(params).$promise.then(function(data) {
-                	defer.resolve(data.items);
+                	defer.resolve(data);
                 },function(reason){
                     reason = {
 	            		errorCode: "GET_SHOP_LIST_ERROR",

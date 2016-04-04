@@ -1,7 +1,7 @@
 <div id="c-repair-device-container" class="" ng-show="show">
     <div class="repair_device_nav_c">
-        <div class="arrow left_arrow" ng-click="leftArrow();"><img src="images/left_arrow.png" alt=""></div>
-        <div class="arrow right_arrow" ng-click="rightArrow();"><img src="images/right_arrow.png" alt=""></div>
+        <a class="arrow left_arrow" ng-click="leftArrow();"></a>
+        <a class="arrow right_arrow" ng-click="rightArrow();"></a>
         <ul id="repair_device_nav">
             <div id="repair_device_list">
                 <li class="repair_device" ng-repeat="repairDevice in currentrepairDevices" ng-click="repairAdd(repairDevice)">

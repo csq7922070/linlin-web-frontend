@@ -1,11 +1,12 @@
 <div id="repair">
+    <c-nav-bar title="物业报修"></c-nav-bar>
     <div class="repair_dir">
         我要报修
     </div>
     <!-- 报修设备 -->
-    <c-repair-device repair-devices="repairDevices" show="repairDeviceShow" ng-init="repairDeviceShow=true" on-complete="onRepairDeviceComplete(repairDevice)"></c-repair-device>
+    <c-repair-device repair-devices="repairDevices" repair-Listlength="vm.repairList.length" show="repairDeviceShow" ng-init="repairDeviceShow=true" on-complete="onRepairDeviceComplete(repairDevice)"></c-repair-device>
     <!-- 报修添加详情 -->
-    <c-repair-add repair-add="vm.repairAdd" show="repairAddShow" ng-init="repairAddShow=false" on-complete="onRepairAddComplete()"></c-repair-add>
+    <c-repair-add repair-add="vm.repairAdd" show="repairAddShow" on-complete="onRepairAddComplete()"></c-repair-add>
 
     <div class="repair_dir">
         历史记录
@@ -16,4 +17,4 @@
 <c-tip type="success" show="showSuccess" tip="提交成功!" close-time="1500" on-close="onSuccessClose()"></c-tip>
 <c-tip type="error" show="showError" tip="提交失败!" close-time="1500" on-close="onTipClose()"></c-tip>
 
-<c-loading type="loading" show="showLoading" tip="正在加载中..." tiploading="loading"></c-loading>
+<c-loading type="loading" show="showLoading" tip="正在加载中..." tip-loading="loading"></c-loading>

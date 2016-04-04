@@ -10,7 +10,16 @@ myApp.directive('cCommunityList', function() {
         templateUrl: 'tpl/common/directives/address/c-community-list.tpl.html',
         link: function($scope, element, attrs) {
         },
-        controller: function ($stateParams,$scope,addresses,addressInfo,address) {
+        controller: function ($stateParams,$scope,addresses,addressInfo,address,modalSvc) {
+            var modal = null;
+            $scope.$watch("show", function(newVal,oldVal){
+                if(newVal){
+                    if(!modal){
+                        modal = {scope:$scope};
+                    }
+                    modalSvc.addModal(modal);
+                }
+            });
             $scope.changeCommunity = function(community){
                 $scope.showLoading = true;
                 addressInfo.communityId = community.id;
@@ -28,9 +37,16 @@ myApp.directive('cCommunityList', function() {
                 });
             }
 
+            $scope.$watch("showBlockList", function(newVal,oldVal){
+                if(!newVal){
+                    $scope.showContent = true;
+                }
+            });
+
             $scope.onSelectBlockComplete = function(){
                 $scope.showContent = true;
                 $scope.show = false;
+                modalSvc.removeModal(modal);
                 $scope.onComplete();
             }
         }

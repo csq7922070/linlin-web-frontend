@@ -1,0 +1,85 @@
+<div id="release_detail">
+	<div class="release_detail_box" ng-show="showDetailBox">
+		<div class="release_detail_top">
+			<c-filter-background background-image="backgroundImage"></c-filter-background>
+			<div class="release_detail_head">
+				<div class="detail_symbol">
+					<span class="detail_fallback" ng-click="prev();"></span>
+					<span class="detail_share" ></span>
+					<span class="detail_collect" ng-click="changeCollect();" ng-class="{true:'detail_has_collect'}[detailCollect == 1]"></span>
+				</div>
+				<div class="detail_title">
+					<img src="images/share/{{categoryImg}}.png" class="detail_title_icon" alt="">
+					<span class="title_main"><span ng-bind="data.skillText"></span></span>
+					<span class="title_main"><span ng-bind="data.price"></span>{{data.priceUnitText}}</span>
+					<span class="title_main">预约时间：<span>{{data.subscribeDate}}</span></span>
+				</div>
+			</div>
+		</div>
+		<div class="release_detail_content">
+			<div class="detail_personal_information" ng-click="goMyHomePage();">
+				<img src="{{data.account.headImgUrl}}" class="personal_icon" alt="">
+				<span class="personal_information_name">{{data.account.nickName}}</span>
+				<span class="personal_information">{{data.account.sex || '女'}}</span><span class="personal_information">{{data.account.age || 21}}</span>
+				<c-skill-icons release-skills="releaseSkills"></c-skill-icons>
+			</div>
+		</div>
+		<div class="release_detail_content">
+			<div class="detail_module">
+				<div class="detail_module_title detail_title">
+					<span>服务时长</span>
+					<span class="detail_title_right"><span ng-bind="data.count"></span><span ng-bind="data.countUnitText"></span></span>
+				</div>
+				<div class="detail_module_title detail_title">
+					<span>性别要求</span>
+					<span class="detail_title_right" ng-bind="data.sexText">{{sexType}}</span>
+				</div>
+				<div class="detail_module_title">
+					<span>年龄要求</span>
+					<span class="detail_title_right" ng-bind="data.ageText"></span>
+				</div>
+			</div>
+			<div class="detail_module">
+				<div class="detail_module_title">
+					服务地点
+				</div>
+				<div class="detail_module_content">
+					<div class="detail_address detail_address_space" ng-if="data.address.districts">
+						<span class="detail_address_icon" ng-class="{true:'detail_address_check'}[addressType == 1]">(他来找我)</span>
+						<span class="detail_address_right">服务区域：<span ng-bind="data.address.city"></span>(<span ng-repeat="area in data.address.districts"> {{area}} </span>)</span>
+					</div>
+					<div class="detail_address" ng-if="data.address.detail">
+						<span class="detail_address_icon">(我去找他)</span>
+						<span class="detail_address_right">{{data.address.city}}-{{data.address.detail}}</span>
+					</div>
+				</div>
+			</div>
+			<div class="detail_module">
+				<div class="detail_module_title">
+					<span>联系电话</span>
+					<span class="detail_title_right">{{data.mobile}}</span>
+				</div>
+			</div>
+			<div class="detail_module">
+				<div class="detail_module_title">
+					<span>身份验证</span>
+					<span class="detail_title_right right_image">已实名认证</span>
+				</div>
+			</div>
+			<div class="detail_module">
+				<div class="detail_module_title">
+					自我描述
+				</div>
+				<div class="detail_module_content">
+					<span ng-bind="data.description"></span>
+					<c-images images="shareImages" mode="browse" class="detail_images" show-loading="showImagesLoading"></c-images>
+				</div>
+			</div>
+		</div>
+		<div class="release_detail_button">
+			<button class="detail_button">在线沟通</button>
+			<button class="detail_button appointment_button" ng-click="getOrder(3)">我要接单</button>
+		</div>
+	</div>
+</div>
+<c-loading type="loading" show="showLoading" tip="正在加载中..." tip-loading="loading"></c-loading>

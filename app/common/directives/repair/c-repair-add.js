@@ -17,18 +17,23 @@ myApp.directive('cRepairAdd', function() {
             $scope.mobile = loginInfo.tel;
 
             $scope.repairSubmit = function() {
+                if(repair.repairDevice == null){
+                   repair.repairDeviceId = 1;
+                   repair.repairDevice = '开换锁';
+                }
                 var params = {
                     imgTag : repair.repairDeviceId,
                     device : repair.repairDevice,
                     houseId : $scope.address.id,
-                    openid : userInfo.getOpenIdSync(),
+                    accountId : userInfo.getAccountId(),
                     mobile : $scope.mobile,
                     remark : $scope.remark
                 }
-                console.log(params);                
+                console.log(params);           
 
                 repair.saveRepairAdd(params).then(function(data){
                     $scope.showSuccess = true;
+                    $scope.remark = null;
                     $scope.onSuccessClose = function() {
                         $scope.show = false;
                         $scope.onComplete();

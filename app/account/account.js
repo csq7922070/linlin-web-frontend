@@ -1,6 +1,6 @@
 angular.module('app.account').controller('accountCtrl', ['$stateParams', '$scope','account','errorLog',
-    'userInfo','address','control','$state','$location',
-    function ($stateParams,$scope,account,errorLog,userInfo,address,control,$state,$location) {
+    'userInfo','address','control','$state','$location','appType',
+    function ($stateParams,$scope,account,errorLog,userInfo,address,control,$state,$location,appType) {
         //alert($location.url());
         userInfo.init();//微信参数只会在公众号第一个页面传入
         //
@@ -54,5 +54,7 @@ angular.module('app.account').controller('accountCtrl', ['$stateParams', '$scope
                 $state.go("address-list",{mode:"browse"});
             }
         }
+
+        $scope.appType = appType;
     }
 ]);

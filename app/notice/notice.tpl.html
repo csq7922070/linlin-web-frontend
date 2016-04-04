@@ -1,0 +1,19 @@
+<div id="notice_listtpl">
+    <c-nav-bar title="物业公告"></c-nav-bar>
+    <div class="container-fluid contain" when-scrolled="vm.load(vm.currentPage+1,vm.pageSize)">
+        <ul class="list">
+            <li ng-repeat="notice in vm.notices" class="notice_list">
+                <a ui-sref="notice-detail({id:notice.id})">
+                    <div class='notice' name='title'><span class="warm_prompt">[温馨提示]</span><span ng-bind="notice.title"></span></div>
+                    <div class='notice_message' style="padding-left:0px;height:50px;overflow: hidden" name='content' ng-bind="notice.content"></div>
+                    <div class='notice_date' name='createtime' ng-bind="notice.createDate.substring(0,16)"></div>
+                </a>
+            </li>
+            <li ng-if="vm.notices.length==0" style="background-color: #EEEEEE;border: none;text-align: center;font-size: 18px;padding-top: 30px">
+                <div>您所在的小区暂时没有公告</div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<c-loading show="showLoading" tip="正在加载中..." tip-loading="loading"></c-loading>

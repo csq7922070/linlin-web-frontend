@@ -1,0 +1,97 @@
+.c-slide-share-info-container{
+	.c-circle-loading-container{//图片指令内部的loading样式覆盖
+		background-color:#f3f0f0;
+
+		.circle{
+			background-color:#8E8A8A;
+		}
+	}
+
+	.info-list{
+		height:264px;
+		margin:0px;
+		border-top: solid 5px #fb5959;
+		border-left: solid 1px #e8e8e8;
+		border-right: solid 1px #e8e8e8;
+		border-bottom: solid 1px #e8e8e8;
+		border-radius:6px;
+
+		.list-item{
+			padding:12px;
+			padding-bottom:15px;
+		}
+
+		.top-bar{
+			.skill-info{
+				font-size: 14px;
+				color:#555;
+			}
+
+			.fee{
+				font-size:15px;
+				color:#ffa400;
+				margin-left:21px;
+			}
+
+			.fee-unit{
+				font-size:13px;
+				color:#777;
+			}
+
+			.status{
+				font-size: 13px;
+			    color: #e62f17;
+			    float: right;
+			    line-height: 21px;
+			}
+		}
+
+		.top-bar:after{
+			content:"";
+			display:block;
+			clear:both;
+		}
+
+		.deal-info{
+    		font-size: 13px;
+    		color: #666;
+    		background-image:url('../images/star_0.png');
+    		background-repeat:no-repeat;
+		    display: inline-block;
+		    background-size: 100px;
+		    padding-left: 106px;
+    	} 
+
+    	.brief-introduction{
+    		font-size:14px;
+    		color:#777;
+    	}
+
+    	.publish-info{
+    		font-size:13px;
+    		color:#999;
+    		border-top: solid 1px #e8e8e8;
+			padding-top: 16px;
+			margin-top:12px;
+
+			.publish-date{
+				margin-left: 25px;
+				margin-right: 4px;
+			}
+    	}
+	}
+
+	.slide-indicators{
+		padding:4px 0px;
+		text-align: center;
+
+		span{
+			padding: 0px 2px;
+			color: #ededed;
+		}
+
+		span.active {
+		  color: #f95959;
+		}
+	}
+}

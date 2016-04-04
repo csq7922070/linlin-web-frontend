@@ -12,10 +12,13 @@ angular.module('app.location').controller('locationCtrl', ['$scope', '$http', '$
             return;
         }
 
+        //加载推荐城市列表数据
+        $scope.recommandCityList = cityList.getRecommandCityList();
+
         //加载城市列表数据
         $scope.showLoading = true;
         var cities = null;
-        cityList.getCityList().then(function(data){//data format:[{initial,items:[cityName,initial,pinyin]}]
+        cityList.getCityList().then(function(data){//data format:[{initial,items:[name,initial,pinyin]}]
             $scope.showLoading = false;
             $scope.cities = citySearch.cityList = cities = data;
             //$scope.focus = true;
@@ -47,19 +50,10 @@ angular.module('app.location').controller('locationCtrl', ['$scope', '$http', '$
 
         //修改当前城市，可以是定位城市、推荐城市、城市列表中的城市
         $scope.changeCity = function(city){//city type:string
-            var openId = null;
-            userInfo.getOpenId().then(function(data){
-                openId = data;
-                communityLocation.changeCity(openId, city).then(function(data){//保存用户选择的城市信息到服务器
-                    locationState.hasLocation = true;
-                    locationState.locationVisited = true;
-                    $state.go('home');
-                },function(reason){
-                    alert(reason.errorCode +"," +reason.errorMessage);
-                });
-            },function(reason){
-                alert(reason.errorCode +"," +reason.errorMessage);
-            });
+            communityLocation.changeCity(city);
+            locationState.hasLocation = true;
+            locationState.locationVisited = true;
+            $state.go('home');
         }
 
         $scope.clearSearchField = function(){
@@ -74,9 +68,9 @@ angular.module('app.location').controller('locationCtrl', ['$scope', '$http', '$
             communityLocation.autoLocationCommunity().then(function(data){
                 $scope.showLocationLoading = false;
                 // alert(errorLog.getFullErrorMessage(data));
-                $scope.locationCity = data.city;
-                if(!locationState.locationVisited && $scope.locationCity){
-                    $scope.changeCity($scope.locationCity);
+                $scope.locationCity = data.city?data.city:null;
+                if(!locationState.locationVisited && data.city){
+                    $scope.changeCity(data.city);
                 }
             },function(reason){
                 $scope.showLocationLoading = false;

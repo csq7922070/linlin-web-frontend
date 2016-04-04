@@ -1,20 +1,21 @@
 <div id="home-container">
-    <a class="village" ng-click="changeCity()">
-        <span ng-bind="city" class="community-name">阿尔卡...</span>
-        <img src="images/right_arrow.png" style="height: 14px;position: relative;top: -1px;left: 4px">
+    <a class="location" ng-click="changeCity()">
+        <span ng-bind="cityName" class="city-name">廊坊</span>
+        <img src="images/right_arrow.png" class="location-arrow">
     </a>
-    <div class="carousel-demo">
-        <ul rn-carousel rn-carousel-index="carouselIndex7"  rn-carousel-auto-slide ="5" class="carousel5">
-            <li ng-repeat="slide in slides7 track by slide.id">
-                    <a ng-if="$index!=1">
-                        <img ng-src={{slide.img}} style="height: 100%;width: 100%">
-                    </a>
-                <a ng-if="$index==1" href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7ebe0163418bd072&redirect_uri=http%3A%2F%2Ffinance.4zlink.com%2Fcommonweal-frontend%2F%23%2Finfo&response_type=code&scope=snsapi_base&state=123&from=groupmessage&isappinstalled=0#wechat_redirect">
-                    <img ng-src={{slide.img}} style="height: 100%;width: 100%">
+    <div class="carousel-container">
+        <ul rn-carousel rn-carousel-index="carouselIndex" rn-carousel-auto-slide=5 class="carousel"> 
+            <li ng-repeat="slide in slides track by slide.id">
+                <a>
+                    <img ng-src={{slide.img}} class="carousel-image">
                 </a>
+<!--                 <a ng-if="$index==1" href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7ebe0163418bd072&redirect_uri=http%3A%2F%2Ffinance.4zlink.com%2Fcommonweal-frontend%2F%23%2Finfo&response_type=code&scope=snsapi_base&state=123&from=groupmessage&isappinstalled=0#wechat_redirect">
+                    <img ng-src={{slide.img}} style="height: 100%;width: 100%">
+                </a> -->
             </li>
         </ul>
-        <div rn-carousel-indicators ng-if="slides7.length > 1" slides="slides7" rn-carousel-index="carouselIndex7"></div>
+        <div rn-carousel-indicators ng-if="slides.length > 1" slides="slides" rn-carousel-index="carouselIndex"
+            class="rn-carousel-indicators"></div>
     </div>
     <div class="home_nav">
         <a ui-sref="bill">

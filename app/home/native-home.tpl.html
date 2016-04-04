@@ -1,45 +1,72 @@
-<div id="home-container">
-    <a class="village" ng-click="changeCommunity()">
-        <span ng-bind="communityName" class="community-name">阿尔卡...</span>
-        <img src="images/right_arrow.png" style="height: 14px;position: relative;top: -1px;left: 4px">
-    </a>
-    <div class="carousel-demo">
-        <ul rn-carousel rn-carousel-index="carouselIndex7"  rn-carousel-auto-slide ="5" class="carousel5">
-            <li ng-repeat="slide in slides7 track by slide.id">
-                    <a ng-if="$index!=1">
-                        <img ng-src={{slide.img}} style="height: 100%;width: 100%">
-                    </a>
-                <a ng-if="$index==1" href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7ebe0163418bd072&redirect_uri=http%3A%2F%2Ffinance.4zlink.com%2Fcommonweal-frontend%2F%23%2Finfo&response_type=code&scope=snsapi_base&state=123&from=groupmessage&isappinstalled=0#wechat_redirect">
-                    <img ng-src={{slide.img}} style="height: 100%;width: 100%">
+<div id="native-home-container">
+    <a class="location-city" ng-bind="cityName" ng-click="changeCity()">北京</a>
+    <div class="slogan-container">
+        <span class="main-slogan">米饭公社</span><br/>
+        <span class="secondary-slogan">尽享科技新生活</span>
+    </div>
+    <div class="carousel-container">
+        <ul rn-carousel rn-carousel-index="carouselIndex" rn-carousel-auto-slide=5 class="carousel"> 
+            <li ng-repeat="slide in slides track by slide.id">
+                <a>
+                    <img ng-src={{slide.img}} class="carousel-image">
                 </a>
             </li>
         </ul>
-        <div rn-carousel-indicators ng-if="slides7.length > 1" slides="slides7" rn-carousel-index="carouselIndex7"></div>
+        <div rn-carousel-indicators ng-if="slides.length > 1" slides="slides" rn-carousel-index="carouselIndex"
+            class="rn-carousel-indicators"></div>
     </div>
-    <div class="home_nav">
-        <a ui-sref="bill">
-            <img src="images/water_free.png">
-            <p>水电缴费</p>
-        </a>
-        <a ui-sref="repair">
-            <img src="images/repair.png">
-            <p>物业报修</p>
-        </a>
-        <a ui-sref="complain">
-            <img src="images/complaint.png">
-            <p>投诉建议</p>
-        </a>
-        <a ui-sref="notice">
-            <img src="images/notice.png">
-            <p>物业公告</p>
-        </a>
+    <div class="main-menus menus-container">
+        <ul class="menus">
+            <li class="menu-item">
+                <a class="menu service">物业服务</a>
+            </li>
+            <li class="menu-item">
+                <a class="menu resource">达人资源</a>
+            </li>
+            <li class="menu-item">
+                <a class="menu travel" ng-click="go('sxtx')">盛行天下</a>
+            </li>
+            <li class="menu-item">
+                <a class="menu communication">邻里沟通</a>
+            </li>
+        </ul>
     </div>
-    <div class="tab_nav row">
-        <div class="col-xs-4"  ui-sref="home.shop-info({site:1})"><span ng-class="{'nav_active':site==1}">爱车养护</span></div>
-        <div class="col-xs-4"  ui-sref="home.shop-info({site:2})"><span ng-class="{'nav_active':site==2}">家政服务</span></div>
-        <div class="col-xs-4"  ui-sref="home.shop-info({site:3})"><span ng-class="{'nav_active':site==3}">在线问诊</span></div>
+    <div class="second-menus menus-container">
+        <div class="left-container">
+            <a class="menu repair" ui-sref="repair">
+                <span>物业报修</span><br/>
+                <span class="menu-tip">24小时，上门服务</span>
+            </a>
+        </div>
+        <div class="right-container">
+            <div class="top-container">
+                <a class="menu complain" ui-sref="complain">
+                    <span>物业投诉</span><br/>
+                    <span class="menu-tip">及时反馈</span>
+                </a>
+            </div>
+            <div class="bottom-container">
+                <a class="menu pay" ui-sref="bill">
+                    <span>水电缴费</span><br/>
+                    <span class="menu-tip">足不出户</span>
+                </a>
+            </div>
+        </div>
     </div>
-    <div ui-view></div>
+    <div class="third-menus menus-container">
+        <div class="left-container">
+            <a class="menu nearby">
+                <span>智能周边</span><br/>
+                <span class="menu-tip">快捷出行必备</span>
+            </a>
+        </div>
+        <div class="right-container">
+            <a class="menu other">
+                <span>其它服务</span><br/>
+                <span class="menu-tip">正在开发</span>
+            </a>
+        </div>
+    </div>
     <confirm-modal title="modalTitle" tip="modalTip" tip-align="tipAlign" show="showModal" cancel-text="cancelText" ok-text="okText" 
         only-ok-button="onlyOkButton" on-close="onModalClose(state)"></confirm-modal>
 </div>

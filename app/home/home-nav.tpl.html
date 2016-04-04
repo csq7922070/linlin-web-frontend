@@ -1,14 +1,31 @@
 <div id="home-nav-container">
-	<div id="flip-container" class="flip-container">
-		<div class="front" ui-view="home">
-		</div>
-		<div class="back" ui-view="account">
-		</div>
+	<div class="nav-container">
+		<ul class="nav-slide nav-slide-{{navIndex}}"> 
+            <li>
+            	<div ui-view="home" class="nav-view"></div>
+            </li>
+            <li>
+            	<div ui-view="share" class="nav-view"></div>
+            </li>
+            <li>
+            	<div ui-view="account" class="nav-view"></div>
+            </li>
+        </ul>
 	</div>
 	<div class="bottom-nav-bar">
-		<a class="nav-link" ng-class="{true:'home-nav-active',false:'home-nav'}[currentNav=='home']" 
-			href="javascript:void(0)" ng-click="nav('home')">首页</a>
-		<a class="nav-link" ng-class="{true:'account-nav-active',false:'account-nav'}[currentNav=='account']" 
-			href="javascript:void(0)" ng-click="nav('account')">我的</a>
+		<ul class="menus">
+			<li class="menu-item">
+				<a class="nav-link home-nav" ng-class="{'home-nav-actived':navIndex==0}" 
+					href="javascript:void(0)" ng-click="nav(0)">首页</a>
+			</li>
+			<li class="menu-item">
+				<a class="nav-link share-nav" ng-class="{'share-nav-actived':navIndex==1}" 
+					href="javascript:void(0)" ng-click="nav(1)">共享</a>
+			</li>
+			<li class="menu-item">
+				<a class="nav-link account-nav" ng-class="{'account-nav-actived':navIndex==2}" 
+					href="javascript:void(0)" ng-click="nav(2)">我的</a>
+			</li>
+		</ul>
 	</div> 
 </div>

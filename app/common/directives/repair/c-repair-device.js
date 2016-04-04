@@ -6,12 +6,23 @@ myApp.directive('cRepairDevice', function() {
             show: '=',
             onScrolled: '&',
             repairDevices: '=',
+            repairListlength: '=',
             onComplete: '&'
         },
         templateUrl: 'tpl/common/directives/repair/c-repair-device.tpl.html',
         link: function($scope, element, attrs) {
         },
         controller: function ($timeout, $state, errorLog,$scope,repair) {
+            $scope.currentDevice = {id : 1,name : '开换锁',url :  'images/device_01.png'}
+            $scope.$watch("repairListlength", function(newVal,oldVal){
+                if(newVal != oldVal){
+                    console.log('111');
+                    $scope.currentDevice = null;
+                }
+            });
+            if($scope.repairListlength != 0){
+                $scope.currentDevice = null;
+            }
             $scope.repairAdd = function(repairDevice){
                 console.log("repairAdd...");
                 $scope.onComplete({repairDevice:repairDevice});

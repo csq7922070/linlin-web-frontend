@@ -6,15 +6,26 @@ myApp.directive('cAddressList', function() {
             show: '=',
             onComplete: '&',
             addressList: '=',
-            mode:'='//browse or select mode
+            mode:'@',//browse or select mode，默认是select
+            isModal:'@'//"true" or "false"代表该指令是否在页面上以模态指令状态显示，默认值为"true"
         },
         templateUrl: 'tpl/common/directives/address/c-address-list.tpl.html',
         link: function($scope, element, attrs) {
         },
-        controller: function ($scope, $rootScope,$stateParams, $state, addresses,errorLog,addressInfo,userInfo,address) {
-            $scope.$watch("addressList", function(newVal,oldVal){
-                // console.log("directive addressList update:");
-                // console.log($scope.addressList);
+        controller: function ($scope, $rootScope,$stateParams, $state, addresses,errorLog,addressInfo,userInfo,address,modalSvc) {
+            $scope.mode = "select";
+            $scope.isModal = "true";
+
+            var modal = null;
+            $scope.$watch("show", function(newVal,oldVal){
+                if(newVal){
+                    if($scope.isModal=="true"){
+                        if(!modal){
+                            modal = {scope:$scope};
+                        }
+                        modalSvc.addModal(modal);
+                    }
+                }
             });
 
             $scope.deleteAddress = function (addr) {
@@ -46,6 +57,9 @@ myApp.directive('cAddressList', function() {
                 }
                 addressInfo.selectAddress(addr);
                 $scope.show = false;
+                if($scope.isModal=="true"){
+                    modalSvc.removeModal(modal);
+                }
                 $scope.onComplete();
             }
 
@@ -54,12 +68,18 @@ myApp.directive('cAddressList', function() {
                 $scope.showAddressEdit = true;
             }
 
+            $scope.$watch("showAddressEdit", function(newVal,oldVal){
+                if(!newVal){
+                    $scope.showContent = true;
+                }
+            });
+
             $scope.onEditAddressComplete = function(){
                 // console.log("onEditAddressComplete");
                 $scope.showContent = true;
                 if($scope.mode == "select"){
-                    $scope.show = false;
-                    $scope.onComplete();
+                    var selected = addressInfo.getSelectedAddress();
+                    $scope.selectAddress(selected);
                 }
             }
 

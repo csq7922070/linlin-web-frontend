@@ -1,0 +1,76 @@
+.c-images-container{
+	position:relative;
+	background-color: #fff;
+
+	.image-list{
+		margin: 0px;
+
+		.list-item{
+			float: left;
+		    margin-right: 10px;
+		    margin-bottom: 10px;
+		    height: auto;
+		    border: 0px;
+		    padding:0px!important;
+
+		    .delete{
+		    	background-image: url('../images/delete_2.png');
+			    background-repeat: no-repeat;
+			    display: block;
+			    width: 22px;
+			    height: 22px;
+			    position: absolute;
+			    background-size: 22px;
+			    margin-left: -6px;
+			    margin-top: -6px;
+		    }
+
+		    .image{
+		    	height: 89px;
+		    	border: 0px;
+		    	border-radius: 3px;
+		    }
+		}
+
+		.list-item-browse{
+			margin-bottom:0px;
+		}
+
+		.add-image{
+			width: 88px;
+		    height: 89px;
+		    border: 0px;
+		    background-color: rgb(238,238,238);
+		    background-image: url('../images/add.png');
+		    background-repeat: no-repeat;
+		    background-size: 23px;
+		    font-size: 14px;
+		    color: #333;
+		    position: relative;
+		    overflow: hidden;
+		    background-position: 50% 24px;
+		    padding-top: 32px;
+		    border-radius: 3px;
+
+		    .file-field{
+		    	position: absolute;
+			    left: 0px;
+			    top: 0px;
+			    width: 100%;
+			    height: 100%;
+			    opacity: 0;
+		    }
+		}
+	}
+
+	.image-list:after{
+		content:"";
+		display: block;
+		clear:both;
+	}
+
+	.image-list-browse{
+		height:89px;
+		overflow:auto;
+	}
+}

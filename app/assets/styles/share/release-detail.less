@@ -1,0 +1,192 @@
+#release_detail{
+	.c-circle-loading-container{//图片指令内部的loading样式覆盖
+		background-color:#f3f0f0;
+
+		.circle{
+			background-color:#8E8A8A;
+		}
+	}
+
+	.release_detail_top{
+		position: relative;
+	}
+	.release_detail_head{
+		position: relative;
+		.detail_symbol{
+			height: 44px;
+			/*background: #ddd;*/
+			padding-top: 10px;
+			padding-left: 10px;
+			padding-right: 10px;
+			.detail_fallback{
+				display: inline-block;
+				height: 30px;
+				width: 30px;
+				background: url(../images/arrow/left-arrow-white.png) no-repeat;
+			}
+			.detail_collect{
+				float: right;
+				width: 30px;
+				height: 30px;
+				background: url(../images/share/not_collect.png) no-repeat;
+				background-size: 30px;
+			}
+			.detail_has_collect{
+				background: url(../images/share/has_collect.png) no-repeat;
+				background-size: 30px;
+			}
+			.detail_share{
+				float: right;
+				width: 30px;
+				height: 30px;
+				margin-left: 22px;
+				background: url(../images/share/detail_share.png) no-repeat;
+				background-size: 30px;
+			}
+		}
+		.detail_title{
+			height: 160px;
+			/*background: #2a2;*/
+			text-align: center;
+			.detail_title_icon{
+				height: 50px;
+				margin-bottom: 7px;
+			}
+			.title_main{
+				display: block;
+				margin-top: 10px;
+				color: #fff;
+				color: 15px;
+				.deal_count_color{
+					color: #fff;
+				}
+			}
+		}
+	}
+	.release_detail_content{
+		.detail_personal_information{
+			background:#fff;
+			line-height: 47px;
+			position: relative;
+			.personal_icon{
+				position: absolute;
+				bottom: 8px;
+				left: 12px;
+				width: 75px;
+				height: 75px;
+				border-radius: 37px;
+			}
+			.personal_information_name{
+				color: #333;
+				font-size: 15px;
+				margin-left: 99px;
+				font-weight: bolder;
+				margin-right: 23px;
+			}
+			.personal_information{
+				color: #777;
+				margin-right: 7px;
+			}
+			.personal_information_icon{
+				width: 20px;
+			}
+		}
+		.detail_module{
+			margin-top: 8px;
+			background: #fff;
+			.detail_module_title{
+				line-height: 52px;
+				margin-left: 14px;
+				color: #333;
+				font-size: 15px;
+				.detail_title_right{
+					float: right;
+					margin-right: 14px;
+					color: #777;
+				}
+				.right_image{
+					width: 100px;
+					background: url(../images/share/certification.png) no-repeat 85px;
+					background-size: 15px;
+				}
+			}
+			.detail_title{
+				border-bottom: 1px solid #e8e8e8;
+			}
+			.detail_module_content{
+				margin-left: 14px;
+				margin-right: 14px;
+				border-top: 1px solid #e8e8e8;
+				color: #777;
+				padding-top: 15px;
+				padding-bottom: 15px;
+				.detail_images{
+					margin-top: 16px;
+					img{
+						width: 110px;
+						height: 87px;
+						margin-right: 5px;
+					}
+				}
+			}
+			.detail_address{
+				.detail_address_icon{
+					width: 70px;
+					padding-left: 20px;
+					background: url(../images/share/uncheck_address.png) no-repeat 0px -5px;
+					background-size: 24px;
+					margin-bottom: 15px;
+				}
+				.detail_address_check{
+					background: url(../images/share/check_address.png) no-repeat 0px -5px;
+					background-size: 24px;
+				}
+				.detail_address_right{
+					float: right;
+				}
+			}
+			.detail_address_space{
+				margin-bottom: 15px;
+			}
+			.detail_reply_button{
+				float: right;
+				text-align: center;
+				width: 93px;
+				line-height: 30px;
+				font-size: 14px;
+				border: 1px solid #f95959;
+				color: #f95959;
+				border-radius: 15px;
+				position: relative;
+				top: 10px;
+				right: 12px;
+			}
+			.detail_images{
+				margin-top: 10px;
+			}
+		}
+	}
+	.release_detail_button{
+		clear: both;
+		height: 55px;
+		margin-top: 5px;
+		padding-top: 6px;
+		padding-left: 22px;
+		padding-right: 22px;
+		background: #fff;
+		border-top: 1px solid #e8e8e8;
+		.detail_button{
+			height: 40px;
+			width: 136px;
+			border: 1px solid #f34832;
+			background: #fff;
+			color: #f34832;
+			border-radius: 5px;
+		}
+		.appointment_button{
+			float: right;
+			background: #f34832;
+			color: #fff;
+		}
+	}
+}

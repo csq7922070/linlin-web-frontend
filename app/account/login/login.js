@@ -1,7 +1,7 @@
 angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope', '$timeout', '$interval', 'verify',
-    'account', 'errorLog', 'userInfo', '$state', '$location','auth','control',
+    'account', 'errorLog', 'userInfo', '$state', '$location','auth','control','appType',
     function ($stateParams, $scope, $timeout, $interval, verify,account,errorLog,userInfo,$state,$location,
-        auth,control) {
+        auth,control,appType) {
         //alert($location.url());
         var lastLoginInfo = userInfo.getLastLoginInfo();
         if(lastLoginInfo&&lastLoginInfo.tel){
@@ -17,11 +17,11 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
         // // end test code
         $scope.sendAuthCode = function(){
             //$scope.showSuccess = true;
-            if(!verify.verifyTel($scope.tel) || !verify.supportTel($scope.tel)){
+            if(!verify.verifyTel($scope.tel)){
                 $scope.verifyTip='请输入正确的手机号码';
-                if(!verify.supportTel($scope.tel)){
-                    $scope.verifyTip="暂时不支持177、178号段的手机号"
-                }
+                // if(!verify.supportTel($scope.tel)){
+                //     $scope.verifyTip="暂时不支持177、178号段的手机号"
+                // }
                 $scope.verifyError = true;
                 $timeout(function(){
                     $scope.verifyError = false;
@@ -82,7 +82,7 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
                     },2000);
                 }else{
                     //alert(errorLog.getFullErrorMessage(data.account));
-                    userInfo.storageLoginInfo($scope.tel,data.account.nickName,data.account.headImgUrl);//保存用户登录信息
+                    userInfo.storageLoginInfo(data.account.id, $scope.tel,data.account.nickName,data.account.headImgUrl);//保存用户登录信息
                     var routeState = control.getRouteState();
                     $state.go(routeState.toState.name, routeState.toParams);
                 }
@@ -90,10 +90,6 @@ angular.module('app.account').controller('loginCtrl', ['$stateParams', '$scope',
                 $scope.verifyError = false;
                 alert(errorLog.getErrorMessage(reason));
             });
-        }
-
-        $scope.onBack = function(){
-            console.log("onBack...");
         }
     }
 ]);

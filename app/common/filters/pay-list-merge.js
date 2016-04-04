@@ -1,4 +1,4 @@
-angular.module('myApp').filter('payListMerge', function() {
+angular.module('myApp').filter('payListMerge', function(mathSvc) {
     return function(input) {
         var payList = [];//新增属性waterDates,elecDates,waterDateText,elecDateText,propertyDates,carMaintenanceDates,carportDates
         for(var i = 0;i<input.length;i++){
@@ -13,7 +13,9 @@ angular.module('myApp').filter('payListMerge', function() {
             }
             var payItem = null;
             if(find){
-                exist.amount+=item.amount;
+                exist.amount = mathSvc.add(exist.amount,item.amount);
+                // exist.amount+=item.amount;
+                // exist.amount = Math.round(exist.amount*100)/100;
                 payItem = exist;
             }else{
                 payItem = {

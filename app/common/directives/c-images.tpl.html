@@ -1,0 +1,15 @@
+<div class="c-images-container">
+	<ul class="image-list" ng-class="{'image-list-browse':mode=='browse'}">
+		<li ng-repeat="img in images" class="list-item" ng-class="{'list-item-browse':mode=='browse'}">
+			<a class="delete" ng-click="deleteImage(img)" ng-show="mode=='add'"></a>
+			<img ng-src="{{img.dataUrl}}" class="image" ng-click="select(img)" />
+		</li>
+		<li class="list-item" ng-show="mode=='add'">
+			<button class="add-image">添加照片
+				<input type="file" multiple="true" class="file-field" />
+			</button>
+		</li>
+	</ul>
+	<c-full-image image="fullImage" show="showFullImage"></c-full-image>
+	<c-circle-loading show="showLoading"></c-circle-loading>
+</div>

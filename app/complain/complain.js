@@ -1,5 +1,7 @@
-angular.module('app.complain').controller('complainListCtrl', ['errorLog','userInfo', 'complain', '$scope',
-    function (errorLog, userInfo, complain, $scope) {
+angular.module('app.complain').controller('complainListCtrl', ['errorLog','userInfo', 'complain', '$scope','userInfo',
+    function (errorLog, userInfo, complain, $scope,userInfo) {
+        userInfo.init();//微信参数只会在公众号第一个页面传入
+        //
         var vm = this;
         vm.currentPage = 0;
         vm.pageSize = 10;
@@ -9,12 +11,15 @@ angular.module('app.complain').controller('complainListCtrl', ['errorLog','userI
         $scope.complainListShow = true;
         function load(goPage, limit) {
             if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
+                $scope.showLoading = false;
                 return;
             } else {
                 complain.getComplainList(goPage,limit).then(function(data){
                     $scope.showLoading = false;
-                    Array.prototype.push.apply(vm.complainList,data.items);
-                    vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
+                    // Array.prototype.push.apply(vm.complainList,data);
+                    vm.complainList = data;
+                    var total = complain.getComplainTotal();
+                    vm.numberOfPages = Math.ceil(total / vm.pageSize);
                     vm.currentPage = goPage;
                     vm.busy = false;
                     if(vm.complainList.length == 0){
@@ -34,8 +39,10 @@ angular.module('app.complain').controller('complainListCtrl', ['errorLog','userI
 
         $scope.onComplainAddComplete = function(){
             vm.currentPage = 0;
-            vm.complainList = [];
-            load(1,8);
+            // vm.complainList = [];
+            console.log('dsfhdas ');
+            $scope.showLoading = true;
+            load(1, vm.pageSize);
         }
 
         $scope.complainAdd = function(){

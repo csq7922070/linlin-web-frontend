@@ -2,14 +2,15 @@
     <!-- <div class="content-container" ng-show="showContent" ng-init="showContent=true"> -->
         <div class="nav-bar">
             <div class="nav-link-container">
-                <a class="prev-page nav-page" ng-click="prevPage()" ng-show="currentPage>1"></a>
-                <ul>
-                    <li ng-repeat="address in currentAddressList" class="nav-item">
+                <a class="prev-page nav-page" ng-click="prevPage()" ng-show="slidelIndex>=pageSize"></a>
+                <ul class="nav-items" rn-carousel rn-carousel-index="slidelIndex" rn-carousel-interval={{pageSize}}>
+                    <li ng-repeat="address in addressList" class="nav-item" ng-class="{'actived-nav-item':currentAddress.id==address.id}">
                         <a ng-bind="address.tag" ng-click="selectAddress(address)" class="nav-link"
-                            ng-class="{'actived-nav-link':currentAddress.id==address.id}"></a>
+                            ></a>
                     </li>
                 </ul>
-                <a class="next-page nav-page" ng-click="nextPage()" ng-show="currentPage<maxPage"></a>
+                <a class="next-page nav-page" ng-click="nextPage()" 
+                    ng-show="addressList && slidelIndex+pageSize<addressList.length"></a>
             </div>
             <a ng-click="addAddress()" class="add-address"></a>
         </div>

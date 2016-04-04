@@ -4,23 +4,38 @@ myApp.directive('cAddressEdit', function() {
         replace: true,
         scope: {
             show: '=',
-            onComplete: '&'
+            onComplete: '&',
+            isModal:'@'//"true" or "false"代表该指令是否在页面上以模态指令状态显示，默认值为"true"
         },
         templateUrl: 'tpl/common/directives/address/c-address-edit.tpl.html',
         link: function($scope, element, attrs) {
         },
         controller: function ($state, $scope, $stateParams, addresses,communityLocation,addressInfo,address,errorLog,
-            userInfo,$q) {
-            // init addressInfo
-            addressInfo.init();
-            // end init
-            var city = communityLocation.getLastCity();
-            //alert(errorLog.getFullErrorMessage(cmmInfo));
-            if(!addressInfo.city){//将自动定位的城市赋值给addressInfo
-                addressInfo.city = city;
-            }
+            userInfo,$q,modalSvc) {
+            $scope.isModal = "true";
+
+            var modal = null;
+            $scope.$watch("show", function(newVal,oldVal){
+                if(newVal){//模态框每次显示时都进行初始化
+                    if($scope.isModal=="true"){
+                        if(!modal){
+                            modal = {scope:$scope};
+                        }
+                        modalSvc.addModal(modal);
+                    }
+                    // init addressInfo
+                    addressInfo.init();
+                    // end init
+                    var city = communityLocation.getLastCity();
+                    //alert(errorLog.getFullErrorMessage(cmmInfo));
+                    if(city&&city.name&&!addressInfo.city){//将自动定位的城市赋值给addressInfo
+                        addressInfo.city = city.name;
+                    }
+                    refreshAddressInfo();
+                }
+            })
             
-            function refreshAddressInfo(){
+            function refreshAddressInfo(){ 
                 $scope.city = addressInfo.city;
                 $scope.community = addressInfo.community;
                 $scope.blockType = addressInfo.blockType;
@@ -29,7 +44,6 @@ myApp.directive('cAddressEdit', function() {
                 $scope.room = addressInfo.room;
                 $scope.ownerName = addressInfo.ownerName;
             }
-            refreshAddressInfo();
 
             $scope.tags = [{
                 name:'我家'
@@ -61,6 +75,12 @@ myApp.directive('cAddressEdit', function() {
                 });
             }
 
+            $scope.$watch("showCityList", function(newVal,oldVal){
+                if(!newVal){
+                    $scope.showContent = true;
+                }
+            });
+
             $scope.onSelectCityComplete = function(){
                 // console.log("onSelectCityComplete");
                 // console.log(addressInfo);
@@ -85,6 +105,12 @@ myApp.directive('cAddressEdit', function() {
                     alert(reason.errorCode+","+reason.errorMessage);
                 });
             }
+
+            $scope.$watch("showCommunityList", function(newVal,oldVal){
+                if(!newVal){
+                    $scope.showContent = true;
+                }
+            });
 
             $scope.onSelectCommunityComplete = function(){
                 // console.log("onSelectCommunityComplete");
@@ -111,6 +137,12 @@ myApp.directive('cAddressEdit', function() {
                 });
             }
 
+            $scope.$watch("showBlockList", function(newVal,oldVal){
+                if(!newVal){
+                    $scope.showContent = true;
+                }
+            });
+
             $scope.onSelectBlockComplete = function(){
                 // console.log("onSelectBlockComplete");
                 // console.log(addressInfo);
@@ -136,6 +168,12 @@ myApp.directive('cAddressEdit', function() {
                 });
             }
 
+            $scope.$watch("showUnitList", function(newVal,oldVal){
+                if(!newVal){
+                    $scope.showContent = true;
+                }
+            });
+
             $scope.onSelectUnitComplete = function(){
                 // console.log("onSelectUnitComplete");
                 // console.log(addressInfo);
@@ -160,6 +198,12 @@ myApp.directive('cAddressEdit', function() {
                     alert(reason.errorCode+","+reason.errorMessage);
                 });
             }
+
+            $scope.$watch("showRoomList", function(newVal,oldVal){
+                if(!newVal){
+                    $scope.showContent = true;
+                }
+            });
 
             $scope.onSelectRoomComplete = function(){
                 // console.log("onSelectRoomComplete");
@@ -198,6 +242,9 @@ myApp.directive('cAddressEdit', function() {
 
             function close(){
                 $scope.show = false;
+                if($scope.isModal=="true"){
+                    modalSvc.removeModal(modal);
+                }
                 $scope.onComplete();
             }
         }

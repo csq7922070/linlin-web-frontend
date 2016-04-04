@@ -13,23 +13,23 @@ angular.module('app.complain').directive('cComplainDetail', function() {
         controller: function ($scope,$timeout, $state, errorLog,$scope,complain,$stateParams) {
             $scope.complainReplyShow = false;
             $scope.complainReply = function() {
-                console.log($stateParams.id);
                 $scope.complainReplyShow = true;
             }
             $scope.onComplainReply = function(newReply){
+                $scope.showLoading = true;
                 params = {
                     id: $stateParams.id,
                     reply: newReply,
                     state: 1,
                     type: 1
                 };
-                console.log(params);
                 complain.saveComplainReply(params).then(function(data) {
                     $scope.complainReplyShow = false;
+                    $scope.showLoading = false;
                     $scope.complainDetail = data.replys;
-                    console.log($scope.complainDetailreply);
                 }, function() {
-                    $scope.msg = '回复失败';
+                    $scope.showLoading = false;
+                     $scope.showError = true;
                 });
             }
         }

@@ -1,0 +1,76 @@
+<div class="c-share-info-list-container">
+	<ul>
+		<li ng-repeat="shareInfo in shareInfoList">
+			<!-- 技能信息 -->
+			<a class="info-item" ng-if="shareInfo.shareType=='skill'" ng-click="select(shareInfo)">
+				<div class="left-part">
+					<img ng-src="{{shareInfo.account.headImgUrl}}" class="head-img" /><br/>
+				</div>
+				<div class="right-part">
+					<div class="top-bar">
+						<div class="personal-info-bar">
+							<span class="name" ng-bind="shareInfo.account.nickName">张三</span>
+							<!-- <span class="sex" ng-bind="shareInfo.account.sex">男</span> -->
+							<span class="sex">男</span>
+							<!-- <span class="age"><span ng-bind="shareInfo.account.age">26</span>岁</span> -->
+							<span class="age"><span>26</span>岁</span>
+							<!-- <c-skill-icons release-skills="shareInfo.account.icons" class="release-skill-icons"></c-skill-icons> -->
+							<span class="fee-info">
+								<span class="fee" ng-bind="shareInfo.price">200</span>
+								<span class="fee-unit" ng-bind="shareInfo.priceUnitText">元/小时</span>
+							</span>
+						</div>
+						<div class="skill-bar">
+							<span class="skill-info" ng-bind="shareInfo.skillText">家教-英语</span>
+						</div>
+					</div>
+					<div class="middle-bar">
+						<p class="brief-introduction" ng-bind="shareInfo.description">
+							5年以上儿童教育经验，主要针对儿童口语发音不准的问题进行精准分析和纠正，帮助......
+						</p>
+					</div>
+					<div class="bottom-bar">
+						<!-- <c-deal-info star-level="{{shareInfo.average}}" deal-count="124"></c-deal-info> -->
+						<c-deal-info star-level="3.7" deal-count="124"></c-deal-info>
+						<span class="distance"> 
+							< 500m
+						</span>
+					</div>
+				</div>
+			</a>
+			<!-- 需求信息 -->
+			<a class="info-item requirement-info-item" ng-if="shareInfo.shareType=='requirement'" ng-click="select(shareInfo)">
+				<div class="left-part">
+					<img ng-src="{{shareInfo.account.headImgUrl}}" class="head-img" /><br/>
+					<span class="name" ng-bind="shareInfo.account.nickName">张三</span>
+				</div>
+				<div class="right-part">
+					<div class="top-bar">
+						<div class="skill-bar">
+							<span class="skill-info" ng-bind="shareInfo.skillText">家教-英语</span>
+							<span class="fee-info">
+								<span class="fee" ng-bind="shareInfo.price">200</span>
+								<span class="fee-unit" ng-bind="shareInfo.priceUnitText">元/小时</span>
+							</span>
+						</div>
+					</div>
+					<div class="middle-bar">
+						<p class="brief-introduction" ng-bind="shareInfo.description">
+							5年以上儿童教育经验，主要针对儿童口语发音不准的问题进行精准分析和纠正，帮助......
+						</p>
+					</div>
+					<div class="bottom-bar">
+						<span class="require-sex" ng-bind="shareInfo.sexText"></span>
+						<span class="require-age-info">
+							<span ng-bind="shareInfo.ageText"></span>
+						</span>
+
+						<span class="distance">
+							< 500m
+						</span>
+					</div>
+				</div>
+			</a>
+		</li>
+	</ul>
+</div>

@@ -1,7 +1,6 @@
 //var basePath = "http://localhost:8080/skh";
-//var basePath="http://192.168.0.120:8080/skh";
-var basePath = "http://mitest.4zlink.com:8080/mifan";
-// var basePath = "http://192.168.0.135:8080/skh";
+//var basePath="http://192.168.0.103:8080/mifan";
+var basePath = "http://101.200.75.137:8080/mifan";
 
 angular.module('app.home', []);
 angular.module('app.notice', ['resources.notice']);
@@ -12,15 +11,18 @@ angular.module('app.address', ['resources.address']);
 angular.module('app.pay', ['resources.address', 'resources.pay']);
 angular.module('app.location', []);
 angular.module('app.user',[]);
-angular.module('app.log',[]);
+angular.module('app.log',[]); 
 angular.module('app.auth',[]);
 angular.module('app.account',[]);
 angular.module('app.verify',[]);
 angular.module('app.control',[]);
+angular.module('app.modal',[]);
+angular.module('app.share',['resources.skill']);
+angular.module('app.math',[]);
 
 var myApp = angular.module('myApp', ['ui.router', 'angular-carousel', 'app.home', 'app.repair', 'app.notice', 'app.shop', 
     'app.complain', 'app.address', 'app.pay', 'app.location', 'app.user', 'app.log', 'app.auth', 'app.account', 'app.verify',
-    'app.control']);
+    'app.control','app.modal','app.share','app.math']);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -28,23 +30,17 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 
     $stateProvider
         .state('notice', {
-            url: "/notice-list",
-            templateUrl: "tpl/notice/notice-list.tpl.html",
-            controller: 'noticeListCtrl',
+            url: "/notice",
+            templateUrl: "tpl/notice/notice.tpl.html",
+            controller: 'noticeCtrl',
             controllerAs: 'vm'
         })
         .state('notice-detail', {
-            url: "/notice/:id",
+            url: "/notice-detail/:id",
             templateUrl: "tpl/notice/notice-detail.tpl.html",
             controller: "noticeDetailCtrl",
             controllerAs: 'vm'
         })
-        // .state('repair', {
-        //     url: "/repair-list",
-        //     templateUrl: "tpl/repair/repair-list.tpl.html",
-        //     controller: 'repairListCtrl',
-        //     controllerAs: 'vm'
-        // })
         .state('repair', {
             url: "/repair",
             templateUrl: "tpl/repair/repair.tpl.html",
@@ -57,18 +53,6 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: 'repairDetailCtrl',
             controllerAs: 'vm'
         })
-        // .state('repair-add', {
-        //     url: "/repair-add",
-        //     templateUrl: "tpl/repair/repair-add.tpl.html", 
-        //     controller: 'repairAddCtrl',
-        //     controllerAs: 'vm'
-        // })
-        // .state('complain', {
-        //     url: "/complain-list",
-        //     templateUrl: "tpl/complain/complain-list.tpl.html",
-        //     controller: "complainListCtrl",
-        //     controllerAs: 'vm'
-        // })
         .state('complain', {
             url: "/complain",
             templateUrl: "tpl/complain/complain.tpl.html",
@@ -81,12 +65,6 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "complainDetailCtrl",
             controllerAs: 'vm'
         })
-        // .state('complain-add', {
-        //     url: "/complain-add",
-        //     templateUrl: "tpl/complain/complain-add.tpl.html",
-        //     controller: "complainAddCtrl",
-        //     controllerAs: 'vm'
-        // })
         .state('address-list', {
             url: "/address-list/:mode",
             templateUrl: "tpl/address/address-list.tpl.html",
@@ -99,43 +77,13 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "addressEditCtrl",
             controllerAs: 'vm'
         })
-        .state('address-city', {
-            url: "/address-city/",
-            templateUrl: "tpl/address/city/city.tpl.html",
-            controller: "addressCityCtrl",
-            controllerAs: 'vm'
-        })
-        .state('address-village', {
-            url: "/address-village/",
-            templateUrl: "tpl/address/village/village.tpl.html",
-            controller: "addressVillageCtrl",
-            controllerAs: 'vm'
-        })
-        .state('address-block', {
-            url: "/address-block/",
-            templateUrl: "tpl/address/block/block.tpl.html",
-            controller: "addressBlockCtrl",
-            controllerAs: 'vm'
-        })
-        .state('address-unit', {
-            url: "/address-unit/",
-            templateUrl: "tpl/address/unit/unit.tpl.html",
-            controller: "addressUnitCtrl",
-            controllerAs: 'vm'
-        })
-        .state('address-room', {
-            url: "/address-room/",
-            templateUrl: "tpl/address/room/room.tpl.html",
-            controller: "addressRoomCtrl",
-            controllerAs: 'vm'
-        })
         .state('bill', {
-            url: "/bill/",
+            url: "/bill",
             templateUrl: "tpl/pay/bill.tpl.html",
             controller: "billCtrl"
         })
         .state('pay', {
-            url: "/pay/",
+            url: "/pay",
             templateUrl: "tpl/pay/pay.tpl.html",
             controller: "payCtrl",
             controllerAs: 'vm'
@@ -162,18 +110,6 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             templateUrl: "tpl/home/html-error.tpl.html",
             controllerAs: 'vm'
         })
-        .state('auto-location', {
-            url: "/auto-location",
-            templateUrl: "tpl/location/auto-location.tpl.html",
-            controller: "autoLocationCtrl",
-            controllerAs: 'vm'
-        })
-        .state('search-location', {
-            url: "/search-location",
-            templateUrl: "tpl/location/search-location.tpl.html",
-            controller: "searchLocationCtrl",
-            controllerAs: 'vm'
-        })
         .state('location', {
             url: "/location",
             templateUrl: "tpl/location/location.tpl.html",
@@ -181,7 +117,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controllerAs: 'vm'
         })
         .state('login',{
-            url: "/login/:toState",
+            url: "/login",
             templateUrl: "tpl/account/login/login.tpl.html",
             controller: "loginCtrl",
             controllerAs: "vm"
@@ -216,23 +152,66 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
             controller: "disclaimerCtrl",
             controllerAs: "vm"
         })
+        .state('share-personal',{
+            url: "/share-personal/:accountId",
+            templateUrl: "tpl/share/share-personal.tpl.html",
+            controller: "sharePersonalCtrl",
+            controllerAs: "vm"
+        })
         .state('home-nav',{
-            url: "/home-nav",
+            url: "/home-nav/:index",
             templateUrl: "tpl/home/home-nav.tpl.html",
             controller: "homeNavCtrl",
-            controllerAs: "vm"//,
-            // views:{
-            //     "home":{
-            //         templateUrl:"tpl/home/native-home.tpl.html",
-            //         controller: "nativeHomeCtrl",
-            //         controllerAs: "vm"
-            //     },
-            //     "account":{
-            //         templateUrl:"tpl/account/account.tpl.html",
-            //         controller: "accountCtrl",
-            //         controllerAs: "vm"
-            //     }
-            // }
+            controllerAs: "vm"
+        })
+        .state('release-skill',{
+            url: "/release-skill",
+            templateUrl: "tpl/share/release-skill.tpl.html",            
+            controller: "releaseSkillCtrl",
+        })
+        .state('release-demand',{
+            url: "/release-demand",
+            templateUrl: "tpl/share/release-demand.tpl.html",            
+            controller: "releaseDemandCtrl",
+        })
+        .state('skill-details',{
+            url: "/skill-details/:id",
+            templateUrl: "tpl/share/detail-skill.tpl.html",            
+            controller: "releaseSkillDetailCtrl",
+        })
+        .state('demand-details',{
+            url: "/demand-details/:id",
+            templateUrl: "tpl/share/detail-demand.tpl.html",            
+            controller: "releaseDemandDetailCtrl",
+        })
+        .state('order-skill',{
+            url: "/order-skill/:releseId",
+            templateUrl: "tpl/share/order-skill.tpl.html",            
+            controller: "orderSkillCtrl",
+        })
+        .state('order-demand',{
+            url: "/order-demand/:releseId",
+            templateUrl: "tpl/share/order-demand.tpl.html",            
+            controller: "orderDemandCtrl",
+        })
+        .state('home-nav.nav',{
+            views:{
+                "home":{
+                    templateUrl:"tpl/home/native-home.tpl.html",
+                    controller: "nativeHomeCtrl",
+                    controllerAs: "vm"
+                },
+                "share":{
+                    templateUrl:"tpl/share/share.tpl.html",
+                    controller: "shareCtrl",
+                    controllerAs: "vm"
+                },
+                "account":{
+                    templateUrl:"tpl/account/account.tpl.html",
+                    controller: "accountCtrl", 
+                    controllerAs: "vm"
+                }
+            }
         });
 }]).config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -278,17 +257,19 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
-}]).run(['$rootScope', 'auth', 'control', function($rootScope, auth, control) {
+}]).run(['$rootScope', 'auth', 'control','modalSvc', function($rootScope, auth, control,modalSvc) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
         control.startChangeState(event, toState, toParams, fromState, fromParams);//为了兼容app和微信公众号的首页不一致问题
         //在页面跳转前检测需要用户登录以及绑定地址的页面用户是否完成了登录和地址绑定
         //否则跳转到登录页面或者添加地址页面
         auth.startChangeState(event, toState, toParams, fromState, fromParams);
+        //检测页面中是否有模态框显示，有阻止页面跳转，关闭最上层模态框
+        modalSvc.startChangeState(event, toState, toParams, fromState, fromParams);
     });
-}]).value('locationState',{
+}]).value('locationState',{ 
         hasLocation: false,
         locationVisited: false
     }
 ).constant(
-    'appType', 'weixin'//app or weixin
+    'appType', 'app'//app or weixin
 );

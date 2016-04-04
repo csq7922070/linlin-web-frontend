@@ -1,0 +1,12 @@
+<div class="c-share-skills-container">
+	<div class="skills-container">
+        <ul rn-carousel rn-carousel-index="slideIndex" rn-carousel-interval={{pageSize}} class="skills"> 
+            <li ng-repeat="skill in skills" class="skill-item">
+                <a ng-bind="skill.name" class="skill skill-{{skill.icon}}" ng-click="selectSkill(skill)"
+                	ng-class="{'active':currentSkill==skill}"></a>
+            </li>
+        </ul>
+        <c-slide-indicators indicators="slideIndicators" slide-index="slideIndex" slide-interval="pageSize">
+        </c-slide-indicators>
+    </div>
+</div>

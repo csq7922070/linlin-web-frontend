@@ -1,18 +1,13 @@
-angular.module('app.home').controller('homeNavCtrl', ['$stateParams','$scope',
-    function ($stateParams, $scope) {
-        // -------------------------------------------------------------------------------
-        // 导航控制
-    	$scope.currentNav = 'home';
-        $scope.nav = function(name){
-        	if(name=='account' && $scope.currentNav == 'home'){
-        		document.querySelector("#flip-container").classList.toggle("flip");
-        		$scope.currentNav = 'account';
-        	}else if(name == 'home' && $scope.currentNav == 'account'){
-        		document.querySelector("#flip-container").classList.toggle("flip");
-        		$scope.currentNav = 'home';
-        	}
+angular.module('app.home').controller('homeNavCtrl', ['$stateParams','$scope','$state',
+    function ($stateParams, $scope,$state) {
+        $scope.navIndex = 0;
+        if($stateParams.index!=""){
+            $scope.navIndex = $stateParams.index;
         }
-        // end 导航控制
-        // ----------------------------------------------------------------------------------
+        $scope.nav = function(index){
+            $scope.navIndex = index;
+            $state.go('home-nav',{index:$scope.navIndex});
+        }
+        $state.go('home-nav.nav');
     }
 ]);

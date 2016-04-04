@@ -1,0 +1,33 @@
+<div id="c-skill-address" ng-show="show" class="">
+	<c-nav-bar title="选择区域"></c-nav-bar>
+	<div class="search_address">
+		<input type="text" placeholder="搜索城市或拼音" class="search_address_input">
+		<img href="" class="search_address_symbol" src="images/search-address.png">
+	</div>
+	<div class="address_category">
+		<span class="address_category_span_left">城市</span>
+		<span class="address_category_span_right">区域</span>
+			<span>{{$scope.checkButton}}</span>
+	</div>
+	<div class="address_details">
+		<div class="address_left">
+			<div class="address_position" ng-click="retryLocation()">{{locationCity}}(GPS定位)</div>
+			<div class="address_title" ng-repeat="cityData in skillAddress">
+				<span>{{cityData.initial}}</span>
+				<div class="address_city" ng-click="selectCity(city);" ng-repeat="city in cityData.items">
+					{{city.name}}
+				</div>
+			</div>
+		</div>
+		<div class="address_right">
+			<div class="address_area address_area_all" ng-if="!city">全部</div>
+			<div class="address_area address_area_all" ng-if="city">全{{city}}</div>
+			<div class="address_area" ng-click="selectArea(area);" ng-repeat="area in areas">
+				<span>{{area.name}}</span><img class="address_img" src="images/address-selected.png" ng-if="area.style == true || area.name == areaList" alt="">
+			</div>
+		</div>
+	</div>
+	<!-- <div class="address_button"> -->
+	<button class="address_button" ng-click="addressComplete()">确定</button>
+	<!-- </div> -->
+</div>

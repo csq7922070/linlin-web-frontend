@@ -1,12 +1,14 @@
-angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state', 'errorLog','$scope','repair',
-    function ($timeout, $state, errorLog,$scope,repair) {
-
+angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state', 'errorLog','$scope','repair','userInfo',
+    function ($timeout, $state, errorLog,$scope,repair,userInfo) {
+        userInfo.init();//微信参数只会在公众号第一个页面传入
+        //
         var vm = this;
         vm.currentPage = 0;
         vm.pageSize = 10;
         vm.repairList = [];
         var params = {};
         $scope.showLoading = true;
+        $scope.repairAddShow = false;
 
         $scope.repairDevices = [
             {id : 1,name : '开换锁',url :  'images/device_01.png'},
@@ -23,12 +25,15 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
 
         function load(goPage, limit) {
             if (goPage > vm.numberOfPages || vm.currentPage == goPage || goPage < 1 || vm.busy) {
+                $scope.showLoading = false;
                 return;
             } else {
                 repair.getRepairList(limit,goPage).then(function(data){
                     $scope.showLoading = false;
-                    Array.prototype.push.apply(vm.repairList,data.items);
-                    vm.numberOfPages = Math.ceil(data.count / vm.pageSize);
+                    // Array.prototype.push.apply(vm.repairList,data);
+                    vm.repairList = data;
+                    var total = repair.getRepairTotal();
+                    vm.numberOfPages = Math.ceil(total / vm.pageSize);
                     vm.currentPage = goPage;
                     vm.busy = false;
                     if(vm.repairList.length == 0){
@@ -55,7 +60,8 @@ angular.module('app.repair').controller('repairListCtrl', ['$timeout', '$state',
 
         $scope.onRepairAddComplete = function(){
             vm.currentPage = 0;
-            vm.repairList = [];
+            // vm.repairList = [];
+            $scope.showLoading = true;
             load(1,8);
         }
     }

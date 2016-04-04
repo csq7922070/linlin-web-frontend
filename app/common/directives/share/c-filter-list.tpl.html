@@ -1,0 +1,11 @@
+<div class="c-filter-list-container">
+	<div class="control-container">
+		<a class="main" ng-bind="main.name" ng-click="select(main)" ng-class="{'active':main==selected}"></a>
+		<a class="control" ng-click="expand()"></a>
+	</div>
+	<ul class="filter-list" ng-show="expanded">
+		<li class="filter-item" ng-repeat="item in list">
+			<a class="filter" ng-bind="item.name" ng-click="select(item)" ng-class="{'active':item==selected}"></a>
+		</li>
+	</ul>
+</div>

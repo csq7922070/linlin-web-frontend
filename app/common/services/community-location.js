@@ -16,13 +16,12 @@ angular.module('app.location')
 		var lastCity = null;
 		
 		//根据经纬度定位小区
-		function locationCommunity(openId, longitude, latitude){// longitude经度，latitude维度
+		function locationCommunity(longitude, latitude){// longitude经度，latitude维度
 			var defer = $q.defer();
 			$http({
 				method: 'GET',
 				url: basePath + '/GPS/',
 				params: {
-					openid: openId,
 					lon: longitude,
 					lat: latitude
 				}
@@ -42,14 +41,8 @@ angular.module('app.location')
 		this.autoLocationCommunity = function(){
 			//alert("autoLocationCommunity...");
 			var defer = $q.defer();
-			var openId = null;
-    		userInfo.getOpenId().then(function(data){//openid
-    			openId = data;
-    			return location.getLocation();
-    		},function(reason){
-    			return $q.reject(reason);
-    		}).then(function(data){
-    			return locationCommunity(openId, data.longitude, data.latitude);
+    		location.getLocation().then(function(data){
+    			return locationCommunity(data.longitude, data.latitude);
     		},function(reason){
     			return $q.reject(reason);
     		}).then(function(data){//community
@@ -57,59 +50,21 @@ angular.module('app.location')
     		}, function(reason){
     			defer.reject(reason);
     		});
+    		// var loc = location.getLastLocation();
+    		// locationCommunity(loc.longitude,loc.latitude);
 			return defer.promise;
 		}
 
-		this.changeCommunity = function(openId, cmmInfo){
-			var that = this;
-			var defer = $q.defer();
-			$http({
-				method: 'POST',
-				url: basePath + '/GPS/save',
-				data:{
-					openid: openId,
-					name: cmmInfo.name,
-					city: cmmInfo.city,
-					address: cmmInfo.address
-				}
-			}).success(function(data){
-				lastCommunity = cmmInfo;
-				that.storageCommunity(cmmInfo);
-				defer.resolve(data);
-			}).error(function(reason){
-				var reason = {
-					errorCode: "CHANGE_COMMUNITY_ERROR",
-					errorMessage: errorLog.getErrorMessage(reason)
-				};
-				defer.reject(reason);
-			});
-			return defer.promise;
+		this.changeCommunity = function(cmmInfo){
+			lastCommunity = cmmInfo;
+			var state = this.storageCommunity(cmmInfo);
+			return state;
 		}
 
-		this.changeCity = function(openId, city){
-			var that = this;
-			var defer = $q.defer();
-			$http({
-				method: 'POST',
-				url: basePath + '/GPS/save',
-				data:{
-					openid: openId,
-					name: "",
-					city: city,
-					address: ""
-				}
-			}).success(function(data){
-				lastCity = city;
-				that.storageCity(city);
-				defer.resolve(data);
-			}).error(function(reason){
-				var reason = {
-					errorCode: "CHANGE_CITY_ERROR",
-					errorMessage: errorLog.getErrorMessage(reason)
-				};
-				defer.reject(reason);
-			});
-			return defer.promise;
+		this.changeCity = function(city){
+			lastCity = city;
+			var state = this.storageCity(city);
+			return state;
 		}
 
 		//判断2次小区定位是否一致，如果上次定位不存在，直接返回true
@@ -144,7 +99,11 @@ angular.module('app.location')
 		//获取上一次使用的城市信息，此信息通过localStorage持久化存储
 		this.getLastCity = function(){
 			if(!lastCity && window.localStorage && localStorage.city){
-				lastCity = localStorage.city;
+				try{
+					lastCity = JSON.parse(localStorage.city);
+				}catch(e){
+					lastCity = null;
+				}
 			}
 			// alert("getLastCity done.");
 			// alert(lastCity);
@@ -163,7 +122,7 @@ angular.module('app.location')
 		this.storageCity = function(city){
 			var state = false;
 			if(window.localStorage){
-				localStorage.city = city;
+				localStorage.city = JSON.stringify(city);
 				state = true;
 			}
 			return state;

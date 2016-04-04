@@ -1,0 +1,16 @@
+<div id="c-set-my-address" ng-show="show" class="">
+	<c-nav-bar title="设置地址" light="true"></c-nav-bar>
+	<div class="set_address" ng-click="changeMyAddress()">
+		<span class="set_address_name">城市</span>
+		<span>{{areaList.city}}</span>
+		<span ng-if="areaList.area">-{{areaList.area}}</span>
+		<img class=" set_address_image" src="images/right_arrow.png" alt="">
+	</div>
+	<div class="set_address">
+		<span class="set_address_name">地址</span>
+		<input type="text" placeholder="请输入地址" class="set_address_input" ng-model="detailedAddress">
+	</div>
+
+	<div class="address_determine" ng-click="saveMyAddress()">确定</div>
+	<c-skill-address class="" skill-address="skillAddress" show="showSkillAddress" on-Complete="getMyArea(areaList)" address-type="addressType"></c-skill-address>
+</div>

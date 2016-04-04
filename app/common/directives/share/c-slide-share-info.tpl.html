@@ -1,0 +1,30 @@
+<div class="c-slide-share-info-container">
+	<ul class="info-list" rn-carousel rn-carousel-index="slideIndex">
+		<li class="list-item" ng-repeat="shareInfo in shareInfoList">
+			<a>
+				<div class="top-bar">
+					<span class="skill-info" ng-bind="shareInfo.skillText">家教-英语</span>
+					<span class="fee" ng-bind="shareInfo.price">200</span>
+					<span class="fee-unit" ng-bind="shareInfo.priceUnitText">元/小时</span>
+					<span class="status" ng-if="shareInfo.shareType=='requirement'">等待接单</span>
+				</div>
+				<div>
+					<span class="deal-info deal-info-{{shareInfo.starText}}-star">(<span>124</span>单)</span>
+				</div>
+				<div>
+					<p class="brief-introduction" ng-bind="shareInfo.description">
+						5年以上儿童教育经验，主要针对儿童口语发音不准的问题进行精准分析和纠正，帮助......
+					</p>
+				</div>
+				<c-images images="shareInfo.images" mode="browse" on-select="onSelectImage(img)" disable-full-image="true"
+					show-loading="shareInfo.showImagesLoading"></c-images>
+				<div class="publish-info">
+					<span>北京</span><span class="publish-date" ng-bind="shareInfo.createDate">2016-03-24 09:20</span>发布
+				</div>
+			</a>
+		</li>
+	</ul>
+	<div rn-carousel-indicators ng-if="shareInfoList.length > 1" slides="shareInfoList" rn-carousel-index="slideIndex"
+    	class="slide-indicators"></div>
+    <c-full-image image="fullImage" show="showFullImage"></c-full-image>
+</div>

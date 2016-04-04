@@ -5,12 +5,12 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
         userInfo,errorLog, location,address,auth,control,addressInfo) {
         //处理首页中的当前城市信息
         var city = communityLocation.getLastCity();
-        if(!city){
+        if(!city||!city.name){
             $state.go('location');
             return;
         }
         function refreshCityInfo(){
-            $scope.city = city.length >4 ? city.substring(0,3)+"..." : city;
+            $scope.cityName = city.name.length >4 ? city.name.substring(0,3)+"..." : city.name;
         }
         refreshCityInfo();
 
@@ -33,10 +33,11 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
         function setCity(data){
             city = data.city;
             var defer = $q.defer();
-            if(!communityLocation.compareCity(data)){//检测到2次城市不一致
+            var lastCity = communityLocation.getLastCity();
+            if(city.id!=lastCity.id){//检测到2次城市不一致
                 //需要提示用户是否切换到当前定位地址
-                $scope.modalTip = "检测到当前登陆位置为"+data.city+", "+
-                    "上次登陆位置为"+data.lastCity+", 是否切换?"
+                $scope.modalTip = "检测到当前登陆位置为"+city.name+", "+
+                    "上次登陆位置为"+lastCity.name+", 是否切换?"
                 $scope.tipAlign = "left";
                 $scope.okText = "切换";
                 $scope.showModal = true;
@@ -53,23 +54,14 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
             defer.promise.then(function(selectCurrent){//selectCurrent代表是否选择当前自动定位城市为登陆城市
                 if(selectCurrent){
                     refreshCityInfo();
-                    userInfo.getOpenId().then(function(data){
-                        var openId = data;
-                        communityLocation.changeCity(openId, city).then(function(data){//保存用户选择的城市信息到服务器
-                            //alert("changeCommunity success,openId:"+openId+",cmmInfo:"+errorLog.getErrorMessage(cmmInfo));
-                        },function(reason){
-                            alert(reason.errorCode +"," +reason.errorMessage);
-                        });
-                    },function(reason){
-                        alert(reason.errorCode + ","+reason.errorMessage);
-                    });
+                    communityLocation.changeCity(city);
                 }
                 locationState.hasLocation = true;
             });
         }
 
         //首页轮播图配置数据
-        $scope.slides7 = [{
+        $scope.slides = [{
             id: 10,
             label: "slide #1",
             img: "images/banner_01.png"
@@ -82,7 +74,7 @@ angular.module('app.home').controller('homeCtrl', ['$scope', '$http', '$statePar
             label: "slide #3",
             img: "images/banner_03.png"
         }];
-        $scope.carouselIndex7 = 0;
+        $scope.carouselIndex = 0;
 
         //加载首页下方的附近商户信息页面
         $state.go("home.shop-info", {

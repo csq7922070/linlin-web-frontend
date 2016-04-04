@@ -10,7 +10,17 @@ myApp.directive('cBlockList', function() {
         templateUrl: 'tpl/common/directives/address/c-block-list.tpl.html',
         link: function($scope, element, attrs) {
         },
-        controller: function ($stateParams,$scope,addresses,addressInfo,address) {
+        controller: function ($stateParams,$scope,addresses,addressInfo,address,modalSvc) {
+            var modal = null;
+            $scope.$watch("show", function(newVal,oldVal){
+                if(newVal){
+                    if(!modal){
+                        modal = {scope:$scope};
+                    }
+                    modalSvc.addModal(modal);
+                }
+            });
+
             $scope.changeBlock = function(block){
                 console.log("changeBlock...");
                 addressInfo.blockType = block.type;
@@ -52,6 +62,18 @@ myApp.directive('cBlockList', function() {
                 }
             }
 
+            $scope.$watch("showUnitList", function(newVal,oldVal){
+                if(!newVal){
+                    $scope.showContent = true;
+                }
+            });
+
+            $scope.$watch("showRoomList", function(newVal,oldVal){
+                if(!newVal){
+                    $scope.showContent = true;
+                }
+            });
+
             $scope.onSelectUnitComplete = function(){
                 console.log("onSelectUnitComplete");
                 close();
@@ -65,6 +87,7 @@ myApp.directive('cBlockList', function() {
             function close(){
                 $scope.showContent = true;
                 $scope.show = false;
+                modalSvc.removeModal(modal);
                 $scope.onComplete();
             }
         }

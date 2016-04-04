@@ -84,7 +84,7 @@ angular.module('app.address')
 				}else{
 					var params = {
 	                    id: address.id,
-	                    openid: userInfo.getOpenIdSync()
+	                    accountId: userInfo.getAccountId()
 	                }
 	                addresses.save(params).$promise.then(function (data) {
 	                	var defaultAddr = that.getDefaultAddressSync();
@@ -115,8 +115,9 @@ angular.module('app.address')
                     room: address.room,
                     houseId: address.id,
                     initial: address.initial,
-                    openid: userInfo.getOpenIdSync()
+                    accountId: userInfo.getAccountId()
                 }
+                //alert(errorLog.getFullErrorMessage(params));
                 addresses.save(params).$promise.then(function (data) {
 	                if(!addressList){
 						addressList = [];
@@ -142,7 +143,7 @@ angular.module('app.address')
 				var defer = $q.defer();
 				var params = {
                     id: address.id,
-                    openid:userInfo.getOpenIdSync()
+                    accountId: userInfo.getAccountId()
                 }
                 addresses.delete(params).$promise.then(function (data) {
                     var deleteDefault = address.active == 0;
@@ -183,15 +184,12 @@ angular.module('app.address')
 					addressListDefer = $q.defer();
 					if(!addressList){
 						addressList = [];
-						userInfo.getOpenId().then(function(data){
-							var params = {
-				                type: 'openid',
-				                openid: data
-				            }
-				            return addresses.query(params).$promise;
-						},function(reason){
-							return $q.reject(reason);
-						}).then(function(data) {
+						var params = {
+			                type: 'accountId',
+			                accountId: userInfo.getAccountId(),
+			                openid: userInfo.getOpenIdSync()
+			            }
+			            addresses.query(params).$promise.then(function(data) {
 							if(data.items){
 								addressList = data.items;
 							}			            	
@@ -235,6 +233,19 @@ angular.module('app.address')
 					defer.resolve(addressCount);
 				}
 				return defer.promise;
+			}
+
+			this.getAddressIndex = function(id){
+				var result = -1;
+				if(addressList){
+					angular.forEach(addressList, function(address,index){
+						if(address.id==id){
+							result = index;
+							return false;
+						}
+					});
+				}
+				return result;
 			}
 
 			this.getCityList = function(){

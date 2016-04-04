@@ -1,0 +1,32 @@
+<div id="share-personal-container">
+	<div class="basic-info">
+		<c-filter-background background-image="backgroundImage"></c-filter-background>
+		<div class="basic-info-wrapper">
+			<c-back class="back"></c-back>
+			<img ng-src="{{headImgUrl}}" class="head-img" />
+			<br/>
+			<div class="middle-basic-info">
+				<span class="name" ng-bind="name">张三</span>
+				<c-skill-icons release-skills="releaseSkills" class="release-skill-icons"></c-skill-icons>
+			</div>
+			<div class="bottom-basic-info">
+				<!-- <span class="sex" ng-bind="sex">男</span> -->
+				<span class="sex">男</span>
+				<span class="age"><span ng-bind="age">26</span>岁</span>
+			</div>
+		</div>
+	</div>
+	<div class="release-info skill-info">
+		<div class="title-bar">
+			<h2 class="title">他的技能</h2>
+		</div>
+		<c-slide-share-info share-info-list="skillInfoList" class="info-bar"></c-slide-share-info>
+	</div>
+	<div class="release-info requirement-info"> 
+		<div class="title-bar">
+			<h2 class="title">他的需求</h2>
+		</div>
+		<c-slide-share-info share-info-list="requirementInfoList" class="info-bar"></c-slide-share-info>
+	</div>
+<!-- 	<c-images images="shareImages"></c-images> -->
+</div>

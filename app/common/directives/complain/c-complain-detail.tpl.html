@@ -1,25 +1,36 @@
 <div id="c-compalin-detail-container" class="" ng-show="show">
-    <div class="com_detail_reply"><!--  ng-if="complainDetail.state==1" -->
+    <div id="com_detail_reply">
         <div ng-repeat="reply in complainDetail">
-            <div class="complain_state">
-                <img src="images/repair_03.png">
+            <div class="complain_state" ng-class="{true:'complain_last_replylist'}[$index == complainDetail.length-1]" >
+                <img src="images/repair_03.png" ng-if="$index == 0">
+                <img src="images/repair_09.png" ng-if="$index != 0">
                 <span class="complain_detail_state">
                     <div class="triangle"></div>
                     <div class="triangle_transparent"></div>
                     <span>
-                        <span ng-if="reply.type==0">物业回复</span>
-                        <span ng-if="reply.type==1">业主回复</span>
-                        <span class="complain_state_right" ng-bind="reply.createDate.substring(0,16)"></span>
+                        <span class="complain_reply_type" ng-if="reply.type==0">物业回复</span>
+                        <span class="complain_reply_type" ng-if="reply.type==1">业主回复</span>
+                        <span class="complain_state_right" ng-class="{true:'com_state_index'}[$index == 1]" ng-bind="reply.createDate.substring(0,16)"></span>
                         <span class="complain_wait" ng-bind="reply.content"></span>
                         <span class="repair_replybut" ng-if="$index == 0" ng-click="complainReply();"></span>
                     </span>
                 </span>
             </div>
         </div>
-
         <div ng-if="complainDetail.length==0">
-            暂时没有回复
+            <div class="complain_state complain_last_replylist">
+                <img src="images/repair_03.png">
+                <span class="complain_detail_state">
+                    <div class="triangle"></div>
+                    <div class="triangle_transparent"></div>
+                    <span>
+                        <span>暂时没有回复</span>
+                    </span>
+                </span>
+            </div>
         </div>
     </div>
     <c-complain-reply show="complainReplyShow" on-complete="onComplainReply(newReply);"></c-complain-reply>
+    <c-loading show="showLoading" tip="正在加载中..." tip-loading="loading"></c-loading>
+    <c-tip type="error" show="showError" tip="回复失败!" close-time="1500" on-close="onTipClose()"></c-tip>
 </div>

@@ -1,0 +1,60 @@
+<div id="release">
+	<c-nav-bar title="发布技能"></c-nav-bar>
+	<div class="release_skill_box" ng-show="showReleasebox">
+		<form id="" name="releaseSkillFrom" method="post" action="" novalidate>
+			<div class="release_head">
+				<img class="release_userportrait" ng-src="{{userImg}}" alt="">
+				<span class="release_username" ng-bind="userName">未登录</span>
+			</div>
+			<div class="release_module">
+				<div class="release_name">选择技能</div>
+				<div class="release_right_module">
+					<c-down-list class="release_classify_list" down-lists="texts" current-list="请选择" show="showDownList" on-Complete="getReleaseSkillClassify(currentList)"></c-down-list>
+					<input type="text" name="skillOther" placeholder="请输入需求" class="release_time" ng-model="currentSkillClassify" ng-show="showskillOther" required>
+					<c-skill-secondary class="" skill-pid="pid" skill-others="skillSecondaryList" show="showSkillSecondary" on-Complete="getSkillSeconday(checkCurrentSecondary)"></c-skill-secondary>
+				</div>
+			</div>
+			<div class="release_module">
+				<div class="release_name">服务地点</div>
+				<div class="release_right_module">
+					<div class="release_address">
+						<c-check-button show="showCheckButton" class="release_check_button" current-check-button="他来找我" check-button="1" on-complete="fromMe();"></c-check-button>
+						<span class="release_set_address" ng-click="setSkillAddress(0)">设置我的地址</span>
+					</div>
+					<div class="address_style" ng-if="addressForme"><span>{{addressForme.city}}</span><span ng-if="addressForme.area">-{{addressForme.area}}-{{addressForme.detail}}</span></div>
+					<div class="release_address">
+						<c-check-button show="showCheckButton" class="release_check_button" check-button="0" current-check-button="我去找他" on-complete="meTo();"></c-check-button>
+						<span class="release_set_address" ng-click="setSkillAddress(1)">设置服务区域</span>
+					</div>
+					<div class="address_style"><span>{{addressMyservice.city}}</span><span ng-repeat="area in addressMyservice.area">,{{area}}</span></div>
+				</div>
+			</div>
+			<div class="release_module">
+				<div class="release_name">服务费用</div>
+				<div class="release_right_module">
+					<input type="text" name="skillInput" placeholder="请输入金额" class="release_input" ng-model="skillSum" ng-pattern="/^\d*$/" required>
+					<c-down-list class="release_sum" down-lists="sums" current-list="请选择" show="showDownList" on-complete="getReleaseSkillSum(currentList);"></c-down-list>
+				</div>
+			</div>
+			<div class="release_module">
+				<div class="release_name">联系方式</div>
+				<div class="release_right_module">
+					<input type="text" name="skillMobile" placeholder="请输入联系方式" class="release_mobile" ng-model="skillMobile" ng-pattern="/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/" maxlength="11" required>
+					<span class="mobile_error" ng-show="releaseSkillFrom.skillMobile.$touched && releaseSkillFrom.skillMobile.$dirty && releaseSkillFrom.skillMobile.$invalid" ng-class="{true:'tel-edit'}[repair.skillMobile!='']">请输入正确的手机号码</span>
+				</div>
+			</div>
+			<div class="release_module">
+				<div class="release_name">自我描述</div>
+				<div class="release_right_module">
+					<textarea name="describe" id="" cols="20" rows="10" placeholder="请输入自我描述" class="release_describe" ng-model="skillDescribe" maxlength="500" required></textarea>
+					<c-images images="skillImages" on-add="imageAdding();" on-add-complete="imageAdded();" class="release_images"></c-images>
+				</div>
+			</div>
+			<button type="submit" class="release_button" ng-disabled="releaseSkillFrom.$invalid" ng-click="releaseSubFrom();">发布</button>
+		</form>
+	</div>
+</div>
+<c-set-my-address class="" show="showSetAddress" address-type="addressType" on-Complete="getMyAddress(myAddress)"></c-set-my-address>
+<c-skill-address class="" skill-address="skillAddress" show="showSkillAddress" on-Complete="getAddress(areaList)" address-type="addressType"></c-skill-address>
+<c-tip type="success" show="showSuccess" tip="提交成功!" close-time="1500" on-close="onSuccessClose()"></c-tip>
+<c-tip type="error" show="showError" tip="提交失败!" close-time="1500" on-close="onTipClose()"></c-tip>

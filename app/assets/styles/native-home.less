@@ -1,0 +1,227 @@
+#native-home-container{
+	width: 100%;
+	min-height: 100%;
+	background-color: rgb(238,238,238);
+	padding-bottom: 11px;
+	position:relative;
+
+	.location-city{
+	    color: #fff;
+	    font-size: 15px;
+	    position: absolute;
+	    left: 25px;
+	    top: 30px;
+	    z-index: 1;
+	    background-image: url('../images/down-arrow-white.png');
+	    background-repeat: no-repeat;
+	    /* display: block; */
+	    padding-right: 18px;
+	    /* background-color: green; */
+	    background-size: 12px;
+	    background-position: 100%;
+	}
+
+	.slogan-container{
+		display: none;
+		position: absolute;
+	    left: 50%;
+	    top: 40%;
+	    z-index: 1;
+	    color: #fff;
+	    font-family: 微软雅黑;
+	    width: 150px;
+	    margin-left: -75px;
+	    text-align: center;
+
+	    .main-slogan{
+	    	font-size: 25px;
+	    }
+
+	    .secondary-slogan{
+	    	font-size: 18px;
+		    display: inline-block;
+		    margin-top: 2px;
+	    }
+	}
+	
+	.carousel-container{
+		position: relative;
+		width: 100%;
+		height: 212px;
+
+		.carousel{
+			width: 100%;
+			height: 100%;
+			margin:0px;
+
+			.carousel-image{
+				width: 100%;
+				height: 100%;
+			}
+		}
+
+		.rn-carousel-indicators{
+			position: absolute;
+		    bottom: 5px;
+		    width: 100%;
+			text-align: center;
+
+			span{
+				padding: 0px 2px;
+				color: #ededed;
+			}
+
+			span.active {
+			  color: #f95959;
+			}
+		}
+	}
+
+	.menus-container{
+		background-color: #fff;
+
+		.menu{
+			width: 100%;
+			height: 100%;
+			display: block;
+			color: #333;
+			background-repeat: no-repeat;
+
+			.menu-tip{
+				color: #999;
+			}
+		}
+
+		.left-container,.right-container{
+			float: left;
+			width: 50%;
+			height: 100%;
+		}
+
+		.left-container{
+			border-right: solid 1px #e8e8e8;
+		}
+
+		.top-container,.bottom-container{
+			width: 100%;
+			height: 50%;
+		}
+
+		.top-container{
+			border-bottom: solid 1px #e8e8e8;
+		}
+	}
+
+	.menus-container:after{
+		content:"";
+		clear: both;
+	}
+
+	.main-menus{
+	    height: 134px;
+	    font-size: 15px;
+
+	    .menus{
+			width: 100%;
+			height: 100%;
+			margin: 0px;
+
+			.menu-item{
+				float: left;
+				width: 25%;
+				height: 100%;
+
+				.menu{
+					background-size: 50%;
+				    background-position: 50% 30px;
+				    padding-top: 95px;
+				    text-align: center;
+				}
+
+				.service{
+					background-image: url('../images/property-service.png');
+				}
+
+				.resource{
+					background-image: url('../images/resource.png');
+				}
+
+				.travel{
+					background-image: url('../images/travel.png');
+				}
+
+				.communication{
+					background-image: url('../images/communication.png');
+				}
+			}
+		}
+
+		.menus:after{
+			content:"";
+			clear:both;
+		}
+	}
+
+	.second-menus{
+	    height: 118px;
+	    margin-top: 11px;
+	    font-size: 14px;
+
+	    .repair{
+	    	background-image: url('../images/property-repair.png');
+		    background-size: 50%;
+		    background-position: 50% 63px;
+		    text-align: center;
+		    padding-top: 12px;
+	    }
+
+	    .complain{
+	    	background-image: url('../images/complain.png');
+		    background-position: 82% 54%;
+		    background-size: 18%;
+		    text-align: left;
+		    padding-left: 17%;
+		    padding-top: 12px;
+	    }
+
+	    .pay{
+	    	background-image: url('../images/pay.png');
+	        background-size: 15%;
+			background-position: 81% 57%;
+		    text-align: left;
+		    padding-left: 17%;
+		    padding-top: 12px;
+	    }
+	}
+
+	.third-menus{
+	    height: 69px;
+	    margin-top: 11px;
+	    font-size: 14px;
+
+	    .nearby,.other{
+	    	.menu-tip{
+		    	display: inline-block;
+    			margin-top: 2px;
+		    }
+	    }
+
+	    .nearby{
+	    	background-image: url(../images/nearby.png);
+		    background-position: 82% 50%;
+		    background-size: 16%;
+		    text-align: left;
+		    padding-left: 14%;
+		    padding-top: 14px;
+	    }
+
+	    .other{
+	    	background-image: url(../images/other-service.png);
+		    background-size: 17%;
+		    background-position: 82% 52%;
+		    text-align: left;
+		    padding-left: 17%;
+		    padding-top: 14px;
+	    }
+	}
+}

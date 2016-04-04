@@ -4,6 +4,7 @@
             var vm = this;
             $scope.showLoading = true;
             id = $stateParams.id;
+            $scope.showDownMenu = true;
             
             notice.getNoticeDetail(id).then(function(data){
                 $scope.showLoading = false;
@@ -11,7 +12,7 @@
             }, function(reason){
                 $scope.showLoading = false;
                 alert(errorLog.getErrorMessage(reason));
-            })
+            });
         }
     ]);
 })();

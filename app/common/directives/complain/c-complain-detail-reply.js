@@ -13,7 +13,7 @@ myApp.directive('cComplainReply', function() {
         controller: function ($scope,$timeout, $state, errorLog,$scope,complain) {
             $scope.complainReplyOut = function() {
                 var newReply = $scope.newReply;
-                console.log(newReply);
+                // console.log(newReply);
                 $scope.onComplete({newReply:newReply});
             }
         }

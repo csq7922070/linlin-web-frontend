@@ -1,7 +1,10 @@
 angular.module('app.pay').controller('billCtrl', ['$scope', '$http', '$stateParams', '$rootScope', 
     '$state', 'addresses', 'payments','addressInfo','address','errorLog','control','billPay','$filter',
+    'userInfo',
     function($scope, $http, $stateParams, $rootScope, $state, addresses, payments,addressInfo,
-        address,errorLog,control,billPay,$filter) {
+        address,errorLog,control,billPay,$filter,userInfo) {
+        userInfo.init();//微信参数只会在公众号第一个页面传入
+        //
         address.getAddressList().then(function(data){
             $scope.addressList = data;
         },function(reason){
@@ -9,6 +12,19 @@ angular.module('app.pay').controller('billCtrl', ['$scope', '$http', '$statePara
         });
 
         $scope.onSelectAddress = function(addressId){
+            if(addressId==null){
+                routeState = {
+                    toState: {
+                        name: "bill"
+                    },
+                    toParams: null,
+                    fromState: null,
+                    fromParams: null
+                };
+                control.storageRouteState(routeState);
+                $state.go("address-edit");
+                return;
+            }
             refreshBillList(addressId);
         }
 

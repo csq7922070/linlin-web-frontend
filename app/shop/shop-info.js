@@ -13,11 +13,11 @@
             $scope.shopList = [];
 
             function load(pageIndex, pageSize) {
-                console.log("load...");
+                //console.log("load...");
                 if (busy || (pageIndex-1)*pageSize >= total) {//拉取数据查询中或者没有数据可拉取则直接返回
                     return;
                 }
-                console.log("load start");
+                //console.log("load start");
                 var locInfo = location.getLastLocation();
                 var longitude = locInfo&&locInfo.longitude ? locInfo.longitude:"";
                 var latitude = locInfo&&locInfo.latitude ? locInfo.latitude:"";
@@ -29,10 +29,14 @@
                     $scope.showLoading = false;
                     busy = false;
                     currentPage = pageIndex;
-                    total = data.count;
-                    console.log(total);
-                    $scope.shopList = $scope.shopList.concat(data);
-                    console.log($scope.shopList);
+                    if(data&&data.count!=undefined){
+                        total = data.count;
+                    }
+                    //console.log(total);
+                    if(data&&data.items){
+                        $scope.shopList = $scope.shopList.concat(data.items);
+                    }
+                    //console.log($scope.shopList);
                 },function(reason){
                     busy = false;
                     $scope.showLoading = false;

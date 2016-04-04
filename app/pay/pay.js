@@ -27,19 +27,17 @@ angular.module('app.pay').controller('payCtrl', ['$scope', '$http', '$stateParam
         }
         // end
 
-        var loginInfo = userInfo.getLastLoginInfo();
-        var openId = userInfo.getOpenIdSync();
         var billIds = payBillInfo.billIds ? payBillInfo.billIds.join(",") : "";
         $scope.pay = function() {
             $scope.showTransparentMask = true;
             $q.all([userInfo.getWxConfigParam(),
-                        billPay.getPaySignParam($scope.totalFee, openId, billIds, loginInfo.tel)]).then(function(datas){
+                        billPay.getPaySignParam(billIds, $scope.totalFee)]).then(function(datas){
                 var wxConfigParam = datas[0];
                 var paySignParam = datas[1];
                 var defer = $q.defer();
                 wx.config({
                     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                    appId: paySignParam.appid, // 必填，公众号的唯一标识
+                    appId: wxConfigParam.appId, // 必填，公众号的唯一标识
                     timestamp: wxConfigParam.timestamp, // 必填，生成签名的时间戳
                     nonceStr: wxConfigParam.noncestr, // 必填，生成签名的随机串
                     signature: wxConfigParam.sign, // 必填，签名，见附录1
@@ -75,7 +73,7 @@ angular.module('app.pay').controller('payCtrl', ['$scope', '$http', '$stateParam
             },function(reason){
                 return $q.reject(reason);
             }).then(function(data){
-                $state.go('success');
+                $state.go('pay-list');
             },function(reason){
                 alert(errorLog.getErrorMessage(reason));
                 $scope.showTransparentMask = false;

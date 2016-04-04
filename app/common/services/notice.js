@@ -1,4 +1,4 @@
-angular.module('app.repair')
+angular.module('app.notice')
 	.service('notice', ['$q','$http','$timeout','errorLog', 'address','userInfo', 'notices',
 		function($q,$http,$timeout, errorLog, address, userInfo, notices){
 			var defaultCommunityId;
@@ -24,7 +24,7 @@ angular.module('app.repair')
 					var params = {
 	                    offset: limit * (goPage - 1),
 	                    limit: limit,
-	                    openid: userInfo.getOpenIdSync(),
+	                    accountId : userInfo.getAccountId(),
 	                    communityId:defaultCommunityId
 	                };
 	                return notices.query(params).$promise;
@@ -37,6 +37,7 @@ angular.module('app.repair')
 	            		errorCode: "GET_NOTICE_LIST_ERROR",
 	            		errorMessage: errorLog.getErrorMessage(reason)
 	            	};
+	            	defer.reject(reason);
         		});
             	return defer.promise;
             }

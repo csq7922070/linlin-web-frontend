@@ -20,13 +20,13 @@
             </div>
             <div class="container">
                 <button type="submit" type="button" class="submit_btn" ng-click="repairConcel();">取消</button>
-                <button type="submit" type="button" class="submit_btn submit_btn_concel" ng-disabled="repairForm.$invalid" ng-click="repairSubmit();">提交</button>
+                <button type="submit" type="button" class="submit_btn submit_btn_sub" ng-disabled="repairForm.$invalid" ng-click="repairSubmit();" ng-class="{true:'sub_true'}[!repairForm.$invalid]">提交</button>
             </div>
                 
         </form>
         <c-tip type="success" show="showSuccess" tip="提交成功!" close-time="1500" on-close="onSuccessClose()"></c-tip>
         <c-tip type="error" show="showError" tip="提交失败!" close-time="1500" on-close="onTipClose()"></c-tip>
     </div>
-    <c-address-list show="showAddressList" on-complete="onSelectAddressComplete()" address-list="addressList" mode="addressListMode" ng-init="addressListMode='select'"></c-address-list>
+    <c-address-list show="showAddressList" on-complete="onSelectAddressComplete()" address-list="addressList" mode="select"></c-address-list>
 </div>
 

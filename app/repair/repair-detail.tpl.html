@@ -1,4 +1,5 @@
 <div id="repair_detail">
+    <c-nav-bar title="报修详情"></c-nav-bar>
     <div class="container-fluid">
         <div id="repair_type" class="repair_detail_list">
             <ul>
@@ -14,7 +15,7 @@
                     <span class="repair_detail_name">故障描述</span>
                     <span class="remark" ng-bind="vm.repair.remark"></span>
                 </li>
-                <li>
+                <li ng-if="vm.repair.house">
                     <span class="repair_detail_name">报修地址</span>
                     <span><span ng-bind="vm.repair.house.block"></span><span ng-if="vm.repair.house.unit">-</span><span ng-bind="vm.repair.house.unit"></span><span ng-if="vm.repair.house.room">-</span><span ng-bind="vm.repair.house.room"></span>
                     </span>

@@ -10,6 +10,7 @@ angular.module('app.user')
 		// };
 		var wxConfigParam = null;//object type，服务器动态生成，不可持久化到本地
 		var tel = null;//用户的手机号
+		var accountId = null;//用户账户ID，每个账户ID可关联openId,手机号或其它第三方身份账户
 
 		this.initWxParam = function(){
 			if(!wxParam){
@@ -62,15 +63,33 @@ angular.module('app.user')
 		this.getWxConfigParam = function(){
 			var defer = $q.defer();
 			if(!wxConfigParam){
-				this.getOpenIdWxConfigParam().then(function(data){
+				$http({
+	                method: "GET",
+	                url: basePath + '/users/getWXParams'
+	            }).success(function(data) {
+	                wxConfigParam = {
+	                	appId: data.appId,
+	                	timestamp : data.timestamp,
+	                	noncestr : data.noncestr,
+	                	sign : data.sign
+	                };
 	                defer.resolve(wxConfigParam);
-				},function(reason){
-					var reason = {
+	            }).error(function(reason) {
+	                var reason = {
 	    				errorCode: "GET_WXCP_ERROR",
 	    				errorMessage: errorLog.getErrorMessage(reason)
 	    			};
 	                defer.reject(reason);
-				});
+	            });
+				// this.getOpenIdWxConfigParam().then(function(data){
+	   //              defer.resolve(wxConfigParam);
+				// },function(reason){
+				// 	var reason = {
+	   //  				errorCode: "GET_WXCP_ERROR",
+	   //  				errorMessage: errorLog.getErrorMessage(reason)
+	   //  			};
+	   //              defer.reject(reason);
+				// });
 			}else{
 				defer.resolve(wxConfigParam);
 			}
@@ -88,7 +107,7 @@ angular.module('app.user')
 			}
 			if(!wxParam&&localStorage.debug!="true"){
 				var reason = {
-    				errorCode: "GET_OPENID_WX_CONFIG_PARAM_ERROR",
+    				errorCode: "GET_OPENID_WXCP_ERROR",
     				errorMessage: "wxParam is null or empty string"
     			};
                 defer.reject(reason);
@@ -99,12 +118,12 @@ angular.module('app.user')
 	            }).success(function(data) {
 	            	openId = data.openid;
 					localStorage.openId = openId;
-	                //微信配置接口所需参数
-	                wxConfigParam = {
-	                	timestamp : data.timestamp,
-	                	noncestr : data.noncestr,
-	                	sign : data.sign
-	                };
+	                // //微信配置接口所需参数
+	                // wxConfigParam = {
+	                // 	timestamp : data.timestamp,
+	                // 	noncestr : data.noncestr,
+	                // 	sign : data.sign
+	                // };
 	                defer.resolve(data);
 	            }).error(function(reason) {
 	                var reason = {
@@ -117,9 +136,10 @@ angular.module('app.user')
 		    return defer.promise; 
 		}
 
-		this.storageLoginInfo = function(tel,nickName,headImgUrl){
+		this.storageLoginInfo = function(accountId, tel,nickName,headImgUrl){
 			var loginInfo = {
-				openId: openId,
+				accountId: accountId,
+				openId: this.getOpenIdSync(),
 				tel: tel,
 				nickName: nickName,
 				headImgUrl: headImgUrl,
@@ -138,11 +158,30 @@ angular.module('app.user')
 		}
 
 		this.storageLogoutInfo = function(){
-			localStorage.openId = "";//注销登录时从localStorage中清空openId
 			if(localStorage.loginInfo){
 				var loginInfo = JSON.parse(localStorage.loginInfo);
 				loginInfo.login = false;
 				localStorage.loginInfo = JSON.stringify(loginInfo);
 			}
+		}
+
+		this.getTel = function(){
+			if(!tel){
+				var loginInfo = this.getLastLoginInfo();
+				if(loginInfo){
+					tel = loginInfo.tel;
+				}
+			}
+			return tel;
+		}
+
+		this.getAccountId = function(){
+			if(!accountId){
+				var loginInfo = this.getLastLoginInfo();
+				if(loginInfo){
+					accountId = loginInfo.accountId;
+				}
+			}
+			return accountId;
 		}
 	}]);

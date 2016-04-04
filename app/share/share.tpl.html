@@ -1,0 +1,27 @@
+<div id="share-container">
+	<c-nav-bar title="共享服务"></c-nav-bar>
+	<div class="share-nav-bar">
+		<a class="map"></a>
+		<ul class="share-nav-items">
+			<li class="share-nav-item">
+				<a class="share-nav" ng-class="{'active':currentNav=='getHelp'}" ng-click="nav('getHelp')">找人帮</a>
+			</li>
+			<li class="share-nav-item">
+				<a class="share-nav" ng-class="{'active':currentNav=='makeMoney'}" ng-click="nav('makeMoney')">去赚钱</a>
+			</li>
+		</ul>
+		<a class="release" ng-click="showReleaseMask=true">发布</a>
+	</div>
+	<c-share-skills skills="primarySkills" on-select="onSelectPrimarySkill(selectedSkill)" class="primary-skill-filter"></c-share-skills>
+	<div class="filter-bar">
+		<c-filter-list main="mainFilterCondition" list="filterConditions" on-select="onSelectFilterCondition(selected)" 
+			class="filter-wrapper"></c-filter-list>
+		<c-filter-list main="mainSortRule" list="sortRules" on-select="onSelectSortRule(selected)" class="filter-wrapper"></c-filter-list>
+	</div>
+	<c-share-info-list share-info-list="shareInfoList" on-select="onSelectShareInfo(shareInfo)"></c-share-info-list>
+	<div class="release-mask" ng-show="showReleaseMask">
+		<a class="close-mask" ng-click="showReleaseMask=false"></a>
+		<a class="release-skill" ui-sref="release-skill"></a><br/>
+		<a class="release-requirement" ui-sref="release-demand"></a>
+	</div>
+</div>

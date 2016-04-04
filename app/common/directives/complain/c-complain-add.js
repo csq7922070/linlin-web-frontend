@@ -15,20 +15,24 @@ myApp.directive('cComplainAdd', function() {
             var vm = this;
             $scope.anonymous = 0;
             var loginInfo = userInfo.getLastLoginInfo();
-            $scope.defaultMobile = loginInfo.tel;
+            var mobile = $scope.defaultMobile = loginInfo.tel;
 
             $scope.complainSubmit = function () {
+                $scope.defaultMobile = mobile;
                 var params = {
                     anonymous : $scope.anonymous,
                     communityId : $scope.address.communityId,
-                    openid : userInfo.getOpenIdSync(),
+                    accountId : userInfo.getAccountId(),
                     mobile : $scope.defaultMobile,
                     title : $scope.title,
                     content : $scope.content
                 }
-                console.log(params);
+                // console.log(params);
                 complain.saveComplainAdd(params).then(function(data){
                     $scope.showSuccess = true;
+                    $scope.title = null;
+                    $scope.content = null;
+                     $scope.anonymous = 0;
                     $scope.onSuccessClose = function() {
                         // $state.go('complain');
                         $scope.show = false;
@@ -43,17 +47,15 @@ myApp.directive('cComplainAdd', function() {
 
                 if($scope.anonymous == 0){
                     $scope.anonymous = 1;
-                    console.log($scope.anonymous);
-                    $scope.defaultMobile = '';
+                    mobile = $scope.defaultMobile;
+                    $scope.defaultMobile = $scope.defaultMobile.substring(0,3) + '****' +  $scope.defaultMobile.substring(7,11);
                 }else{
                     $scope.anonymous = 0;
-                    console.log($scope.anonymous);
-                    $scope.defaultMobile = loginInfo.tel;
+                    $scope.defaultMobile = mobile;
                 }
             }
             
             address.getDefaultAddress().then(function(data){
-                // console.log(data);
                 $scope.address = data;
             },function(reason){
                 alert(reason.errorCode+","+reason.errorMessage);

@@ -1,4 +1,5 @@
 <div id="location-container">
+	<c-nav-bar title="定位城市"></c-nav-bar>
 	<div class="search-container">
 		<input type="text" ng-model="cityName" class="search-field" 
 			placeholder="输入城市名或拼音" />
@@ -6,18 +7,18 @@
 	<div>
 		<div class="location-title-bar title-bar">定位城市</div>
 		<div class="location-bar">
-			<a ng-bind="locationCity" ng-click="changeCity(locationCity)" class="city-block-link"
+			<a ng-bind="locationCity.name" ng-click="changeCity(locationCity)" class="city-block-link"
 				ng-show="!showLocationLoading && !showLocationError"></a>
 			<div class="location-loading" ng-show="showLocationLoading">定位中...</div>
-			<div class="location-error-container" ng-show="showLocationError">定位失败，请<a ng-click="retryLocation()">重试</a>或通过搜索框搜索</div>
+			<div class="location-error-container" ng-show="showLocationError">定位失败，请<a ng-click="retryLocation()">&nbsp;重试</a>&nbsp;或通过搜索框搜索</div>
 		</div>
 	</div>
 	<div>
 		<div class="recommend-title-bar title-bar">推荐城市</div>
 		<div class="recommend-bar">
 			<ul>
-				<li>
-					<a ng-click="changeCity('廊坊')" class="city-block-link">廊坊</a>
+				<li ng-repeat="city in recommandCityList">
+					<a ng-click="changeCity(city)" class="city-block-link" ng-bind="city.name"></a>
 				</li>
 			</ul>
 		</div>
@@ -28,7 +29,7 @@
 				<dl>
 					<dt ng-bind="cityGroup.initial" class="city-initial-bar"></dt>
 					<dd ng-repeat="city in cityGroup.items">
-						<a ng-bind="city.cityName" ng-click="changeCity(city.cityName)" class="city-link"></a>
+						<a ng-bind="city.name" ng-click="changeCity(city)" class="city-link" ng-class="{'city-link-line':!$last}"></a>
 					</dd>
 				</dl>
 			</li>
