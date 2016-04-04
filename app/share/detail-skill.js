@@ -30,6 +30,7 @@ angular.module('app.share').controller('releaseSkillDetailCtrl', ['$timeout', '$
             history.back();
         }
         $scope.showLoading = true;
+        $scope.shareImages = [{dataUrl:"images/test/1.jpg"}];
         shareRelease.getSkillDetail(releseId).then(function(data){
             $scope.showLoading = false;
             // $scope.data = data.items;

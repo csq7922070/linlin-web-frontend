@@ -1442,11 +1442,7 @@ html input[disabled] {
   top: 0px;
   bottom: 0px;
   background-color: #000;
-  opacity: 0.9;
-}
-.c-full-image-container .full-img {
-  width: 100%;
-  margin-top: 50%;
+  z-index: 1000;
 }
 
 .c-images-container {
